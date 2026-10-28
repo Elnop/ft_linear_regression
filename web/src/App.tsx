@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { DocPage } from './docs/DocPage.tsx';
 import { PaintWall, type PaintEngine } from './paint/index.ts';
 import { useSequence } from './sequence/index.ts';
 import { titleLayout } from './title/index.ts';
@@ -50,6 +51,7 @@ export function App() {
         onKmChange={setKm}
         price={sane ? prediction.price : null}
         marker={sane && !intro ? { x: prediction.x, y: prediction.y } : null}
+        doc={<DocPage />}
         controls={{
           trainingActive: seq.trainingActive,
           disabled: intro,

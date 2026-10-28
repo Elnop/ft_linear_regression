@@ -38,6 +38,12 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
    - Les droites passent par-dessus les points ; une fois la descente finie, les points sont repeints par-dessus la droite finale pour rester lisibles.
 6. **L'interface devient interactive** : prédiction d'un prix à partir d'un kilométrage, et bouton *Entraîner* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76 : les passages, en jaune, sortent du graphe).
 
+## Documentation intégrée
+
+Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presque pleine largeur présente les fonctions principales de `core/` : `estimatePrice`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`, `cost` / `r2` et `parseDataset`, puis la CLI et l'organisation du projet. Le mur peint reste fixe en arrière-plan.
+
+Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite avec son commentaire (`web/src/docs/source.ts`). La documentation montre donc toujours le code qui tourne.
+
 ## Conformité au bonus
 
 - **Données sur un graphe** : les 24 points sont peints à leurs coordonnées exactes. Les axes (graduations en km et en prix, titres) restent lisibles par-dessus le mur.

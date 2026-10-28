@@ -130,6 +130,13 @@ body {
   white-space: nowrap;
 }
 
+.wu-head {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  gap: 10px;
+}
+
 /* Side panels */
 .wu-aside {
   position: absolute;
@@ -409,6 +416,7 @@ body {
   }
   .wu-flow .wu-chips {
     justify-content: flex-start;
+    flex: 1 1 auto;
   }
   .chip {
     flex: 1 1 0;

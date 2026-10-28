@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { ChartMapping } from '../paint/index.ts';
 import type { TitleLayout } from '../title/index.ts';
 import { ChartAxes } from './ChartAxes.tsx';
@@ -39,6 +40,9 @@ export type WallUIProps = {
   marker: { x: number; y: number } | null; // predicted point in wall pixels
 
   controls: Omit<ControlBarProps, 'diverged' | 'className' | 'style'>;
+
+  // Documentation sheet, scrolling over the fixed wall once the UI is shown.
+  doc?: ReactNode;
 };
 
 const SUBTITLE = 'prix ~ kilométrage · descente de gradient · 24 voitures';
@@ -53,7 +57,19 @@ export function WallUI(p: WallUIProps) {
   const axesVisible = p.axesVisible ?? p.uiVisible;
   const subtitleTop = title.rect.y + title.rect.h + 4;
 
-  const chips = <HeaderChips theta0={p.theta0} theta1={p.theta1} progress={p.progress} />;
+  const chips = (
+    <div className="wu-head">
+      <HeaderChips theta0={p.theta0} theta1={p.theta1} progress={p.progress} />
+      {p.doc && (
+        <button type="button" className="doc-jump glass wu-hit" onClick={scrollToDoc}>
+          DOC
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor">
+            <path d="M11 4h2v12l5-5 1.4 1.4L12 19.8 4.6 12.4 6 11l5 5z" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
   const panels = (
     <>
       <PredictPanel value={p.km} onChange={p.onKmChange} price={p.price} />
@@ -108,6 +124,7 @@ export function WallUI(p: WallUIProps) {
             <Reveal visible={p.uiVisible} delay={0.45} as="footer">
               {bar}
             </Reveal>
+            {p.uiVisible && p.doc}
           </div>
         )}
 
@@ -118,6 +135,17 @@ export function WallUI(p: WallUIProps) {
           style={{ position: 'fixed', right: pad, bottom: wide && p.uiVisible ? Math.round(pad * 0.5) + 86 : pad }}
         />
       </div>
+
+      {/* Wide screens: the page itself scrolls, the sheet starts below the first screen. */}
+      {wide && p.uiVisible && p.doc && (
+        <div className="doc-page" style={{ padding: `0 ${pad}px ${pad}px` }}>
+          {p.doc}
+        </div>
+      )}
     </>
   );
+}
+
+function scrollToDoc() {
+  document.getElementById('doc')?.scrollIntoView({ behavior: 'smooth' });
 }
