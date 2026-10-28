@@ -1,0 +1,19 @@
+{
+  "name": "ft_linear_regression",
+  "private": true,
+  "type": "module",
+  "workspaces": ["web"],
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "train": "node cli/train.ts",
+    "predict": "node cli/predict.ts",
+    "precision": "node cli/precision.ts",
+    "web": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "typecheck": "tsc -p . && tsc -p web"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^7.0.2"
+  }
+}
