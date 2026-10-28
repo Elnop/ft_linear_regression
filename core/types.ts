@@ -1,0 +1,10 @@
+export type Sample = { km: number; price: number };
+
+export type Thetas = { theta0: number; theta1: number };
+
+export type TrainOptions = {
+  learningRate: number;
+  iterations: number;
+};
+
+export type TrainStep = Thetas & { iter: number; cost: number };
