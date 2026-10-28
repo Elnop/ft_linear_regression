@@ -9,7 +9,6 @@ function parseField(field: string, name: string, line: number): number {
   return value;
 }
 
-// Parses the raw text of a `km,price` CSV. Throws on malformed input.
 export function parseDataset(text: string): Sample[] {
   const lines = text.split(/\r?\n/);
   const header = lines[0]?.trim().toLowerCase();

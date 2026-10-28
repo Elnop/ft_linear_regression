@@ -22,8 +22,6 @@ const IDLE: SequenceState = {
 
 const noop = () => () => {};
 
-// Runs the intro on `engine` as soon as it is ready, and exposes its state
-// and actions. The sequence restarts if the engine changes.
 export function useSequence(engine: PaintEngine | null, options: SequenceOptions = {}): Sequence {
   const [ctl, setCtl] = useState<SequenceController | null>(null);
   const drawTitle = useRef(options.drawTitle);

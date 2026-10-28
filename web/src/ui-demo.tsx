@@ -1,5 +1,3 @@
-// Standalone page to check the title and the UI with a mocked state.
-// Query flags: ?phase=interactive (start there), ?tempo=4, ?km=100000, ?diverged=1, ?panel=0
 import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import raw from '../../data.csv?raw';

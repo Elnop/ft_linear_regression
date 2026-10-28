@@ -18,7 +18,6 @@ export function App() {
   const intro = seq.phase !== 'interactive';
   const uiVisible = seq.phase !== 'idle' && seq.phase !== 'title';
 
-  // No usable prediction once the thetas have blown up.
   const kmValue = parseKm(km);
   const prediction = kmValue !== null && !seq.diverged ? seq.predict(kmValue) : null;
   const sane = prediction !== null && Number.isFinite(prediction.price) && Math.abs(prediction.price) < 1e7;

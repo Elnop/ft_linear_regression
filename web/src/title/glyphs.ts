@@ -1,12 +1,9 @@
 import type { Vec2 } from '../paint/index.ts';
 
-// Single-stroke tag letters, in em units: x-height 1, baseline at y = 0,
-// y pointing down (ascenders reach -1.6, descenders +0.6). Each stroke is a
-// list of knots that the hand passes through; they are smoothed into curves.
 export type Glyph = {
   advance: number;
   strokes: Vec2[][];
-  dot?: Vec2; // the dot of an i, sprayed in place
+  dot?: Vec2;
 };
 
 const p = (...xy: number[]): Vec2[] => {
@@ -69,7 +66,6 @@ export const GLYPHS: Record<string, Glyph> = {
   },
 };
 
-// Catmull-Rom through the knots, sampled into a polyline.
 export function smoothStroke(knots: Vec2[], perSpan = 8): Vec2[] {
   if (knots.length < 3) return knots;
   const out: Vec2[] = [];

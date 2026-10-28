@@ -1,9 +1,7 @@
 import { mulberry32 } from './random.ts';
 
-// Per film cell roughness in [0, 1] over the whole wall.
 export type Roughness = { at(x: number, y: number): number };
 
-// Where the wall image sits on the canvas (object-fit: cover), in CSS pixels.
 export function coverRect(imgW: number, imgH: number, w: number, h: number) {
   const s = Math.max(w / imgW, h / imgH);
   return { x: (w - imgW * s) / 2, y: (h - imgH * s) / 2, w: imgW * s, h: imgH * s };
@@ -31,8 +29,6 @@ function boxBlur(src: Float32Array, w: number, h: number, r: number): Float32Arr
   return out;
 }
 
-// Derives roughness from the wall photo: local contrast (pores, form-tie holes,
-// board marks) pins paint, plus a little fine noise for the sub-pixel texture.
 export function computeRoughness(img: HTMLImageElement, cssW: number, cssH: number, scale: number): Roughness {
   const w = Math.max(1, Math.ceil(cssW * scale));
   const h = Math.max(1, Math.ceil(cssH * scale));
@@ -54,7 +50,6 @@ export function computeRoughness(img: HTMLImageElement, cssW: number, cssH: numb
     for (let i = 0; i < w * h; i++) mean += Math.abs(lum[i] - blur[i]);
     mean = mean / (w * h) || 0.01;
     for (let i = 0; i < w * h; i++) {
-      // Dark pits catch paint more than bright bumps.
       const d = (lum[i] - blur[i]) / mean;
       const v = 0.3 * Math.abs(d) + (d < 0 ? 0.2 * -d : 0);
       field[i] = Math.min(1, Math.max(0, 0.22 + v + 0.25 * (rng() - 0.5)));

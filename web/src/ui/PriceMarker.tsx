@@ -2,17 +2,15 @@ import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from './format.ts';
 
 export type PriceMarkerProps = {
-  // Wall pixels of the predicted point, or null to hide the marker.
   at: { x: number; y: number } | null;
   price: number | null;
-  axisY?: number; // bottom of the chart: draws a dotted drop line to it
-  width: number; // wall width, to keep the sticker on screen
+  axisY?: number;
+  width: number;
 };
 
 const STICKER_W = 206;
 const STICKER_H = 112;
 
-// "HELLO MON PRIX EST" name tag pointing at the predicted price on the line.
 export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
   const visible = at !== null && price !== null && Number.isFinite(at.x) && Number.isFinite(at.y);
   const scale = width < 600 ? 0.72 : 1;

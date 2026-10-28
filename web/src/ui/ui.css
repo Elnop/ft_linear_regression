@@ -35,7 +35,6 @@ body {
   border: 0;
 }
 
-/* Layers above the paint canvas (z-index 0). */
 .wu-stickers,
 .wu-axes,
 .wu-marker {
@@ -96,7 +95,6 @@ body {
   text-transform: uppercase;
 }
 
-/* Header */
 .wu-subtitle {
   position: absolute;
   margin: 0;
@@ -137,7 +135,6 @@ body {
   gap: 10px;
 }
 
-/* Side panels */
 .wu-aside {
   position: absolute;
   display: flex;
@@ -228,7 +225,6 @@ body {
   white-space: nowrap;
 }
 
-/* Control bar */
 .wu-bar {
   position: relative;
   display: flex;
@@ -351,7 +347,6 @@ body {
   letter-spacing: 0.14em;
 }
 
-/* Price marker */
 .hello {
   position: absolute;
   width: 206px;
@@ -390,7 +385,6 @@ body {
   white-space: nowrap;
 }
 
-/* Axes */
 .axis-text {
   font-family: var(--marker);
   fill: var(--ink);
@@ -400,7 +394,6 @@ body {
   stroke-linejoin: round;
 }
 
-/* Narrow screens: the UI scrolls below the chart, over the fixed wall. */
 @media (max-width: 1023px) {
   .wu-root {
     overflow-y: auto;

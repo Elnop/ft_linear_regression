@@ -3,33 +3,28 @@ import type { Rect, Vec2 } from '../paint/types.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
 
 export const TITLE = 'ft_linear_regression';
-const ASCENT = 1.72; // em above the baseline, ascenders included
-const DESCENT = 0.66; // em below it (g, _)
+const ASCENT = 1.72;
+const DESCENT = 0.66;
 const LINE_GAP = 0.12;
-const SLANT = 0.26; // shear: x moves right by SLANT × height
-const TILT = (-2.2 * Math.PI) / 180; // the whole word climbs slightly
-export const STROKE = 0.2; // stroke width in em
-const TRACKING = 0.14; // extra space between letters, in em
+const SLANT = 0.26;
+const TILT = (-2.2 * Math.PI) / 180;
+export const STROKE = 0.2;
+const TRACKING = 0.14;
 
 export type TitleLayout = {
-  rect: Rect; // where the letters are, stroke width included (drips run below)
-  em: number; // x-height in px
+  rect: Rect;
+  em: number;
   lines: { text: string; x: number; baseline: number }[];
 };
 
-// Space kept under the title for the subtitle and the price axis title.
 export const TITLE_GAP_BELOW = 60;
 
-// Where the title goes for a wall of this size: top-left, above the chart,
-// split in two lines on narrow screens.
 export function titleLayout(width: number, height: number): TitleLayout {
   const pad = Math.min(44, Math.max(16, width * 0.03));
   const top = Math.max(14, Math.min(28, height * 0.025));
   const texts = width < 700 ? ['ft_linear_', 'regression'] : [TITLE];
-  // On wide screens the θ chips (≈ 400 px) share the top row.
   const maxW = width >= 1024 ? Math.min(width * 0.6, 920, width - 2 * pad - 420) : width - 2 * pad;
   const maxH = chartMapping(width, height).area.y - top - TITLE_GAP_BELOW;
-  // Measure the jitter-free strokes at 1 px/em, then scale to fit.
   const unit = place(texts, 1, 0, 0);
   const em = Math.max(8, Math.min(52, maxW / unit.w, maxH / unit.h));
   const sized = place(texts, em, 0, 0);
@@ -37,8 +32,6 @@ export function titleLayout(width: number, height: number): TitleLayout {
   return { rect: { x: pad, y: top, w: sized.w, h: sized.h }, em, lines: layout.lines };
 }
 
-// Lines at the given size and offset, with the bounding box of their strokes
-// (jitter-free, stroke width and a jitter margin included).
 function place(texts: string[], em: number, dx: number, dy: number) {
   const lines = texts.map((text, k) => ({ text, x: dx, baseline: dy + k * (ASCENT + DESCENT + LINE_GAP) * em }));
   const layout = { rect: { x: 0, y: 0, w: 0, h: 0 }, em, lines };
@@ -55,10 +48,8 @@ function place(texts: string[], em: number, dx: number, dy: number) {
   return { lines, x: x0 - m - dx, y: y0 - m - dy, w: x1 - x0 + 2 * m, h: y1 - y0 + 2 * m };
 }
 
-// thickness: paint left on the wall (≈ 1 opaque, more runs into drips).
 export type Stroke = { points: Vec2[]; thickness: number; dot: boolean; letterStart: boolean };
 
-// Lays out every stroke in wall pixels, with a little hand jitter per letter.
 export function titleStrokes(layout: TitleLayout, rng: () => number): Stroke[] {
   const { em } = layout;
   const out: Stroke[] = [];
@@ -77,8 +68,6 @@ export function titleStrokes(layout: TitleLayout, rng: () => number): Stroke[] {
         return { x: line.x + (lx * cos - ly * sin) * em, y: line.baseline + (lx * sin + ly * cos) * em };
       };
       g.strokes.forEach((knots, k) => {
-        // Drips under a stem read as a descender (i → p), so only the
-        // underscores and the very last stroke are overloaded.
         out.push({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false, letterStart: k === 0 });
       });
       if (g.dot) out.push({ points: [place(g.dot)], thickness: 2, dot: true, letterStart: false });

@@ -1,4 +1,3 @@
-// Loads model.json and a km,price CSV, prints how well the trained line fits the data.
 import { parseArgs } from 'node:util';
 import { mae, r2, rmse } from '../core/metrics.ts';
 import { fail, loadDataset, readModel } from './model.ts';

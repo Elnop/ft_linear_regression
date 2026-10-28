@@ -2,11 +2,11 @@ import { useId, type CSSProperties } from 'react';
 
 export type ControlBarProps = {
   trainingActive: boolean;
-  disabled?: boolean; // e.g. during the intro
+  disabled?: boolean;
   onTrain: () => void;
   onReset: () => void;
   paused?: boolean;
-  onPause?: () => void; // the pause button is hidden without it
+  onPause?: () => void;
   learningRate: number;
   onLearningRateChange: (lr: number) => void;
   speed: number;
@@ -17,7 +17,6 @@ export type ControlBarProps = {
   style?: CSSProperties;
 };
 
-// The descent diverges above lr ≈ 1.76 on this dataset (see docs/algorithme.md § 4).
 export const willDiverge = (learningRate: number) => learningRate > 1.75;
 
 export function ControlBar(p: ControlBarProps) {

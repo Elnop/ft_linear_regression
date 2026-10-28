@@ -4,12 +4,9 @@ import { PaintEngine } from './engine.ts';
 
 type Props = {
   ref?: Ref<PaintEngine | null>;
-  // Called once the wall is loaded and the engine accepts layers.
   onReady?: (engine: PaintEngine) => void;
 };
 
-// Full-viewport painted wall, meant to sit behind the UI.
-// The ref exposes the PaintEngine once it exists.
 export function PaintWall({ ref, onReady }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<PaintEngine | null>(null);

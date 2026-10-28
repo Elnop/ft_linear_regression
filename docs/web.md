@@ -42,7 +42,7 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
 
 Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presque pleine largeur présente les fonctions principales de `core/` : `estimatePrice`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`, `cost` / `r2` et `parseDataset`, puis la CLI et l'organisation du projet. Le mur peint reste fixe en arrière-plan.
 
-Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite avec son commentaire (`web/src/docs/source.ts`). La documentation montre donc toujours le code qui tourne.
+Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/docs/source.ts`). La documentation montre donc toujours le code qui tourne.
 
 ## Conformité au bonus
 

@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import type { ChartMapping } from '../paint/index.ts';
 
 export type ChartAxesProps = {
-  chart: ChartMapping; // the same mapping the paint uses (see chartFor)
+  chart: ChartMapping;
   width: number;
   height: number;
   visible?: boolean;
@@ -20,8 +20,6 @@ const range = (from: number, to: number, step: number) => {
 
 const short = (v: number) => (v === 0 ? '0' : `${Math.round(v / 1000)}k`);
 
-// Chalk axes with tick labels, drawn over the wall so the painted data
-// reads as a real graph.
 export function ChartAxes({ chart, width, height, visible = true, kmStep = 50_000, priceStep = 1_000 }: ChartAxesProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.h;
@@ -70,7 +68,6 @@ export function ChartAxes({ chart, width, height, visible = true, kmStep = 50_00
             {short(p)}
           </text>
         ))}
-        {/* Inside the plot, bottom-left: that corner never holds data (price drops with km). */}
         <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fs + 2}>
           kilométrage (km) →
         </text>

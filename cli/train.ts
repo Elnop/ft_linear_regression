@@ -1,4 +1,3 @@
-// Reads a km,price CSV, runs trainSteps to completion, writes model.json.
 import { writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { trainSteps } from '../core/train.ts';

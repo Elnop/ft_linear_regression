@@ -2,39 +2,33 @@ import type { PaintLayer } from './layer.ts';
 import { gaussian, mulberry32, noise1D, randomSeed, type Rng } from './random.ts';
 import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
-// A nozzle job advances with the clock and returns true once finished.
 export type Job = { update(dt: number): boolean };
 
-const NOMINAL_SPEED = 520; // px/s at which a path lays exactly `load`
-const DROPLET = 0.05; // mean mass of a core droplet (thickness × px²)
-const SPRAY_SIGMA = 3.6; // stroke width ≈ SPRAY_SIGMA × gaussian sigma
-const MIST_CLUMPS = 0.12; // overspray clumps per core droplet
+const NOMINAL_SPEED = 520;
+const DROPLET = 0.05;
+const SPRAY_SIGMA = 3.6;
+const MIST_CLUMPS = 0.12;
 const SPLATS_PER_SECOND = 2.2;
-const MIST_PER_MASS = 255 / 1.6; // mist units per unit of mass on one pixel
+const MIST_PER_MASS = 255 / 1.6;
 
-// One overspray droplet: mostly sub-pixel, now and then a visible round dot.
 function droplet(layer: PaintLayer, rng: Rng, x: number, y: number): void {
   const big = rng() < 0.07;
   const radius = big ? 0.8 + rng() * 0.8 : 0.3 + rng() * 0.45;
   layer.depositMist(x, y, big ? 140 + rng() * 115 : 40 + rng() * 80, radius);
 }
 
-// Sprays `mass` of paint around (x, y): a dense gaussian core of droplets,
-// a wider overspray of tiny droplets landing in clumps, now and then a splat.
 function spray(layer: PaintLayer, rng: Rng, x: number, y: number, sigma: number, mass: number, dt: number): void {
   const n = Math.floor(mass / DROPLET + rng());
   for (let k = 0; k < n; k++) {
     const dx = gaussian(rng) * sigma;
     const dy = gaussian(rng) * sigma;
     const m = DROPLET * Math.exp(0.6 * gaussian(rng) - 0.18);
-    // The sparse fringe never runs: keep it crisp on the fine mist field.
     const r = Math.sqrt(dx * dx + dy * dy) / sigma;
     if (r > 1.1 && rng() < (r - 1.1) * 1.4) layer.depositMist(x + dx, y + dy, m * MIST_PER_MASS, 0.4 + 0.3 * rng());
     else layer.depositFilm(x + dx, y + dy, m);
   }
   const clumps = Math.floor(n * MIST_CLUMPS + rng());
   for (let k = 0; k < clumps; k++) {
-    // Clumps fall off with distance; strays far out are rare.
     const spread = sigma * (rng() < 0.06 ? 3.4 : 1.8);
     const cx = x + gaussian(rng) * spread;
     const cy = y + gaussian(rng) * spread;
@@ -82,10 +76,6 @@ function samplePath(points: Vec2[]): Sampled {
 
 const smooth = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 
-// The hand moves along the path: eases in and out, hesitates now and then
-// (more often on long strokes), drifts off the ideal line by a pixel or two;
-// the can pressure and its distance to the wall breathe. The stroke opens
-// on a blob; it ends either on a blob or tapering off as the finger lifts.
 export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions): Job {
   const rng = mulberry32(o.seed ?? randomSeed());
   const path = samplePath(points);
@@ -103,7 +93,6 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
   const wobble = [noise1D(rng), noise1D(rng)];
   const pace = noise1D(rng);
   const ramp = Math.min(90, L * 0.12);
-  // Hesitations spread along the stroke, one per ~380 px on average.
   const count = o.hesitations ?? Math.max(1, Math.round((L / 380) * (0.7 + 0.6 * rng())));
   const stops = Array.from({ length: count }, (_, k) => ({
     s: L * (0.1 + (0.8 * (k + 0.2 + 0.6 * rng())) / count),
@@ -142,7 +131,6 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
         wait -= t;
         dt -= t;
       }
-      // Sub-steps of at most 1 px keep the deposit continuous.
       while (dt > 1e-6 && s < L) {
         const v = speedAt(s);
         const h = Math.min(dt, 1 / v);
@@ -160,8 +148,6 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
   };
 }
 
-// A short burst with the nozzle held still: the hand trembles and the jet
-// sputters, so the core is dense with an irregular edge, ringed by speckle.
 export function dotJob(layer: PaintLayer, x: number, y: number, o: SprayDotOptions): Job {
   const rng = mulberry32(o.seed ?? randomSeed());
   const duration = (o.duration ?? 180) / 1000;

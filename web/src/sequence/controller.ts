@@ -16,24 +16,19 @@ import {
 import { COLORS, eased, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
 import type { CostPoint, DrawTitle, Metrics, Prediction, SequenceState } from './types.ts';
 
-const NOMINAL_SPEED = 520; // px/s at which a path lays exactly its `load`
-// Room kept below a stroke for its drips: light strokes barely run.
+const NOMINAL_SPEED = 520;
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
 type LineKind = 'line' | 'finalLine' | 'diverge';
 
-// A painted line of the current fan. `layer` is null when it fell outside the clip.
 type Stroke = { thetas: Thetas; kind: LineKind; reverse: boolean; layer: PaintLayer | null };
 
 type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };
 
 class Cancelled extends Error {}
 
-// The tag of the title, hurried along with the sequence when skipped.
 const defaultTitle: DrawTitle = (engine, ctx) => tagTitle(engine, { tempo: ctx.timeScale });
 
-// Drives the paint engine through the intro, then the training replays.
-// Framework-agnostic: subscribe() + getState() plug into useSyncExternalStore.
 export class SequenceController {
   private engine: PaintEngine;
   private drawTitle: DrawTitle;
@@ -46,9 +41,9 @@ export class SequenceController {
   private chart: ChartMapping;
 
   private order = shuffled(DATA.length);
-  private training: Training | null = null; // plan of the current fan (intro or train())
+  private training: Training | null = null;
   private points: PaintLayer[] = [];
-  private topPoints: PaintLayer[] = []; // points sprayed again over the finished lines
+  private topPoints: PaintLayer[] = [];
   private fan: Stroke[] = [];
   private unResize: () => void;
   private resizeTimer = 0;
@@ -112,7 +107,7 @@ export class SequenceController {
   train = async (options: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     const o: TrainOptions = { ...DEFAULT_TRAIN, ...options };
-    const plan = runTraining(DATA, o, true); // throws on invalid options
+    const plan = runTraining(DATA, o, true);
     const gen = this.restart();
     this.training = plan;
     this.set({ trainingActive: true, trainOptions: o, diverged: false, divergedAt: null, costHistory: [] });
@@ -126,14 +121,11 @@ export class SequenceController {
     return { price, x: this.chart.x(km), y: this.chart.y(price) };
   };
 
-  // --- plumbing ---
-
   private set(patch: Partial<SequenceState>): void {
     this.state = { ...this.state, ...patch };
     for (const l of this.listeners) l();
   }
 
-  // Invalidates whatever is running; returns the new generation.
   private restart(): number {
     this.abort.abort();
     this.abort = new AbortController();
@@ -165,7 +157,6 @@ export class SequenceController {
     return v;
   }
 
-  // Sleeps `ms` of sequence time; skip() shortens what remains.
   private async sleep(gen: number, ms: number): Promise<void> {
     let left = ms;
     while (left > 0) {
@@ -176,9 +167,6 @@ export class SequenceController {
     }
   }
 
-  // --- painting ---
-
-  // Layer order: points (z 0) < lines (z 1) < points sprayed again at the end (z 2).
   private sprayPoint(index: number, duration: number, top = false): Promise<void> {
     const s = DATA[index];
     const p = this.chart.point(s.km, s.price);
@@ -201,7 +189,6 @@ export class SequenceController {
     return { x: -20, y: -20, w: this.engine.width + 40, h: this.engine.height + 40 };
   }
 
-  // Paints one line over `duration` ms and pushes it on the fan.
   private sprayLine(thetas: Thetas, kind: LineKind, duration: number): Promise<void> {
     const reverse = this.fan.length % 2 === 1;
     const stroke: Stroke = { thetas, kind, reverse, layer: null };
@@ -219,22 +206,19 @@ export class SequenceController {
     const y1 = Math.min(this.engine.height, Math.max(a.y, b.y) + pad + DRIP_ROOM[kind]);
     stroke.layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } });
 
-    // Speed and load go together so the thickness does not depend on the pace.
     const length = Math.hypot(b.x - a.x, b.y - a.y);
     const seconds = Math.max(0.05, duration / 1000) / this.scale;
-    const speed = (length / seconds) * 1.2; // the hand eases in and out
+    const speed = (length / seconds) * 1.2;
     return this.engine.sprayPath(stroke.layer, [a, b], {
       speed,
       width: style.width,
       load: (style.thickness * speed) / NOMINAL_SPEED,
-      dwell: (style.dwell * NOMINAL_SPEED) / speed, // same blob whatever the pace
+      dwell: (style.dwell * NOMINAL_SPEED) / speed,
       hesitations: style.hesitations,
       end: kind === 'finalLine' ? 'blob' : 'taper',
     });
   }
 
-  // Fades every painted line but the newest to its age opacity. Lines that
-  // fell outside the clip do not count, so the last visible one stays full.
   private fadeFan(instant = false): void {
     const painted = this.fan.flatMap((s) => (s.layer ? [s.layer] : []));
     painted.forEach((layer, i) => {
@@ -254,8 +238,6 @@ export class SequenceController {
     });
   }
 
-  // --- intro ---
-
   private async playIntro(gen: number): Promise<void> {
     const plan = runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
@@ -272,7 +254,6 @@ export class SequenceController {
     this.set({ phase: 'ui-in' });
     await this.sleep(gen, TIMING.uiIn);
 
-    // The data alone first: no training yet.
     this.set({ phase: 'points' });
     for (let i = 0; i < this.order.length; i++) {
       await this.wait(gen, this.sprayPoint(this.order[i], TIMING.dot));
@@ -286,8 +267,6 @@ export class SequenceController {
     this.set({ phase: 'interactive' });
   }
 
-  // --- training ---
-
   private stepOf(plan: Training, j: number): Step {
     const s = plan.steps[j];
     return {
@@ -299,8 +278,6 @@ export class SequenceController {
   }
 
   private async playTraining(gen: number, plan: Training): Promise<void> {
-    // The old fan goes away even if this training is interrupted.
-    // The re-sprayed points go too: the new lines must pass over the data again.
     const old = [...this.fan.flatMap((s) => (s.layer ? [s.layer] : [])), ...this.topPoints];
     for (const layer of old) {
       this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale).then(() => this.engine.removeLayer(layer));
@@ -313,7 +290,6 @@ export class SequenceController {
     this.set({ trainingActive: false });
   }
 
-  // One spray pass per kept iteration; older passes fade to grey.
   private async playPasses(gen: number, plan: Training): Promise<void> {
     const last = plan.steps.length - 1;
     for (let j = 0; j <= last; j++) {
@@ -328,14 +304,11 @@ export class SequenceController {
     }
     this.set({ diverged: plan.diverged, divergedAt: plan.divergedAt });
 
-    // The lines covered the data: spray the points again on top.
     for (const i of this.order) {
       await this.wait(gen, this.sprayPoint(i, TIMING.redot, true));
       await this.sleep(gen, TIMING.redotGap);
     }
   }
-
-  // --- resize: repaint from scratch, at the final state of what was running ---
 
   private repaint(): void {
     const gen = this.restart();

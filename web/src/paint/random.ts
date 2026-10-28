@@ -1,6 +1,5 @@
 export type Rng = () => number;
 
-// Small seeded PRNG so a given seed always paints the same stroke.
 export function mulberry32(seed: number): Rng {
   let a = seed >>> 0;
   return () => {
@@ -16,14 +15,12 @@ export function randomSeed(): number {
   return (Math.random() * 2 ** 32) >>> 0;
 }
 
-// Standard normal sample (Box-Muller).
 export function gaussian(rng: Rng): number {
   const u = 1 - rng();
   const v = rng();
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-// Smooth 1D value noise in [-1, 1], one random knot per unit.
 export function noise1D(rng: Rng, knots = 64): (x: number) => number {
   const values = Array.from({ length: knots }, () => rng() * 2 - 1);
   return (x: number) => {
@@ -36,7 +33,6 @@ export function noise1D(rng: Rng, knots = 64): (x: number) => number {
   };
 }
 
-// Smooth 2D value noise in [0, 1], one random knot per unit.
 export function noise2D(seed: number): (x: number, y: number) => number {
   const hash = (i: number, j: number) => {
     let h = Math.imul(i, 374761393) + Math.imul(j, 668265263) + Math.imul(seed, 982451653);

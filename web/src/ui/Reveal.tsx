@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react';
 
 type Props = {
   visible: boolean;
-  delay?: number; // seconds, only when appearing
+  delay?: number;
   from?: { x?: number; y?: number };
   className?: string;
   style?: CSSProperties;
@@ -12,7 +12,6 @@ type Props = {
   children: ReactNode;
 };
 
-// Fades and slides a block in; hidden blocks are inert and out of the a11y tree.
 export function Reveal({ visible, delay = 0, from = { y: 14 }, className, style, label, as = 'div', children }: Props) {
   const Tag = motion[as];
   return (

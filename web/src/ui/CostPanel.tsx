@@ -11,7 +11,6 @@ const W = 280;
 const H = 76;
 const PAD = 6;
 
-// Cost on a log scale, one vertex per recorded step.
 function sparkline(history: CostPoint[]): string {
   const pts = history.filter((p) => Number.isFinite(p.cost) && p.cost > 0);
   if (pts.length === 0) return '';

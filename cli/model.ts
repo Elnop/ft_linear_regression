@@ -2,7 +2,6 @@ import { readFileSync } from 'node:fs';
 import { parseDataset } from '../core/csv.ts';
 import type { Sample, Thetas } from '../core/types.ts';
 
-// model.json lives at the project root, whatever the current directory is.
 export const MODEL_PATH = new URL('../model.json', import.meta.url);
 
 export function fail(message: string): never {
@@ -16,7 +15,6 @@ export function isThetas(value: unknown): value is Thetas {
   return Number.isFinite(theta0) && Number.isFinite(theta1);
 }
 
-// Returns null when no training has been run yet; fails on an unreadable or corrupted file.
 export function readModel(): Thetas | null {
   let text: string;
   try {

@@ -17,11 +17,11 @@ import './ui.css';
 export type WallUIProps = {
   width: number;
   height: number;
-  chart: ChartMapping; // chartFor(width, height)
-  title: TitleLayout; // titleLayout(width, height)
+  chart: ChartMapping;
+  title: TitleLayout;
 
-  uiVisible: boolean; // fades the panels in
-  axesVisible?: boolean; // defaults to uiVisible
+  uiVisible: boolean;
+  axesVisible?: boolean;
   showSkip: boolean;
   onSkip: () => void;
 
@@ -37,18 +37,15 @@ export type WallUIProps = {
   km: string;
   onKmChange: (km: string) => void;
   price: number | null;
-  marker: { x: number; y: number } | null; // predicted point in wall pixels
+  marker: { x: number; y: number } | null;
 
   controls: Omit<ControlBarProps, 'diverged' | 'className' | 'style'>;
 
-  // Documentation sheet, scrolling over the fixed wall once the UI is shown.
   doc?: ReactNode;
 };
 
 const SUBTITLE = 'prix ~ kilométrage · descente de gradient · 24 voitures';
 
-// Everything drawn over the paint canvas: stickers, axes, price marker and
-// the glass panels. Wall pixels equal viewport pixels (the canvas is fixed).
 export function WallUI(p: WallUIProps) {
   const { width, height, chart, title } = p;
   const wide = width >= WIDE;
@@ -128,7 +125,6 @@ export function WallUI(p: WallUIProps) {
           </div>
         )}
 
-        {/* Above the control bar once it is shown. */}
         <SkipButton
           visible={p.showSkip}
           onSkip={p.onSkip}
@@ -136,7 +132,6 @@ export function WallUI(p: WallUIProps) {
         />
       </div>
 
-      {/* Wide screens: the page itself scrolls, the sheet starts below the first screen. */}
       {wide && p.uiVisible && p.doc && (
         <div className="doc-page" style={{ padding: `0 ${pad}px ${pad}px` }}>
           {p.doc}

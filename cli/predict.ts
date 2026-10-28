@@ -1,4 +1,3 @@
-// Loads model.json (thetas = 0 if missing), prompts for a mileage, prints the estimated price.
 import { createInterface } from 'node:readline';
 import { estimatePrice } from '../core/hypothesis.ts';
 import type { Thetas } from '../core/types.ts';
@@ -8,7 +7,6 @@ function loadThetas(): Thetas {
   return readModel() ?? { theta0: 0, theta1: 0 };
 }
 
-// Resolves with the line typed, or null if input ends (Ctrl+D) before an answer.
 function ask(question: string): Promise<string | null> {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   return new Promise((resolve) => {

@@ -2,9 +2,9 @@ import { useId } from 'react';
 import { formatNumber, parseKm } from './format.ts';
 
 export type PredictPanelProps = {
-  value: string; // raw text of the field (controlled)
+  value: string;
   onChange: (value: string) => void;
-  price: number | null; // estimate for the current valid value
+  price: number | null;
 };
 
 export function PredictPanel({ value, onChange, price }: PredictPanelProps) {

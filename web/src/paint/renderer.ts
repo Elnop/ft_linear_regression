@@ -11,8 +11,8 @@ export type Renderer = {
 
 const QUAD_VS = `#version 300 es
 in vec2 aPos;
-uniform vec4 uRect;   // x, y, w, h in CSS px
-uniform vec2 uView;   // canvas size in CSS px
+uniform vec4 uRect;
+uniform vec2 uView;
 out vec2 vUv;
 out vec2 vScreen;
 void main() {
@@ -27,14 +27,13 @@ precision highp float;
 in vec2 vUv;
 in vec2 vScreen;
 uniform sampler2D uWall;
-uniform vec4 uCover;  // wall image rect in screen uv
+uniform vec4 uCover;
 out vec4 outColor;
 void main() {
   vec2 uv = (vScreen - uCover.xy) / uCover.zw;
   outColor = vec4(texture(uWall, uv).rgb, 1.0);
 }`;
 
-// Paint over the wall: coverage from thickness, relief from its gradient.
 const PAINT_FS = `#version 300 es
 precision highp float;
 in vec2 vUv;
@@ -62,8 +61,6 @@ float vnoise(vec2 p) {
 }
 float luma(vec3 c) { return dot(c, vec3(0.3, 0.59, 0.11)); }
 
-// Cubic B-spline sampling from 4 bilinear taps: the coarse film reads as
-// smooth liquid instead of showing its cells.
 vec4 cubicWeights(float v) {
   vec4 n = vec4(1.0, 2.0, 3.0, 4.0) - v;
   vec4 s = n * n * n;
@@ -94,16 +91,12 @@ void main() {
   vec2 px = 1.0 / vec2(textureSize(uFilm, 0));
   float film = filmAt(vUv);
   float mist = texture(uMist, vUv).r * 1.6;
-  // Paint that has flowed is smooth liquid with a crisp contact line;
-  // the rest is sprayed paint: grainy and speckled at its edge.
   float pool = cubic(uPool, vUv);
   float spray = max(film - pool, 0.0);
   vec2 e = px * 0.5;
   vec2 grad = vec2(cubic(uPool, vUv + vec2(e.x, 0)) - cubic(uPool, vUv - vec2(e.x, 0)),
                    cubic(uPool, vUv + vec2(0, e.y)) - cubic(uPool, vUv - vec2(0, e.y)));
 
-  // The fringe of the spray breaks into droplets: dither its coverage
-  // against fine noise instead of fading it (which reads as a glow).
   vec2 sp = vScreen * uView;
   float n = vnoise(sp * 1.7) * 0.6 + vnoise(sp * 3.9) * 0.4;
   float c = 1.0 - exp(-3.6 * spray);
@@ -119,20 +112,16 @@ void main() {
   vec3 wallBlur = textureLod(uWall, wuv, 4.5).rgb;
   float detail = clamp(luma(wall) / max(luma(wallBlur), 0.02), 0.55, 1.4);
 
-  // Thicker paint is a touch denser in colour.
   float thick = max(smoothstep(0.9, 3.2, film), 0.6 * liquid);
   vec3 col = mix(uColor, uColor * uColor, thick * 0.3);
-  // Thin paint follows the concrete's pores; pooled paint fills them.
   col *= mix(detail, 1.0, 0.35 + 0.65 * thick);
 
-  // Dried runs are nearly flat: a little relief and sheen on beads only.
   vec3 nrm = normalize(vec3(-grad * 0.6 * bead, 1.0));
   vec3 l = normalize(vec3(-0.45, -0.65, 0.75));
   col *= clamp(1.0 + 0.4 * (dot(nrm, l) - l.z), 0.9, 1.08);
   vec3 hv = normalize(l + vec3(0, 0, 1));
   float spec = pow(max(dot(nrm, hv), 0.0), 90.0) * uGloss * bead * 0.25;
 
-  // Faint shadow under heavy beads.
   float shadow = smoothstep(1.4, 3.5, cubic(uPool, vUv - px * vec2(0.15, 0.3)));
   float sa = shadow * 0.12 * (1.0 - a);
   outColor = vec4((col + spec) * a, a + sa) * uOpacity;
@@ -188,7 +177,6 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
     return tex;
   };
 
-  // Uploads only the part of each grid that changed since the last frame.
   const sync = (L: PaintLayer) => {
     let g = gpu.get(L.id);
     if (!g) {

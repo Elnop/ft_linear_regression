@@ -2,11 +2,9 @@ import type { Rect, Rgb } from './types.ts';
 import type { Roughness } from './roughness.ts';
 import { mulberry32, noise2D } from './random.ts';
 
-// Film grid resolution relative to CSS pixels (the flow runs on it).
 export const FILM_SCALE = 0.25;
 const CELL = 1 / FILM_SCALE;
 
-// Paint the wall holds without running, and extra excess needed to wet a dry cell.
 const RESIDUAL = 0.85;
 const PIN = 0.55;
 
@@ -34,16 +32,13 @@ export function resetRect(r: CellRect): void {
 
 let nextId = 1;
 
-// One painted element: a thickness field that flows (film, half resolution)
-// plus a static full resolution field for the fine overspray mist.
 export class PaintLayer {
   readonly id = nextId++;
   readonly bounds: Rect;
   readonly color: Rgb;
   opacity: number;
-  gray = 0; // 0: full colour, 1: faded to a neutral grey of the same paint
+  gray = 0;
 
-  // Colour to draw: the paint colour drifting to grey as the layer fades.
   shownColor(): Rgb {
     const g = 0.5;
     const k = this.gray;
@@ -52,13 +47,13 @@ export class PaintLayer {
 
   readonly fw: number;
   readonly fh: number;
-  readonly film: Float32Array; // paint thickness
-  readonly wetMass: Float32Array; // thickness × mobility (1 fresh, 0 dry)
-  readonly pooled: Float32Array; // part of the thickness that has flowed (smooth liquid)
+  readonly film: Float32Array;
+  readonly wetMass: Float32Array;
+  readonly pooled: Float32Array;
   readonly residual: Float32Array;
   readonly pin: Float32Array;
   readonly rough: Float32Array;
-  readonly reached: Uint8Array; // dry cells a run has flowed into
+  readonly reached: Uint8Array;
   readonly dFilm: Float32Array;
   readonly dWet: Float32Array;
   readonly dPooled: Float32Array;
@@ -67,7 +62,6 @@ export class PaintLayer {
   readonly mh: number;
   readonly mist: Uint8Array;
 
-  // Cells that may still move, and regions to upload to the GPU.
   readonly active = emptyRect();
   readonly filmDirty = emptyRect();
   readonly mistDirty = emptyRect();
@@ -97,8 +91,6 @@ export class PaintLayer {
     this.mh = this.bounds.h;
     this.mist = new Uint8Array(this.mw * this.mh);
 
-    // Wall roughness sets where paint pins: rough spots hold more and resist wetting.
-    // Patchy noise on top: wall porosity varies over a few millimetres.
     const rng = mulberry32(this.id * 7919);
     const patch = noise2D(this.id);
     const ox = x / CELL;
@@ -115,7 +107,6 @@ export class PaintLayer {
     }
   }
 
-  // Adds `mass` (thickness × px²) of fresh paint at a CSS pixel position, bilinearly.
   depositFilm(px: number, py: number, mass: number): void {
     const fx = (px - this.bounds.x) / CELL - 0.5;
     const fy = (py - this.bounds.y) / CELL - 0.5;
@@ -142,7 +133,6 @@ export class PaintLayer {
     grow(this.filmDirty, ix, iy, ix + 1, iy + 1);
   }
 
-  // Heavier droplet: a small dome of paint, radius in px.
   depositSplat(px: number, py: number, radius: number, mass: number): void {
     const r = radius / CELL;
     const cx = (px - this.bounds.x) / CELL - 0.5;
@@ -174,8 +164,6 @@ export class PaintLayer {
     grow(this.filmDirty, x0, y0, x1, y1);
   }
 
-  // Fine overspray droplet on the full resolution mist field (does not flow):
-  // an antialiased disc, `amount` (0-255) at its centre, radius in px.
   depositMist(px: number, py: number, amount: number, radius: number): void {
     const cx = px - this.bounds.x;
     const cy = py - this.bounds.y;
@@ -185,7 +173,6 @@ export class PaintLayer {
     const x1 = Math.min(this.mw - 1, Math.floor(cx + r + 0.5));
     const y1 = Math.min(this.mh - 1, Math.floor(cy + r + 0.5));
     if (x0 > x1 || y0 > y1) return;
-    // Sub-pixel droplets keep their mass but spread it over their pixel footprint.
     const a = amount * Math.min(1, radius / 0.5) ** 2;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {

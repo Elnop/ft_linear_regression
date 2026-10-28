@@ -1,6 +1,5 @@
 import type { Sample, Thetas } from './types.ts';
 
-// Min-max scaling: maps [min, max] to [0, 1].
 export type Scale = { min: number; max: number };
 
 export function computeScale(values: number[]): Scale {
@@ -16,9 +15,6 @@ export function normalizeSamples(data: Sample[], scale: Scale): Sample[] {
   return data.map(({ km, price }) => ({ km: (km - scale.min) / range, price }));
 }
 
-// Converts thetas learned on normalized mileage back to raw mileage.
-//   price = θ0n + θ1n * (km - min) / range
-//         = (θ0n - θ1n * min / range) + (θ1n / range) * km
 export function denormalizeThetas(thetas: Thetas, scale: Scale): Thetas {
   const range = scale.max - scale.min;
   return {

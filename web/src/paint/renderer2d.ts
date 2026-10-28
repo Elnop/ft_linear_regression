@@ -2,8 +2,6 @@ import { FILM_SCALE, isEmpty, resetRect, type PaintLayer } from './layer.ts';
 import type { Renderer } from './renderer.ts';
 import { coverRect } from './roughness.ts';
 
-// Fallback without WebGL: flat coverage, no relief. Each layer keeps an
-// offscreen canvas refreshed where its grids changed.
 export function createCanvasRenderer(canvas: HTMLCanvasElement): Renderer {
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Canvas 2D unavailable');

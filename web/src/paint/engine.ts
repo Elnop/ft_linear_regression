@@ -6,14 +6,12 @@ import { createCanvasRenderer } from './renderer2d.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
 import { hexToRgb, type LayerOptions, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
 
-const FLOW_STEP = 1 / 120; // longest flow substep, in seconds
+const FLOW_STEP = 1 / 120;
 const MAX_DT = 1 / 10;
 
 type Running = { job: Job; done: () => void };
 type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; t: number; duration: number; done: () => void };
 
-// Owns the wall canvas, the paint layers and the animation loop.
-// Coordinates are CSS pixels of the canvas. Wait for `ready` before painting.
 export class PaintEngine {
   readonly canvas: HTMLCanvasElement;
   readonly ready: Promise<void>;
@@ -88,8 +86,6 @@ export class PaintEngine {
     this.wake();
   }
 
-  // Removes every layer. Sprays in progress are dropped and their promises
-  // never settle, so a sequence awaiting them simply stops.
   clear(): void {
     for (const l of this.layers) this.renderer.release(l);
     this.layers = [];
@@ -98,17 +94,14 @@ export class PaintEngine {
     this.wake();
   }
 
-  // Sprays along a polyline; resolves when the nozzle reaches the end.
   sprayPath(layer: PaintLayer, points: Vec2[], o: SprayPathOptions = {}): Promise<void> {
     return this.run(pathJob(layer, points, o));
   }
 
-  // Sprays in place; resolves after `duration`.
   sprayDot(layer: PaintLayer, x: number, y: number, o: SprayDotOptions = {}): Promise<void> {
     return this.run(dotJob(layer, x, y, o));
   }
 
-  // `gray` (0–1) drains the colour towards grey; it keeps its value when omitted.
   setOpacity(layer: PaintLayer, opacity: number, gray = layer.gray): void {
     layer.opacity = opacity;
     layer.gray = gray;
@@ -123,7 +116,6 @@ export class PaintEngine {
     });
   }
 
-  // Resolves once the paint of `layer` (or of every layer) has stopped running.
   whenDry(layer?: PaintLayer): Promise<void> {
     return new Promise((done) => {
       this.dryWaiters.push({ layer: layer ?? null, done });
@@ -131,7 +123,6 @@ export class PaintEngine {
     });
   }
 
-  // Called after the canvas changed size (layers keep their pixel positions).
   onResize(cb: () => void): () => void {
     this.resizeListeners.add(cb);
     return () => this.resizeListeners.delete(cb);
@@ -162,7 +153,7 @@ export class PaintEngine {
 
   private wake(): void {
     this.needsDraw = true;
-    if (this.frame !== 0) return; // already scheduled, or destroyed (-1)
+    if (this.frame !== 0) return;
     this.last = performance.now();
     this.frame = requestAnimationFrame(this.tick);
   }
