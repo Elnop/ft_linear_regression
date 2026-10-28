@@ -32,7 +32,7 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
    - Avec θ0 = θ1 = 0, le prix estimé vaut 0 : les premières droites sont sous le graphe (qui commence à 3 000) et y entrent par le bas. C'est l'initialisation imposée par le sujet.
    - Le coût, θ0 et θ1 se mettent à jour à chaque passage.
 5. **Les anciennes droites s'atténuent** : dès qu'une nouvelle droite est peinte, la précédente vire entièrement au gris, et plus une droite est ancienne, plus elle est pâle (opacité `0.22 + 0.78 × 0.8^âge`, jamais sous 22 %). Seule la dernière garde sa couleur : c'est la régression finale. L'éventail gris raconte la convergence.
-   - Chaque droite couvre toute la largeur du graphe ; le sens du passage de bombe alterne.
+   - Chaque droite couvre toute la largeur du graphe ; chaque passage de bombe part du début de l'axe des abscisses (0 km).
    - Les passages intermédiaires sont peints vite et légers (peu de coulures) ; le dernier, lentement et chargé.
    - Bouton *Passer* pour aller directement à l'état final.
    - Les droites passent par-dessus les points ; une fois la descente finie, les points sont repeints par-dessus la droite finale pour rester lisibles.

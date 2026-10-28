@@ -21,7 +21,7 @@ const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
 type LineKind = 'line' | 'finalLine' | 'diverge';
 
-type Stroke = { thetas: Thetas; kind: LineKind; reverse: boolean; layer: PaintLayer | null };
+type Stroke = { thetas: Thetas; kind: LineKind; layer: PaintLayer | null };
 
 type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };
 
@@ -190,13 +190,12 @@ export class SequenceController {
   }
 
   private sprayLine(thetas: Thetas, kind: LineKind, duration: number): Promise<void> {
-    const reverse = this.fan.length % 2 === 1;
-    const stroke: Stroke = { thetas, kind, reverse, layer: null };
+    const stroke: Stroke = { thetas, kind, layer: null };
     this.fan.push(stroke);
     const seg = lineSegment(thetas, this.chart, this.clipRect(kind));
     if (!seg) return Promise.resolve();
 
-    const [a, b] = reverse ? [seg[1], seg[0]] : seg;
+    const [a, b] = seg;
     const style = STYLE[kind];
     const color = kind === 'diverge' ? COLORS.diverge : COLORS.line;
     const pad = style.width * 2;
