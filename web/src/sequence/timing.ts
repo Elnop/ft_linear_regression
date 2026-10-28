@@ -5,6 +5,8 @@ export const TIMING = {
   uiIn: 600, // after the title, while the panels fade in
   dot: 55, // spraying one point (24 of them: ≈ 2 s with the gaps)
   dotGap: 30,
+  redot: 40, // re-spraying one point over the finished lines
+  redotGap: 15,
   beforeDescent: 400, // the data alone on the wall, before the first pass
   fade: 400, // older lines fading
   accel: 3, // ease-out exponent of the interpolation

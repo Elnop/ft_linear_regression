@@ -28,19 +28,20 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
 1. **Le titre se tague** : la bombe suit le tracé des lettres.
 2. **L'interface apparaît** en fondu.
 3. **Les 24 points se peignent** rapidement, dans un ordre aléatoire (environ 2 s). Aucun entraînement à ce stade : on montre la distribution des données.
-4. **La descente de gradient se peint** sur les 24 points, avec les réglages par défaut de `npm run train` (lr 0.5, 10 000 itérations, normalisation). Un passage de bombe est peint aux itérations 0, 1, 2, 4, 8, … (échelle logarithmique) et à la dernière.
+4. **La descente de gradient se peint** sur les 24 points, avec les réglages par défaut de `npm run train` (lr 0.5, 10 000 itérations). Un passage de bombe est peint aux itérations 0, 1, 2, 4, 8, … (échelle logarithmique) et à la dernière.
    - Avec θ0 = θ1 = 0, le prix estimé vaut 0 : les premières droites sont sous le graphe (qui commence à 3 000) et y entrent par le bas. C'est l'initialisation imposée par le sujet.
    - Le coût, θ0 et θ1 se mettent à jour à chaque passage.
 5. **Les anciennes droites s'atténuent** : dès qu'une nouvelle droite est peinte, la précédente vire entièrement au gris, et plus une droite est ancienne, plus elle est pâle (opacité `0.22 + 0.78 × 0.8^âge`, jamais sous 22 %). Seule la dernière garde sa couleur : c'est la régression finale. L'éventail gris raconte la convergence.
    - Chaque droite couvre toute la largeur du graphe ; le sens du passage de bombe alterne.
    - Les passages intermédiaires sont peints vite et légers (peu de coulures) ; le dernier, lentement et chargé.
    - Bouton *Passer* pour aller directement à l'état final.
+   - Les droites passent par-dessus les points ; une fois la descente finie, les points sont repeints par-dessus la droite finale pour rester lisibles.
 6. **L'interface devient interactive** : prédiction d'un prix à partir d'un kilométrage, et bouton *Entraîner* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76 : les passages, en jaune, sortent du graphe).
 
 ## Conformité au bonus
 
 - **Données sur un graphe** : les 24 points sont peints à leurs coordonnées exactes. Les axes (graduations en km et en prix, titres) restent lisibles par-dessus le mur.
-- **Droite de régression sur le même graphe** : la dernière droite, seule en couleur, est la régression sur tout le dataset. Le web utilise les mêmes réglages par défaut que `npm run train` (lr 0.5, 10 000 itérations, normalisation), donc les θ0 et θ1 affichés sont ceux de `model.json`.
+- **Droite de régression sur le même graphe** : la dernière droite, seule en couleur, est la régression sur tout le dataset. Le web utilise les mêmes réglages par défaut que `npm run train` (lr 0.5, 10 000 itérations), donc les θ0 et θ1 affichés sont ceux de `model.json`.
 - **Programme de précision** : `npm run precision` en ligne de commande, et R², RMSE, MAE affichés dans l'interface.
 
 ## Moteur de peinture
