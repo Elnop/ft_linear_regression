@@ -1,22 +1,8 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { SequenceController } from '@/features/sequence/lib/controller.ts';
-import { DATA, DEFAULT_TRAIN } from '@/features/sequence/lib/training.ts';
-import type { Sequence, SequenceState } from '@/features/sequence/types.ts';
-
-const IDLE: SequenceState = {
-  phase: 'idle',
-  visiblePoints: 0,
-  totalPoints: DATA.length,
-  thetas: null,
-  iteration: null,
-  metrics: null,
-  costHistory: [],
-  diverged: false,
-  trainingActive: false,
-  skipping: false,
-  trainOptions: DEFAULT_TRAIN,
-};
+import { IDLE_STATE } from '@/features/sequence/lib/state.ts';
+import type { Sequence } from '@/features/sequence/types.ts';
 
 const noop = () => () => {};
 
@@ -35,7 +21,7 @@ export function useSequence(engine: PaintEngine | null): Sequence {
     };
   }, [engine]);
 
-  const state = useSyncExternalStore(ctl?.subscribe ?? noop, ctl?.getState ?? (() => IDLE));
+  const state = useSyncExternalStore(ctl?.subscribe ?? noop, ctl?.getState ?? (() => IDLE_STATE));
   return {
     ...state,
     skip: ctl?.skip ?? (() => {}),

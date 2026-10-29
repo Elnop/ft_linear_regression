@@ -4,6 +4,7 @@ import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { DrawTitle, Prediction, SequenceState } from '@/features/sequence/types.ts';
 import { WallPainter } from './painter.ts';
+import { IDLE_STATE } from './state.ts';
 import { TIMING } from './timing.ts';
 import {
   DATA,
@@ -42,19 +43,7 @@ export class SequenceController {
     this.engine = engine;
     this.drawTitle = drawTitle;
     this.painter = new WallPainter(engine, () => this.scale);
-    this.state = {
-      phase: 'idle',
-      visiblePoints: 0,
-      totalPoints: DATA.length,
-      thetas: null,
-      iteration: null,
-      metrics: null,
-      costHistory: [],
-      diverged: false,
-      trainingActive: false,
-      skipping: false,
-      trainOptions: DEFAULT_TRAIN,
-    };
+    this.state = IDLE_STATE;
     this.unResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
@@ -165,10 +154,7 @@ export class SequenceController {
     const plan = runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
     this.order = shuffled(DATA.length);
-    this.set({
-      phase: 'title', visiblePoints: 0, thetas: null, iteration: null, metrics: null, costHistory: [],
-      diverged: false, trainingActive: false, trainOptions: DEFAULT_TRAIN,
-    });
+    this.set({ ...IDLE_STATE, phase: 'title' });
 
     await this.sleep(gen, TIMING.uiIn);
     this.set({ visiblePoints: DATA.length });
