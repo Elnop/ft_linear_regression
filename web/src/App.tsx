@@ -3,7 +3,7 @@ import { DocPage } from './docs/DocPage.tsx';
 import { PaintWall, type PaintEngine } from './paint/index.ts';
 import { useSequence } from './sequence/index.ts';
 import { titleLayout } from './title/index.ts';
-import { chartFor, formatNumber, parseKm, useWallSize, WallUI } from './ui/index.ts';
+import { chartFor, formatNumber, parseKm, SprayCan, useWallSize, WallUI } from './ui/index.ts';
 
 export function App() {
   const [engine, setEngine] = useState<PaintEngine | null>(null);
@@ -63,6 +63,7 @@ export function App() {
           onSpeedChange: () => {},
         }}
       />
+      <SprayCan engine={engine} hidden={seq.skipping} />
     </>
   );
 }

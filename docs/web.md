@@ -18,6 +18,7 @@ Un mur de béton la nuit, tagué à la bombe, avec quelques autocollants anti-IA
 
 - **Mur** : photo de béton banché assombrie (Poly Haven, CC0).
 - **Peinture** : la droite, les points et le titre sont **peints en direct** par un moteur de peinture (voir plus bas), pas affichés en images.
+- **Bombe** : une bombe de peinture en SVG (logo 42, aux couleurs du site) suit la buse du moteur. Elle prend la couleur de la peinture en cours, secoue quand la couleur change, enfonce le diffuseur pendant le spray et, quand plus rien n'est peint, tombe en tournant jusqu'en bas de l'écran. Elle est masquée pendant *Passer* et si l'utilisateur a demandé moins d'animations.
 - **Autocollants** : petits (environ 8 cm à l'échelle du mur), regroupés, à moitié décollés ou grattés.
 - **Interface** : panneaux en verre dépoli (θ0, θ1, coût, précision, champ kilométrage, réglages).
 
@@ -27,7 +28,7 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
 
 1. **Le titre se tague** : la bombe suit le tracé des lettres.
 2. **L'interface apparaît** en fondu.
-3. **Les 24 points se peignent** rapidement, dans un ordre aléatoire (environ 2 s). Aucun entraînement à ce stade : on montre la distribution des données.
+3. **Les 24 points se peignent** un par un, dans un ordre aléatoire (environ 8 s), la bombe se déplaçant de point en point. Aucun entraînement à ce stade : on montre la distribution des données.
 4. **La descente de gradient se peint** sur les 24 points, avec les réglages par défaut de `npm run train` (lr 0.5, 10 000 itérations). Un passage de bombe est peint aux itérations 0, 1, 2, 4, 8, … (échelle logarithmique) et à la dernière.
    - Avec θ0 = θ1 = 0, le prix estimé vaut 0 : les premières droites sont sous le graphe (qui commence à 3 000) et y entrent par le bas. C'est l'initialisation imposée par le sujet.
    - Le coût, θ0 et θ1 se mettent à jour à chaque passage.

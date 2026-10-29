@@ -30,11 +30,11 @@ export async function drawTitle(engine: PaintEngine, opts: TitleOptions = {}): P
   const width = Math.max(3.5, 0.6 * STROKE * em);
   let last: Vec2 | null = null;
   for (const s of titleStrokes(layout, rng)) {
-    const speed = Math.min(1300, Math.max(380, em * 22)) * tempo();
+    const speed = Math.min(900, Math.max(300, em * 16)) * tempo();
     const first = s.points[0];
     if (last) {
       const jump = Math.hypot(first.x - last.x, first.y - last.y);
-      await wait((25 + (jump / (speed * 3)) * 1000 + (s.letterStart ? 40 : 0)) / tempo());
+      await wait((60 + (jump / (speed * 1.5)) * 1000 + (s.letterStart ? 90 : 0)) / tempo());
     }
     if (s.dot) {
       await engine.sprayDot(layer, first.x, first.y, { width: width * 1.25, duration: 120 / tempo(), load: s.thickness, seed: rng() * 2 ** 32 });

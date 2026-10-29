@@ -9,5 +9,6 @@ export { PrecisionPanel, type PrecisionPanelProps } from './PrecisionPanel.tsx';
 export { PriceMarker, type PriceMarkerProps } from './PriceMarker.tsx';
 export { Reveal } from './Reveal.tsx';
 export { SkipButton, type SkipButtonProps } from './SkipButton.tsx';
+export { SprayCan, SprayCanArt, type SprayCanProps } from './SprayCan.tsx';
 export { Stickers, type StickersProps } from './Stickers.tsx';
 export { WallUI, type WallUIProps } from './WallUI.tsx';

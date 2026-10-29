@@ -4,12 +4,12 @@ import { dotJob, pathJob, type Job } from './nozzle.ts';
 import { createGLRenderer, type Renderer } from './renderer.ts';
 import { createCanvasRenderer } from './renderer2d.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
-import { hexToRgb, type LayerOptions, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
+import { hexToRgb, type LayerOptions, type Nozzle, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DT = 1 / 10;
 
-type Running = { job: Job; done: () => void };
+type Running = { job: Job; layer: PaintLayer; done: () => void };
 type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; t: number; duration: number; done: () => void };
 
 export class PaintEngine {
@@ -95,11 +95,16 @@ export class PaintEngine {
   }
 
   sprayPath(layer: PaintLayer, points: Vec2[], o: SprayPathOptions = {}): Promise<void> {
-    return this.run(pathJob(layer, points, o));
+    return this.run(layer, pathJob(layer, points, o));
   }
 
   sprayDot(layer: PaintLayer, x: number, y: number, o: SprayDotOptions = {}): Promise<void> {
-    return this.run(dotJob(layer, x, y, o));
+    return this.run(layer, dotJob(layer, x, y, o));
+  }
+
+  nozzle(): Nozzle | null {
+    const r = this.jobs[this.jobs.length - 1];
+    return r ? { x: r.job.pos.x, y: r.job.pos.y, color: r.layer.color, active: this.jobs.length } : null;
   }
 
   setOpacity(layer: PaintLayer, opacity: number, gray = layer.gray): void {
@@ -136,9 +141,9 @@ export class PaintEngine {
     this.canvas.remove();
   }
 
-  private run(job: Job): Promise<void> {
+  private run(layer: PaintLayer, job: Job): Promise<void> {
     return new Promise((done) => {
-      this.jobs.push({ job, done });
+      this.jobs.push({ job, layer, done });
       this.wake();
     });
   }

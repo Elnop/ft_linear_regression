@@ -11,6 +11,8 @@ export type LayerOptions = {
   z?: number;
 };
 
+export type Nozzle = { x: number; y: number; color: Rgb; active: number };
+
 export type SprayPathOptions = {
   speed?: number;
   width?: number;

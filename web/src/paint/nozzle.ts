@@ -2,7 +2,7 @@ import type { PaintLayer } from './layer.ts';
 import { gaussian, mulberry32, noise1D, randomSeed, type Rng } from './random.ts';
 import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
-export type Job = { update(dt: number): boolean };
+export type Job = { pos: Vec2; update(dt: number): boolean };
 
 const NOMINAL_SPEED = 520;
 const DROPLET = 0.05;
@@ -112,8 +112,11 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
     const off = 1.6 * wobble[0](s / 380) + 0.4 * wobble[1](s / 90);
     return { x: p.x + n.x * off, y: p.y + n.y * off };
   };
+  const pos = { ...points[0] };
   const emit = (s: number, dt: number) => {
     const p = nozzle(s);
+    pos.x = p.x;
+    pos.y = p.y;
     const sigma = sigma0 * (1 + 0.12 * distance[0](s / 220) + 0.05 * distance[1](s / 60));
     let flow = 1 + 0.12 * pressure[0](s / 150) + 0.06 * pressure[1](s / 40);
     if (taper) flow *= 0.15 + 0.85 * smooth((L - s) / 40);
@@ -124,6 +127,7 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
   let wait = dwell;
   let tail = taper ? 0 : dwell;
   return {
+    pos,
     update(dt) {
       if (wait > 0) {
         const t = Math.min(wait, dt);
@@ -159,6 +163,7 @@ export function dotJob(layer: PaintLayer, x: number, y: number, o: SprayDotOptio
   const puff = noise1D(rng);
   let t = 0;
   return {
+    pos: { x, y },
     update(dt) {
       const step = Math.min(dt, duration - t);
       for (let k = 0; k < 6; k++) {

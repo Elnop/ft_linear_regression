@@ -1,18 +1,18 @@
 export const TIMING = {
   uiIn: 600,
-  dot: 55,
-  dotGap: 30,
-  redot: 40,
-  redotGap: 15,
-  beforeDescent: 400,
+  dot: 110,
+  dotGap: 240,
+  redot: 70,
+  redotGap: 150,
+  beforeDescent: 800,
   fade: 400,
   accel: 3,
   skipScale: 10,
 
   fanOut: 500,
-  pass: [650, 200],
-  afterPass: [220, 60],
-  finalPass: 1800,
+  pass: [950, 380],
+  afterPass: [480, 260],
+  finalPass: 2600,
 } as const;
 
 export const STYLE = {
