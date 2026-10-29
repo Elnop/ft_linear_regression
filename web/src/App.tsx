@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { DocPage } from '@/docs/DocPage.tsx';
+import { DocPage } from '@/features/docs/components/orchestrators/DocPage.tsx';
 import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { useSequence } from '@/features/sequence/hooks/useSequence.ts';
