@@ -4,8 +4,6 @@ import { estimatePrice } from '@core/hypothesis.ts';
 import { mae, r2, rmse } from '@core/metrics.ts';
 import { trainSteps } from '@core/train.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/types.ts';
-import type { ChartMapping } from '@/lib/chart.ts';
-import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 import type { CostPoint, Metrics } from '@/features/sequence/types.ts';
 
 export const DATA: Sample[] = parseDataset(raw);
@@ -18,15 +16,6 @@ export function metricsOf(data: Sample[], t: Thetas): Metrics {
 
 export function isFinite2(t: Thetas): boolean {
   return Number.isFinite(t.theta0) && Number.isFinite(t.theta1);
-}
-
-export function shuffled(n: number): number[] {
-  const a = Array.from({ length: n }, (_, i) => i);
-  for (let i = n - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
 }
 
 function sampled(iter: number, next: number): boolean {
@@ -80,38 +69,25 @@ export function priceAt(t: Thetas, km: number): number {
   return estimatePrice(t, km);
 }
 
-export function clipSegment(a: Vec2, b: Vec2, r: Rect): [Vec2, Vec2] | null {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  let t0 = 0;
-  let t1 = 1;
-  const edges: [number, number][] = [
-    [-dx, a.x - r.x],
-    [dx, r.x + r.w - a.x],
-    [-dy, a.y - r.y],
-    [dy, r.y + r.h - a.y],
-  ];
-  for (const [p, q] of edges) {
-    if (p === 0) {
-      if (q < 0) return null;
-      continue;
-    }
-    const t = q / p;
-    if (p < 0) t0 = Math.max(t0, t);
-    else t1 = Math.min(t1, t);
-    if (t0 > t1) return null;
-  }
-  const at = (t: number) => ({ x: a.x + dx * t, y: a.y + dy * t });
-  return [at(t0), at(t1)];
+export type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };
+
+export function stepAt(plan: Training, j: number): Step {
+  const s = plan.steps[j];
+  return {
+    thetas: s,
+    iter: s.iter,
+    metrics: metricsOf(DATA, s),
+    history: plan.history.filter((h) => h.iter <= s.iter),
+  };
 }
 
-export function lineSegment(t: Thetas, chart: ChartMapping, clip: Rect): [Vec2, Vec2] | null {
-  if (!isFinite2(t)) return null;
-  const { kmMin, kmMax } = chart.domain;
-  const a = chart.point(kmMin, priceAt(t, kmMin));
-  const b = chart.point(kmMax, priceAt(t, kmMax));
-  if (![a.x, a.y, b.x, b.y].every(Number.isFinite)) return null;
-  const seg = clipSegment(a, b, clip);
-  if (!seg || Math.hypot(seg[1].x - seg[0].x, seg[1].y - seg[0].y) < 4) return null;
-  return seg;
+export type LineKind = 'line' | 'finalLine' | 'diverge';
+
+export function isFinalPass(plan: Training, j: number): boolean {
+  return j === plan.steps.length - 1 && !plan.diverged;
+}
+
+export function lineKindAt(plan: Training, j: number): LineKind {
+  if (plan.diverged) return 'diverge';
+  return isFinalPass(plan, j) ? 'finalLine' : 'line';
 }

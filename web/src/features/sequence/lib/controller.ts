@@ -1,32 +1,22 @@
-import type { ChartMapping } from '@/lib/chart.ts';
-import type { PaintEngine } from '@/lib/paint/engine.ts';
-import type { PaintLayer } from '@/lib/paint/layer.ts';
-import type { Rect } from '@/lib/paint/types.ts';
+import type { TrainOptions } from '@core/types.ts';
 import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
-import { chartFor } from '@/lib/layout.ts';
-import type { Thetas, TrainOptions } from '@core/types.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
+import { shuffled } from '@/lib/random.ts';
+import type { DrawTitle, Prediction, SequenceState } from '@/features/sequence/types.ts';
+import { WallPainter } from './painter.ts';
+import { TIMING } from './timing.ts';
 import {
   DATA,
   DEFAULT_TRAIN,
+  isFinalPass,
   isFinite2,
-  lineSegment,
-  metricsOf,
+  lineKindAt,
   priceAt,
   runTraining,
-  shuffled,
+  stepAt,
+  type Step,
   type Training,
-} from './model.ts';
-import { COLORS, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
-import type { CostPoint, DrawTitle, Metrics, Prediction, SequenceState } from '@/features/sequence/types.ts';
-
-const NOMINAL_SPEED = 520;
-const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
-
-type LineKind = 'line' | 'finalLine' | 'diverge';
-
-type Stroke = { thetas: Thetas; kind: LineKind; layer: PaintLayer | null };
-
-type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };
+} from './training.ts';
 
 class Cancelled extends Error {}
 
@@ -41,20 +31,17 @@ export class SequenceController {
   private gen = 0;
   private abort = new AbortController();
   private scale = 1;
-  private chart: ChartMapping;
+  private painter: WallPainter;
 
   private order = shuffled(DATA.length);
   private training: Training | null = null;
-  private points: PaintLayer[] = [];
-  private topPoints: PaintLayer[] = [];
-  private fan: Stroke[] = [];
   private unResize: () => void;
   private resizeTimer = 0;
 
   constructor(engine: PaintEngine, drawTitle: DrawTitle = defaultTitle) {
     this.engine = engine;
     this.drawTitle = drawTitle;
-    this.chart = chartFor(engine.width, engine.height);
+    this.painter = new WallPainter(engine, () => this.scale);
     this.state = {
       phase: 'idle',
       visiblePoints: 0,
@@ -68,7 +55,7 @@ export class SequenceController {
       trainingActive: false,
       skipping: false,
       trainOptions: DEFAULT_TRAIN,
-      chart: this.chart,
+      chart: this.painter.chart,
     };
     this.unResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
@@ -85,7 +72,7 @@ export class SequenceController {
 
   start(): void {
     const gen = this.restart();
-    this.engine.clear();
+    this.painter.clear();
     void this.run(gen, () => this.playIntro(gen));
   }
 
@@ -117,7 +104,7 @@ export class SequenceController {
     const t = this.state.thetas;
     if (!t || !isFinite2(t)) return null;
     const price = priceAt(t, km);
-    return { price, x: this.chart.x(km), y: this.chart.y(price) };
+    return { price, x: this.painter.chart.x(km), y: this.painter.chart.y(price) };
   };
 
   private set(patch: Partial<SequenceState>): void {
@@ -166,78 +153,6 @@ export class SequenceController {
     }
   }
 
-  private pointLayer(index: number, top: boolean, opacity = 1) {
-    const s = DATA[index];
-    const p = this.chart.point(s.km, s.price);
-    const layer = this.engine.createLayer({
-      color: COLORS.point,
-      opacity,
-      z: top ? 2 : 0,
-      bounds: { x: p.x - 30, y: p.y - 30, w: 60, h: 60 + DRIP_ROOM.dot },
-    });
-    (top ? this.topPoints : this.points).push(layer);
-    const [lo, hi] = STYLE.dot.load;
-    return { layer, p, opts: { width: STYLE.dot.width, load: lo + Math.random() * (hi - lo) } };
-  }
-
-  private sprayPoint(index: number, duration: number, top = false): Promise<void> {
-    const { layer, p, opts } = this.pointLayer(index, top);
-    return this.engine.sprayDot(layer, p.x, p.y, { ...opts, duration: duration / this.scale });
-  }
-
-  private stampPoints(fade = 0): Promise<void[]> {
-    return Promise.all(
-      this.order.map((i) => {
-        const { layer, p, opts } = this.pointLayer(i, false, fade ? 0 : 1);
-        this.engine.stampDot(layer, p.x, p.y, { ...opts, duration: TIMING.dot });
-        return fade ? this.engine.fadeLayer(layer, 1, fade / this.scale) : Promise.resolve();
-      }),
-    );
-  }
-
-  private clipRect(kind: LineKind): Rect {
-    if (kind !== 'diverge') return this.chart.area;
-    return { x: -20, y: -20, w: this.engine.width + 40, h: this.engine.height + 40 };
-  }
-
-  private sprayLine(thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
-    const stroke: Stroke = { thetas, kind, layer: null };
-    this.fan.push(stroke);
-    const seg = lineSegment(thetas, this.chart, this.clipRect(kind));
-    if (!seg) return Promise.resolve();
-
-    const [a, b] = seg;
-    const style = STYLE[kind];
-    const color = kind === 'diverge' ? COLORS.diverge : COLORS.line;
-    const pad = style.width * 2;
-    const x0 = Math.max(0, Math.min(a.x, b.x) - pad);
-    const y0 = Math.max(0, Math.min(a.y, b.y) - pad);
-    const x1 = Math.min(this.engine.width, Math.max(a.x, b.x) + pad);
-    const y1 = Math.min(this.engine.height, Math.max(a.y, b.y) + pad + DRIP_ROOM[kind]);
-    stroke.layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } });
-
-    const length = Math.hypot(b.x - a.x, b.y - a.y);
-    const seconds = Math.max(0.05, duration / 1000) / this.scale;
-    const speed = (length / seconds) * 1.2;
-    return this.engine.sprayPath(stroke.layer, reverse ? [b, a] : [a, b], {
-      speed,
-      width: style.width,
-      load: (style.thickness * speed) / NOMINAL_SPEED,
-      dwell: (style.dwell * NOMINAL_SPEED) / speed,
-      hesitations: style.hesitations,
-      end: kind === 'finalLine' ? 'blob' : 'taper',
-    });
-  }
-
-  private fadeFan(instant = false): void {
-    const painted = this.fan.flatMap((s) => (s.layer ? [s.layer] : []));
-    painted.forEach((layer, i) => {
-      const age = painted.length - 1 - i;
-      if (instant) this.engine.setOpacity(layer, fadeOpacity(age), fadeGray(age));
-      else void this.engine.fadeLayer(layer, fadeOpacity(age), TIMING.fade / this.scale, fadeGray(age));
-    });
-  }
-
   private show(step: Step, extra: Partial<SequenceState> = {}): void {
     this.set({
       thetas: { theta0: step.thetas.theta0, theta1: step.thetas.theta1 },
@@ -252,9 +167,6 @@ export class SequenceController {
     const plan = runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
     this.order = shuffled(DATA.length);
-    this.points = [];
-    this.topPoints = [];
-    this.fan = [];
     this.set({
       phase: 'title', visiblePoints: 0, thetas: null, iteration: null, metrics: null, costHistory: [],
       diverged: false, divergedAt: null, trainingActive: false, trainOptions: DEFAULT_TRAIN,
@@ -262,9 +174,9 @@ export class SequenceController {
 
     await this.sleep(gen, TIMING.uiIn);
     this.set({ visiblePoints: DATA.length });
-    await this.wait(gen, this.stampPoints(TIMING.pointsIn));
+    await this.wait(gen, this.painter.stampPoints(this.order, TIMING.pointsIn));
 
-    await this.wait(gen, this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal }));
+    await this.wait(gen, this.paintTitle());
     await this.sleep(gen, TIMING.beforeDescent);
 
     this.set({ phase: 'descent' });
@@ -272,23 +184,8 @@ export class SequenceController {
     this.set({ phase: 'interactive' });
   }
 
-  private stepOf(plan: Training, j: number): Step {
-    const s = plan.steps[j];
-    return {
-      thetas: s,
-      iter: s.iter,
-      metrics: metricsOf(DATA, s),
-      history: plan.history.filter((h) => h.iter <= s.iter),
-    };
-  }
-
   private async playTraining(gen: number, plan: Training): Promise<void> {
-    const old = [...this.fan.flatMap((s) => (s.layer ? [s.layer] : [])), ...this.topPoints];
-    for (const layer of old) {
-      void this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale).then(() => this.engine.removeLayer(layer));
-    }
-    this.fan = [];
-    this.topPoints = [];
+    this.painter.wipeFan();
     await this.sleep(gen, TIMING.fanOut);
 
     await this.playPasses(gen, plan);
@@ -298,49 +195,49 @@ export class SequenceController {
   private async playPasses(gen: number, plan: Training): Promise<void> {
     const last = plan.steps.length - 1;
     for (let j = 0; j <= last; j++) {
-      const final = j === last && !plan.diverged;
-      const kind: LineKind = plan.diverged ? 'diverge' : final ? 'finalLine' : 'line';
-      this.show(this.stepOf(plan, j));
-      const painting = this.sprayLine(plan.steps[j], kind, final ? TIMING.finalPass : TIMING.pass, j % 2 === 1);
-      this.fadeFan();
+      this.show(stepAt(plan, j));
+      const painting = this.sprayPass(plan, j);
+      this.painter.fadeFan();
       await this.wait(gen, painting);
       await this.sleep(gen, TIMING.afterPass);
     }
     this.set({ diverged: plan.diverged, divergedAt: plan.divergedAt });
 
     for (const i of this.order) {
-      await this.wait(gen, this.sprayPoint(i, TIMING.redot, true));
+      await this.wait(gen, this.painter.sprayPoint(i, TIMING.redot, true));
       await this.sleep(gen, TIMING.redotGap);
     }
+  }
+
+  private paintTitle(): Promise<void> {
+    return this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal });
+  }
+
+  private sprayPass(plan: Training, j: number): Promise<void> {
+    const duration = isFinalPass(plan, j) ? TIMING.finalPass : TIMING.pass;
+    return this.painter.sprayLine(plan.steps[j], lineKindAt(plan, j), duration, j % 2 === 1);
   }
 
   private repaint(): void {
     const gen = this.restart();
     this.scale = TIMING.skipScale;
-    this.engine.clear();
-    this.chart = chartFor(this.engine.width, this.engine.height);
-    this.points = [];
-    this.topPoints = [];
-    this.fan = [];
-    this.set({ chart: this.chart });
+    this.painter.clear();
+    this.painter.fit();
+    this.set({ chart: this.painter.chart });
 
-    const jobs: Promise<void>[] = [this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal })];
-    void this.stampPoints();
+    const jobs: Promise<void>[] = [this.paintTitle()];
+    void this.painter.stampPoints(this.order);
 
     const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
-    plan.steps.forEach((step, j) => {
-      const final = j === plan.steps.length - 1 && !plan.diverged;
-      const kind: LineKind = plan.diverged ? 'diverge' : final ? 'finalLine' : 'line';
-      jobs.push(this.sprayLine(step, kind, final ? TIMING.finalPass : TIMING.pass, j % 2 === 1));
-    });
-    this.show(this.stepOf(plan, plan.steps.length - 1), {
+    plan.steps.forEach((_, j) => jobs.push(this.sprayPass(plan, j)));
+    this.show(stepAt(plan, plan.steps.length - 1), {
       diverged: plan.diverged,
       divergedAt: plan.divergedAt,
       trainingActive: false,
     });
-    for (const i of this.order) jobs.push(this.sprayPoint(i, TIMING.redot, true));
-    this.fadeFan(true);
+    for (const i of this.order) jobs.push(this.painter.sprayPoint(i, TIMING.redot, true));
+    this.painter.fadeFan(true);
     this.set({ phase: 'interactive', visiblePoints: DATA.length, skipping: true });
     void this.run(gen, async () => {
       await this.wait(gen, Promise.all(jobs));
