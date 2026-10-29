@@ -19,7 +19,7 @@ Un mur de béton la nuit, tagué à la bombe, avec quelques autocollants abîmé
 - **Mur** : photo de béton banché assombrie (Poly Haven, CC0).
 - **Peinture** : la droite, les points et le titre sont **peints en direct** par un moteur de peinture (voir plus bas), pas affichés en images.
 - **Bombe** : une bombe de peinture en SVG (logo 42, aux couleurs du site) suit la buse du moteur. Elle prend la couleur de la peinture en cours, secoue quand la couleur change, enfonce le diffuseur pendant le spray et, quand plus rien n'est peint, tombe en tournant jusqu'en bas de l'écran. Elle est masquée pendant *Passer* et si l'utilisateur a demandé moins d'animations.
-- **Autocollants** : dessinés en SVG dans `Stickers.tsx` (logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient). Petits (environ 8 cm à l'échelle du mur), regroupés, abîmés : grattés par endroits (il ne reste que le papier blanc), coins décollés repliés, bords déchirés. Usure générée par filtres SVG et graine aléatoire fixe par autocollant.
+- **Autocollants** : dessinés en SVG dans `web/src/features/decor/stickers/lib/arts.tsx` (logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient). Petits (environ 8 cm à l'échelle du mur), regroupés, abîmés : grattés par endroits (il ne reste que le papier blanc), coins décollés repliés, bords déchirés. Usure générée par filtres SVG et graine aléatoire fixe par autocollant.
 - **Interface** : panneaux en verre dépoli (θ0, θ1, coût, précision, champ kilométrage, réglages).
 
 ## Séquence d'animation
@@ -46,7 +46,7 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 - **Théorie** : ce qu'est le machine learning et l'apprentissage supervisé (régression ou classification), les notions mathématiques utiles (notations θ, α, Σ…, fonction affine, symbole Σ, dérivée, dérivées partielles et gradient, fonctions composées), les 4 étapes de l'apprentissage supervisé (dataset, modèle, fonction coût, minimisation), puis la descente de gradient (intuition, formule, learning rate, calcul des dérivées), et enfin ce qui est propre au projet (normalisation, vérification).
 - **Code** : les fonctions de `core/` dans le même ordre (`parseDataset`, `estimatePrice`, `cost` / `r2`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`), puis la CLI et l'organisation du projet.
 
-Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/docs/source.ts`). La documentation montre donc toujours le code qui tourne.
+Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/features/docs/lib/source.ts`). La documentation montre donc toujours le code qui tourne.
 
 ## Conformité au bonus
 
@@ -71,8 +71,33 @@ On ne dessine pas des formes : on **dépose de la matière** et la physique fait
 | Vite 8 | serveur de dev et build |
 | React 19 | interface |
 | Motion | animations |
+| Oxlint | lint (règles TypeScript typées via tsgolint, compatible TypeScript 7) |
+| dependency-cruiser | sens des dépendances entre couches, absence de cycles |
 
-Le dataset est importé au build avec `import raw from '../../data.csv?raw'`. Il est intégré au bundle, sans requête réseau.
+Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est intégré au bundle, sans requête réseau.
+
+## Organisation du code
+
+```
+web/src/
+├── main.tsx
+├── app/            composition de la page et view-model (useWallViewModel)
+├── features/       une feature par domaine
+│   ├── sequence/   chorégraphie entraînement ↔ peinture (controller, painter, training)
+│   ├── title/      tracé du titre tagué
+│   ├── dashboard/  interface posée sur le mur (layout, panels, controls, chart)
+│   ├── decor/      autocollants et bombe de peinture
+│   └── docs/       documentation intégrée (contenu, onglets)
+├── components/shared/   composants sans domaine (PaintWall, Reveal)
+├── lib/            technique pur : moteur de peinture, graphe, aléatoire, formatage
+└── styles/         tokens et styles globaux
+```
+
+- Dans une feature, les composants sont rangés par rôle : `orchestrators/` branchent l'état, `presenters/` affichent ce qu'on leur passe. La logique va dans `hooks/` et `lib/`.
+- Les dépendances vont dans un seul sens : `app → features → components/shared → lib`. Une feature n'importe pas les composants d'une autre feature : c'est `app/` qui les assemble.
+- Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
+
+`npm run check` (dans `web/`) lance le typecheck, Oxlint et dependency-cruiser.
 
 ## Lancer en local
 
