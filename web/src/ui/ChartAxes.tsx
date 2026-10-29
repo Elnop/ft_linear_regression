@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import type { ChartMapping } from '@/paint/index.ts';
+import type { ChartMapping } from '@/lib/chart.ts';
 
 export type ChartAxesProps = {
   chart: ChartMapping;

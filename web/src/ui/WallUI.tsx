@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import type { ChartMapping } from '@/paint/index.ts';
+import type { ChartMapping } from '@/lib/chart.ts';
 import type { TitleLayout } from '@/title/index.ts';
 import { ChartAxes } from './ChartAxes.tsx';
 import { ControlBar, type ControlBarProps } from './ControlBar.tsx';
 import { CostPanel, type CostPoint } from './CostPanel.tsx';
 import { HeaderChips } from './HeaderChips.tsx';
-import { ASIDE_W, pagePad, WIDE } from './layout.ts';
+import { ASIDE_W, pagePad, WIDE } from '@/lib/layout.ts';
 import { PredictPanel } from './PredictPanel.tsx';
 import { PrecisionPanel } from './PrecisionPanel.tsx';
 import { PriceMarker } from './PriceMarker.tsx';

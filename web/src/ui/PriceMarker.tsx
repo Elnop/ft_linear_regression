@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { formatNumber } from './format.ts';
+import { formatNumber } from '@/lib/format.ts';
 
 export type PriceMarkerProps = {
   at: { x: number; y: number } | null;

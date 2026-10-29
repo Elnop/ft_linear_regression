@@ -1,8 +1,8 @@
 import { stepFlow } from './flow.ts';
 import { FILM_SCALE, PaintLayer } from './layer.ts';
 import { dotJob, moveJob, pathJob, type Job } from './nozzle.ts';
-import { createGLRenderer, type Renderer } from './renderer.ts';
-import { createCanvasRenderer } from './renderer2d.ts';
+import { createGLRenderer, type Renderer } from './glRenderer.ts';
+import { createCanvasRenderer } from './canvasRenderer.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
 import { hexToRgb, type LayerOptions, type Nozzle, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
 

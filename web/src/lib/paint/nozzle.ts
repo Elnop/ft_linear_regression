@@ -1,5 +1,5 @@
 import type { PaintLayer } from './layer.ts';
-import { gaussian, mulberry32, noise1D, randomSeed, type Rng } from './random.ts';
+import { gaussian, mulberry32, noise1D, randomSeed, type Rng } from '@/lib/random.ts';
 import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
 export type Job = { pos: Vec2; update(dt: number): boolean };

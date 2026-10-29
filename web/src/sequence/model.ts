@@ -4,7 +4,8 @@ import { estimatePrice } from '@core/hypothesis.ts';
 import { mae, r2, rmse } from '@core/metrics.ts';
 import { trainSteps } from '@core/train.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/types.ts';
-import type { ChartMapping, Rect, Vec2 } from '@/paint/index.ts';
+import type { ChartMapping } from '@/lib/chart.ts';
+import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 import type { CostPoint, Metrics } from './types.ts';
 
 export const DATA: Sample[] = parseDataset(raw);

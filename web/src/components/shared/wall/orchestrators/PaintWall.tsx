@@ -1,6 +1,6 @@
 import { useEffect, useEffectEvent, useImperativeHandle, useRef, useState, type Ref } from 'react';
 import wallUrl from '@/assets/wall-night.jpg';
-import { PaintEngine } from './engine.ts';
+import { PaintEngine } from '@/lib/paint/engine.ts';
 
 type Props = {
   ref?: Ref<PaintEngine | null>;

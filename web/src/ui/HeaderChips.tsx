@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { formatNumber } from './format.ts';
+import { formatNumber } from '@/lib/format.ts';
 
 export type HeaderChipsProps = {
   theta0: number | null;

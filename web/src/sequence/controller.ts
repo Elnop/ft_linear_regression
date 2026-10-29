@@ -1,6 +1,9 @@
-import type { ChartMapping, PaintEngine, PaintLayer, Rect } from '@/paint/index.ts';
+import type { ChartMapping } from '@/lib/chart.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
+import type { PaintLayer } from '@/lib/paint/layer.ts';
+import type { Rect } from '@/lib/paint/types.ts';
 import { drawTitle as tagTitle } from '@/title/index.ts';
-import { chartFor } from '@/ui/layout.ts';
+import { chartFor } from '@/lib/layout.ts';
 import type { Thetas, TrainOptions } from '@core/types.ts';
 import {
   DATA,

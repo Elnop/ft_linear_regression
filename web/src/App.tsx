@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { DocPage } from './docs/DocPage.tsx';
-import { PaintWall, type PaintEngine } from './paint/index.ts';
-import { useSequence } from './sequence/index.ts';
-import { titleLayout } from './title/index.ts';
-import { chartFor, formatNumber, parseKm, SprayCan, useWallSize, WallUI } from './ui/index.ts';
+import { DocPage } from '@/docs/DocPage.tsx';
+import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
+import { useSequence } from '@/sequence/index.ts';
+import { titleLayout } from '@/title/index.ts';
+import { chartFor, formatNumber, parseKm, SprayCan, useWallSize, WallUI } from '@/ui/index.ts';
 
 export function App() {
   const [engine, setEngine] = useState<PaintEngine | null>(null);

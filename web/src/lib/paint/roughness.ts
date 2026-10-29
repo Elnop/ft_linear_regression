@@ -1,4 +1,4 @@
-import { mulberry32 } from './random.ts';
+import { mulberry32 } from '@/lib/random.ts';
 
 export type Roughness = { at(x: number, y: number): number };
 

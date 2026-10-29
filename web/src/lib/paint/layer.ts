@@ -1,6 +1,6 @@
 import type { Rect, Rgb } from './types.ts';
 import type { Roughness } from './roughness.ts';
-import { mulberry32, noise2D } from './random.ts';
+import { mulberry32, noise2D } from '@/lib/random.ts';
 
 export const FILM_SCALE = 0.25;
 const CELL = 1 / FILM_SCALE;

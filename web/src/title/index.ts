@@ -1,5 +1,7 @@
-import type { PaintEngine, PaintLayer, Vec2 } from '@/paint/index.ts';
-import { mulberry32, randomSeed } from '@/paint/random.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
+import type { PaintLayer } from '@/lib/paint/layer.ts';
+import type { Vec2 } from '@/lib/paint/types.ts';
+import { mulberry32, randomSeed } from '@/lib/random.ts';
 import { STROKE, titleLayout, titleStrokes, type Stroke, type TitleLayout } from './layout.ts';
 
 export { TITLE, TITLE_GAP_BELOW, titleLayout, type TitleLayout } from './layout.ts';

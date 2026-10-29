@@ -1,5 +1,6 @@
 import type { Thetas, TrainOptions } from '@core/types.ts';
-import type { ChartMapping, PaintEngine } from '@/paint/index.ts';
+import type { ChartMapping } from '@/lib/chart.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
 
 export type { Thetas, TrainOptions };
 

@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useRef } from 'react';
-import type { PaintEngine, Rgb } from '@/paint/index.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
+import type { Rgb } from '@/lib/paint/types.ts';
 
 const VIEW_W = 140;
 const VIEW_H = 340;

@@ -1,4 +1,4 @@
-import { formatNumber } from './format.ts';
+import { formatNumber } from '@/lib/format.ts';
 
 export type PrecisionPanelProps = {
   r2: number | null;

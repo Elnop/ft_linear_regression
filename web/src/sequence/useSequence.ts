@@ -1,5 +1,5 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import type { PaintEngine } from '@/paint/index.ts';
+import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { SequenceController } from './controller.ts';
 import { DATA, DEFAULT_TRAIN } from './model.ts';
 import type { Sequence, SequenceState } from './types.ts';

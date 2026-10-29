@@ -1,4 +1,4 @@
-import type { Rect, Vec2 } from './types.ts';
+import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 
 export type ChartDomain = { kmMin: number; kmMax: number; priceMin: number; priceMax: number };
 
