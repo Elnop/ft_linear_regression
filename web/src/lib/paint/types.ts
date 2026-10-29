@@ -34,3 +34,7 @@ export function hexToRgb(hex: string): Rgb {
   const n = parseInt(hex.replace('#', ''), 16);
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
 }
+
+export function rgbToHex(c: Rgb): string {
+  return `#${c.map((v) => Math.round(v * 255).toString(16).padStart(2, '0')).join('')}`;
+}
