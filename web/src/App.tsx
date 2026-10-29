@@ -16,7 +16,7 @@ export function App() {
   const [learningRate, setLearningRate] = useState(0.5);
 
   const intro = seq.phase !== 'interactive';
-  const uiVisible = seq.phase !== 'idle' && seq.phase !== 'title';
+  const uiVisible = seq.phase !== 'idle';
 
   const kmValue = parseKm(km);
   const prediction = kmValue !== null && !seq.diverged ? seq.predict(kmValue) : null;

@@ -152,6 +152,22 @@ export function pathJob(layer: PaintLayer, points: Vec2[], o: SprayPathOptions):
   };
 }
 
+export function moveJob(points: Vec2[], speed: number): Job {
+  const path = samplePath(points);
+  const pos = { ...points[0] };
+  let s = 0;
+  return {
+    pos,
+    update(dt) {
+      s = Math.min(path.length, s + speed * dt);
+      const p = path.at(s);
+      pos.x = p.x;
+      pos.y = p.y;
+      return s >= path.length;
+    },
+  };
+}
+
 export function dotJob(layer: PaintLayer, x: number, y: number, o: SprayDotOptions): Job {
   const rng = mulberry32(o.seed ?? randomSeed());
   const duration = (o.duration ?? 180) / 1000;

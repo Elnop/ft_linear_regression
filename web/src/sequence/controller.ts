@@ -167,21 +167,33 @@ export class SequenceController {
     }
   }
 
-  private sprayPoint(index: number, duration: number, top = false): Promise<void> {
+  private pointLayer(index: number, top: boolean, opacity = 1) {
     const s = DATA[index];
     const p = this.chart.point(s.km, s.price);
     const layer = this.engine.createLayer({
       color: COLORS.point,
+      opacity,
       z: top ? 2 : 0,
       bounds: { x: p.x - 30, y: p.y - 30, w: 60, h: 60 + DRIP_ROOM.dot },
     });
     (top ? this.topPoints : this.points).push(layer);
     const [lo, hi] = STYLE.dot.load;
-    return this.engine.sprayDot(layer, p.x, p.y, {
-      duration: duration / this.scale,
-      width: STYLE.dot.width,
-      load: lo + Math.random() * (hi - lo),
-    });
+    return { layer, p, opts: { width: STYLE.dot.width, load: lo + Math.random() * (hi - lo) } };
+  }
+
+  private sprayPoint(index: number, duration: number, top = false): Promise<void> {
+    const { layer, p, opts } = this.pointLayer(index, top);
+    return this.engine.sprayDot(layer, p.x, p.y, { ...opts, duration: duration / this.scale });
+  }
+
+  private stampPoints(fade = 0): Promise<void[]> {
+    return Promise.all(
+      this.order.map((i) => {
+        const { layer, p, opts } = this.pointLayer(i, false, fade ? 0 : 1);
+        this.engine.stampDot(layer, p.x, p.y, { ...opts, duration: TIMING.dot });
+        return fade ? this.engine.fadeLayer(layer, 1, fade / this.scale) : undefined;
+      }),
+    );
   }
 
   private clipRect(kind: LineKind): Rect {
@@ -249,16 +261,11 @@ export class SequenceController {
       diverged: false, divergedAt: null, trainingActive: false, trainOptions: DEFAULT_TRAIN,
     });
 
-    await this.wait(gen, this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal }));
-    this.set({ phase: 'ui-in' });
     await this.sleep(gen, TIMING.uiIn);
+    this.set({ visiblePoints: DATA.length });
+    await this.wait(gen, this.stampPoints(TIMING.pointsIn));
 
-    this.set({ phase: 'points' });
-    for (let i = 0; i < this.order.length; i++) {
-      await this.wait(gen, this.sprayPoint(this.order[i], TIMING.dot));
-      this.set({ visiblePoints: i + 1 });
-      await this.sleep(gen, TIMING.dotGap);
-    }
+    await this.wait(gen, this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal }));
     await this.sleep(gen, TIMING.beforeDescent);
 
     this.set({ phase: 'descent' });
@@ -319,7 +326,7 @@ export class SequenceController {
     this.set({ chart: this.chart });
 
     const jobs: Promise<void>[] = [this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal })];
-    for (const i of this.order) jobs.push(this.sprayPoint(i, TIMING.dot));
+    void this.stampPoints();
 
     const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;

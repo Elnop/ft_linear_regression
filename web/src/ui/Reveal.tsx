@@ -3,7 +3,6 @@ import type { CSSProperties, ReactNode } from 'react';
 
 type Props = {
   visible: boolean;
-  delay?: number;
   from?: { x?: number; y?: number };
   className?: string;
   style?: CSSProperties;
@@ -12,7 +11,7 @@ type Props = {
   children: ReactNode;
 };
 
-export function Reveal({ visible, delay = 0, from = { y: 14 }, className, style, label, as = 'div', children }: Props) {
+export function Reveal({ visible, from = { y: 14 }, className, style, label, as = 'div', children }: Props) {
   const Tag = motion[as];
   return (
     <Tag
@@ -23,7 +22,7 @@ export function Reveal({ visible, delay = 0, from = { y: 14 }, className, style,
       inert={!visible}
       initial={false}
       animate={visible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: from.x ?? 0, y: from.y ?? 0 }}
-      transition={{ duration: visible ? 0.7 : 0.3, delay: visible ? delay : 0, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: visible ? 0.7 : 0.3, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </Tag>

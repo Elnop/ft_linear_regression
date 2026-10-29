@@ -84,7 +84,7 @@ export function WallUI(p: WallUIProps) {
 
       <div className="wu-root" style={wide || p.uiVisible ? undefined : { overflowY: 'hidden' }}>
         <h1 className="sr-only">ft_linear_regression</h1>
-        <Reveal visible={p.uiVisible} delay={0.1} style={{ position: wide ? 'absolute' : 'fixed', left: title.rect.x, top: subtitleTop }}>
+        <Reveal visible={p.uiVisible} style={{ position: wide ? 'absolute' : 'fixed', left: title.rect.x, top: subtitleTop }}>
           <p className="wu-subtitle" style={{ position: 'static', fontSize: width < 600 ? 14 : 17 }}>
             {SUBTITLE}
           </p>
@@ -92,12 +92,12 @@ export function WallUI(p: WallUIProps) {
 
         {wide ? (
           <>
-            <Reveal visible={p.uiVisible} delay={0.15} from={{ y: -12 }} style={{ position: 'absolute', top: title.rect.y, right: pad }}>
+            <Reveal visible={p.uiVisible} from={{ y: -12 }} style={{ position: 'absolute', top: title.rect.y, right: pad }}>
               {chips}
             </Reveal>
             <Reveal
               visible={p.uiVisible}
-              delay={0.3}
+             
               from={{ x: 24 }}
               as="aside"
               label="Prédiction et précision"
@@ -106,19 +106,19 @@ export function WallUI(p: WallUIProps) {
             >
               {panels}
             </Reveal>
-            <Reveal visible={p.uiVisible} delay={0.45} from={{ y: 24 }} as="footer" style={{ position: 'absolute', left: pad, right: pad, bottom: Math.round(pad * 0.5) }}>
+            <Reveal visible={p.uiVisible} from={{ y: 24 }} as="footer" style={{ position: 'absolute', left: pad, right: pad, bottom: Math.round(pad * 0.5) }}>
               {bar}
             </Reveal>
           </>
         ) : (
           <div className="wu-flow" style={{ padding: `${area.y + area.h + 70}px ${pad}px ${pad}px` }}>
-            <Reveal visible={p.uiVisible} delay={0.15}>
+            <Reveal visible={p.uiVisible}>
               {chips}
             </Reveal>
-            <Reveal visible={p.uiVisible} delay={0.3} as="aside" label="Prédiction et précision" className="wu-aside" style={{ position: 'relative' }}>
+            <Reveal visible={p.uiVisible} as="aside" label="Prédiction et précision" className="wu-aside" style={{ position: 'relative' }}>
               {panels}
             </Reveal>
-            <Reveal visible={p.uiVisible} delay={0.45} as="footer">
+            <Reveal visible={p.uiVisible} as="footer">
               {bar}
             </Reveal>
             {p.uiVisible && p.doc}

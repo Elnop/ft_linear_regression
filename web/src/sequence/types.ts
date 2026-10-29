@@ -3,7 +3,7 @@ import type { ChartMapping, PaintEngine } from '../paint/index.ts';
 
 export type { Thetas, TrainOptions };
 
-export type Phase = 'idle' | 'title' | 'ui-in' | 'points' | 'descent' | 'interactive';
+export type Phase = 'idle' | 'title' | 'descent' | 'interactive';
 
 export type Metrics = { r2: number; rmse: number; mae: number };
 

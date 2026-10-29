@@ -1,7 +1,7 @@
 export const TIMING = {
-  uiIn: 600,
+  uiIn: 700,
+  pointsIn: 600,
   dot: 110,
-  dotGap: 240,
   redot: 70,
   redotGap: 150,
   beforeDescent: 800,

@@ -1,6 +1,6 @@
 import { stepFlow } from './flow.ts';
 import { FILM_SCALE, PaintLayer } from './layer.ts';
-import { dotJob, pathJob, type Job } from './nozzle.ts';
+import { dotJob, moveJob, pathJob, type Job } from './nozzle.ts';
 import { createGLRenderer, type Renderer } from './renderer.ts';
 import { createCanvasRenderer } from './renderer2d.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
@@ -102,6 +102,18 @@ export class PaintEngine {
     return this.run(layer, dotJob(layer, x, y, o));
   }
 
+  sweep(layer: PaintLayer, points: Vec2[], speed: number): Promise<void> {
+    return this.run(layer, moveJob(points, speed));
+  }
+
+  stampPath(layer: PaintLayer, points: Vec2[], o: SprayPathOptions = {}): void {
+    this.stamp(pathJob(layer, points, o));
+  }
+
+  stampDot(layer: PaintLayer, x: number, y: number, o: SprayDotOptions = {}): void {
+    this.stamp(dotJob(layer, x, y, o));
+  }
+
   nozzle(): Nozzle | null {
     const r = this.jobs[this.jobs.length - 1];
     return r ? { x: r.job.pos.x, y: r.job.pos.y, color: r.layer.color, active: this.jobs.length } : null;
@@ -146,6 +158,11 @@ export class PaintEngine {
       this.jobs.push({ job, layer, done });
       this.wake();
     });
+  }
+
+  private stamp(job: Job): void {
+    while (!job.update(FLOW_STEP));
+    this.wake();
   }
 
   private measure(): void {
