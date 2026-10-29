@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import type { ChartMapping } from '@/lib/chart.ts';
+import { SMALL } from '@/lib/layout.ts';
 import '@/features/dashboard/chart/chart.css';
 
 export type ChartAxesProps = {
@@ -25,7 +26,7 @@ export function ChartAxes({ chart, width, height, visible = true, kmStep = 50_00
   const { area, domain } = chart;
   const bottom = area.y + area.h;
   const right = area.x + area.w;
-  const small = width < 600;
+  const small = width < SMALL;
   const fs = small ? 12 : 15;
   const kms = range(domain.kmMin, domain.kmMax, kmStep);
   const prices = range(domain.priceMin, domain.priceMax, priceStep);

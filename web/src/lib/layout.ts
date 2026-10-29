@@ -1,9 +1,18 @@
 import { chartMapping, type ChartMapping } from './chart.ts';
 
+export const SMALL = 600;
 export const WIDE = 1024;
 export const ASIDE_W = 340;
 
+export const SUBTITLE_GAP = 4;
+export const HEAD_TO_ASIDE = 92;
+export const CHART_TO_FLOW = 70;
+// 48px buttons + 2 × 12px padding, see controls.css
+export const CONTROL_BAR_H = 72;
+export const SKIP_ABOVE_BAR = CONTROL_BAR_H + 14;
+
 export const pagePad = (width: number) => Math.min(44, Math.max(16, width * 0.03));
+export const footerBottom = (pad: number) => Math.round(pad * 0.5);
 
 export function chartFor(width: number, height: number): ChartMapping {
   if (width < WIDE) return chartMapping(width, height);

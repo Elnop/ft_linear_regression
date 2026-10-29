@@ -5,7 +5,7 @@ import { ChartAxes } from '@/features/dashboard/chart/components/presenters/Char
 import { ControlBar, type ControlBarProps } from '@/features/dashboard/controls/components/presenters/ControlBar.tsx';
 import { CostPanel, type CostPanelProps } from '@/features/dashboard/panels/components/presenters/CostPanel.tsx';
 import { HeaderChips, type HeaderChipsProps } from '@/features/dashboard/panels/components/presenters/HeaderChips.tsx';
-import { pagePad, WIDE } from '@/lib/layout.ts';
+import { CHART_TO_FLOW, footerBottom, pagePad, SKIP_ABOVE_BAR, SMALL, SUBTITLE_GAP, WIDE } from '@/lib/layout.ts';
 import { PredictPanel, type PredictPanelProps } from '@/features/dashboard/panels/components/presenters/PredictPanel.tsx';
 import { PrecisionPanel, type PrecisionPanelProps } from '@/features/dashboard/panels/components/presenters/PrecisionPanel.tsx';
 import { PriceMarker } from '@/features/dashboard/chart/components/presenters/PriceMarker.tsx';
@@ -53,12 +53,12 @@ export function WallUI(p: WallUIProps) {
 
       <div className="wu-root" style={wide || uiVisible ? undefined : { overflowY: 'hidden' }}>
         <h1 className="sr-only">ft_linear_regression</h1>
-        <Subtitle visible={uiVisible} fixed={!wide} left={title.rect.x} top={title.rect.y + title.rect.h + 4} small={width < 600} />
-        {wide ? <WideLayout {...slots} top={title.rect.y} /> : <FlowLayout {...slots} top={area.y + area.h + 70} doc={p.doc} />}
+        <Subtitle visible={uiVisible} fixed={!wide} left={title.rect.x} top={title.rect.y + title.rect.h + SUBTITLE_GAP} small={width < SMALL} />
+        {wide ? <WideLayout {...slots} top={title.rect.y} /> : <FlowLayout {...slots} top={area.y + area.h + CHART_TO_FLOW} doc={p.doc} />}
         <SkipButton
           visible={showSkip}
           onSkip={onSkip}
-          style={{ position: 'fixed', right: pad, bottom: wide && uiVisible ? Math.round(pad * 0.5) + 86 : pad }}
+          style={{ position: 'fixed', right: pad, bottom: wide && uiVisible ? footerBottom(pad) + SKIP_ABOVE_BAR : pad }}
         />
       </div>
 

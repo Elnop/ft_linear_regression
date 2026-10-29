@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
-import { ASIDE_W } from '@/lib/layout.ts';
+import { ASIDE_W, footerBottom, HEAD_TO_ASIDE } from '@/lib/layout.ts';
 
 type Props = {
   visible: boolean;
@@ -23,11 +23,11 @@ export function WideLayout({ visible, pad, top, head, panels, bar }: Props) {
         as="aside"
         label="Prédiction et précision"
         className="wu-aside"
-        style={{ right: pad, top: top + 92, width: ASIDE_W }}
+        style={{ right: pad, top: top + HEAD_TO_ASIDE, width: ASIDE_W }}
       >
         {panels}
       </Reveal>
-      <Reveal visible={visible} from={{ y: 24 }} as="footer" style={{ position: 'absolute', left: pad, right: pad, bottom: Math.round(pad * 0.5) }}>
+      <Reveal visible={visible} from={{ y: 24 }} as="footer" style={{ position: 'absolute', left: pad, right: pad, bottom: footerBottom(pad) }}>
         {bar}
       </Reveal>
     </>

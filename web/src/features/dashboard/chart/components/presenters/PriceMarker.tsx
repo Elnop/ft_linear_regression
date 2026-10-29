@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/lib/format.ts';
+import { SMALL } from '@/lib/layout.ts';
 import '@/features/dashboard/chart/chart.css';
 
 export type PriceMarkerProps = {
@@ -14,7 +15,7 @@ const STICKER_H = 112;
 
 export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
   const visible = at !== null && price !== null && Number.isFinite(at.x) && Number.isFinite(at.y);
-  const scale = width < 600 ? 0.72 : 1;
+  const scale = width < SMALL ? 0.72 : 1;
   const w = STICKER_W * scale;
   const flip = visible && at.x + 26 + w > width - 8;
   const left = visible ? Math.max(8, Math.min(width - w - 8, flip ? at.x - 26 - w : at.x + 26)) : 0;
