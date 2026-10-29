@@ -5,12 +5,15 @@ import { ChartAxes } from '@/features/dashboard/chart/components/presenters/Char
 import { ControlBar, type ControlBarProps } from '@/features/dashboard/controls/components/presenters/ControlBar.tsx';
 import { CostPanel, type CostPoint } from '@/features/dashboard/panels/components/presenters/CostPanel.tsx';
 import { HeaderChips } from '@/features/dashboard/panels/components/presenters/HeaderChips.tsx';
-import { ASIDE_W, pagePad, WIDE } from '@/lib/layout.ts';
+import { pagePad, WIDE } from '@/lib/layout.ts';
 import { PredictPanel } from '@/features/dashboard/panels/components/presenters/PredictPanel.tsx';
 import { PrecisionPanel } from '@/features/dashboard/panels/components/presenters/PrecisionPanel.tsx';
 import { PriceMarker } from '@/features/dashboard/chart/components/presenters/PriceMarker.tsx';
-import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
 import { SkipButton } from '@/features/dashboard/controls/components/presenters/SkipButton.tsx';
+import { FlowLayout } from '@/features/dashboard/layout/components/presenters/FlowLayout.tsx';
+import { HeadBar } from '@/features/dashboard/layout/components/presenters/HeadBar.tsx';
+import { Subtitle } from '@/features/dashboard/layout/components/presenters/Subtitle.tsx';
+import { WideLayout } from '@/features/dashboard/layout/components/presenters/WideLayout.tsx';
 import '@/features/dashboard/layout/layout.css';
 
 export type WallUIProps = {
@@ -43,29 +46,14 @@ export type WallUIProps = {
   doc?: ReactNode;
 };
 
-const SUBTITLE = 'prix ~ kilométrage · descente de gradient · 24 voitures';
-
 export function WallUI(p: WallUIProps) {
   const { width, height, chart, title } = p;
   const wide = width >= WIDE;
   const pad = pagePad(width);
   const area = chart.area;
   const axesVisible = p.axesVisible ?? p.uiVisible;
-  const subtitleTop = title.rect.y + title.rect.h + 4;
 
-  const chips = (
-    <div className="wu-head">
-      <HeaderChips theta0={p.theta0} theta1={p.theta1} progress={p.progress} />
-      {p.doc && (
-        <button type="button" className="doc-jump glass wu-hit" onClick={scrollToDoc}>
-          DOC
-          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor">
-            <path d="M11 4h2v12l5-5 1.4 1.4L12 19.8 4.6 12.4 6 11l5 5z" />
-          </svg>
-        </button>
-      )}
-    </div>
-  );
+  const head = <HeadBar chips={<HeaderChips theta0={p.theta0} theta1={p.theta1} progress={p.progress} />} withDoc={!!p.doc} />;
   const panels = (
     <>
       <PredictPanel value={p.km} onChange={p.onKmChange} price={p.price} />
@@ -74,6 +62,7 @@ export function WallUI(p: WallUIProps) {
     </>
   );
   const bar = <ControlBar {...p.controls} diverged={p.diverged} />;
+  const slots = { visible: p.uiVisible, pad, head, panels, bar };
 
   return (
     <>
@@ -82,46 +71,8 @@ export function WallUI(p: WallUIProps) {
 
       <div className="wu-root" style={wide || p.uiVisible ? undefined : { overflowY: 'hidden' }}>
         <h1 className="sr-only">ft_linear_regression</h1>
-        <Reveal visible={p.uiVisible} style={{ position: wide ? 'absolute' : 'fixed', left: title.rect.x, top: subtitleTop }}>
-          <p className="wu-subtitle" style={{ position: 'static', fontSize: width < 600 ? 14 : 17 }}>
-            {SUBTITLE}
-          </p>
-        </Reveal>
-
-        {wide ? (
-          <>
-            <Reveal visible={p.uiVisible} from={{ y: -12 }} style={{ position: 'absolute', top: title.rect.y, right: pad }}>
-              {chips}
-            </Reveal>
-            <Reveal
-              visible={p.uiVisible}
-              from={{ x: 24 }}
-              as="aside"
-              label="Prédiction et précision"
-              className="wu-aside"
-              style={{ right: pad, top: title.rect.y + 92, width: ASIDE_W }}
-            >
-              {panels}
-            </Reveal>
-            <Reveal visible={p.uiVisible} from={{ y: 24 }} as="footer" style={{ position: 'absolute', left: pad, right: pad, bottom: Math.round(pad * 0.5) }}>
-              {bar}
-            </Reveal>
-          </>
-        ) : (
-          <div className="wu-flow" style={{ padding: `${area.y + area.h + 70}px ${pad}px ${pad}px` }}>
-            <Reveal visible={p.uiVisible}>
-              {chips}
-            </Reveal>
-            <Reveal visible={p.uiVisible} as="aside" label="Prédiction et précision" className="wu-aside" style={{ position: 'relative' }}>
-              {panels}
-            </Reveal>
-            <Reveal visible={p.uiVisible} as="footer">
-              {bar}
-            </Reveal>
-            {p.uiVisible && p.doc}
-          </div>
-        )}
-
+        <Subtitle visible={p.uiVisible} fixed={!wide} left={title.rect.x} top={title.rect.y + title.rect.h + 4} small={width < 600} />
+        {wide ? <WideLayout {...slots} top={title.rect.y} /> : <FlowLayout {...slots} top={area.y + area.h + 70} doc={p.doc} />}
         <SkipButton
           visible={p.showSkip}
           onSkip={p.onSkip}
@@ -136,8 +87,4 @@ export function WallUI(p: WallUIProps) {
       )}
     </>
   );
-}
-
-function scrollToDoc() {
-  document.getElementById('doc')?.scrollIntoView({ behavior: 'smooth' });
 }
