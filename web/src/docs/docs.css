@@ -151,6 +151,143 @@
   outline-offset: 2px;
 }
 
+.doc-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: -16px;
+}
+.doc-tab {
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-line);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--ink-dim);
+  cursor: pointer;
+  font: 700 12px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.doc-tab:hover {
+  color: var(--ink);
+}
+.doc-tab[aria-selected='true'] {
+  color: var(--bg);
+  background: var(--acid);
+  border-color: var(--acid);
+}
+.doc-tab:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+.doc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.doc-sources {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--glass-line);
+}
+.doc-toc-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px 28px;
+}
+.doc-toc-title {
+  margin-bottom: 6px !important;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--glass-line);
+  font-family: var(--anton);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  color: var(--magenta);
+}
+.doc-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.doc-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.doc-toc a:hover {
+  color: var(--acid);
+}
+.doc-toc span {
+  font-family: var(--marker);
+  color: var(--acid);
+}
+.doc-fn {
+  scroll-margin-top: 24px;
+}
+
+.doc-math {
+  color: var(--cyan);
+  white-space: pre;
+}
+.doc-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.doc-figure svg {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+.doc-figure figcaption {
+  font: 12px/1.5 var(--mono);
+  color: var(--ink-dim);
+}
+.fig-axis {
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1;
+}
+.fig-curve {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 2.5;
+}
+.fig-step {
+  stroke: var(--magenta);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+.fig-dot {
+  fill: var(--magenta);
+}
+.fig-min {
+  stroke: var(--acid);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+.fig-label {
+  fill: var(--ink-dim);
+  font: 12px var(--mono);
+}
+
 .doc-page {
   position: relative;
   z-index: 5;
@@ -179,9 +316,15 @@ html:has(.doc-page)::-webkit-scrollbar {
 }
 
 @media (max-width: 1023px) {
-  .doc {
+  .doc,
+  .doc-panel {
     gap: 28px;
+  }
+  .doc {
     padding-top: 36px;
+  }
+  .doc-tabs {
+    margin-bottom: -8px;
   }
   .doc-fn,
   .doc-grid {

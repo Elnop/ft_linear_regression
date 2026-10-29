@@ -41,7 +41,10 @@ L'animation montre **ce que fait réellement le programme du sujet** : une desce
 
 ## Documentation intégrée
 
-Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presque pleine largeur présente les fonctions principales de `core/` : `estimatePrice`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`, `cost` / `r2` et `parseDataset`, puis la CLI et l'organisation du projet. Le mur peint reste fixe en arrière-plan.
+Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presque pleine largeur présente la documentation en deux onglets. Le mur peint reste fixe en arrière-plan.
+
+- **Théorie** : ce qu'est le machine learning et l'apprentissage supervisé (régression ou classification), les 4 étapes de l'apprentissage supervisé (dataset, modèle, fonction coût, minimisation), puis la descente de gradient (intuition, formule, learning rate, calcul des dérivées), et enfin ce qui est propre au projet (normalisation, vérification).
+- **Code** : les fonctions de `core/` dans le même ordre (`parseDataset`, `estimatePrice`, `cost` / `r2`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`), puis la CLI et l'organisation du projet.
 
 Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/docs/source.ts`). La documentation montre donc toujours le code qui tourne.
 
