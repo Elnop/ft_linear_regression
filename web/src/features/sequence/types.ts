@@ -9,8 +9,6 @@ export type Metrics = { r2: number; rmse: number; mae: number };
 
 export type CostPoint = { iter: number; cost: number };
 
-export type Prediction = { price: number; x: number; y: number };
-
 export type TitleContext = {
   timeScale: () => number;
   signal: AbortSignal;
@@ -36,7 +34,6 @@ export type SequenceActions = {
   skip: () => void;
   train: (options?: Partial<TrainOptions>) => Promise<void>;
   replay: () => void;
-  predict: (km: number) => Prediction | null;
 };
 
 export type Sequence = SequenceState & SequenceActions;

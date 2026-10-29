@@ -13,7 +13,6 @@ export function useSequenceRuntime(): void {
       skip: controller.skip,
       train: controller.train,
       replay: () => controller.start(),
-      predict: controller.predict,
     });
     controller.start();
     return () => {

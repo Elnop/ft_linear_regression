@@ -7,7 +7,6 @@ export const IDLE_ACTIONS: SequenceActions = {
   skip: () => {},
   train: async () => {},
   replay: () => {},
-  predict: () => null,
 };
 
 // Written only by the SequenceController (state) and useSequenceRuntime (actions).

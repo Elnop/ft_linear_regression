@@ -3,7 +3,7 @@ import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { DrawTitle, Prediction, SequenceState } from '@/features/sequence/types.ts';
+import type { DrawTitle, SequenceState } from '@/features/sequence/types.ts';
 import { WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
 import { Timeline, type Run } from './timeline.ts';
@@ -12,9 +12,7 @@ import {
   DATA,
   DEFAULT_TRAIN,
   isFinalPass,
-  isFinite2,
   lineKindAt,
-  priceAt,
   runTraining,
   stepAt,
   type Step,
@@ -73,13 +71,6 @@ export class SequenceController {
     this.training = plan;
     this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
     await this.play(run, () => this.playTraining(run, plan));
-  };
-
-  predict = (km: number): Prediction | null => {
-    const t = this.state.thetas;
-    if (!t || !isFinite2(t)) return null;
-    const price = priceAt(t, km);
-    return { price, x: this.painter.chart.x(km), y: this.painter.chart.y(price) };
   };
 
   private get state(): SequenceState {

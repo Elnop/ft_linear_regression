@@ -1,17 +1,17 @@
-import { useWallViewModel } from '@/app/hooks/useWallViewModel.ts';
 import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx';
 import { WallUI } from '@/features/dashboard/layout/components/orchestrators/WallUI.tsx';
 import { SprayCan } from '@/features/decor/spray-can/components/orchestrators/SprayCan.tsx';
 import { Stickers } from '@/features/decor/stickers/components/orchestrators/Stickers.tsx';
 import { DocPage } from '@/features/docs/components/orchestrators/DocPage.tsx';
+import { useSequenceRuntime } from '@/features/sequence/hooks/useSequenceRuntime.ts';
 
 export function App() {
-  const vm = useWallViewModel();
+  useSequenceRuntime();
   return (
     <>
       <PaintWall />
-      <Stickers {...vm.stickers} />
-      <WallUI {...vm.wall} doc={<DocPage />} />
+      <Stickers />
+      <WallUI doc={<DocPage />} />
       <SprayCan />
     </>
   );
