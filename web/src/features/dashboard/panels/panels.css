@@ -18,6 +18,8 @@
   color: var(--cyan);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .panel {
   display: flex;
@@ -101,15 +103,21 @@
   font-size: 26px;
   color: var(--ink);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 1023px) {
+  .wu-chips {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
   .chip {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     min-width: 0;
-    padding: 8px 12px;
+    padding: 8px;
   }
   .chip-value {
-    font-size: 15px;
+    font-size: clamp(11px, 3.3vw, 15px);
   }
 }

@@ -1,9 +1,14 @@
 const NNBSP = ' ';
 const MINUS = '−';
+const COMPACT_FROM = 1e9;
 
 export function formatNumber(n: number | null | undefined, decimals = 0): string {
   if (n === null || n === undefined || Number.isNaN(n)) return '—';
   if (!Number.isFinite(n)) return n > 0 ? '∞' : `${MINUS}∞`;
+  if (Math.abs(n) >= COMPACT_FROM) {
+    const [mantissa, exponent] = Math.abs(n).toExponential(1).split('e+');
+    return `${n < 0 ? MINUS : ''}${mantissa}e${exponent}`;
+  }
   const [int, frac] = Math.abs(n).toFixed(decimals).split('.');
   const grouped = int.replace(/\B(?=(\d{3})+(?!\d))/g, NNBSP);
   const sign = n < 0 && Number(Math.abs(n).toFixed(decimals)) !== 0 ? MINUS : '';

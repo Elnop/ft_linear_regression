@@ -21,7 +21,7 @@ function Metric({ label, value, color }: { label: string; value: string; color?:
   return (
     <div className="metric">
       <dt className="label">{label}</dt>
-      <dd style={{ color }}>{value}</dd>
+      <dd style={{ color, fontSize: value.length > 5 ? 19 : undefined }}>{value}</dd>
     </div>
   );
 }
