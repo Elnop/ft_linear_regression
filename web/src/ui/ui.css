@@ -111,6 +111,11 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(130%);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass: rgba(20, 19, 23, 0.9);
+  }
+}
 .tape {
   position: absolute;
   top: -11px;
@@ -427,6 +432,9 @@ body {
 }
 
 @media (max-width: 1023px) {
+  :root {
+    --glass: rgba(20, 19, 23, 0.86);
+  }
   .wu-root {
     overflow-y: auto;
     overflow-x: hidden;
