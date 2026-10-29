@@ -4,7 +4,6 @@
   flex-direction: column;
   gap: 40px;
   padding: 48px clamp(18px, 3vw, 48px) 40px;
-  border-radius: 22px;
   box-sizing: border-box;
   line-height: 1.6;
   font-size: 14px;

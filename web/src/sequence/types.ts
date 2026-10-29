@@ -1,5 +1,5 @@
-import type { Thetas, TrainOptions } from '../../../core/types.ts';
-import type { ChartMapping, PaintEngine } from '../paint/index.ts';
+import type { Thetas, TrainOptions } from '@core/types.ts';
+import type { ChartMapping, PaintEngine } from '@/paint/index.ts';
 
 export type { Thetas, TrainOptions };
 
@@ -12,15 +12,11 @@ export type CostPoint = { iter: number; cost: number };
 export type Prediction = { price: number; x: number; y: number };
 
 export type TitleContext = {
-  timeScale(): number;
+  timeScale: () => number;
   signal: AbortSignal;
 };
 
 export type DrawTitle = (engine: PaintEngine, ctx: TitleContext) => Promise<void>;
-
-export type SequenceOptions = {
-  drawTitle?: DrawTitle;
-};
 
 export type SequenceState = {
   phase: Phase;
@@ -39,10 +35,10 @@ export type SequenceState = {
 };
 
 export type SequenceActions = {
-  skip(): void;
-  train(options?: Partial<TrainOptions>): Promise<void>;
-  replay(): void;
-  predict(km: number): Prediction | null;
+  skip: () => void;
+  train: (options?: Partial<TrainOptions>) => Promise<void>;
+  replay: () => void;
+  predict: (km: number) => Prediction | null;
 };
 
 export type Sequence = SequenceState & SequenceActions;

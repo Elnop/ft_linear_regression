@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import type { PaintEngine, Rgb } from '../paint/index.ts';
+import { useEffect, useEffectEvent, useRef } from 'react';
+import type { PaintEngine, Rgb } from '@/paint/index.ts';
 
 const VIEW_W = 140;
 const VIEW_H = 340;
@@ -29,8 +29,7 @@ export type SprayCanProps = {
 export function SprayCan({ engine, hidden = false }: SprayCanProps) {
   const box = useRef<HTMLDivElement>(null);
   const mist = useRef<HTMLCanvasElement>(null);
-  const hiddenRef = useRef(hidden);
-  hiddenRef.current = hidden;
+  const isHidden = useEffectEvent(() => hidden);
 
   useEffect(() => {
     if (!engine || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -68,7 +67,7 @@ export function SprayCan({ engine, hidden = false }: SprayCanProps) {
       const scale = canW / VIEW_W;
 
       const n = engine.nozzle();
-      const spraying = !!n && n.active <= 2 && !hiddenRef.current;
+      const spraying = !!n && n.active <= 2 && !isHidden();
       if (spraying) {
         idle = 0;
         const hex = toHex(n.color);
@@ -132,7 +131,7 @@ export function SprayCan({ engine, hidden = false }: SprayCanProps) {
       el.style.transformOrigin = `${hx}px ${hy}px`;
       el.style.transform = `translate(${pos.x - hx}px, ${pos.y - hy + rattle * 2}px) rotate(${angle}deg)`;
       el.classList.toggle('pressed', spraying);
-      el.classList.toggle('gone', hiddenRef.current || (!!n && n.active > 2));
+      el.classList.toggle('gone', isHidden() || (!!n && n.active > 2));
 
       if (misty) ctx.clearRect(0, 0, w, window.innerHeight);
       misty = spraying;

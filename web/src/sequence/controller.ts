@@ -1,7 +1,7 @@
-import type { ChartMapping, PaintEngine, PaintLayer, Rect } from '../paint/index.ts';
-import { drawTitle as tagTitle } from '../title/index.ts';
-import { chartFor } from '../ui/layout.ts';
-import type { Thetas, TrainOptions } from '../../../core/types.ts';
+import type { ChartMapping, PaintEngine, PaintLayer, Rect } from '@/paint/index.ts';
+import { drawTitle as tagTitle } from '@/title/index.ts';
+import { chartFor } from '@/ui/layout.ts';
+import type { Thetas, TrainOptions } from '@core/types.ts';
 import {
   DATA,
   DEFAULT_TRAIN,
@@ -73,10 +73,6 @@ export class SequenceController {
     });
   }
 
-  setDrawTitle(drawTitle: DrawTitle | undefined): void {
-    this.drawTitle = drawTitle ?? defaultTitle;
-  }
-
   subscribe = (listener: () => void): (() => void) => {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -87,7 +83,7 @@ export class SequenceController {
   start(): void {
     const gen = this.restart();
     this.engine.clear();
-    this.run(gen, () => this.playIntro(gen));
+    void this.run(gen, () => this.playIntro(gen));
   }
 
   destroy(): void {
@@ -191,7 +187,7 @@ export class SequenceController {
       this.order.map((i) => {
         const { layer, p, opts } = this.pointLayer(i, false, fade ? 0 : 1);
         this.engine.stampDot(layer, p.x, p.y, { ...opts, duration: TIMING.dot });
-        return fade ? this.engine.fadeLayer(layer, 1, fade / this.scale) : undefined;
+        return fade ? this.engine.fadeLayer(layer, 1, fade / this.scale) : Promise.resolve();
       }),
     );
   }
@@ -235,7 +231,7 @@ export class SequenceController {
     painted.forEach((layer, i) => {
       const age = painted.length - 1 - i;
       if (instant) this.engine.setOpacity(layer, fadeOpacity(age), fadeGray(age));
-      else this.engine.fadeLayer(layer, fadeOpacity(age), TIMING.fade / this.scale, fadeGray(age));
+      else void this.engine.fadeLayer(layer, fadeOpacity(age), TIMING.fade / this.scale, fadeGray(age));
     });
   }
 
@@ -286,7 +282,7 @@ export class SequenceController {
   private async playTraining(gen: number, plan: Training): Promise<void> {
     const old = [...this.fan.flatMap((s) => (s.layer ? [s.layer] : [])), ...this.topPoints];
     for (const layer of old) {
-      this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale).then(() => this.engine.removeLayer(layer));
+      void this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale).then(() => this.engine.removeLayer(layer));
     }
     this.fan = [];
     this.topPoints = [];
@@ -343,7 +339,7 @@ export class SequenceController {
     for (const i of this.order) jobs.push(this.sprayPoint(i, TIMING.redot, true));
     this.fadeFan(true);
     this.set({ phase: 'interactive', visiblePoints: DATA.length, skipping: true });
-    this.run(gen, async () => {
+    void this.run(gen, async () => {
       await this.wait(gen, Promise.all(jobs));
     });
   }

@@ -1,5 +1,5 @@
-import { chartMapping } from '../paint/chart.ts';
-import type { Rect, Vec2 } from '../paint/types.ts';
+import { chartMapping } from '@/paint/chart.ts';
+import type { Rect, Vec2 } from '@/paint/types.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
 
 export const TITLE = 'ft_linear_regression';

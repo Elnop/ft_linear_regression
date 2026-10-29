@@ -1,5 +1,5 @@
-import { useEffect, useImperativeHandle, useRef, useState, type Ref } from 'react';
-import wallUrl from '../assets/wall-night.jpg';
+import { useEffect, useEffectEvent, useImperativeHandle, useRef, useState, type Ref } from 'react';
+import wallUrl from '@/assets/wall-night.jpg';
 import { PaintEngine } from './engine.ts';
 
 type Props = {
@@ -10,16 +10,15 @@ type Props = {
 export function PaintWall({ ref, onReady }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [engine, setEngine] = useState<PaintEngine | null>(null);
-  const readyRef = useRef(onReady);
-  readyRef.current = onReady;
+  const ready = useEffectEvent((e: PaintEngine) => onReady?.(e));
 
   useEffect(() => {
     const e = new PaintEngine(box.current!, wallUrl);
     let alive = true;
-    e.ready.then(() => {
+    void e.ready.then(() => {
       if (!alive) return;
       setEngine(e);
-      readyRef.current?.(e);
+      ready(e);
     });
     return () => {
       alive = false;

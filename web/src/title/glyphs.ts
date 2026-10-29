@@ -1,4 +1,4 @@
-import type { Vec2 } from '../paint/index.ts';
+import type { Vec2 } from '@/paint/index.ts';
 
 export type Glyph = {
   advance: number;

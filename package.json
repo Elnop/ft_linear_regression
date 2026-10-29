@@ -10,7 +10,8 @@
     "precision": "node cli/precision.ts",
     "web": "npm run dev -w web",
     "build": "npm run build -w web",
-    "typecheck": "tsc -p . && tsc -p web"
+    "typecheck": "tsc -p . && tsc -p web",
+    "check": "npm run check -w web"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

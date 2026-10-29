@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import type { PaintEngine } from '../paint/index.ts';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import type { PaintEngine } from '@/paint/index.ts';
 import { SequenceController } from './controller.ts';
 import { DATA, DEFAULT_TRAIN } from './model.ts';
-import type { Sequence, SequenceOptions, SequenceState } from './types.ts';
+import type { Sequence, SequenceState } from './types.ts';
 
 const IDLE: SequenceState = {
   phase: 'idle',
@@ -22,15 +22,13 @@ const IDLE: SequenceState = {
 
 const noop = () => () => {};
 
-export function useSequence(engine: PaintEngine | null, options: SequenceOptions = {}): Sequence {
+export function useSequence(engine: PaintEngine | null): Sequence {
   const [ctl, setCtl] = useState<SequenceController | null>(null);
-  const drawTitle = useRef(options.drawTitle);
-  drawTitle.current = options.drawTitle;
 
   useEffect(() => {
     if (!engine) return;
     const c = new SequenceController(engine);
-    if (drawTitle.current) c.setDrawTitle((e, ctx) => (drawTitle.current ?? (() => Promise.resolve()))(e, ctx));
+    // oxlint-disable-next-line react/set-state-in-effect -- publishes a controller tied to the engine's lifetime
     setCtl(c);
     c.start();
     return () => {

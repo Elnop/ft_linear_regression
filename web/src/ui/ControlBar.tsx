@@ -17,7 +17,7 @@ export type ControlBarProps = {
   style?: CSSProperties;
 };
 
-export const willDiverge = (learningRate: number) => learningRate > 1.75;
+const willDiverge = (learningRate: number) => learningRate > 1.75;
 
 export function ControlBar(p: ControlBarProps) {
   const lrId = useId();

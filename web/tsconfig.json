@@ -11,7 +11,12 @@
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@core/*": ["../core/*"],
+      "@dataset": ["../data.csv"]
+    }
   },
   "include": ["src", "vite.config.ts", "../core"]
 }

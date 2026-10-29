@@ -128,7 +128,7 @@ void main() {
 }`;
 
 function compile(gl: WebGL2RenderingContext, vs: string, fs: string): WebGLProgram {
-  const prog = gl.createProgram()!;
+  const prog = gl.createProgram();
   for (const [type, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]] as const) {
     const sh = gl.createShader(type)!;
     gl.shaderSource(sh, src);
@@ -167,7 +167,7 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
   const gpu = new Map<number, GpuLayer>();
 
   const makeTex = (internal: number, w: number, h: number) => {
-    const tex = gl.createTexture()!;
+    const tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, tex);
     gl.texStorage2D(gl.TEXTURE_2D, 1, internal, w, h);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);

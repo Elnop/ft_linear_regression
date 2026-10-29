@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -p . && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc -p .",
+    "lint": "oxlint --type-aware src",
+    "deps": "depcruise src",
+    "check": "npm run typecheck && npm run lint && npm run deps"
   },
   "dependencies": {
     "motion": "^14.7.1",
@@ -13,9 +17,13 @@
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@swc/core": "^1.16.20",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "dependency-cruiser": "^18.7.0",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
     "vite": "^8.3.5"
   }
 }

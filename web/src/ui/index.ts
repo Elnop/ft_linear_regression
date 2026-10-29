@@ -1,5 +1,5 @@
 export { ChartAxes, type ChartAxesProps } from './ChartAxes.tsx';
-export { ControlBar, willDiverge, type ControlBarProps } from './ControlBar.tsx';
+export { ControlBar, type ControlBarProps } from './ControlBar.tsx';
 export { CostPanel, type CostPanelProps, type CostPoint } from './CostPanel.tsx';
 export { formatNumber, parseKm } from './format.ts';
 export { HeaderChips, type HeaderChipsProps } from './HeaderChips.tsx';

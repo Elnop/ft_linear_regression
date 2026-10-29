@@ -1,10 +1,10 @@
 import { useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
-import csvSource from '../../../core/csv.ts?raw';
-import gradientSource from '../../../core/gradient.ts?raw';
-import hypothesisSource from '../../../core/hypothesis.ts?raw';
-import metricsSource from '../../../core/metrics.ts?raw';
-import normalizeSource from '../../../core/normalize.ts?raw';
-import trainSource from '../../../core/train.ts?raw';
+import csvSource from '@core/csv.ts?raw';
+import gradientSource from '@core/gradient.ts?raw';
+import hypothesisSource from '@core/hypothesis.ts?raw';
+import metricsSource from '@core/metrics.ts?raw';
+import normalizeSource from '@core/normalize.ts?raw';
+import trainSource from '@core/train.ts?raw';
 import { pick, tokenize } from './source.ts';
 import './docs.css';
 
