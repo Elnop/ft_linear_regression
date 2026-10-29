@@ -2,9 +2,11 @@ import type { TrainOptions } from '@core/types.ts';
 import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
+import { createStore } from '@/lib/store.ts';
 import type { DrawTitle, Prediction, SequenceState } from '@/features/sequence/types.ts';
 import { WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
+import { Timeline, type Run } from './timeline.ts';
 import { TIMING } from './timing.ts';
 import {
   DATA,
@@ -19,19 +21,13 @@ import {
   type Training,
 } from './training.ts';
 
-class Cancelled extends Error {}
-
 const defaultTitle: DrawTitle = (engine, ctx) => tagTitle(engine, { tempo: ctx.timeScale });
 
 export class SequenceController {
+  private store = createStore<SequenceState>(IDLE_STATE);
+  private timeline = new Timeline();
   private engine: PaintEngine;
   private drawTitle: DrawTitle;
-  private state: SequenceState;
-  private listeners = new Set<() => void>();
-
-  private gen = 0;
-  private abort = new AbortController();
-  private scale = 1;
   private painter: WallPainter;
 
   private order = shuffled(DATA.length);
@@ -42,49 +38,43 @@ export class SequenceController {
   constructor(engine: PaintEngine, drawTitle: DrawTitle = defaultTitle) {
     this.engine = engine;
     this.drawTitle = drawTitle;
-    this.painter = new WallPainter(engine, () => this.scale);
-    this.state = IDLE_STATE;
+    this.painter = new WallPainter(engine, () => this.timeline.scale);
     this.unResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
     });
   }
 
-  subscribe = (listener: () => void): (() => void) => {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
-  };
-
-  getState = (): SequenceState => this.state;
+  subscribe = this.store.subscribe;
+  getState = this.store.get;
 
   start(): void {
-    const gen = this.restart();
+    const run = this.restart();
     this.painter.clear();
-    void this.run(gen, () => this.playIntro(gen));
+    void this.play(run, () => this.playIntro(run));
   }
 
   destroy(): void {
     this.restart();
     clearTimeout(this.resizeTimer);
     this.unResize();
-    this.listeners.clear();
   }
 
   skip = (): void => {
-    if (this.scale === TIMING.skipScale) return;
+    if (this.timeline.scale === TIMING.skipScale) return;
     if (this.state.phase === 'interactive' && !this.state.trainingActive) return;
-    this.scale = TIMING.skipScale;
+    this.timeline.scale = TIMING.skipScale;
     this.set({ skipping: true });
   };
 
-  train = async (options: Partial<TrainOptions> = {}): Promise<void> => {
+  train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
-    const o: TrainOptions = { ...DEFAULT_TRAIN, ...options };
-    const plan = runTraining(DATA, o, true);
-    const gen = this.restart();
+    const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
+    const plan = runTraining(DATA, options, true);
+    const run = this.restart();
     this.training = plan;
-    this.set({ trainingActive: true, trainOptions: o, diverged: false, costHistory: [] });
-    await this.run(gen, () => this.playTraining(gen, plan));
+    this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
+    await this.play(run, () => this.playTraining(run, plan));
   };
 
   predict = (km: number): Prediction | null => {
@@ -94,50 +84,22 @@ export class SequenceController {
     return { price, x: this.painter.chart.x(km), y: this.painter.chart.y(price) };
   };
 
+  private get state(): SequenceState {
+    return this.store.get();
+  }
+
   private set(patch: Partial<SequenceState>): void {
-    this.state = { ...this.state, ...patch };
-    for (const l of this.listeners) l();
+    this.store.set(patch);
   }
 
-  private restart(): number {
-    this.abort.abort();
-    this.abort = new AbortController();
-    this.scale = 1;
+  private restart(): Run {
+    const run = this.timeline.restart();
     if (this.state.skipping) this.set({ skipping: false });
-    return ++this.gen;
+    return run;
   }
 
-  private check(gen: number): void {
-    if (gen !== this.gen) throw new Cancelled();
-  }
-
-  private async run(gen: number, body: () => Promise<void>): Promise<void> {
-    try {
-      await body();
-    } catch (e) {
-      if (!(e instanceof Cancelled)) throw e;
-      return;
-    }
-    if (gen === this.gen) {
-      this.scale = 1;
-      this.set({ skipping: false });
-    }
-  }
-
-  private async wait<T>(gen: number, p: Promise<T>): Promise<T> {
-    const v = await p;
-    this.check(gen);
-    return v;
-  }
-
-  private async sleep(gen: number, ms: number): Promise<void> {
-    let left = ms;
-    while (left > 0) {
-      const t0 = performance.now();
-      await new Promise((r) => setTimeout(r, Math.min(left / this.scale, 50)));
-      this.check(gen);
-      left -= (performance.now() - t0) * this.scale;
-    }
+  private async play(run: Run, script: () => Promise<void>): Promise<void> {
+    if (await this.timeline.play(run, script)) this.set({ skipping: false });
   }
 
   private show(step: Step, extra: Partial<SequenceState> = {}): void {
@@ -150,61 +112,60 @@ export class SequenceController {
     });
   }
 
-  private async playIntro(gen: number): Promise<void> {
+  private async playIntro(run: Run): Promise<void> {
     const plan = runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
     this.order = shuffled(DATA.length);
     this.set({ ...IDLE_STATE, phase: 'title' });
 
-    await this.sleep(gen, TIMING.uiIn);
+    await run.sleep(TIMING.uiIn);
     this.set({ visiblePoints: DATA.length });
-    await this.wait(gen, this.painter.stampPoints(this.order, TIMING.pointsIn));
+    await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
 
-    await this.wait(gen, this.paintTitle());
-    await this.sleep(gen, TIMING.beforeDescent);
+    await run.wait(this.paintTitle());
+    await run.sleep(TIMING.beforeDescent);
 
     this.set({ phase: 'descent' });
-    await this.playPasses(gen, plan);
+    await this.playPasses(run, plan);
     this.set({ phase: 'interactive' });
   }
 
-  private async playTraining(gen: number, plan: Training): Promise<void> {
+  private async playTraining(run: Run, plan: Training): Promise<void> {
     this.painter.wipeFan();
-    await this.sleep(gen, TIMING.fanOut);
+    await run.sleep(TIMING.fanOut);
 
-    await this.playPasses(gen, plan);
+    await this.playPasses(run, plan);
     this.set({ trainingActive: false });
   }
 
-  private async playPasses(gen: number, plan: Training): Promise<void> {
-    const last = plan.steps.length - 1;
-    for (let j = 0; j <= last; j++) {
-      this.show(stepAt(plan, j));
-      const painting = this.sprayPass(plan, j);
+  private async playPasses(run: Run, plan: Training): Promise<void> {
+    for (let pass = 0; pass < plan.steps.length; pass++) {
+      this.show(stepAt(plan, pass));
+      const painting = this.sprayPass(plan, pass);
       this.painter.fadeFan();
-      await this.wait(gen, painting);
-      await this.sleep(gen, TIMING.afterPass);
+      await run.wait(painting);
+      await run.sleep(TIMING.afterPass);
     }
     this.set({ diverged: plan.diverged });
 
     for (const i of this.order) {
-      await this.wait(gen, this.painter.sprayPoint(i, TIMING.redot, true));
-      await this.sleep(gen, TIMING.redotGap);
+      await run.wait(this.painter.sprayPoint(i, TIMING.redot, true));
+      await run.sleep(TIMING.redotGap);
     }
   }
 
   private paintTitle(): Promise<void> {
-    return this.drawTitle(this.engine, { timeScale: () => this.scale, signal: this.abort.signal });
+    return this.drawTitle(this.engine, { timeScale: () => this.timeline.scale, signal: this.timeline.signal });
   }
 
-  private sprayPass(plan: Training, j: number): Promise<void> {
-    const duration = isFinalPass(plan, j) ? TIMING.finalPass : TIMING.pass;
-    return this.painter.sprayLine(plan.steps[j], lineKindAt(plan, j), duration, j % 2 === 1);
+  private sprayPass(plan: Training, pass: number): Promise<void> {
+    const duration = isFinalPass(plan, pass) ? TIMING.finalPass : TIMING.pass;
+    return this.painter.sprayLine(plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
   }
 
   private repaint(): void {
-    const gen = this.restart();
-    this.scale = TIMING.skipScale;
+    const run = this.restart();
+    this.timeline.scale = TIMING.skipScale;
     this.painter.clear();
     this.painter.fit();
 
@@ -213,7 +174,7 @@ export class SequenceController {
 
     const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN, true);
     this.training = plan;
-    plan.steps.forEach((_, j) => jobs.push(this.sprayPass(plan, j)));
+    plan.steps.forEach((_, pass) => jobs.push(this.sprayPass(plan, pass)));
     this.show(stepAt(plan, plan.steps.length - 1), {
       diverged: plan.diverged,
       trainingActive: false,
@@ -221,8 +182,8 @@ export class SequenceController {
     for (const i of this.order) jobs.push(this.painter.sprayPoint(i, TIMING.redot, true));
     this.painter.fadeFan(true);
     this.set({ phase: 'interactive', visiblePoints: DATA.length, skipping: true });
-    void this.run(gen, async () => {
-      await this.wait(gen, Promise.all(jobs));
+    void this.play(run, async () => {
+      await run.wait(Promise.all(jobs));
     });
   }
 }
