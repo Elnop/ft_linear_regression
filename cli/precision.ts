@@ -1,34 +1,16 @@
-import { parseArgs } from 'node:util';
 import { mae, r2, rmse } from '../core/metrics.ts';
-import { fail, loadDataset, readModel } from './model.ts';
+import { fail, loadDataset, parseCli, readModel } from './model.ts';
 
 const USAGE = `Usage: npm run precision -- [dataset.csv]
 
   dataset.csv  km,price CSV file to evaluate on (default: data.csv)
   -h, --help   show this help`;
 
-function parseCli() {
-  try {
-    return parseArgs({
-      allowPositionals: true,
-      options: { help: { type: 'boolean', short: 'h', default: false } },
-    });
-  } catch (e) {
-    fail(`${(e as Error).message}\n\n${USAGE}`);
-  }
-}
-
-const { values, positionals } = parseCli();
-if (values.help) {
-  console.log(USAGE);
-  process.exit(0);
-}
-if (positionals.length > 1) fail(`expected at most one dataset file\n\n${USAGE}`);
+const { datasetPath } = parseCli(USAGE, {});
 
 const thetas = readModel();
 if (!thetas) fail('model.json not found, run the training first (npm run train)');
 
-const datasetPath = positionals[0] ?? 'data.csv';
 const data = loadDataset(datasetPath);
 const meanPrice = data.reduce((sum, { price }) => sum + price, 0) / data.length;
 const meanError = mae(data, thetas);

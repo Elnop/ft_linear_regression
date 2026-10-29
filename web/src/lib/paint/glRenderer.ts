@@ -1,4 +1,4 @@
-import { isEmpty, resetRect, type PaintLayer } from './layer.ts';
+import { isEmpty, resetRect, type CellRect, type PaintLayer } from './layer.ts';
 import { coverRect } from './roughness.ts';
 import { PAINT_FS, QUAD_VS, WALL_FS } from './shaders.ts';
 import type { Renderer } from './renderer.ts';
@@ -53,6 +53,20 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
     return tex;
   };
 
+  const upload = (tex: WebGLTexture, stride: number, r: CellRect, type: number, data: ArrayBufferView) => {
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, stride);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, r.x0);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, r.y0);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, r.x0, r.y0, r.x1 - r.x0 + 1, r.y1 - r.y0 + 1, gl.RED, type, data);
+  };
+
+  const free = (g: GpuLayer) => {
+    gl.deleteTexture(g.film);
+    gl.deleteTexture(g.pool);
+    gl.deleteTexture(g.mist);
+  };
+
   const sync = (L: PaintLayer) => {
     let g = gpu.get(L.id);
     if (!g) {
@@ -62,25 +76,14 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     if (!isEmpty(L.filmDirty)) {
       const r = L.filmDirty;
-      const x0 = Math.max(0, r.x0), y0 = Math.max(0, r.y0);
-      const x1 = Math.min(L.fw - 1, r.x1), y1 = Math.min(L.fh - 1, r.y1);
-      gl.bindTexture(gl.TEXTURE_2D, g.film);
-      gl.pixelStorei(gl.UNPACK_ROW_LENGTH, L.fw);
-      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, x0);
-      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, y0);
-      gl.texSubImage2D(gl.TEXTURE_2D, 0, x0, y0, x1 - x0 + 1, y1 - y0 + 1, gl.RED, gl.FLOAT, L.film);
-      gl.bindTexture(gl.TEXTURE_2D, g.pool);
-      gl.texSubImage2D(gl.TEXTURE_2D, 0, x0, y0, x1 - x0 + 1, y1 - y0 + 1, gl.RED, gl.FLOAT, L.pooled);
+      const c = { x0: Math.max(0, r.x0), y0: Math.max(0, r.y0), x1: Math.min(L.fw - 1, r.x1), y1: Math.min(L.fh - 1, r.y1) };
+      upload(g.film, L.fw, c, gl.FLOAT, L.film);
+      upload(g.pool, L.fw, c, gl.FLOAT, L.pooled);
       resetRect(r);
     }
     if (!isEmpty(L.mistDirty)) {
-      const r = L.mistDirty;
-      gl.bindTexture(gl.TEXTURE_2D, g.mist);
-      gl.pixelStorei(gl.UNPACK_ROW_LENGTH, L.mw);
-      gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, r.x0);
-      gl.pixelStorei(gl.UNPACK_SKIP_ROWS, r.y0);
-      gl.texSubImage2D(gl.TEXTURE_2D, 0, r.x0, r.y0, r.x1 - r.x0 + 1, r.y1 - r.y0 + 1, gl.RED, gl.UNSIGNED_BYTE, L.mist);
-      resetRect(r);
+      upload(g.mist, L.mw, L.mistDirty, gl.UNSIGNED_BYTE, L.mist);
+      resetRect(L.mistDirty);
     }
     gl.pixelStorei(gl.UNPACK_ROW_LENGTH, 0);
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
@@ -94,10 +97,8 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
   };
 
   return {
-    resize(cssW, cssH, dpr) {
+    resize(cssW, cssH) {
       view = { w: cssW, h: cssH };
-      canvas.width = Math.round(cssW * dpr);
-      canvas.height = Math.round(cssH * dpr);
     },
     setWall(img) {
       wallTex = gl.createTexture();
@@ -157,13 +158,11 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
     release(L) {
       const g = gpu.get(L.id);
       if (!g) return;
-      gl.deleteTexture(g.film);
-      gl.deleteTexture(g.pool);
-      gl.deleteTexture(g.mist);
+      free(g);
       gpu.delete(L.id);
     },
     destroy() {
-      for (const g of gpu.values()) gl.deleteTexture(g.film), gl.deleteTexture(g.pool), gl.deleteTexture(g.mist);
+      for (const g of gpu.values()) free(g);
       gpu.clear();
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     },

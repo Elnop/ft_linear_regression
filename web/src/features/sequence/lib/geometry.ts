@@ -4,7 +4,7 @@ import type { ChartMapping } from '@/lib/chart.ts';
 import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 import { isFinite2 } from './training.ts';
 
-export function clipSegment(a: Vec2, b: Vec2, r: Rect): [Vec2, Vec2] | null {
+function clipSegment(a: Vec2, b: Vec2, r: Rect): [Vec2, Vec2] | null {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   let t0 = 0;

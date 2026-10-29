@@ -11,16 +11,8 @@ export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 1000
 
 export const willDiverge = (learningRate: number) => learningRate > 1.75;
 
-export function metricsOf(data: Sample[], t: Thetas): Metrics {
-  return { r2: r2(data, t), rmse: rmse(data, t), mae: mae(data, t) };
-}
-
 export function isFinite2(t: Thetas): boolean {
   return Number.isFinite(t.theta0) && Number.isFinite(t.theta1);
-}
-
-function sampled(iter: number, next: number): boolean {
-  return iter <= 64 || iter >= next;
 }
 
 export type Training = {
@@ -35,17 +27,17 @@ export function runTraining(data: Sample[], o: TrainOptions): Training {
   const history: CostPoint[] = [];
   let last: TrainStep | null = null;
   let first = Infinity;
-  let nonFinite: number | null = null;
+  let nonFinite = false;
   let nextPass = 0;
   let nextSample = 0;
 
   for (const step of trainSteps(data, o)) {
     if (!isFinite2(step)) {
-      nonFinite = step.iter;
+      nonFinite = true;
       break;
     }
     if (step.iter === 0) first = step.cost;
-    if (sampled(step.iter, nextSample) && Number.isFinite(step.cost)) {
+    if ((step.iter <= 64 || step.iter >= nextSample) && Number.isFinite(step.cost)) {
       history.push({ iter: step.iter, cost: step.cost });
       nextSample = Math.ceil(step.iter * 1.05);
     }
@@ -59,7 +51,7 @@ export function runTraining(data: Sample[], o: TrainOptions): Training {
   if (Number.isFinite(last.cost) && history[history.length - 1].iter !== last.iter) history.push({ iter: last.iter, cost: last.cost });
   if (steps[steps.length - 1]?.iter !== last.iter) steps.push(last);
 
-  const diverged = nonFinite !== null || last.cost > first;
+  const diverged = nonFinite || last.cost > first;
   return { steps, history, last, diverged };
 }
 
@@ -70,7 +62,7 @@ export function stepAt(plan: Training, j: number): Step {
   return {
     thetas: s,
     iter: s.iter,
-    metrics: metricsOf(DATA, s),
+    metrics: { r2: r2(DATA, s), rmse: rmse(DATA, s), mae: mae(DATA, s) },
     history: plan.history.filter((h) => h.iter <= s.iter),
   };
 }

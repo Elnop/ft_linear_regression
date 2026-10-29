@@ -1,11 +1,6 @@
 import { createInterface } from 'node:readline';
 import { estimatePrice } from '../core/hypothesis.ts';
-import type { Thetas } from '../core/types.ts';
 import { fail, readModel } from './model.ts';
-
-function loadThetas(): Thetas {
-  return readModel() ?? { theta0: 0, theta1: 0 };
-}
 
 function ask(question: string): Promise<string | null> {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
@@ -37,7 +32,7 @@ function parseMileage(input: string): number {
   return value;
 }
 
-const thetas = loadThetas();
+const thetas = readModel() ?? { theta0: 0, theta1: 0 };
 const answer = await ask('Mileage (km): ');
 if (answer === null) {
   process.stdout.write('\n');

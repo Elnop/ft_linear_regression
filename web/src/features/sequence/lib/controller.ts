@@ -107,7 +107,7 @@ export class SequenceController {
     this.set({ visiblePoints: DATA.length });
     await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
 
-    await run.wait(this.paintTitle());
+    await run.wait(drawTitle(this.engine, () => this.timeline.scale));
     await run.sleep(TIMING.beforeDescent);
 
     this.set({ phase: 'descent' });
@@ -137,10 +137,6 @@ export class SequenceController {
       await run.wait(this.painter.sprayPoint(i, TIMING.redot, true));
       await run.sleep(TIMING.redotGap);
     }
-  }
-
-  private paintTitle(): Promise<void> {
-    return drawTitle(this.engine, () => this.timeline.scale);
   }
 
   private sprayPass(plan: Training, pass: number): Promise<void> {

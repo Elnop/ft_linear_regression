@@ -3,12 +3,14 @@ import { pagePad, WIDE } from '@/lib/layout.ts';
 import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
 
-export const TITLE = 'ft_linear_regression';
+const TITLE = 'ft_linear_regression';
 const ASCENT = 1.72;
 const DESCENT = 0.66;
 const LINE_GAP = 0.12;
 const SLANT = 0.26;
 const TILT = (-2.2 * Math.PI) / 180;
+const COS = Math.cos(TILT);
+const SIN = Math.sin(TILT);
 export const STROKE = 0.2;
 const TRACKING = 0.14;
 
@@ -18,7 +20,7 @@ export type TitleLayout = {
   lines: { text: string; x: number; baseline: number }[];
 };
 
-export const TITLE_GAP_BELOW = 60;
+const TITLE_GAP_BELOW = 60;
 
 export function titleLayout(width: number, height: number): TitleLayout {
   const pad = pagePad(width);
@@ -56,8 +58,6 @@ export function titleStrokes(layout: TitleLayout, rng: () => number): Stroke[] {
   const out: Stroke[] = [];
   for (const line of layout.lines) {
     let pen = 0;
-    const cos = Math.cos(TILT);
-    const sin = Math.sin(TILT);
     for (const ch of line.text) {
       const g = GLYPHS[ch];
       const scale = 0.94 + 0.12 * rng();
@@ -66,7 +66,7 @@ export function titleStrokes(layout: TitleLayout, rng: () => number): Stroke[] {
       const place = (q: Vec2): Vec2 => {
         const lx = pen + q.x * scale - (q.y * scale + lift) * lean;
         const ly = q.y * scale + lift;
-        return { x: line.x + (lx * cos - ly * sin) * em, y: line.baseline + (lx * sin + ly * cos) * em };
+        return { x: line.x + (lx * COS - ly * SIN) * em, y: line.baseline + (lx * SIN + ly * COS) * em };
       };
       g.strokes.forEach((knots, k) => {
         out.push({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false, letterStart: k === 0 });

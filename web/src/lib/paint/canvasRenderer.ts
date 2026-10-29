@@ -47,8 +47,6 @@ export function createCanvasRenderer(canvas: HTMLCanvasElement): Renderer {
   return {
     resize(w, h, dpr) {
       view = { w, h, dpr };
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
     },
     setWall(img) {
       wall = img;

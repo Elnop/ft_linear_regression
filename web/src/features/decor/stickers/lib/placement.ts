@@ -1,6 +1,6 @@
 import type { ChartMapping } from '@/lib/chart.ts';
 import { WIDE } from '@/lib/layout.ts';
-import type { Cluster, Damage, Item, PlacedSticker } from '@/features/decor/stickers/types.ts';
+import type { Cluster, Damage, PlacedSticker } from '@/features/decor/stickers/types.ts';
 import { car, descent, formula, logo42, norm, piscine, react, ts } from './arts.tsx';
 
 const CLUSTERS: Cluster[] = [
@@ -31,15 +31,15 @@ const TITLE_DAMAGE: Damage = { seed: 21, scrape: 0.64, peel: ['br', 0.32] };
 export function placeStickers(chart: ChartMapping, width: number, titleRight: number): PlacedSticker[] {
   const { area } = chart;
   const k = Math.min(1, Math.max(0.6, width / 1440));
-  const items: (Item & { x: number; y: number })[] = [];
+  const placed: PlacedSticker[] = [];
   for (const c of CLUSTERS) {
     const right = Math.max(...c.items.map((it) => (it.dx + it.w) * k));
     const ax = Math.min(area.x + c.u * area.w, width - right - 6);
     const ay = area.y + c.v * area.h;
-    for (const it of c.items) items.push({ ...it, x: ax + it.dx * k, y: ay + it.dy * k });
+    for (const it of c.items) placed.push({ art: it.art, dmg: it.dmg, w: it.w * k, x: ax + it.dx * k, y: ay + it.dy * k, rot: it.rot });
   }
   if (width >= WIDE && titleRight + 110 < width - 420) {
-    items.push({ art: logo42, dx: 0, dy: 0, w: 50, rot: 15, dmg: TITLE_DAMAGE, x: titleRight + 40, y: Math.max(20, area.y * 0.3) });
+    placed.push({ art: logo42, dmg: TITLE_DAMAGE, w: 50 * k, x: titleRight + 40, y: Math.max(20, area.y * 0.3), rot: 15 });
   }
-  return items.map((s) => ({ art: s.art, dmg: s.dmg, w: s.w * k, x: s.x, y: s.y, rot: s.rot }));
+  return placed;
 }

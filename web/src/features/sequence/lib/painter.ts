@@ -3,12 +3,12 @@ import type { ChartMapping } from '@/lib/chart.ts';
 import { chartFor } from '@/lib/layout.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
+import { NOMINAL_SPEED } from '@/lib/paint/nozzle.ts';
 import type { Rect, SprayPathOptions } from '@/lib/paint/types.ts';
 import { lineSegment } from './geometry.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
 import { DATA, type LineKind } from './training.ts';
 
-const NOMINAL_SPEED = 520;
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
 export class WallPainter {

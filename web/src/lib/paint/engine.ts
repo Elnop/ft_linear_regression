@@ -50,7 +50,7 @@ export class PaintEngine {
       img.onload = () => {
         this.wall = img;
         this.renderer.setWall(img);
-        this.roughness = computeRoughness(img, this.width, this.height, FILM_SCALE);
+        this.fitRoughness(img);
         this.wake();
         resolve();
       };
@@ -61,7 +61,7 @@ export class PaintEngine {
     this.observer = new ResizeObserver(() => {
       if (!this.measure()) return;
       if (this.wall) {
-        this.roughness = computeRoughness(this.wall, this.width, this.height, FILM_SCALE);
+        this.fitRoughness(this.wall);
         // Resizing the canvas blanks it: draw again before the browser paints.
         this.renderer.render(this.layers);
       }
@@ -180,9 +180,15 @@ export class PaintEngine {
     this.width = width;
     this.height = height;
     this.dpr = dpr;
+    this.canvas.width = Math.round(width * dpr);
+    this.canvas.height = Math.round(height * dpr);
     this.renderer.resize(width, height, dpr);
     this.needsDraw = true;
     return true;
+  }
+
+  private fitRoughness(wall: HTMLImageElement): void {
+    this.roughness = computeRoughness(wall, this.width, this.height, FILM_SCALE);
   }
 
   private flow(l: PaintLayer, dt: number): void {

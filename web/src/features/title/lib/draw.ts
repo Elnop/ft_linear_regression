@@ -1,5 +1,6 @@
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
+import { NOMINAL_SPEED } from '@/lib/paint/nozzle.ts';
 import type { Vec2 } from '@/lib/paint/types.ts';
 import { mulberry32, randomSeed } from '@/lib/random.ts';
 import { STROKE, titleLayout, titleStrokes, type Stroke } from './layout.ts';
@@ -63,7 +64,7 @@ function stamp(engine: PaintEngine, layer: PaintLayer, s: Stroke, width: number,
   engine.stampPath(layer, s.points, {
     speed: STAMP_SPEED,
     width,
-    load: (s.thickness * STAMP_SPEED) / 520,
+    load: (s.thickness * STAMP_SPEED) / NOMINAL_SPEED,
     dwell: ((heavy ? 70 : 12) * pace) / STAMP_SPEED,
     hesitations: 0,
     end: heavy ? 'blob' : 'taper',

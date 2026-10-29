@@ -4,7 +4,7 @@ import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
 export type Job = { pos: Vec2; update(dt: number): boolean };
 
-const NOMINAL_SPEED = 520;
+export const NOMINAL_SPEED = 520;
 const DROPLET = 0.05;
 const SPRAY_SIGMA = 3.6;
 const MIST_CLUMPS = 0.12;

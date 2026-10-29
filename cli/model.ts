@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
 import { parseDataset } from '../core/csv.ts';
 import type { Sample, Thetas } from '../core/types.ts';
 
@@ -9,7 +10,31 @@ export function fail(message: string): never {
   process.exit(1);
 }
 
-export function isThetas(value: unknown): value is Thetas {
+export function errorCode(e: unknown): string {
+  return (e as NodeJS.ErrnoException).code ?? (e as Error).message;
+}
+
+// Parses `[dataset.csv]` plus the given options, and handles --help and usage errors.
+export function parseCli<O extends ParseArgsOptionsConfig>(usage: string, options: O) {
+  let parsed;
+  try {
+    parsed = parseArgs({
+      allowPositionals: true,
+      options: { ...options, help: { type: 'boolean', short: 'h', default: false } },
+    });
+  } catch (e) {
+    fail(`${(e as Error).message}\n\n${usage}`);
+  }
+  const { values, positionals } = parsed;
+  if ((values as { help: boolean }).help) {
+    console.log(usage);
+    process.exit(0);
+  }
+  if (positionals.length > 1) fail(`expected at most one dataset file\n\n${usage}`);
+  return { values, datasetPath: positionals[0] ?? 'data.csv' };
+}
+
+function isThetas(value: unknown): value is Thetas {
   if (typeof value !== 'object' || value === null) return false;
   const { theta0, theta1 } = value as Record<string, unknown>;
   return Number.isFinite(theta0) && Number.isFinite(theta1);
@@ -21,7 +46,7 @@ export function readModel(): Thetas | null {
     text = readFileSync(MODEL_PATH, 'utf8');
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') return null;
-    fail(`cannot read model.json: ${(e as NodeJS.ErrnoException).code ?? (e as Error).message}`);
+    fail(`cannot read model.json: ${errorCode(e)}`);
   }
   let parsed: unknown;
   try {
@@ -38,7 +63,7 @@ export function loadDataset(path: string): Sample[] {
   try {
     text = readFileSync(path, 'utf8');
   } catch (e) {
-    fail(`cannot read "${path}": ${(e as NodeJS.ErrnoException).code ?? (e as Error).message}`);
+    fail(`cannot read "${path}": ${errorCode(e)}`);
   }
   try {
     return parseDataset(text);

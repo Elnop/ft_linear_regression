@@ -40,9 +40,9 @@ export class PaintLayer {
   gray = 0;
 
   shownColor(): Rgb {
-    const g = 0.5;
-    const k = this.gray;
-    return [this.color[0] + (g - this.color[0]) * k, this.color[1] + (g - this.color[1]) * k, this.color[2] + (g - this.color[2]) * k];
+    const [r, g, b] = this.color;
+    const mix = (c: number) => c + (0.5 - c) * this.gray;
+    return [mix(r), mix(g), mix(b)];
   }
 
   readonly fw: number;
@@ -117,18 +117,10 @@ export class PaintLayer {
     const ty = fy - iy;
     const t = mass / (CELL * CELL);
     const k = iy * this.fw + ix;
-    const a = t * (1 - tx) * (1 - ty);
-    const b = t * tx * (1 - ty);
-    const c = t * (1 - tx) * ty;
-    const d = t * tx * ty;
-    this.film[k] += a;
-    this.wetMass[k] += a;
-    this.film[k + 1] += b;
-    this.wetMass[k + 1] += b;
-    this.film[k + this.fw] += c;
-    this.wetMass[k + this.fw] += c;
-    this.film[k + this.fw + 1] += d;
-    this.wetMass[k + this.fw + 1] += d;
+    this.add(k, t * (1 - tx) * (1 - ty));
+    this.add(k + 1, t * tx * (1 - ty));
+    this.add(k + this.fw, t * (1 - tx) * ty);
+    this.add(k + this.fw + 1, t * tx * ty);
     grow(this.active, ix, iy, ix + 1, iy + 1);
     grow(this.filmDirty, ix, iy, ix + 1, iy + 1);
   }
@@ -155,9 +147,7 @@ export class PaintLayer {
       for (let x = x0; x <= x1; x++) {
         const d2 = ((x - cx) ** 2 + (y - cy) ** 2) / (r * r);
         if (d2 >= 1) continue;
-        const k = y * this.fw + x;
-        this.film[k] += t * (1 - d2);
-        this.wetMass[k] += t * (1 - d2);
+        this.add(y * this.fw + x, t * (1 - d2));
       }
     }
     grow(this.active, x0, y0, x1, y1);
@@ -186,6 +176,11 @@ export class PaintLayer {
       }
     }
     grow(this.mistDirty, x0, y0, x1, y1);
+  }
+
+  private add(k: number, mass: number): void {
+    this.film[k] += mass;
+    this.wetMass[k] += mass;
   }
 
   markFilmDirty(r: CellRect): void {

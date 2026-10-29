@@ -2,7 +2,7 @@ import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 
 export type ChartDomain = { kmMin: number; kmMax: number; priceMin: number; priceMax: number };
 
-export const DEFAULT_DOMAIN: ChartDomain = { kmMin: 0, kmMax: 250_000, priceMin: 3_000, priceMax: 9_000 };
+const DEFAULT_DOMAIN: ChartDomain = { kmMin: 0, kmMax: 250_000, priceMin: 3_000, priceMax: 9_000 };
 
 export type ChartMapping = {
   area: Rect;
