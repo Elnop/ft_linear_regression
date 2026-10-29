@@ -71,6 +71,7 @@ On ne dessine pas des formes : on **dépose de la matière** et la physique fait
 | Vite 8 | serveur de dev et build |
 | React 19 | interface |
 | Motion | animations |
+| Zustand | état partagé, un store par domaine |
 | Oxlint | lint (règles TypeScript typées via tsgolint, compatible TypeScript 7) |
 | dependency-cruiser | sens des dépendances entre couches, absence de cycles |
 
@@ -81,7 +82,7 @@ Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est i
 ```
 web/src/
 ├── main.tsx
-├── app/            composition de la page et view-model (useWallViewModel)
+├── app/            composition de la page, démarrage de la séquence
 ├── features/       une feature par domaine
 │   ├── sequence/   chorégraphie entraînement ↔ peinture (controller, painter, training)
 │   ├── title/      tracé du titre tagué
@@ -89,12 +90,23 @@ web/src/
 │   ├── decor/      autocollants et bombe de peinture
 │   └── docs/       documentation intégrée (contenu, onglets)
 ├── components/shared/   composants sans domaine (PaintWall, Reveal)
-├── lib/            technique pur : moteur de peinture, graphe, aléatoire, formatage
+├── lib/            technique sans domaine : moteur de peinture, viewport, graphe, aléatoire, formatage
 └── styles/         tokens et styles globaux
 ```
 
-- Dans une feature, les composants sont rangés par rôle : `orchestrators/` branchent l'état, `presenters/` affichent ce qu'on leur passe. La logique va dans `hooks/` et `lib/`.
+- Dans une feature, les composants sont rangés par rôle : `orchestrators/` lisent les stores, `presenters/` affichent ce qu'on leur passe par props. La logique va dans `hooks/` et `lib/`.
+- L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul propriétaire qui écrit dedans :
+
+  | Store | Contenu | Écrit par |
+  |---|---|---|
+  | `lib/paint/engineStore.ts` | le moteur de peinture | `PaintWall` |
+  | `lib/viewport/viewportStore.ts` | taille de la fenêtre | l'écouteur `resize` |
+  | `features/sequence/stores/sequenceStore.ts` | phase, θ, métriques, historique du coût | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
+  | `features/dashboard/stores/playgroundStore.ts` | kilométrage saisi, learning rate | ses actions `setKm`, `setLearningRate` |
+
+  Les autres domaines lisent ces stores avec des sélecteurs. Les valeurs dérivées qui croisent plusieurs domaines (prédiction, avertissement de divergence) sont calculées dans `features/dashboard/hooks/`.
 - Les dépendances vont dans un seul sens : `app → features → components/shared → lib`. Une feature n'importe pas les composants d'une autre feature : c'est `app/` qui les assemble.
+- dependency-cruiser vérifie aussi qu'un presenter n'importe aucun store, que les stores restent dans `stores/` ou `lib/`, et que `sequence/` ne dépend que de `title/`.
 - Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
 
 `npm run check` (dans `web/`) lance le typecheck, Oxlint et dependency-cruiser.

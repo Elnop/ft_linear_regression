@@ -42,6 +42,27 @@ module.exports = {
       from: { path: '^src/features/([^/]+)/' },
       to: { path: '^src/features/[^/]+/(components|[^/]+/components)/', pathNot: '^src/features/$1/' },
     },
+    {
+      name: 'presenters-are-pure',
+      severity: 'error',
+      comment: 'Un presenter ne lit aucun store : son orchestrateur lui passe tout par props.',
+      from: { path: '/presenters/' },
+      to: { path: '(Store\\.ts$|node_modules/zustand/)' },
+    },
+    {
+      name: 'stores-in-their-folder',
+      severity: 'error',
+      comment: 'Un store vit dans stores/ d’une feature, ou dans lib/ pour l’infra partagée (engine, viewport).',
+      from: {},
+      to: { path: 'Store\\.ts$', pathNot: '^src/(features/[^/]+/stores|lib/[^/]+)/[^/]+Store\\.ts$' },
+    },
+    {
+      name: 'sequence-is-headless',
+      severity: 'error',
+      comment: 'La séquence ne connaît que le titre qu’elle peint : jamais le dashboard, le décor ni la doc.',
+      from: { path: '^src/features/sequence/' },
+      to: { path: '^src/features/', pathNot: '^src/features/(sequence|title)/' },
+    },
   ],
   options: {
     doNotFollow: { path: 'node_modules' },
