@@ -1,5 +1,5 @@
 import { FILM_SCALE, isEmpty, resetRect, type PaintLayer } from './layer.ts';
-import type { Renderer } from './glRenderer.ts';
+import type { Renderer } from './renderer.ts';
 import { coverRect } from './roughness.ts';
 
 export function createCanvasRenderer(canvas: HTMLCanvasElement): Renderer {
