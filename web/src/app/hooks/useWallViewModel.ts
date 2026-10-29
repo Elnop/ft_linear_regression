@@ -56,9 +56,6 @@ export function useWallViewModel() {
       onReset: seq.replay,
       learningRate,
       onLearningRateChange: setLearningRate,
-      speed: 1,
-      speeds: [],
-      onSpeedChange: () => {},
     },
   };
 

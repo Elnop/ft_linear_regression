@@ -13,11 +13,9 @@ const IDLE: SequenceState = {
   metrics: null,
   costHistory: [],
   diverged: false,
-  divergedAt: null,
   trainingActive: false,
   skipping: false,
   trainOptions: DEFAULT_TRAIN,
-  chart: null,
 };
 
 const noop = () => () => {};

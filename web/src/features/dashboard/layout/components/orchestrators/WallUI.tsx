@@ -23,7 +23,6 @@ export type WallUIProps = {
   title: TitleLayout;
 
   uiVisible: boolean;
-  axesVisible?: boolean;
   showSkip: boolean;
   onSkip: () => void;
 
@@ -41,7 +40,7 @@ export type WallUIProps = {
   price: number | null;
   marker: { x: number; y: number } | null;
 
-  controls: Omit<ControlBarProps, 'diverged' | 'className' | 'style'>;
+  controls: Omit<ControlBarProps, 'diverged'>;
 
   doc?: ReactNode;
 };
@@ -51,7 +50,6 @@ export function WallUI(p: WallUIProps) {
   const wide = width >= WIDE;
   const pad = pagePad(width);
   const area = chart.area;
-  const axesVisible = p.axesVisible ?? p.uiVisible;
 
   const head = <HeadBar chips={<HeaderChips theta0={p.theta0} theta1={p.theta1} progress={p.progress} />} withDoc={!!p.doc} />;
   const panels = (
@@ -66,7 +64,7 @@ export function WallUI(p: WallUIProps) {
 
   return (
     <>
-      <ChartAxes chart={chart} width={width} height={height} visible={axesVisible} />
+      <ChartAxes chart={chart} width={width} height={height} visible={p.uiVisible} />
       <PriceMarker at={p.uiVisible ? p.marker : null} price={p.price} axisY={area.y + area.h} width={width} />
 
       <div className="wu-root" style={wide || p.uiVisible ? undefined : { overflowY: 'hidden' }}>

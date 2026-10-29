@@ -27,7 +27,6 @@ export type Training = {
   history: CostPoint[];
   last: TrainStep;
   diverged: boolean;
-  divergedAt: number | null;
 };
 
 export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): Training {
@@ -35,7 +34,6 @@ export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): T
   const history: CostPoint[] = [];
   let last: TrainStep | null = null;
   let first = Infinity;
-  let growing: number | null = null;
   let nonFinite: number | null = null;
   let nextPass = 0;
   let nextSample = 0;
@@ -46,7 +44,6 @@ export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): T
       break;
     }
     if (step.iter === 0) first = step.cost;
-    else if (growing === null && step.cost > first) growing = step.iter;
     if (sampled(step.iter, nextSample) && Number.isFinite(step.cost)) {
       history.push({ iter: step.iter, cost: step.cost });
       nextSample = Math.ceil(step.iter * 1.05);
@@ -62,7 +59,7 @@ export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): T
   if (steps[steps.length - 1]?.iter !== last.iter) steps.push(last);
 
   const diverged = nonFinite !== null || last.cost > first;
-  return { steps, history, last, diverged, divergedAt: nonFinite ?? (diverged ? growing : null) };
+  return { steps, history, last, diverged };
 }
 
 export function priceAt(t: Thetas, km: number): number {

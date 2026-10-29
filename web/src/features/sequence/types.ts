@@ -1,5 +1,4 @@
 import type { Thetas, TrainOptions } from '@core/types.ts';
-import type { ChartMapping } from '@/lib/chart.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 
 export type { Thetas, TrainOptions };
@@ -28,11 +27,9 @@ export type SequenceState = {
   metrics: Metrics | null;
   costHistory: CostPoint[];
   diverged: boolean;
-  divergedAt: number | null;
   trainingActive: boolean;
   skipping: boolean;
   trainOptions: TrainOptions;
-  chart: ChartMapping | null;
 };
 
 export type SequenceActions = {

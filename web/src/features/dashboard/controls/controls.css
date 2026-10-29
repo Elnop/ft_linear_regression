@@ -66,28 +66,6 @@
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
-.segmented {
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.4);
-}
-.segmented button {
-  height: 40px;
-  min-width: 48px;
-  padding: 0 10px;
-  border-radius: 8px;
-  border: 0;
-  cursor: pointer;
-  font: 700 13px var(--mono);
-  background: transparent;
-  color: var(--ink-dim);
-}
-.segmented button[aria-pressed='true'] {
-  background: rgba(0, 240, 255, 0.22);
-  color: var(--cyan);
-}
 .hint {
   position: absolute;
   right: 22px;

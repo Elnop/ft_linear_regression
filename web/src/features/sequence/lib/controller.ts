@@ -51,11 +51,9 @@ export class SequenceController {
       metrics: null,
       costHistory: [],
       diverged: false,
-      divergedAt: null,
       trainingActive: false,
       skipping: false,
       trainOptions: DEFAULT_TRAIN,
-      chart: this.painter.chart,
     };
     this.unResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
@@ -96,7 +94,7 @@ export class SequenceController {
     const plan = runTraining(DATA, o, true);
     const gen = this.restart();
     this.training = plan;
-    this.set({ trainingActive: true, trainOptions: o, diverged: false, divergedAt: null, costHistory: [] });
+    this.set({ trainingActive: true, trainOptions: o, diverged: false, costHistory: [] });
     await this.run(gen, () => this.playTraining(gen, plan));
   };
 
@@ -169,7 +167,7 @@ export class SequenceController {
     this.order = shuffled(DATA.length);
     this.set({
       phase: 'title', visiblePoints: 0, thetas: null, iteration: null, metrics: null, costHistory: [],
-      diverged: false, divergedAt: null, trainingActive: false, trainOptions: DEFAULT_TRAIN,
+      diverged: false, trainingActive: false, trainOptions: DEFAULT_TRAIN,
     });
 
     await this.sleep(gen, TIMING.uiIn);
@@ -201,7 +199,7 @@ export class SequenceController {
       await this.wait(gen, painting);
       await this.sleep(gen, TIMING.afterPass);
     }
-    this.set({ diverged: plan.diverged, divergedAt: plan.divergedAt });
+    this.set({ diverged: plan.diverged });
 
     for (const i of this.order) {
       await this.wait(gen, this.painter.sprayPoint(i, TIMING.redot, true));
@@ -223,7 +221,6 @@ export class SequenceController {
     this.scale = TIMING.skipScale;
     this.painter.clear();
     this.painter.fit();
-    this.set({ chart: this.painter.chart });
 
     const jobs: Promise<void>[] = [this.paintTitle()];
     void this.painter.stampPoints(this.order);
@@ -233,7 +230,6 @@ export class SequenceController {
     plan.steps.forEach((_, j) => jobs.push(this.sprayPass(plan, j)));
     this.show(stepAt(plan, plan.steps.length - 1), {
       diverged: plan.diverged,
-      divergedAt: plan.divergedAt,
       trainingActive: false,
     });
     for (const i of this.order) jobs.push(this.painter.sprayPoint(i, TIMING.redot, true));
