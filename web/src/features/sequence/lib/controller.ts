@@ -2,7 +2,7 @@ import type { ChartMapping } from '@/lib/chart.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
 import type { Rect } from '@/lib/paint/types.ts';
-import { drawTitle as tagTitle } from '@/title/index.ts';
+import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
 import { chartFor } from '@/lib/layout.ts';
 import type { Thetas, TrainOptions } from '@core/types.ts';
 import {
@@ -17,7 +17,7 @@ import {
   type Training,
 } from './model.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
-import type { CostPoint, DrawTitle, Metrics, Prediction, SequenceState } from './types.ts';
+import type { CostPoint, DrawTitle, Metrics, Prediction, SequenceState } from '@/features/sequence/types.ts';
 
 const NOMINAL_SPEED = 520;
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;

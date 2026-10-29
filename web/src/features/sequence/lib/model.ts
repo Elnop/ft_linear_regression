@@ -6,7 +6,7 @@ import { trainSteps } from '@core/train.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/types.ts';
 import type { ChartMapping } from '@/lib/chart.ts';
 import type { Rect, Vec2 } from '@/lib/paint/types.ts';
-import type { CostPoint, Metrics } from './types.ts';
+import type { CostPoint, Metrics } from '@/features/sequence/types.ts';
 
 export const DATA: Sample[] = parseDataset(raw);
 

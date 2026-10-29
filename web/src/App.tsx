@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import { DocPage } from '@/docs/DocPage.tsx';
 import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
-import { useSequence } from '@/sequence/index.ts';
-import { titleLayout } from '@/title/index.ts';
+import { useSequence } from '@/features/sequence/hooks/useSequence.ts';
+import { titleLayout } from '@/features/title/lib/layout.ts';
 import { chartFor, formatNumber, parseKm, SprayCan, useWallSize, WallUI } from '@/ui/index.ts';
 
 export function App() {

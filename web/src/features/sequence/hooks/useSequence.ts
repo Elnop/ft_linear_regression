@@ -1,8 +1,8 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
-import { SequenceController } from './controller.ts';
-import { DATA, DEFAULT_TRAIN } from './model.ts';
-import type { Sequence, SequenceState } from './types.ts';
+import { SequenceController } from '@/features/sequence/lib/controller.ts';
+import { DATA, DEFAULT_TRAIN } from '@/features/sequence/lib/model.ts';
+import type { Sequence, SequenceState } from '@/features/sequence/types.ts';
 
 const IDLE: SequenceState = {
   phase: 'idle',

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { ChartMapping } from '@/lib/chart.ts';
-import type { TitleLayout } from '@/title/index.ts';
+import type { TitleLayout } from '@/features/title/lib/layout.ts';
 import { ChartAxes } from './ChartAxes.tsx';
 import { ControlBar, type ControlBarProps } from './ControlBar.tsx';
 import { CostPanel, type CostPoint } from './CostPanel.tsx';
