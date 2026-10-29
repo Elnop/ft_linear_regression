@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { formatNumber, parseKm } from '@/lib/format.ts';
+import '@/features/dashboard/panels/panels.css';
 
 export type PredictPanelProps = {
   value: string;

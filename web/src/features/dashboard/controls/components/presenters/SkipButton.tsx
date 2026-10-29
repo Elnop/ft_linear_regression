@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import type { CSSProperties } from 'react';
+import '@/features/dashboard/controls/controls.css';
 
 export type SkipButtonProps = {
   visible: boolean;

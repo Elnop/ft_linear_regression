@@ -1,0 +1,57 @@
+.wu-axes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.wu-marker {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.hello {
+  position: absolute;
+  width: 206px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f3efe4;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 88% 100%, 0 100%);
+}
+.hello-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px 6px;
+  background: var(--magenta);
+  color: #fff;
+}
+.hello-top b {
+  font: 400 26px/1 var(--anton);
+  letter-spacing: 0.06em;
+}
+.hello-top span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+.hello-price {
+  display: flex;
+  justify-content: center;
+  padding: 6px 12px 14px;
+  font: 40px/1.1 var(--marker);
+  color: #141316;
+}
+.hello-price span {
+  transform: rotate(-3deg);
+  white-space: nowrap;
+}
+.axis-text {
+  font-family: var(--marker);
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: rgba(8, 7, 10, 0.85);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}

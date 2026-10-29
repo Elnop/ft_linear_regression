@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import type { ChartMapping } from '@/lib/chart.ts';
+import '@/features/dashboard/chart/chart.css';
 
 export type ChartAxesProps = {
   chart: ChartMapping;

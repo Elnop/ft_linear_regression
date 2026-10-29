@@ -1,4 +1,5 @@
 import { useId, type CSSProperties } from 'react';
+import '@/features/dashboard/controls/controls.css';
 
 export type ControlBarProps = {
   trainingActive: boolean;

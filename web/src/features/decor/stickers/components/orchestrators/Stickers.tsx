@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ChartMapping } from '@/lib/chart.ts';
 import { mulberry32 } from '@/lib/random.ts';
+import '@/features/decor/stickers/stickers.css';
 
 export type StickersProps = {
   chart: ChartMapping;

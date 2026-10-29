@@ -64,3 +64,9 @@ body {
   color: var(--ink-dim);
   text-transform: uppercase;
 }
+
+@media (max-width: 1023px) {
+  :root {
+    --glass: rgba(20, 19, 23, 0.86);
+  }
+}

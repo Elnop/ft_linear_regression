@@ -4,7 +4,12 @@ import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx'
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { useSequence } from '@/features/sequence/hooks/useSequence.ts';
 import { titleLayout } from '@/features/title/lib/layout.ts';
-import { chartFor, formatNumber, parseKm, SprayCan, useWallSize, WallUI } from '@/ui/index.ts';
+import { chartFor } from '@/lib/layout.ts';
+import { formatNumber, parseKm } from '@/lib/format.ts';
+import { SprayCan } from '@/features/decor/spray-can/components/orchestrators/SprayCan.tsx';
+import { Stickers } from '@/features/decor/stickers/components/orchestrators/Stickers.tsx';
+import { useWallSize } from '@/lib/hooks/useWallSize.ts';
+import { WallUI } from '@/features/dashboard/layout/components/orchestrators/WallUI.tsx';
 
 export function App() {
   const [engine, setEngine] = useState<PaintEngine | null>(null);
@@ -31,6 +36,7 @@ export function App() {
   return (
     <>
       <PaintWall onReady={setEngine} />
+      <Stickers chart={chart} width={width} titleRight={title.rect.x + title.rect.w} />
       <WallUI
         width={width}
         height={height}

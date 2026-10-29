@@ -1,18 +1,17 @@
 import type { ReactNode } from 'react';
 import type { ChartMapping } from '@/lib/chart.ts';
 import type { TitleLayout } from '@/features/title/lib/layout.ts';
-import { ChartAxes } from './ChartAxes.tsx';
-import { ControlBar, type ControlBarProps } from './ControlBar.tsx';
-import { CostPanel, type CostPoint } from './CostPanel.tsx';
-import { HeaderChips } from './HeaderChips.tsx';
+import { ChartAxes } from '@/features/dashboard/chart/components/presenters/ChartAxes.tsx';
+import { ControlBar, type ControlBarProps } from '@/features/dashboard/controls/components/presenters/ControlBar.tsx';
+import { CostPanel, type CostPoint } from '@/features/dashboard/panels/components/presenters/CostPanel.tsx';
+import { HeaderChips } from '@/features/dashboard/panels/components/presenters/HeaderChips.tsx';
 import { ASIDE_W, pagePad, WIDE } from '@/lib/layout.ts';
-import { PredictPanel } from './PredictPanel.tsx';
-import { PrecisionPanel } from './PrecisionPanel.tsx';
-import { PriceMarker } from './PriceMarker.tsx';
-import { Reveal } from './Reveal.tsx';
-import { SkipButton } from './SkipButton.tsx';
-import { Stickers } from './Stickers.tsx';
-import './ui.css';
+import { PredictPanel } from '@/features/dashboard/panels/components/presenters/PredictPanel.tsx';
+import { PrecisionPanel } from '@/features/dashboard/panels/components/presenters/PrecisionPanel.tsx';
+import { PriceMarker } from '@/features/dashboard/chart/components/presenters/PriceMarker.tsx';
+import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
+import { SkipButton } from '@/features/dashboard/controls/components/presenters/SkipButton.tsx';
+import '@/features/dashboard/layout/layout.css';
 
 export type WallUIProps = {
   width: number;
@@ -78,7 +77,6 @@ export function WallUI(p: WallUIProps) {
 
   return (
     <>
-      <Stickers chart={chart} width={width} titleRight={title.rect.x + title.rect.w} />
       <ChartAxes chart={chart} width={width} height={height} visible={axesVisible} />
       <PriceMarker at={p.uiVisible ? p.marker : null} price={p.price} axisY={area.y + area.h} width={width} />
 
@@ -97,7 +95,6 @@ export function WallUI(p: WallUIProps) {
             </Reveal>
             <Reveal
               visible={p.uiVisible}
-             
               from={{ x: 24 }}
               as="aside"
               label="Prédiction et précision"

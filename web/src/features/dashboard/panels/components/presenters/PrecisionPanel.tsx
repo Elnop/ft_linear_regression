@@ -1,4 +1,5 @@
 import { formatNumber } from '@/lib/format.ts';
+import '@/features/dashboard/panels/panels.css';
 
 export type PrecisionPanelProps = {
   r2: number | null;

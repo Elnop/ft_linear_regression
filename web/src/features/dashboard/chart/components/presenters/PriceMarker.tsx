@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/lib/format.ts';
+import '@/features/dashboard/chart/chart.css';
 
 export type PriceMarkerProps = {
   at: { x: number; y: number } | null;
