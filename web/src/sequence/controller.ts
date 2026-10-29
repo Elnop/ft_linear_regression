@@ -13,7 +13,7 @@ import {
   shuffled,
   type Training,
 } from './model.ts';
-import { COLORS, eased, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
+import { COLORS, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
 import type { CostPoint, DrawTitle, Metrics, Prediction, SequenceState } from './types.ts';
 
 const NOMINAL_SPEED = 520;
@@ -189,7 +189,7 @@ export class SequenceController {
     return { x: -20, y: -20, w: this.engine.width + 40, h: this.engine.height + 40 };
   }
 
-  private sprayLine(thetas: Thetas, kind: LineKind, duration: number): Promise<void> {
+  private sprayLine(thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
     const stroke: Stroke = { thetas, kind, layer: null };
     this.fan.push(stroke);
     const seg = lineSegment(thetas, this.chart, this.clipRect(kind));
@@ -208,7 +208,7 @@ export class SequenceController {
     const length = Math.hypot(b.x - a.x, b.y - a.y);
     const seconds = Math.max(0.05, duration / 1000) / this.scale;
     const speed = (length / seconds) * 1.2;
-    return this.engine.sprayPath(stroke.layer, [a, b], {
+    return this.engine.sprayPath(stroke.layer, reverse ? [b, a] : [a, b], {
       speed,
       width: style.width,
       load: (style.thickness * speed) / NOMINAL_SPEED,
@@ -292,14 +292,13 @@ export class SequenceController {
   private async playPasses(gen: number, plan: Training): Promise<void> {
     const last = plan.steps.length - 1;
     for (let j = 0; j <= last; j++) {
-      const k = last > 0 ? j / last : 1;
       const final = j === last && !plan.diverged;
       const kind: LineKind = plan.diverged ? 'diverge' : final ? 'finalLine' : 'line';
       this.show(this.stepOf(plan, j));
-      const painting = this.sprayLine(plan.steps[j], kind, final ? TIMING.finalPass : eased(TIMING.pass, k));
+      const painting = this.sprayLine(plan.steps[j], kind, final ? TIMING.finalPass : TIMING.pass, j % 2 === 1);
       this.fadeFan();
       await this.wait(gen, painting);
-      await this.sleep(gen, eased(TIMING.afterPass, k));
+      await this.sleep(gen, TIMING.afterPass);
     }
     this.set({ diverged: plan.diverged, divergedAt: plan.divergedAt });
 
@@ -327,7 +326,7 @@ export class SequenceController {
     plan.steps.forEach((step, j) => {
       const final = j === plan.steps.length - 1 && !plan.diverged;
       const kind: LineKind = plan.diverged ? 'diverge' : final ? 'finalLine' : 'line';
-      jobs.push(this.sprayLine(step, kind, final ? TIMING.finalPass : TIMING.pass[1]));
+      jobs.push(this.sprayLine(step, kind, final ? TIMING.finalPass : TIMING.pass, j % 2 === 1));
     });
     this.show(this.stepOf(plan, plan.steps.length - 1), {
       diverged: plan.diverged,
