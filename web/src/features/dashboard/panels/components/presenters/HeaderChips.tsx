@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import { formatNumber } from '@/lib/format.ts';
 import '@/features/dashboard/panels/panels.css';
 
@@ -6,13 +5,11 @@ export type HeaderChipsProps = {
   theta0: number | null;
   theta1: number | null;
   progress: { label: string; value: string };
-  className?: string;
-  style?: CSSProperties;
 };
 
-export function HeaderChips({ theta0, theta1, progress, className = '', style }: HeaderChipsProps) {
+export function HeaderChips({ theta0, theta1, progress }: HeaderChipsProps) {
   return (
-    <dl className={`wu-chips ${className}`} style={{ margin: 0, ...style }} aria-label="Paramètres du modèle">
+    <dl className="wu-chips" style={{ margin: 0 }} aria-label="Paramètres du modèle">
       <Chip label="θ0" value={formatNumber(theta0, 2)} />
       <Chip label="θ1" value={formatNumber(theta1, 6)} />
       <Chip label={progress.label} value={progress.value} plain />

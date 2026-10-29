@@ -30,25 +30,28 @@ export function useWallViewModel() {
       : { label: 'POINTS', value: `${seq.visiblePoints} / ${seq.totalPoints}` };
 
   const wall: Omit<WallUIProps, 'doc'> = {
-    width,
-    height,
-    chart,
-    title,
-    uiVisible,
-    showSkip: intro && seq.phase !== 'idle' && !seq.skipping,
-    onSkip: seq.skip,
-    theta0: seq.thetas?.theta0 ?? null,
-    theta1: seq.thetas?.theta1 ?? null,
-    progress,
-    costHistory: seq.costHistory,
-    r2: seq.metrics?.r2 ?? null,
-    rmse: seq.metrics?.rmse ?? null,
-    mae: seq.metrics?.mae ?? null,
-    diverged: seq.diverged,
-    km,
-    onKmChange: setKm,
-    price: sane ? prediction.price : null,
-    marker: sane && !intro ? { x: prediction.x, y: prediction.y } : null,
+    viewport: { width, height, chart, title },
+    intro: {
+      uiVisible,
+      showSkip: intro && seq.phase !== 'idle' && !seq.skipping,
+      onSkip: seq.skip,
+    },
+    header: {
+      theta0: seq.thetas?.theta0 ?? null,
+      theta1: seq.thetas?.theta1 ?? null,
+      progress,
+    },
+    predict: {
+      value: km,
+      onChange: setKm,
+      price: sane ? prediction.price : null,
+    },
+    cost: { history: seq.costHistory, diverged: seq.diverged },
+    precision: {
+      r2: seq.metrics?.r2 ?? null,
+      rmse: seq.metrics?.rmse ?? null,
+      mae: seq.metrics?.mae ?? null,
+    },
     controls: {
       trainingActive: seq.trainingActive,
       disabled: intro,
@@ -56,7 +59,9 @@ export function useWallViewModel() {
       onReset: seq.replay,
       learningRate,
       onLearningRateChange: setLearningRate,
+      diverged: seq.diverged,
     },
+    marker: sane && !intro ? { x: prediction.x, y: prediction.y } : null,
   };
 
   return {
