@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import type { WallUIProps } from '@/features/dashboard/layout/components/orchestrators/WallUI.tsx';
 import { useSequence } from '@/features/sequence/hooks/useSequence.ts';
+import { willDiverge } from '@/features/sequence/lib/training.ts';
 import { titleLayout } from '@/features/title/lib/layout.ts';
-import { formatNumber, parseKm } from '@/lib/format.ts';
+import { formatNumber, isDisplayablePrice, parseKm } from '@/lib/format.ts';
 import { useWallSize } from '@/lib/hooks/useWallSize.ts';
 import { chartFor } from '@/lib/layout.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
@@ -22,7 +23,7 @@ export function useWallViewModel() {
 
   const kmValue = parseKm(km);
   const prediction = kmValue !== null && !seq.diverged ? seq.predict(kmValue) : null;
-  const sane = prediction !== null && Number.isFinite(prediction.price) && Math.abs(prediction.price) < 1e7;
+  const displayable = prediction !== null && isDisplayablePrice(prediction.price);
 
   const progress =
     seq.phase === 'descent' || seq.phase === 'interactive'
@@ -44,7 +45,7 @@ export function useWallViewModel() {
     predict: {
       value: km,
       onChange: setKm,
-      price: sane ? prediction.price : null,
+      price: displayable ? prediction.price : null,
     },
     cost: { history: seq.costHistory, diverged: seq.diverged },
     precision: {
@@ -59,9 +60,9 @@ export function useWallViewModel() {
       onReset: seq.replay,
       learningRate,
       onLearningRateChange: setLearningRate,
-      diverged: seq.diverged,
+      warn: seq.diverged || willDiverge(learningRate),
     },
-    marker: sane && !intro ? { x: prediction.x, y: prediction.y } : null,
+    marker: displayable && !intro ? { x: prediction.x, y: prediction.y } : null,
   };
 
   return {

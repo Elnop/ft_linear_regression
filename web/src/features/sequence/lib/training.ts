@@ -10,6 +10,8 @@ export const DATA: Sample[] = parseDataset(raw);
 
 export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 10000 };
 
+export const willDiverge = (learningRate: number) => learningRate > 1.75;
+
 export function metricsOf(data: Sample[], t: Thetas): Metrics {
   return { r2: r2(data, t), rmse: rmse(data, t), mae: mae(data, t) };
 }

@@ -8,14 +8,11 @@ export type ControlBarProps = {
   onReset: () => void;
   learningRate: number;
   onLearningRateChange: (lr: number) => void;
-  diverged?: boolean;
+  warn?: boolean;
 };
-
-const willDiverge = (learningRate: number) => learningRate > 1.75;
 
 export function ControlBar(p: ControlBarProps) {
   const lrId = useId();
-  const warn = p.diverged || willDiverge(p.learningRate);
   return (
     <div className="wu-bar glass wu-hit" role="group" aria-label="Entraînement">
       <div className="bar-buttons">
@@ -50,8 +47,8 @@ export function ControlBar(p: ControlBarProps) {
         <output htmlFor={lrId}>{p.learningRate.toFixed(2)}</output>
       </div>
 
-      <span className="hint" role="status" style={{ visibility: warn ? 'visible' : 'hidden' }}>
-        {warn ? 'ça va couler partout…' : ''}
+      <span className="hint" role="status" style={{ visibility: p.warn ? 'visible' : 'hidden' }}>
+        {p.warn ? 'ça va couler partout…' : ''}
       </span>
     </div>
   );
