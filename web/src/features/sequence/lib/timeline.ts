@@ -10,15 +10,8 @@ export type Run = {
 export class Timeline {
   scale = 1;
   private current = 0;
-  private abort = new AbortController();
-
-  get signal(): AbortSignal {
-    return this.abort.signal;
-  }
 
   restart(): Run {
-    this.abort.abort();
-    this.abort = new AbortController();
     this.scale = 1;
     const id = ++this.current;
     const isCurrent = () => id === this.current;

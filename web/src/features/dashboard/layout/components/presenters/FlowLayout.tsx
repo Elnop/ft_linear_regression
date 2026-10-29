@@ -8,7 +8,7 @@ type Props = {
   head: ReactNode;
   panels: ReactNode;
   bar: ReactNode;
-  doc?: ReactNode;
+  doc: ReactNode;
 };
 
 export function FlowLayout({ visible, pad, top, head, panels, bar, doc }: Props) {

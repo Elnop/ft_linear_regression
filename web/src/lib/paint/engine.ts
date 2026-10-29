@@ -9,6 +9,7 @@ import { hexToRgb, type LayerOptions, type Nozzle, type SprayDotOptions, type Sp
 
 const FLOW_STEP = 1 / 120;
 const MAX_DT = 1 / 10;
+const SETTLE_BUDGET_MS = 120;
 
 type Running = { job: Job; layer: PaintLayer; done: () => void };
 type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; t: number; duration: number; done: () => void };
@@ -24,13 +25,13 @@ export class PaintEngine {
   private depth = new WeakMap<PaintLayer, number>();
   private jobs: Running[] = [];
   private tweens: Tween[] = [];
-  private dryWaiters: { layer: PaintLayer | null; done: () => void }[] = [];
   private resizeListeners = new Set<() => void>();
   private roughness: Roughness | null = null;
   private wall: HTMLImageElement | null = null;
   private frame = 0;
   private last = 0;
   private needsDraw = true;
+  private dpr = 0;
   private observer: ResizeObserver;
 
   constructor(container: HTMLElement, wallUrl: string) {
@@ -58,11 +59,12 @@ export class PaintEngine {
     });
 
     this.observer = new ResizeObserver(() => {
-      const w = this.width;
-      const h = this.height;
-      this.measure();
-      if (w === this.width && h === this.height) return;
-      if (this.wall) this.roughness = computeRoughness(this.wall, this.width, this.height, FILM_SCALE);
+      if (!this.measure()) return;
+      if (this.wall) {
+        this.roughness = computeRoughness(this.wall, this.width, this.height, FILM_SCALE);
+        // Resizing the canvas blanks it: draw again before the browser paints.
+        this.renderer.render(this.layers);
+      }
       this.wake();
       for (const cb of this.resizeListeners) cb();
     });
@@ -134,11 +136,13 @@ export class PaintEngine {
     });
   }
 
-  whenDry(layer?: PaintLayer): Promise<void> {
-    return new Promise((done) => {
-      this.dryWaiters.push({ layer: layer ?? null, done });
-      this.wake();
-    });
+  // Runs the drips ahead of time, so freshly stamped paint shows up already dry.
+  settle(): void {
+    const until = performance.now() + SETTLE_BUDGET_MS;
+    for (const l of this.layers) {
+      while (l.wet && performance.now() < until) this.flow(l, MAX_DT);
+    }
+    this.wake();
   }
 
   onResize(cb: () => void): () => void {
@@ -166,12 +170,25 @@ export class PaintEngine {
     this.wake();
   }
 
-  private measure(): void {
+  // Returns whether the size changed: assigning the canvas size clears it, even to the same value.
+  private measure(): boolean {
     const r = this.canvas.getBoundingClientRect();
-    this.width = Math.max(1, Math.round(r.width));
-    this.height = Math.max(1, Math.round(r.height));
-    this.renderer.resize(this.width, this.height, Math.min(window.devicePixelRatio || 1, 2));
+    const width = Math.max(1, Math.round(r.width));
+    const height = Math.max(1, Math.round(r.height));
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (width === this.width && height === this.height && dpr === this.dpr) return false;
+    this.width = width;
+    this.height = height;
+    this.dpr = dpr;
+    this.renderer.resize(width, height, dpr);
     this.needsDraw = true;
+    return true;
+  }
+
+  private flow(l: PaintLayer, dt: number): void {
+    const n = Math.max(2, Math.ceil(dt / FLOW_STEP));
+    for (let s = 0; s < n; s++) stepFlow(l, dt / n);
+    l.gloss = Math.max(0.35, l.gloss - dt * 0.08);
   }
 
   private wake(): void {
@@ -196,9 +213,7 @@ export class PaintEngine {
     let wet = false;
     for (const l of this.layers) {
       if (!l.wet) continue;
-      const n = Math.max(2, Math.ceil(dt / FLOW_STEP));
-      for (let s = 0; s < n; s++) stepFlow(l, dt / n);
-      l.gloss = Math.max(0.35, l.gloss - dt * 0.08);
+      this.flow(l, dt);
       wet ||= l.wet;
       this.needsDraw = true;
     }
@@ -215,18 +230,10 @@ export class PaintEngine {
     this.tweens = this.tweens.filter((t) => t.t < t.duration);
     for (const t of finished) t.done();
 
-    if (this.jobs.length === 0) {
-      this.dryWaiters = this.dryWaiters.filter((w) => {
-        const isDry = w.layer ? !w.layer.wet || !this.layers.includes(w.layer) : !wet;
-        if (isDry) w.done();
-        return !isDry;
-      });
-    }
-
     if (this.needsDraw && this.wall) this.renderer.render(this.layers);
     this.needsDraw = false;
 
-    if (this.jobs.length > 0 || wet || this.tweens.length > 0 || this.dryWaiters.length > 0) {
+    if (this.jobs.length > 0 || wet || this.tweens.length > 0) {
       this.frame = requestAnimationFrame(this.tick);
     }
   };

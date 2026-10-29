@@ -8,11 +8,11 @@ export type ChartAxesProps = {
   width: number;
   height: number;
   visible?: boolean;
-  kmStep?: number;
-  priceStep?: number;
 };
 
 const CHALK = 'rgba(239,236,230,0.62)';
+const KM_STEP = 50_000;
+const PRICE_STEP = 1_000;
 
 const range = (from: number, to: number, step: number) => {
   const out: number[] = [];
@@ -22,14 +22,14 @@ const range = (from: number, to: number, step: number) => {
 
 const short = (v: number) => (v === 0 ? '0' : `${Math.round(v / 1000)}k`);
 
-export function ChartAxes({ chart, width, height, visible = true, kmStep = 50_000, priceStep = 1_000 }: ChartAxesProps) {
+export function ChartAxes({ chart, width, height, visible = true }: ChartAxesProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.h;
   const right = area.x + area.w;
   const small = width < SMALL;
   const fs = small ? 12 : 15;
-  const kms = range(domain.kmMin, domain.kmMax, kmStep);
-  const prices = range(domain.priceMin, domain.priceMax, priceStep);
+  const kms = range(domain.kmMin, domain.kmMax, KM_STEP);
+  const prices = range(domain.priceMin, domain.priceMax, PRICE_STEP);
   return (
     <motion.svg
       className="wu-axes"

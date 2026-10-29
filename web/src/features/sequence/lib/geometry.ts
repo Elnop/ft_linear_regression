@@ -1,7 +1,8 @@
+import { estimatePrice } from '@core/hypothesis.ts';
 import type { Thetas } from '@core/types.ts';
 import type { ChartMapping } from '@/lib/chart.ts';
 import type { Rect, Vec2 } from '@/lib/paint/types.ts';
-import { isFinite2, priceAt } from './training.ts';
+import { isFinite2 } from './training.ts';
 
 export function clipSegment(a: Vec2, b: Vec2, r: Rect): [Vec2, Vec2] | null {
   const dx = b.x - a.x;
@@ -31,8 +32,8 @@ export function clipSegment(a: Vec2, b: Vec2, r: Rect): [Vec2, Vec2] | null {
 export function lineSegment(t: Thetas, chart: ChartMapping, clip: Rect): [Vec2, Vec2] | null {
   if (!isFinite2(t)) return null;
   const { kmMin, kmMax } = chart.domain;
-  const a = chart.point(kmMin, priceAt(t, kmMin));
-  const b = chart.point(kmMax, priceAt(t, kmMax));
+  const a = chart.point(kmMin, estimatePrice(t, kmMin));
+  const b = chart.point(kmMax, estimatePrice(t, kmMax));
   if (![a.x, a.y, b.x, b.y].every(Number.isFinite)) return null;
   const seg = clipSegment(a, b, clip);
   if (!seg || Math.hypot(seg[1].x - seg[0].x, seg[1].y - seg[0].y) < 4) return null;

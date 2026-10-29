@@ -6,11 +6,11 @@ import normalizeSource from '@core/normalize.ts?raw';
 import trainSource from '@core/train.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
 import { pick } from '@/features/docs/lib/source.ts';
-import type { CodeStep } from '@/features/docs/types.ts';
+import type { Step } from '@/features/docs/types.ts';
 
-export const CODE: CodeStep[] = [
+export const CODE: Step[] = [
   {
-    file: 'core/csv.ts',
+    label: 'core/csv.ts',
     section: 'Le modèle',
     title: 'Lire le dataset',
     aside: <Code code={pick(csvSource, 'parseDataset')} />,
@@ -25,7 +25,7 @@ export const CODE: CodeStep[] = [
     ),
   },
   {
-    file: 'core/hypothesis.ts',
+    label: 'core/hypothesis.ts',
     section: 'Le modèle',
     title: 'Estimer un prix',
     aside: <Code code={pick(hypothesisSource, 'estimatePrice')} />,
@@ -42,7 +42,7 @@ export const CODE: CodeStep[] = [
     ),
   },
   {
-    file: 'core/metrics.ts',
+    label: 'core/metrics.ts',
     section: 'Le modèle',
     title: 'Coût et précision',
     aside: <Code code={`${pick(metricsSource, 'cost')}\n\n${pick(metricsSource, 'r2')}`} />,
@@ -60,7 +60,7 @@ export const CODE: CodeStep[] = [
     ),
   },
   {
-    file: 'core/gradient.ts',
+    label: 'core/gradient.ts',
     section: "L'entraînement",
     title: 'Une étape de descente',
     aside: <Code code={pick(gradientSource, 'gradientStep')} />,
@@ -78,7 +78,7 @@ export const CODE: CodeStep[] = [
     ),
   },
   {
-    file: 'core/normalize.ts',
+    label: 'core/normalize.ts',
     section: "L'entraînement",
     title: 'Normaliser le kilométrage',
     aside: <Code code={`${pick(normalizeSource, 'normalizeSamples')}\n\n${pick(normalizeSource, 'denormalizeThetas')}`} />,
@@ -94,7 +94,7 @@ export const CODE: CodeStep[] = [
     ),
   },
   {
-    file: 'core/train.ts',
+    label: 'core/train.ts',
     section: "L'entraînement",
     title: 'La boucle de descente',
     aside: <Code code={pick(trainSource, 'trainSteps')} />,

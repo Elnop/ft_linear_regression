@@ -1,7 +1,6 @@
 import { formatNumber } from '@/lib/format.ts';
+import type { CostPoint } from '@/features/sequence/types.ts';
 import '@/features/dashboard/panels/panels.css';
-
-export type CostPoint = { iter: number; cost: number };
 
 export type CostPanelProps = {
   history: CostPoint[];

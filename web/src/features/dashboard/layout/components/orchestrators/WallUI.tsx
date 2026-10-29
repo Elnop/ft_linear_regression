@@ -18,7 +18,7 @@ import { CHART_TO_FLOW, footerBottom, pagePad, SKIP_ABOVE_BAR, SMALL, SUBTITLE_G
 import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
 import '@/features/dashboard/layout/layout.css';
 
-export function WallUI({ doc }: { doc?: ReactNode }) {
+export function WallUI({ doc }: { doc: ReactNode }) {
   const { width, height } = useViewport();
   const chart = useChart();
   const title = useTitleLayout();
@@ -30,7 +30,7 @@ export function WallUI({ doc }: { doc?: ReactNode }) {
   const pad = pagePad(width);
   const area = chart.area;
 
-  const head = <HeadBar chips={<HeaderChipsContainer />} withDoc={!!doc} />;
+  const head = <HeadBar chips={<HeaderChipsContainer />} />;
   const panels = (
     <>
       <PredictPanelContainer />
@@ -57,7 +57,7 @@ export function WallUI({ doc }: { doc?: ReactNode }) {
         />
       </div>
 
-      {wide && uiVisible && doc && (
+      {wide && uiVisible && (
         <div className="doc-page" style={{ padding: `0 ${pad}px ${pad}px` }}>
           {doc}
         </div>

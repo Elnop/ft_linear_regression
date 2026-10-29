@@ -7,5 +7,3 @@ export type Step = {
   aside: ReactNode;
   children: ReactNode;
 };
-
-export type CodeStep = Omit<Step, 'label'> & { file: string };

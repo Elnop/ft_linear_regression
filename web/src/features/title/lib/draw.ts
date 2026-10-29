@@ -2,45 +2,53 @@ import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
 import type { Vec2 } from '@/lib/paint/types.ts';
 import { mulberry32, randomSeed } from '@/lib/random.ts';
-import { STROKE, titleLayout, titleStrokes, type Stroke, type TitleLayout } from './layout.ts';
+import { STROKE, titleLayout, titleStrokes, type Stroke } from './layout.ts';
 
 const MAGENTA = '#ff2bd6';
 
-export type TitleOptions = {
-  color?: string;
-  seed?: number;
-  tempo?: number | (() => number);
-  layout?: TitleLayout;
-  onLayer?: (layer: PaintLayer) => void;
-};
+// `timeScale` is read before every sweep so a skip speeds up the letters still to come.
+export async function drawTitle(engine: PaintEngine, timeScale: () => number): Promise<void> {
+  const title = prepareTitle(engine);
+  const tempo = () => Math.max(0.1, timeScale());
+  for (const line of title.lines) {
+    const at = (x: number): Vec2 => ({ x, y: line.y(x) });
+    let pos = at(line.letters[0].x - title.lead);
+    for (const letter of line.letters) {
+      const next = at(letter.x);
+      await engine.sweep(title.layer, [pos, next], title.sweep * tempo());
+      pos = next;
+      title.stampLetter(letter);
+    }
+    await engine.sweep(title.layer, [pos, at(pos.x + title.lead)], title.sweep * tempo());
+  }
+}
 
-export async function drawTitle(engine: PaintEngine, opts: TitleOptions = {}): Promise<void> {
-  const layout = opts.layout ?? titleLayout(engine.width, engine.height);
-  const rng = mulberry32(opts.seed ?? randomSeed());
-  const tempo = () => Math.max(0.1, typeof opts.tempo === 'function' ? opts.tempo() : (opts.tempo ?? 1));
+// The same tag at once, without the can travelling between letters.
+export function stampTitle(engine: PaintEngine): void {
+  const title = prepareTitle(engine);
+  for (const line of title.lines) for (const letter of line.letters) title.stampLetter(letter);
+}
+
+function prepareTitle(engine: PaintEngine) {
+  const layout = titleLayout(engine.width, engine.height);
+  const rng = mulberry32(randomSeed());
   const { rect, em } = layout;
   const layer = engine.createLayer({
-    color: opts.color ?? MAGENTA,
+    color: MAGENTA,
     bounds: { x: rect.x - em, y: Math.max(0, rect.y - em), w: rect.w + 2 * em, h: rect.h + 5 * em },
   });
-  opts.onLayer?.(layer);
 
   const width = Math.max(3.5, 0.6 * STROKE * em);
   const pace = Math.min(900, Math.max(300, em * 16));
-  const sweep = Math.min(1100, Math.max(400, em * 14));
-  const lead = 1.5 * em;
-
-  for (const line of letterLines(titleStrokes(layout, rng))) {
-    const at = (x: number): Vec2 => ({ x, y: line.y(x) });
-    let pos = at(line.letters[0].x - lead);
-    for (const letter of line.letters) {
-      const next = at(letter.x);
-      await engine.sweep(layer, [pos, next], sweep * tempo());
-      pos = next;
+  return {
+    layer,
+    lines: letterLines(titleStrokes(layout, rng)),
+    sweep: Math.min(1100, Math.max(400, em * 14)),
+    lead: 1.5 * em,
+    stampLetter: (letter: Letter) => {
       for (const s of letter.strokes) stamp(engine, layer, s, width, pace, rng);
-    }
-    await engine.sweep(layer, [pos, at(pos.x + lead)], sweep * tempo());
-  }
+    },
+  };
 }
 
 const STAMP_SPEED = 1e5;

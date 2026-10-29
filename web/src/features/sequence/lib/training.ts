@@ -1,6 +1,5 @@
 import raw from '@dataset?raw';
 import { parseDataset } from '@core/csv.ts';
-import { estimatePrice } from '@core/hypothesis.ts';
 import { mae, r2, rmse } from '@core/metrics.ts';
 import { trainSteps } from '@core/train.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/types.ts';
@@ -31,7 +30,7 @@ export type Training = {
   diverged: boolean;
 };
 
-export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): Training {
+export function runTraining(data: Sample[], o: TrainOptions): Training {
   const steps: TrainStep[] = [];
   const history: CostPoint[] = [];
   let last: TrainStep | null = null;
@@ -50,7 +49,7 @@ export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): T
       history.push({ iter: step.iter, cost: step.cost });
       nextSample = Math.ceil(step.iter * 1.05);
     }
-    if (passes && step.iter === nextPass) {
+    if (step.iter === nextPass) {
       steps.push(step);
       nextPass = Math.max(1, nextPass * 2);
     }
@@ -62,10 +61,6 @@ export function runTraining(data: Sample[], o: TrainOptions, passes: boolean): T
 
   const diverged = nonFinite !== null || last.cost > first;
   return { steps, history, last, diverged };
-}
-
-export function priceAt(t: Thetas, km: number): number {
-  return estimatePrice(t, km);
 }
 
 export type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };

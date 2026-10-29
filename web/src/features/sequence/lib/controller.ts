@@ -1,9 +1,9 @@
 import type { TrainOptions } from '@core/types.ts';
-import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
+import { drawTitle, stampTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { DrawTitle, SequenceState } from '@/features/sequence/types.ts';
+import type { SequenceState } from '@/features/sequence/types.ts';
 import { WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
 import { Timeline, type Run } from './timeline.ts';
@@ -19,13 +19,10 @@ import {
   type Training,
 } from './training.ts';
 
-const defaultTitle: DrawTitle = (engine, ctx) => tagTitle(engine, { tempo: ctx.timeScale });
-
 export class SequenceController {
   private timeline = new Timeline();
   private engine: PaintEngine;
   private store: StoreApi<SequenceState>;
-  private drawTitle: DrawTitle;
   private painter: WallPainter;
 
   private order = shuffled(DATA.length);
@@ -33,10 +30,9 @@ export class SequenceController {
   private unResize: () => void;
   private resizeTimer = 0;
 
-  constructor(engine: PaintEngine, store: StoreApi<SequenceState>, drawTitle: DrawTitle = defaultTitle) {
+  constructor(engine: PaintEngine, store: StoreApi<SequenceState>) {
     this.engine = engine;
     this.store = store;
-    this.drawTitle = drawTitle;
     this.painter = new WallPainter(engine, () => this.timeline.scale);
     this.unResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
@@ -66,7 +62,7 @@ export class SequenceController {
   train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
-    const plan = runTraining(DATA, options, true);
+    const plan = runTraining(DATA, options);
     const run = this.restart();
     this.training = plan;
     this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
@@ -102,7 +98,7 @@ export class SequenceController {
   }
 
   private async playIntro(run: Run): Promise<void> {
-    const plan = runTraining(DATA, DEFAULT_TRAIN, true);
+    const plan = runTraining(DATA, DEFAULT_TRAIN);
     this.training = plan;
     this.order = shuffled(DATA.length);
     this.set({ ...IDLE_STATE, phase: 'title' });
@@ -144,7 +140,7 @@ export class SequenceController {
   }
 
   private paintTitle(): Promise<void> {
-    return this.drawTitle(this.engine, { timeScale: () => this.timeline.scale, signal: this.timeline.signal });
+    return drawTitle(this.engine, () => this.timeline.scale);
   }
 
   private sprayPass(plan: Training, pass: number): Promise<void> {
@@ -152,27 +148,22 @@ export class SequenceController {
     return this.painter.sprayLine(plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
   }
 
+  // Rebuilds the finished wall at the new size in one go, already dry, so nothing replays.
   private repaint(): void {
-    const run = this.restart();
-    this.timeline.scale = TIMING.skipScale;
+    this.restart();
     this.painter.clear();
     this.painter.fit();
 
-    const jobs: Promise<void>[] = [this.paintTitle()];
+    stampTitle(this.engine);
     void this.painter.stampPoints(this.order);
-
-    const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN, true);
+    const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN);
     this.training = plan;
-    plan.steps.forEach((_, pass) => jobs.push(this.sprayPass(plan, pass)));
-    this.show(stepAt(plan, plan.steps.length - 1), {
-      diverged: plan.diverged,
-      trainingActive: false,
-    });
-    for (const i of this.order) jobs.push(this.painter.sprayPoint(i, TIMING.redot, true));
+    plan.steps.forEach((step, pass) => this.painter.stampLine(step, lineKindAt(plan, pass), pass % 2 === 1));
+    for (const i of this.order) this.painter.stampTopPoint(i);
     this.painter.fadeFan(true);
-    this.set({ phase: 'interactive', visiblePoints: DATA.length, skipping: true });
-    void this.play(run, async () => {
-      await run.wait(Promise.all(jobs));
-    });
+    this.engine.settle();
+
+    this.show(stepAt(plan, plan.steps.length - 1), { diverged: plan.diverged, trainingActive: false });
+    this.set({ phase: 'interactive', visiblePoints: DATA.length });
   }
 }

@@ -6,7 +6,7 @@ import '@/features/dashboard/chart/chart.css';
 export type PriceMarkerProps = {
   at: { x: number; y: number } | null;
   price: number | null;
-  axisY?: number;
+  axisY: number;
   width: number;
 };
 
@@ -22,7 +22,7 @@ export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
   const top = visible ? Math.max(8, at.y - STICKER_H * scale - 10) : 0;
   return (
     <div className="wu-marker" aria-hidden="true">
-      {visible && axisY !== undefined && axisY > at.y && (
+      {visible && axisY > at.y && (
         <svg width={width} height={axisY + 4} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
           <line x1={at.x} y1={at.y} x2={at.x} y2={axisY} stroke="var(--acid)" strokeWidth="2" strokeDasharray="2 8" strokeLinecap="round" opacity="0.8" />
         </svg>

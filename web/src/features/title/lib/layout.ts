@@ -1,4 +1,5 @@
 import { chartMapping } from '@/lib/chart.ts';
+import { pagePad, WIDE } from '@/lib/layout.ts';
 import type { Rect, Vec2 } from '@/lib/paint/types.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
 
@@ -20,10 +21,10 @@ export type TitleLayout = {
 export const TITLE_GAP_BELOW = 60;
 
 export function titleLayout(width: number, height: number): TitleLayout {
-  const pad = Math.min(44, Math.max(16, width * 0.03));
+  const pad = pagePad(width);
   const top = Math.max(14, Math.min(28, height * 0.025));
   const texts = width < 700 ? ['ft_linear_', 'regression'] : [TITLE];
-  const maxW = width >= 1024 ? Math.min(width * 0.6, 920, width - 2 * pad - 420) : width - 2 * pad;
+  const maxW = width >= WIDE ? Math.min(width * 0.6, 920, width - 2 * pad - 420) : width - 2 * pad;
   const maxH = chartMapping(width, height).area.y - top - TITLE_GAP_BELOW;
   const unit = place(texts, 1, 0, 0);
   const em = Math.max(8, Math.min(52, maxW / unit.w, maxH / unit.h));

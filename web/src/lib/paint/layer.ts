@@ -176,7 +176,9 @@ export class PaintLayer {
     const a = amount * Math.min(1, radius / 0.5) ** 2;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const d = Math.hypot(x + 0.5 - cx, y + 0.5 - cy);
+        const dx = x + 0.5 - cx;
+        const dy = y + 0.5 - cy;
+        const d = Math.sqrt(dx * dx + dy * dy);
         const c = Math.min(1, Math.max(0, r + 0.5 - d));
         if (c <= 0) continue;
         const k = y * this.mw + x;

@@ -3,7 +3,7 @@ import type { ChartMapping } from '@/lib/chart.ts';
 import { chartFor } from '@/lib/layout.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
-import type { Rect } from '@/lib/paint/types.ts';
+import type { Rect, SprayPathOptions } from '@/lib/paint/types.ts';
 import { lineSegment } from './geometry.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE, TIMING } from './timing.ts';
 import { DATA, type LineKind } from './training.ts';
@@ -11,15 +11,13 @@ import { DATA, type LineKind } from './training.ts';
 const NOMINAL_SPEED = 520;
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
-type Stroke = { thetas: Thetas; kind: LineKind; layer: PaintLayer | null };
-
 export class WallPainter {
   chart: ChartMapping;
 
   private engine: PaintEngine;
   private scale: () => number;
   private topPoints: PaintLayer[] = [];
-  private fan: Stroke[] = [];
+  private fan: PaintLayer[] = [];
 
   constructor(engine: PaintEngine, scale: () => number) {
     this.engine = engine;
@@ -42,6 +40,11 @@ export class WallPainter {
     return this.engine.sprayDot(layer, p.x, p.y, { ...opts, duration: duration / this.scale() });
   }
 
+  stampTopPoint(index: number): void {
+    const { layer, p, opts } = this.pointLayer(index, true);
+    this.engine.stampDot(layer, p.x, p.y, { ...opts, duration: TIMING.redot });
+  }
+
   stampPoints(order: number[], fade = 0): Promise<void[]> {
     return Promise.all(
       order.map((i) => {
@@ -53,10 +56,20 @@ export class WallPainter {
   }
 
   sprayLine(thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
-    const stroke: Stroke = { thetas, kind, layer: null };
-    this.fan.push(stroke);
+    const seconds = Math.max(0.05, duration / 1000) / this.scale();
+    const stroke = this.lineStroke(thetas, kind, (length) => (length / seconds) * 1.2, reverse);
+    if (!stroke) return Promise.resolve();
+    return this.engine.sprayPath(stroke.layer, stroke.points, stroke.opts);
+  }
+
+  stampLine(thetas: Thetas, kind: LineKind, reverse = false): void {
+    const stroke = this.lineStroke(thetas, kind, () => NOMINAL_SPEED, reverse);
+    if (stroke) this.engine.stampPath(stroke.layer, stroke.points, stroke.opts);
+  }
+
+  private lineStroke(thetas: Thetas, kind: LineKind, speedFor: (length: number) => number, reverse: boolean) {
     const seg = lineSegment(thetas, this.chart, this.clipRect(kind));
-    if (!seg) return Promise.resolve();
+    if (!seg) return null;
 
     const [a, b] = seg;
     const style = STYLE[kind];
@@ -66,40 +79,35 @@ export class WallPainter {
     const y0 = Math.max(0, Math.min(a.y, b.y) - pad);
     const x1 = Math.min(this.engine.width, Math.max(a.x, b.x) + pad);
     const y1 = Math.min(this.engine.height, Math.max(a.y, b.y) + pad + DRIP_ROOM[kind]);
-    stroke.layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } });
+    const layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } });
+    this.fan.push(layer);
 
-    const length = Math.hypot(b.x - a.x, b.y - a.y);
-    const seconds = Math.max(0.05, duration / 1000) / this.scale();
-    const speed = (length / seconds) * 1.2;
-    return this.engine.sprayPath(stroke.layer, reverse ? [b, a] : [a, b], {
+    const speed = speedFor(Math.hypot(b.x - a.x, b.y - a.y));
+    const opts: SprayPathOptions = {
       speed,
       width: style.width,
       load: (style.thickness * speed) / NOMINAL_SPEED,
       dwell: (style.dwell * NOMINAL_SPEED) / speed,
       hesitations: style.hesitations,
       end: kind === 'finalLine' ? 'blob' : 'taper',
-    });
+    };
+    return { layer, points: reverse ? [b, a] : [a, b], opts };
   }
 
   fadeFan(instant = false): void {
-    const painted = this.paintedFan();
-    painted.forEach((layer, i) => {
-      const age = painted.length - 1 - i;
+    this.fan.forEach((layer, i) => {
+      const age = this.fan.length - 1 - i;
       if (instant) this.engine.setOpacity(layer, fadeOpacity(age), fadeGray(age));
       else void this.engine.fadeLayer(layer, fadeOpacity(age), TIMING.fade / this.scale(), fadeGray(age));
     });
   }
 
   wipeFan(): void {
-    for (const layer of [...this.paintedFan(), ...this.topPoints]) {
+    for (const layer of [...this.fan, ...this.topPoints]) {
       void this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale()).then(() => this.engine.removeLayer(layer));
     }
     this.fan = [];
     this.topPoints = [];
-  }
-
-  private paintedFan(): PaintLayer[] {
-    return this.fan.flatMap((s) => (s.layer ? [s.layer] : []));
   }
 
   private pointLayer(index: number, top: boolean, opacity = 1) {
