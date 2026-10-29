@@ -9,10 +9,10 @@ export function App() {
   const vm = useWallViewModel();
   return (
     <>
-      <PaintWall onReady={vm.onEngineReady} />
+      <PaintWall />
       <Stickers {...vm.stickers} />
       <WallUI {...vm.wall} doc={<DocPage />} />
-      <SprayCan engine={vm.engine} hidden={vm.skipping} />
+      <SprayCan />
     </>
   );
 }

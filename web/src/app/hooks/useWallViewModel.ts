@@ -1,21 +1,18 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { WallUIProps } from '@/features/dashboard/layout/components/orchestrators/WallUI.tsx';
 import { useSequenceRuntime } from '@/features/sequence/hooks/useSequenceRuntime.ts';
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 import { willDiverge } from '@/features/sequence/lib/training.ts';
-import { titleLayout } from '@/features/title/lib/layout.ts';
+import { useTitleLayout } from '@/features/title/hooks/useTitleLayout.ts';
 import { formatNumber, isDisplayablePrice, parseKm } from '@/lib/format.ts';
-import { useWallSize } from '@/lib/hooks/useWallSize.ts';
-import { chartFor } from '@/lib/layout.ts';
-import type { PaintEngine } from '@/lib/paint/engine.ts';
+import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
 
 export function useWallViewModel() {
-  const [engine, setEngine] = useState<PaintEngine | null>(null);
-  useSequenceRuntime(engine);
+  useSequenceRuntime();
   const seq = useSequence((s) => s);
-  const { width, height } = useWallSize();
-  const chart = useMemo(() => chartFor(width, height), [width, height]);
-  const title = useMemo(() => titleLayout(width, height), [width, height]);
+  const { width, height } = useViewport();
+  const chart = useChart();
+  const title = useTitleLayout();
 
   const [km, setKm] = useState('100000');
   const [learningRate, setLearningRate] = useState(0.5);
@@ -68,10 +65,7 @@ export function useWallViewModel() {
   };
 
   return {
-    engine,
-    onEngineReady: setEngine,
     stickers: { chart, width, titleRight: title.rect.x + title.rect.w },
     wall,
-    skipping: seq.skipping,
   };
 }
