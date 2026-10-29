@@ -1,4 +1,5 @@
 import { VIDEOS, videoUrl } from '@/features/docs/content/sources.ts';
+import '@/features/docs/styles/cards.css';
 
 export function SourcesCard() {
   return (

@@ -1,0 +1,43 @@
+.doc-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--glass-line);
+}
+.doc-toc-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px 28px;
+}
+.doc-toc-title {
+  margin-bottom: 6px !important;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--glass-line);
+  font-family: var(--anton);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  color: var(--magenta);
+}
+.doc-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.doc-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.doc-toc a:hover {
+  color: var(--acid);
+}
+.doc-toc span {
+  font-family: var(--marker);
+  color: var(--acid);
+}

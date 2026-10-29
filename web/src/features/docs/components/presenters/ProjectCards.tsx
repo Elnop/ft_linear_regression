@@ -1,5 +1,7 @@
 import { CLI, TREE } from '@/features/docs/content/project.ts';
 import { REPO } from '@/features/docs/content/sources.ts';
+import '@/features/docs/styles/cards.css';
+import '@/features/docs/styles/code.css';
 
 export function ProjectCards() {
   return (

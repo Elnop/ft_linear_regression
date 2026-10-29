@@ -1,4 +1,5 @@
 import { stepId, stepNumber, type TocSection } from '@/features/docs/lib/sections.ts';
+import '@/features/docs/styles/toc.css';
 
 type Props = {
   sections: TocSection[];

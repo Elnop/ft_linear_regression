@@ -1,5 +1,6 @@
 import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
 import type { Step } from '@/features/docs/types.ts';
+import '@/features/docs/styles/steps.css';
 
 type Props = {
   steps: Step[];

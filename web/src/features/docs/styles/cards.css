@@ -1,0 +1,40 @@
+.doc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 20px;
+}
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--glass-line);
+}
+.doc .doc-card h3 {
+  font-family: var(--anton);
+  font-size: 26px;
+  letter-spacing: 0.03em;
+}
+.doc .doc-card p + p {
+  margin-top: 0;
+}
+.doc-link {
+  color: var(--acid);
+  font-weight: 700;
+}
+
+.doc-sources {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (max-width: 1023px) {
+  .doc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

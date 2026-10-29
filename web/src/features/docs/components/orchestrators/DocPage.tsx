@@ -8,7 +8,7 @@ import { CODE } from '@/features/docs/content/code.tsx';
 import { THEORY } from '@/features/docs/content/theory.ts';
 import { useDocTabs } from '@/features/docs/hooks/useDocTabs.ts';
 import { groupSections } from '@/features/docs/lib/sections.ts';
-import '@/features/docs/docs.css';
+import '@/features/docs/styles/page.css';
 
 const CODE_STEPS = CODE.map((s) => ({ ...s, label: s.file }));
 

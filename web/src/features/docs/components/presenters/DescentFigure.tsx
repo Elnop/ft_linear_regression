@@ -1,3 +1,6 @@
+import '@/features/docs/styles/code.css';
+import '@/features/docs/styles/figure.css';
+
 export function DescentFigure() {
   const curve = (x: number) => 195 - 0.0052 * (x - 200) ** 2;
   const path = Array.from({ length: 41 }, (_, i) => {

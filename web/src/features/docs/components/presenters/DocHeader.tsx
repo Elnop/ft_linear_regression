@@ -1,3 +1,5 @@
+import '@/features/docs/styles/page.css';
+
 export function DocHeader() {
   return (
     <header className="doc-head">
