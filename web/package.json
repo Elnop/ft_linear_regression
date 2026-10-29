@@ -14,7 +14,8 @@
   "dependencies": {
     "motion": "^14.7.1",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "zustand": "5.0.15"
   },
   "devDependencies": {
     "@swc/core": "^1.16.20",

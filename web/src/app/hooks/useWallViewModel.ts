@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { WallUIProps } from '@/features/dashboard/layout/components/orchestrators/WallUI.tsx';
-import { useSequence } from '@/features/sequence/hooks/useSequence.ts';
+import { useSequenceRuntime } from '@/features/sequence/hooks/useSequenceRuntime.ts';
+import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 import { willDiverge } from '@/features/sequence/lib/training.ts';
 import { titleLayout } from '@/features/title/lib/layout.ts';
 import { formatNumber, isDisplayablePrice, parseKm } from '@/lib/format.ts';
@@ -10,7 +11,8 @@ import type { PaintEngine } from '@/lib/paint/engine.ts';
 
 export function useWallViewModel() {
   const [engine, setEngine] = useState<PaintEngine | null>(null);
-  const seq = useSequence(engine);
+  useSequenceRuntime(engine);
+  const seq = useSequence((s) => s);
   const { width, height } = useWallSize();
   const chart = useMemo(() => chartFor(width, height), [width, height]);
   const title = useMemo(() => titleLayout(width, height), [width, height]);

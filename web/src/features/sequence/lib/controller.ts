@@ -2,7 +2,7 @@ import type { TrainOptions } from '@core/types.ts';
 import { drawTitle as tagTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
-import { createStore } from '@/lib/store.ts';
+import type { StoreApi } from 'zustand/vanilla';
 import type { DrawTitle, Prediction, SequenceState } from '@/features/sequence/types.ts';
 import { WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
@@ -24,9 +24,9 @@ import {
 const defaultTitle: DrawTitle = (engine, ctx) => tagTitle(engine, { tempo: ctx.timeScale });
 
 export class SequenceController {
-  private store = createStore<SequenceState>(IDLE_STATE);
   private timeline = new Timeline();
   private engine: PaintEngine;
+  private store: StoreApi<SequenceState>;
   private drawTitle: DrawTitle;
   private painter: WallPainter;
 
@@ -35,8 +35,9 @@ export class SequenceController {
   private unResize: () => void;
   private resizeTimer = 0;
 
-  constructor(engine: PaintEngine, drawTitle: DrawTitle = defaultTitle) {
+  constructor(engine: PaintEngine, store: StoreApi<SequenceState>, drawTitle: DrawTitle = defaultTitle) {
     this.engine = engine;
+    this.store = store;
     this.drawTitle = drawTitle;
     this.painter = new WallPainter(engine, () => this.timeline.scale);
     this.unResize = engine.onResize(() => {
@@ -44,9 +45,6 @@ export class SequenceController {
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
     });
   }
-
-  subscribe = this.store.subscribe;
-  getState = this.store.get;
 
   start(): void {
     const run = this.restart();
@@ -85,11 +83,11 @@ export class SequenceController {
   };
 
   private get state(): SequenceState {
-    return this.store.get();
+    return this.store.getState();
   }
 
   private set(patch: Partial<SequenceState>): void {
-    this.store.set(patch);
+    this.store.setState(patch);
   }
 
   private restart(): Run {
