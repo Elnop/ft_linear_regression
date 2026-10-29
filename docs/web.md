@@ -14,12 +14,12 @@ L'app **entraîne elle-même** le modèle dans le navigateur avec les fonctions 
 
 ## Direction artistique
 
-Un mur de béton la nuit, tagué à la bombe, avec quelques autocollants anti-IA abîmés et une interface en panneaux de verre posée par-dessus.
+Un mur de béton la nuit, tagué à la bombe, avec quelques autocollants abîmés (école 42, stack TypeScript / React, sujet) et une interface en panneaux de verre posée par-dessus.
 
 - **Mur** : photo de béton banché assombrie (Poly Haven, CC0).
 - **Peinture** : la droite, les points et le titre sont **peints en direct** par un moteur de peinture (voir plus bas), pas affichés en images.
 - **Bombe** : une bombe de peinture en SVG (logo 42, aux couleurs du site) suit la buse du moteur. Elle prend la couleur de la peinture en cours, secoue quand la couleur change, enfonce le diffuseur pendant le spray et, quand plus rien n'est peint, tombe en tournant jusqu'en bas de l'écran. Elle est masquée pendant *Passer* et si l'utilisateur a demandé moins d'animations.
-- **Autocollants** : petits (environ 8 cm à l'échelle du mur), regroupés, à moitié décollés ou grattés.
+- **Autocollants** : dessinés en SVG dans `Stickers.tsx` (logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient). Petits (environ 8 cm à l'échelle du mur), regroupés, abîmés : grattés par endroits (il ne reste que le papier blanc), coins décollés repliés, bords déchirés. Usure générée par filtres SVG et graine aléatoire fixe par autocollant.
 - **Interface** : panneaux en verre dépoli (θ0, θ1, coût, précision, champ kilométrage, réglages).
 
 ## Séquence d'animation
