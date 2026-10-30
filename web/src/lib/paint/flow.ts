@@ -1,4 +1,4 @@
-import { isEmpty, resetRectangle, type PaintLayer } from './layer.ts';
+import type { PaintLayer } from './layer.ts';
 
 const GRAVITY = 36;
 const SPREAD = 22;
@@ -10,7 +10,7 @@ const THICKENING = 0.8;
 
 export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
   const active = layer.active;
-  if (isEmpty(active)) return;
+  if (active.empty) return;
   const width = layer.filmWidth;
   const height = layer.filmHeight;
   const { film, wetMass, pooled, residual, pin, roughness, reached, filmDelta, wetDelta, pooledDelta } = layer;
@@ -51,6 +51,17 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
     if (amount > 0) move(from, to, Math.min(amount, excess * 0.2), mobility, poolShare);
   };
 
+  const accept = (index: number, excess: number) => {
+    const thickness = film[index];
+    const grip = 1.15 - 0.6 * roughness[index];
+    if (thickness > residual[index] * 0.5) return (0.3 + thickness) * grip;
+    if (excess > pin[index]) return 0.3 * grip * Math.min(1, (excess - pin[index]) * 4);
+    const closeness = (excess - 0.6 * pin[index]) / (0.4 * pin[index]);
+    return closeness > 0 ? 0.015 * grip * closeness * closeness : 0;
+  };
+
+  const side = (index: number, excess: number) => (film[index] > residual[index] * 0.5 ? 0.12 * accept(index, excess) : 0);
+
   for (let y = y0; y <= Math.min(y1, height - 2); y++) {
     for (let x = x0; x <= x1; x++) {
       const i = y * width + x;
@@ -66,11 +77,11 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
       if (x > 0) level(i, i - 1, excess, mobility, poolShare);
 
       const below = i + width;
-      const weightBelow = accept(film, residual, pin, roughness, below, excess);
+      const weightBelow = accept(below, excess);
       let weightLeft = 0;
       let weightRight = 0;
-      if (x > 0) weightLeft = side(film, residual, pin, roughness, below - 1, excess);
-      if (x < width - 1) weightRight = side(film, residual, pin, roughness, below + 1, excess);
+      if (x > 0) weightLeft = side(below - 1, excess);
+      if (x < width - 1) weightRight = side(below + 1, excess);
       const sum = weightLeft + weightBelow + weightRight;
       if (sum === 0) continue;
       const amount = excess * Math.min(0.45, GRAVITY * mobility * excess * deltaSeconds);
@@ -80,7 +91,7 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
     }
   }
 
-  resetRectangle(active);
+  active.reset();
   for (let y = y0; y <= y1; y++) {
     for (let x = x0; x <= x1; x++) {
       const i = y * width + x;
@@ -92,26 +103,8 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
       film[i] = thickness;
       wetMass[i] = mass;
       pooled[i] = Math.min(thickness, Math.max(0, pooled[i] + pooledDelta[i]));
-      if (mass > MIN_MOBILITY * thickness && thickness > residual[i]) {
-        if (x < active.x0) active.x0 = x;
-        if (x > active.x1) active.x1 = x;
-        if (y < active.y0) active.y0 = y;
-        if (y > active.y1) active.y1 = y;
-      }
+      if (mass > MIN_MOBILITY * thickness && thickness > residual[i]) active.grow(x, y, x, y);
     }
   }
-  layer.markFilmDirty({ x0, y0, x1, y1 });
-}
-
-function accept(film: Float32Array, residual: Float32Array, pin: Float32Array, roughness: Float32Array, index: number, excess: number): number {
-  const thickness = film[index];
-  const grip = 1.15 - 0.6 * roughness[index];
-  if (thickness > residual[index] * 0.5) return (0.3 + thickness) * grip;
-  if (excess > pin[index]) return 0.3 * grip * Math.min(1, (excess - pin[index]) * 4);
-  const closeness = (excess - 0.6 * pin[index]) / (0.4 * pin[index]);
-  return closeness > 0 ? 0.015 * grip * closeness * closeness : 0;
-}
-
-function side(film: Float32Array, residual: Float32Array, pin: Float32Array, roughness: Float32Array, index: number, excess: number): number {
-  return film[index] > residual[index] * 0.5 ? 0.12 * accept(film, residual, pin, roughness, index, excess) : 0;
+  layer.filmDirty.grow(x0, y0, x1, y1);
 }

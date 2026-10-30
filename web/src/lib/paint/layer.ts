@@ -1,4 +1,5 @@
-import type { Rectangle, Rgb } from './types.ts';
+import { hexToRgb } from './color.ts';
+import type { LayerOptions, Rectangle, Rgb } from './types.ts';
 import type { Roughness } from './roughness.ts';
 import { mulberry32, noise2D } from '@/lib/random.ts';
 
@@ -10,24 +11,27 @@ const PIN = 0.55;
 
 export type CellRectangle = { x0: number; y0: number; x1: number; y1: number };
 
-function emptyRectangle(): CellRectangle {
-  return { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
-}
+export class DirtyRectangle implements CellRectangle {
+  x0 = Infinity;
+  y0 = Infinity;
+  x1 = -Infinity;
+  y1 = -Infinity;
 
-export function isEmpty(rectangle: CellRectangle): boolean {
-  return rectangle.x1 < rectangle.x0;
-}
+  get empty(): boolean {
+    return this.x1 < this.x0;
+  }
 
-function grow(rectangle: CellRectangle, x0: number, y0: number, x1: number, y1: number): void {
-  if (x0 < rectangle.x0) rectangle.x0 = x0;
-  if (y0 < rectangle.y0) rectangle.y0 = y0;
-  if (x1 > rectangle.x1) rectangle.x1 = x1;
-  if (y1 > rectangle.y1) rectangle.y1 = y1;
-}
+  grow(x0: number, y0: number, x1: number, y1: number): void {
+    if (x0 < this.x0) this.x0 = x0;
+    if (y0 < this.y0) this.y0 = y0;
+    if (x1 > this.x1) this.x1 = x1;
+    if (y1 > this.y1) this.y1 = y1;
+  }
 
-export function resetRectangle(rectangle: CellRectangle): void {
-  rectangle.x0 = rectangle.y0 = Infinity;
-  rectangle.x1 = rectangle.y1 = -Infinity;
+  reset(): void {
+    this.x0 = this.y0 = Infinity;
+    this.x1 = this.y1 = -Infinity;
+  }
 }
 
 let nextId = 1;
@@ -35,7 +39,9 @@ let nextId = 1;
 export class PaintLayer {
   readonly id = nextId++;
   readonly bounds: Rectangle;
+  readonly hex: string;
   readonly color: Rgb;
+  readonly z: number;
   opacity: number;
   gray = 0;
 
@@ -56,18 +62,20 @@ export class PaintLayer {
   readonly mistHeight: number;
   readonly mist: Uint8Array;
 
-  readonly active = emptyRectangle();
-  readonly filmDirty = emptyRectangle();
-  readonly mistDirty = emptyRectangle();
+  readonly active = new DirtyRectangle();
+  readonly filmDirty = new DirtyRectangle();
+  readonly mistDirty = new DirtyRectangle();
   gloss = 1;
 
-  constructor(bounds: Rectangle, color: Rgb, opacity: number, roughness: Roughness) {
+  constructor({ bounds, color, opacity = 1, z = 0 }: LayerOptions & { bounds: Rectangle }, roughness: Roughness) {
     const x = Math.floor(bounds.x / CELL) * CELL;
     const y = Math.floor(bounds.y / CELL) * CELL;
     this.filmWidth = Math.max(2, Math.ceil((bounds.x + bounds.width - x) / CELL));
     this.filmHeight = Math.max(2, Math.ceil((bounds.y + bounds.height - y) / CELL));
     this.bounds = { x, y, width: this.filmWidth * CELL, height: this.filmHeight * CELL };
-    this.color = color;
+    this.hex = color;
+    this.color = hexToRgb(color);
+    this.z = z;
     this.opacity = opacity;
 
     const cellCount = this.filmWidth * this.filmHeight;
@@ -115,8 +123,8 @@ export class PaintLayer {
     this.add(k + 1, density * fractionX * (1 - fractionY));
     this.add(k + this.filmWidth, density * (1 - fractionX) * fractionY);
     this.add(k + this.filmWidth + 1, density * fractionX * fractionY);
-    grow(this.active, cellX, cellY, cellX + 1, cellY + 1);
-    grow(this.filmDirty, cellX, cellY, cellX + 1, cellY + 1);
+    this.active.grow(cellX, cellY, cellX + 1, cellY + 1);
+    this.filmDirty.grow(cellX, cellY, cellX + 1, cellY + 1);
   }
 
   depositSplat(pointX: number, pointY: number, radius: number, mass: number): void {
@@ -144,8 +152,8 @@ export class PaintLayer {
         this.add(y * this.filmWidth + x, density * (1 - distanceSquared));
       }
     }
-    grow(this.active, x0, y0, x1, y1);
-    grow(this.filmDirty, x0, y0, x1, y1);
+    this.active.grow(x0, y0, x1, y1);
+    this.filmDirty.grow(x0, y0, x1, y1);
   }
 
   depositMist(pointX: number, pointY: number, amount: number, radius: number): void {
@@ -169,7 +177,7 @@ export class PaintLayer {
         this.mist[k] = Math.min(255, this.mist[k] + strength * coverage);
       }
     }
-    grow(this.mistDirty, x0, y0, x1, y1);
+    this.mistDirty.grow(x0, y0, x1, y1);
   }
 
   private add(index: number, mass: number): void {
@@ -183,11 +191,7 @@ export class PaintLayer {
     return [mix(red), mix(green), mix(blue)];
   }
 
-  markFilmDirty(rectangle: CellRectangle): void {
-    grow(this.filmDirty, rectangle.x0, rectangle.y0, rectangle.x1, rectangle.y1);
-  }
-
   get wet(): boolean {
-    return !isEmpty(this.active);
+    return !this.active.empty;
   }
 }

@@ -1,4 +1,3 @@
-import { rgbToHex } from '@/lib/paint/color.ts';
 import type { Nozzle, Vec2 } from '@/lib/paint/types.ts';
 
 const BASE_TILT = -14;
@@ -29,9 +28,8 @@ export class CanMotion {
     const spraying = !!nozzle && nozzle.active <= 2 && !hidden;
     if (spraying) {
       this.idle = 0;
-      const hex = rgbToHex(nozzle.color);
-      if (hex !== this.color) {
-        this.color = hex;
+      if (nozzle.color !== this.color) {
+        this.color = nozzle.color;
         this.shake = SHAKE;
       }
       const targetX = nozzle.x + canWidth * 0.36;

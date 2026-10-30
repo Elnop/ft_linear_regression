@@ -21,6 +21,7 @@ export type TitleLayout = {
 };
 
 const TITLE_GAP_BELOW = 60;
+const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
 
 export function titleLayout(width: number, height: number): TitleLayout {
   const padding = pagePadding(width);
@@ -28,37 +29,35 @@ export function titleLayout(width: number, height: number): TitleLayout {
   const texts = width < 700 ? ['ft_linear_', 'regression'] : [TITLE];
   const maxWidth = width >= WIDE ? Math.min(width * 0.6, 920, width - 2 * padding - 420) : width - 2 * padding;
   const maxHeight = chartMapping(width, height).area.y - top - TITLE_GAP_BELOW;
-  const unit = place(texts, 1, 0, 0);
+  const unit = measure(texts);
   const em = Math.max(8, Math.min(52, maxWidth / unit.width, maxHeight / unit.height));
-  const sized = place(texts, em, 0, 0);
-  const layout = place(texts, em, padding - sized.x, top - sized.y);
-  return { rectangle: { x: padding, y: top, width: sized.width, height: sized.height }, em, lines: layout.lines };
+  return {
+    rectangle: { x: padding, y: top, width: unit.width * em, height: unit.height * em },
+    em,
+    lines: texts.map((text, k) => ({ text, x: padding - unit.x * em, baseline: top + (k * LINE_HEIGHT - unit.y) * em })),
+  };
 }
 
-function place(texts: string[], em: number, dx: number, dy: number) {
-  const lines = texts.map((text, k) => ({ text, x: dx, baseline: dy + k * (ASCENT + DESCENT + LINE_GAP) * em }));
-  const layout = { rectangle: { x: 0, y: 0, width: 0, height: 0 }, em, lines };
-  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-  for (const stroke of titleStrokes(layout, () => 0.5)) {
-    for (const point of stroke.points) {
-      x0 = Math.min(x0, point.x);
-      y0 = Math.min(y0, point.y);
-      x1 = Math.max(x1, point.x);
-      y1 = Math.max(y1, point.y);
-    }
-  }
-  const margin = (STROKE / 2 + 0.08) * em;
-  return { lines, x: x0 - margin - dx, y: y0 - margin - dy, width: x1 - x0 + 2 * margin, height: y1 - y0 + 2 * margin };
+function measure(texts: string[]): Rectangle {
+  const lines = texts.map((text, k) => ({ text, x: 0, baseline: k * LINE_HEIGHT }));
+  const points = titleLetters({ em: 1, lines }, () => 0.5).flat(2).flatMap((stroke) => stroke.points);
+  const xs = points.map((point) => point.x);
+  const ys = points.map((point) => point.y);
+  const margin = STROKE / 2 + 0.08;
+  const x = Math.min(...xs) - margin;
+  const y = Math.min(...ys) - margin;
+  return { x, y, width: Math.max(...xs) + margin - x, height: Math.max(...ys) + margin - y };
 }
 
-export type Stroke = { points: Vec2[]; thickness: number; dot: boolean; letterStart: boolean };
+export type Stroke = { points: Vec2[]; thickness: number; dot: boolean };
 
-export function titleStrokes(layout: TitleLayout, random: () => number): Stroke[] {
+export type TitleLine = Stroke[][];
+
+export function titleLetters(layout: Pick<TitleLayout, 'em' | 'lines'>, random: () => number): TitleLine[] {
   const { em } = layout;
-  const out: Stroke[] = [];
-  for (const line of layout.lines) {
+  const lines = layout.lines.map((line) => {
     let pen = 0;
-    for (const character of line.text) {
+    return line.text.split('').map((character) => {
       const glyph = GLYPHS[character];
       const scale = 0.94 + 0.12 * random();
       const lift = (random() - 0.5) * 0.1;
@@ -68,14 +67,12 @@ export function titleStrokes(layout: TitleLayout, random: () => number): Stroke[
         const localY = point.y * scale + lift;
         return { x: line.x + (localX * COS - localY * SIN) * em, y: line.baseline + (localX * SIN + localY * COS) * em };
       };
-      glyph.strokes.forEach((knots, k) => {
-        out.push({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false, letterStart: k === 0 });
-      });
-      if (glyph.dot) out.push({ points: [place(glyph.dot)], thickness: 2, dot: true, letterStart: false });
+      const strokes = glyph.strokes.map((knots): Stroke => ({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false }));
+      if (glyph.dot) strokes.push({ points: [place(glyph.dot)], thickness: 2, dot: true });
       pen += glyph.advance + TRACKING;
-    }
-  }
-  out[out.length - 1].thickness = 1.4;
-  return out;
+      return strokes;
+    });
+  });
+  lines.flat(2).at(-1)!.thickness = 1.4;
+  return lines;
 }
-

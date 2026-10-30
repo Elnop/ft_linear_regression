@@ -3,10 +3,11 @@ import type { ChartMapping } from '@/lib/chart.ts';
 import { chartFor } from '@/lib/layout.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
-import { NOMINAL_SPEED } from '@/lib/paint/nozzle.ts';
-import type { Rectangle, SprayPathOptions } from '@/lib/paint/types.ts';
+import { dotJob, NOMINAL_SPEED, pathJob } from '@/lib/paint/nozzle.ts';
+import type { Rectangle } from '@/lib/paint/types.ts';
 import { lineSegment } from './geometry.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE } from './style.ts';
+import type { Timeline } from './timeline.ts';
 import { TIMING } from './timing.ts';
 import { isFinalPass, type Training } from './training.ts';
 
@@ -24,14 +25,14 @@ export class WallPainter {
 
   private engine: PaintEngine;
   private samples: Sample[];
-  private scale: () => number;
+  private timeline: Timeline;
   private topPoints: PaintLayer[] = [];
   private fan: PaintLayer[] = [];
 
-  constructor(engine: PaintEngine, samples: Sample[], scale: () => number) {
+  constructor(engine: PaintEngine, samples: Sample[], timeline: Timeline) {
     this.engine = engine;
     this.samples = samples;
-    this.scale = scale;
+    this.timeline = timeline;
     this.chart = chartFor(engine.width, engine.height);
   }
 
@@ -45,91 +46,79 @@ export class WallPainter {
     this.chart = chartFor(this.engine.width, this.engine.height);
   }
 
-  sprayPoint(index: number, duration: number, top = false): Promise<void> {
-    const { layer, center, options } = this.pointLayer(index, top);
-    return this.engine.sprayDot(layer, center.x, center.y, { ...options, duration: duration / this.scale() });
+  sprayPoint(index: number, duration: number): Promise<void> {
+    const { layer, center, options } = this.pointLayer(index, 2);
+    this.topPoints.push(layer);
+    return this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration: duration / this.timeline.scale }), this.timeline.instant);
   }
 
-  stampTopPoint(index: number): void {
-    const { layer, center, options } = this.pointLayer(index, true);
-    this.engine.stampDot(layer, center.x, center.y, { ...options, duration: TIMING.redot });
-  }
-
-  stampPoints(order: number[], fade = 0): Promise<void[]> {
+  stampPoints(order: number[], fade: number): Promise<void[]> {
     return Promise.all(
       order.map((i) => {
-        const { layer, center, options } = this.pointLayer(i, false, fade ? 0 : 1);
-        this.engine.stampDot(layer, center.x, center.y, { ...options, duration: TIMING.dot });
-        return fade ? this.engine.fadeLayer(layer, 1, fade / this.scale()) : Promise.resolve();
+        const { layer, center, options } = this.pointLayer(i, 0, 0);
+        void this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration: TIMING.dot }), true);
+        return this.engine.fadeLayer(layer, 1, this.fadeTime(fade));
       }),
     );
   }
 
   sprayLine(thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
-    const seconds = Math.max(0.05, duration / 1000) / this.scale();
-    const stroke = this.lineStroke(thetas, kind, (length) => (length / seconds) * 1.2, reverse);
-    if (!stroke) return Promise.resolve();
-    return this.engine.sprayPath(stroke.layer, stroke.points, stroke.options);
-  }
-
-  stampLine(thetas: Thetas, kind: LineKind, reverse = false): void {
-    const stroke = this.lineStroke(thetas, kind, () => NOMINAL_SPEED, reverse);
-    if (stroke) this.engine.stampPath(stroke.layer, stroke.points, stroke.options);
-  }
-
-  private lineStroke(thetas: Thetas, kind: LineKind, speedFor: (length: number) => number, reverse: boolean) {
     const segment = lineSegment(thetas, this.chart, this.clipRectangle(kind));
-    if (!segment) return null;
+    if (!segment) return Promise.resolve();
 
     const [start, end] = segment;
     const style = STYLE[kind];
-    const color = kind === 'diverge' ? COLORS.diverge : COLORS.line;
     const padding = style.width * 2;
     const x0 = Math.max(0, Math.min(start.x, end.x) - padding);
     const y0 = Math.max(0, Math.min(start.y, end.y) - padding);
     const x1 = Math.min(this.engine.width, Math.max(start.x, end.x) + padding);
     const y1 = Math.min(this.engine.height, Math.max(start.y, end.y) + padding + DRIP_ROOM[kind]);
+    const color = kind === 'diverge' ? COLORS.diverge : COLORS.line;
     const layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, width: x1 - x0, height: y1 - y0 } });
     this.fan.push(layer);
 
-    const speed = speedFor(Math.hypot(end.x - start.x, end.y - start.y));
-    const options: SprayPathOptions = {
+    const { instant, scale } = this.timeline;
+    const seconds = Math.max(0.05, duration / 1000) / scale;
+    const speed = instant ? NOMINAL_SPEED : (Math.hypot(end.x - start.x, end.y - start.y) / seconds) * 1.2;
+    const job = pathJob(layer, reverse ? [end, start] : [start, end], {
       speed,
       width: style.width,
       load: (style.thickness * speed) / NOMINAL_SPEED,
       dwell: (style.dwell * NOMINAL_SPEED) / speed,
       hesitations: style.hesitations,
       end: kind === 'finalLine' ? 'blob' : 'taper',
-    };
-    return { layer, points: reverse ? [end, start] : [start, end], options };
+    });
+    return this.engine.spray(job, instant);
   }
 
-  fadeFan(instant = false): void {
+  fadeFan(): void {
     this.fan.forEach((layer, i) => {
       const age = this.fan.length - 1 - i;
-      if (instant) this.engine.setOpacity(layer, fadeOpacity(age), fadeGray(age));
-      else void this.engine.fadeLayer(layer, fadeOpacity(age), TIMING.fade / this.scale(), fadeGray(age));
+      void this.engine.fadeLayer(layer, fadeOpacity(age), this.fadeTime(TIMING.fade), fadeGray(age));
     });
   }
 
   wipeFan(): void {
     for (const layer of [...this.fan, ...this.topPoints]) {
-      void this.engine.fadeLayer(layer, 0, TIMING.fanOut / this.scale()).then(() => this.engine.removeLayer(layer));
+      void this.engine.fadeLayer(layer, 0, this.fadeTime(TIMING.fanOut)).then(() => this.engine.removeLayer(layer));
     }
     this.fan = [];
     this.topPoints = [];
   }
 
-  private pointLayer(index: number, top: boolean, opacity = 1) {
+  private fadeTime(duration: number): number {
+    return this.timeline.instant ? 0 : duration / this.timeline.scale;
+  }
+
+  private pointLayer(index: number, z: number, opacity = 1) {
     const sample = this.samples[index];
     const center = this.chart.point(sample.km, sample.price);
     const layer = this.engine.createLayer({
       color: COLORS.point,
       opacity,
-      z: top ? 2 : 0,
+      z,
       bounds: { x: center.x - 30, y: center.y - 30, width: 60, height: 60 + DRIP_ROOM.dot },
     });
-    if (top) this.topPoints.push(layer);
     const [minimumLoad, maximumLoad] = STYLE.dot.load;
     return { layer, center, options: { width: STYLE.dot.width, load: minimumLoad + Math.random() * (maximumLoad - minimumLoad) } };
   }

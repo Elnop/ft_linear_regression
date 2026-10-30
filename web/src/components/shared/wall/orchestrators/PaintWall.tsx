@@ -7,7 +7,14 @@ export function PaintWall() {
   const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const engine = new PaintEngine(box.current!, wallUrl);
+    const element = box.current!;
+    let engine: PaintEngine;
+    try {
+      engine = new PaintEngine(element, wallUrl);
+    } catch {
+      element.style.background = `#0b0b0d url(${wallUrl}) center / cover`;
+      return;
+    }
     let alive = true;
     void engine.ready.then(() => {
       if (alive) publishEngine(engine);

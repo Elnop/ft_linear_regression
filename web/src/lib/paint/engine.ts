@@ -1,20 +1,18 @@
 import { smoothstep } from '@/lib/easing.ts';
-import { hexToRgb } from './color.ts';
 import { stepFlow } from './flow.ts';
 import { FILM_SCALE, PaintLayer } from './layer.ts';
-import { dotJob, moveJob, pathJob, type Job } from './nozzle.ts';
-import { createGLRenderer } from './glRenderer.ts';
-import type { Renderer } from './renderer.ts';
-import { createCanvasRenderer } from './canvasRenderer.ts';
+import type { Job } from './nozzle.ts';
+import { createGLRenderer, type Renderer } from './glRenderer.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
-import type { LayerOptions, Nozzle, SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
+import type { LayerOptions, Nozzle } from './types.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;
 const SETTLE_BUDGET_MS = 120;
 
-type Running = { job: Job; layer: PaintLayer; done: () => void };
-type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; elapsed: number; duration: number; done: () => void };
+type Running = { job: Job; done: () => void };
+type Look = { opacity: number; gray: number };
+type Tween = { layer: PaintLayer; from: Look; to: Look; elapsed: number; duration: number; done: () => void };
 
 export class PaintEngine {
   readonly canvas: HTMLCanvasElement;
@@ -24,7 +22,6 @@ export class PaintEngine {
 
   private renderer: Renderer;
   private layers: PaintLayer[] = [];
-  private depth = new WeakMap<PaintLayer, number>();
   private jobs: Running[] = [];
   private tweens: Tween[] = [];
   private resizeListeners = new Set<() => void>();
@@ -39,12 +36,8 @@ export class PaintEngine {
   constructor(container: HTMLElement, wallUrl: string) {
     this.canvas = document.createElement('canvas');
     this.canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
+    this.renderer = createGLRenderer(this.canvas);
     container.appendChild(this.canvas);
-    try {
-      this.renderer = createGLRenderer(this.canvas);
-    } catch {
-      this.renderer = createCanvasRenderer(this.canvas);
-    }
     this.measure();
 
     this.ready = new Promise((resolve, reject) => {
@@ -75,10 +68,8 @@ export class PaintEngine {
   createLayer(options: LayerOptions): PaintLayer {
     if (!this.roughness) throw new Error('PaintEngine used before ready');
     const bounds = options.bounds ?? { x: 0, y: 0, width: this.width, height: this.height };
-    const layer = new PaintLayer(bounds, hexToRgb(options.color), options.opacity ?? 1, this.roughness);
-    const z = options.z ?? 0;
-    this.depth.set(layer, z);
-    const at = this.layers.findIndex((other) => (this.depth.get(other) ?? 0) > z);
+    const layer = new PaintLayer({ ...options, bounds }, this.roughness);
+    const at = this.layers.findIndex((other) => other.z > layer.z);
     if (at < 0) this.layers.push(layer);
     else this.layers.splice(at, 0, layer);
     return layer;
@@ -98,42 +89,34 @@ export class PaintEngine {
     this.wake();
   }
 
-  sprayPath(layer: PaintLayer, points: Vec2[], options: SprayPathOptions = {}): Promise<void> {
-    return this.run(layer, pathJob(layer, points, options));
-  }
-
-  sprayDot(layer: PaintLayer, x: number, y: number, options: SprayDotOptions = {}): Promise<void> {
-    return this.run(layer, dotJob(layer, x, y, options));
-  }
-
-  sweep(layer: PaintLayer, points: Vec2[], speed: number): Promise<void> {
-    return this.run(layer, moveJob(points, speed));
-  }
-
-  stampPath(layer: PaintLayer, points: Vec2[], options: SprayPathOptions = {}): void {
-    this.stamp(pathJob(layer, points, options));
-  }
-
-  stampDot(layer: PaintLayer, x: number, y: number, options: SprayDotOptions = {}): void {
-    this.stamp(dotJob(layer, x, y, options));
+  spray(job: Job, instant = false): Promise<void> {
+    if (instant) {
+      while (!job.update(FLOW_STEP));
+      this.wake();
+      return Promise.resolve();
+    }
+    return new Promise((done) => {
+      this.jobs.push({ job, done });
+      this.wake();
+    });
   }
 
   nozzle(): Nozzle | null {
-    const running = this.jobs[this.jobs.length - 1];
-    return running ? { x: running.job.position.x, y: running.job.position.y, color: running.layer.color, active: this.jobs.length } : null;
-  }
-
-  setOpacity(layer: PaintLayer, opacity: number, gray = layer.gray): void {
-    layer.opacity = opacity;
-    layer.gray = gray;
-    this.wake();
+    const running = this.jobs.at(-1);
+    return running ? { x: running.job.position.x, y: running.job.position.y, color: running.job.layer.hex, active: this.jobs.length } : null;
   }
 
   fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
     this.tweens = this.tweens.filter((tween) => tween.layer !== layer);
+    this.wake();
+    if (durationMs <= 0) {
+      layer.opacity = opacity;
+      layer.gray = gray;
+      return Promise.resolve();
+    }
+    const from = { opacity: layer.opacity, gray: layer.gray };
     return new Promise((done) => {
-      this.tweens.push({ layer, from: layer.opacity, to: opacity, grayFrom: layer.gray, grayTo: gray, elapsed: 0, duration: durationMs / 1000, done });
-      this.wake();
+      this.tweens.push({ layer, from, to: { opacity, gray }, elapsed: 0, duration: durationMs / 1000, done });
     });
   }
 
@@ -158,18 +141,6 @@ export class PaintEngine {
     this.canvas.remove();
   }
 
-  private run(layer: PaintLayer, job: Job): Promise<void> {
-    return new Promise((done) => {
-      this.jobs.push({ job, layer, done });
-      this.wake();
-    });
-  }
-
-  private stamp(job: Job): void {
-    while (!job.update(FLOW_STEP));
-    this.wake();
-  }
-
   private measure(): boolean {
     const box = this.canvas.getBoundingClientRect();
     const width = Math.max(1, Math.round(box.width));
@@ -181,7 +152,7 @@ export class PaintEngine {
     this.pixelRatio = pixelRatio;
     this.canvas.width = Math.round(width * pixelRatio);
     this.canvas.height = Math.round(height * pixelRatio);
-    this.renderer.resize(width, height, pixelRatio);
+    this.renderer.resize(width, height);
     this.needsDraw = true;
     return true;
   }
@@ -241,15 +212,18 @@ export class PaintEngine {
   }
 
   private advanceTweens(deltaSeconds: number): void {
-    for (const tween of this.tweens) {
+    const finished: Tween[] = [];
+    this.tweens = this.tweens.filter((tween) => {
+      const { layer, from, to } = tween;
       tween.elapsed = Math.min(tween.duration, tween.elapsed + deltaSeconds);
-      const eased = smoothstep(tween.duration > 0 ? tween.elapsed / tween.duration : 1);
-      tween.layer.opacity = tween.from + (tween.to - tween.from) * eased;
-      tween.layer.gray = tween.grayFrom + (tween.grayTo - tween.grayFrom) * eased;
+      const eased = smoothstep(tween.elapsed / tween.duration);
+      layer.opacity = from.opacity + (to.opacity - from.opacity) * eased;
+      layer.gray = from.gray + (to.gray - from.gray) * eased;
       this.needsDraw = true;
-    }
-    const finished = this.tweens.filter((tween) => tween.elapsed >= tween.duration);
-    this.tweens = this.tweens.filter((tween) => tween.elapsed < tween.duration);
+      if (tween.elapsed < tween.duration) return true;
+      finished.push(tween);
+      return false;
+    });
     for (const tween of finished) tween.done();
   }
 }

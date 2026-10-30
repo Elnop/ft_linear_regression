@@ -3,7 +3,7 @@ import type { PaintLayer } from './layer.ts';
 import { gaussian, mulberry32, noise1D, randomSeed, type RandomGenerator } from '@/lib/random.ts';
 import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
-export type Job = { position: Vec2; update(deltaSeconds: number): boolean };
+export type Job = { layer: PaintLayer; position: Vec2; update(deltaSeconds: number): boolean };
 
 export const NOMINAL_SPEED = 520;
 const DROPLET = 0.05;
@@ -126,6 +126,7 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
   let wait = dwell;
   let tail = taper ? 0 : dwell;
   return {
+    layer,
     position,
     update(deltaSeconds) {
       if (wait > 0) {
@@ -151,11 +152,12 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
   };
 }
 
-export function moveJob(points: Vec2[], speed: number): Job {
+export function moveJob(layer: PaintLayer, points: Vec2[], speed: number): Job {
   const path = samplePath(points);
   const position = { ...points[0] };
   let travelled = 0;
   return {
+    layer,
     position,
     update(deltaSeconds) {
       travelled = Math.min(path.length, travelled + speed * deltaSeconds);
@@ -178,6 +180,7 @@ export function dotJob(layer: PaintLayer, x: number, y: number, options: SprayDo
   const puff = noise1D(random);
   let elapsed = 0;
   return {
+    layer,
     position: { x, y },
     update(deltaSeconds) {
       const step = Math.min(deltaSeconds, duration - elapsed);

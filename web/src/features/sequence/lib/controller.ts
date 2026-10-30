@@ -1,5 +1,5 @@
 import type { Sample, TrainOptions } from '@core/types.ts';
-import { drawTitle, stampTitle } from '@/features/title/lib/draw.ts';
+import { paintTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
@@ -27,7 +27,7 @@ export class SequenceController {
     this.store = store;
     this.samples = samples;
     this.order = shuffled(samples.length);
-    this.painter = new WallPainter(engine, samples, () => this.timeline.scale);
+    this.painter = new WallPainter(engine, samples, this.timeline);
     this.unsubscribeResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
@@ -71,8 +71,8 @@ export class SequenceController {
     this.store.setState(patch);
   }
 
-  private restart(): Run {
-    const run = this.timeline.restart();
+  private restart(instant = false): Run {
+    const run = this.timeline.restart(instant);
     if (this.state.skipping) this.set({ skipping: false });
     return run;
   }
@@ -98,15 +98,18 @@ export class SequenceController {
     this.set({ ...IDLE_STATE, phase: 'title' });
 
     await run.sleep(TIMING.interfaceIn);
-    this.set({ visiblePoints: this.samples.length });
-    await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
-
-    await run.wait(drawTitle(this.engine, () => this.timeline.scale));
+    await this.paintBackdrop(run);
     await run.sleep(TIMING.beforeDescent);
 
     this.set({ phase: 'descent' });
     await this.playPasses(run, plan);
     this.set({ phase: 'interactive' });
+  }
+
+  private async paintBackdrop(run: Run): Promise<void> {
+    this.set({ visiblePoints: this.samples.length });
+    await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
+    await run.wait(paintTitle(this.engine, this.timeline));
   }
 
   private async playTraining(run: Run, plan: Training): Promise<void> {
@@ -128,7 +131,7 @@ export class SequenceController {
     this.set({ diverged: plan.diverged });
 
     for (const i of this.order) {
-      await run.wait(this.painter.sprayPoint(i, TIMING.redot, true));
+      await run.wait(this.painter.sprayPoint(i, TIMING.redot));
       await run.sleep(TIMING.redotGap);
     }
   }
@@ -139,20 +142,16 @@ export class SequenceController {
   }
 
   private repaint(): void {
-    this.restart();
+    const run = this.restart(true);
     this.painter.clear();
     this.painter.fit();
-
-    stampTitle(this.engine);
-    void this.painter.stampPoints(this.order);
     const plan = this.training ?? runTraining(this.samples, DEFAULT_TRAIN);
     this.training = plan;
-    plan.steps.forEach((step, pass) => this.painter.stampLine(step, lineKindAt(plan, pass), pass % 2 === 1));
-    for (const i of this.order) this.painter.stampTopPoint(i);
-    this.painter.fadeFan(true);
-    this.engine.settle();
-
-    this.show(stepAt(this.samples, plan, plan.steps.length - 1), { diverged: plan.diverged, trainingActive: false });
-    this.set({ phase: 'interactive', visiblePoints: this.samples.length });
+    void this.play(run, async () => {
+      await this.paintBackdrop(run);
+      await this.playPasses(run, plan);
+      this.engine.settle();
+      this.set({ phase: 'interactive', trainingActive: false });
+    });
   }
 }

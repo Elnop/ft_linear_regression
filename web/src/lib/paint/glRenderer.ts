@@ -1,7 +1,6 @@
-import { isEmpty, resetRectangle, type CellRectangle, type PaintLayer } from './layer.ts';
+import type { CellRectangle, PaintLayer } from './layer.ts';
 import { coverRectangle } from './cover.ts';
 import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER, WALL_FRAGMENT_SHADER } from './shaders.ts';
-import type { Renderer } from './renderer.ts';
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
   const program = gl.createProgram();
@@ -18,16 +17,25 @@ function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSourc
   return program;
 }
 
+function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram) {
+  const cache = new Map<string, WebGLUniformLocation | null>();
+  return (name: string) => {
+    if (!cache.has(name)) cache.set(name, gl.getUniformLocation(program, name));
+    return cache.get(name) ?? null;
+  };
+}
+
 type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
 
-export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
+export type Renderer = ReturnType<typeof createGLRenderer>;
+
+export function createGLRenderer(canvas: HTMLCanvasElement) {
   const gl = canvas.getContext('webgl2', { alpha: false, antialias: false, premultipliedAlpha: true });
   if (!gl) throw new Error('WebGL2 unavailable');
   const wallProgram = compile(gl, QUAD_VERTEX_SHADER, WALL_FRAGMENT_SHADER);
   const paintProgram = compile(gl, QUAD_VERTEX_SHADER, PAINT_FRAGMENT_SHADER);
-  const uniformsOf = (program: WebGLProgram) => (name: string) => gl.getUniformLocation(program, name);
-  const wallUniform = uniformsOf(wallProgram);
-  const paintUniform = uniformsOf(paintProgram);
+  const wallUniform = uniforms(gl, wallProgram);
+  const paintUniform = uniforms(gl, paintProgram);
 
   const vertexArray = gl.createVertexArray();
   gl.bindVertexArray(vertexArray);
@@ -78,16 +86,16 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
       gpu.set(layer.id, textures);
     }
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-    if (!isEmpty(layer.filmDirty)) {
+    if (!layer.filmDirty.empty) {
       const dirty = layer.filmDirty;
       const clamped = { x0: Math.max(0, dirty.x0), y0: Math.max(0, dirty.y0), x1: Math.min(layer.filmWidth - 1, dirty.x1), y1: Math.min(layer.filmHeight - 1, dirty.y1) };
       upload(textures.film, layer.filmWidth, clamped, gl.FLOAT, layer.film);
       upload(textures.pool, layer.filmWidth, clamped, gl.FLOAT, layer.pooled);
-      resetRectangle(dirty);
+      dirty.reset();
     }
-    if (!isEmpty(layer.mistDirty)) {
+    if (!layer.mistDirty.empty) {
       upload(textures.mist, layer.mistWidth, layer.mistDirty, gl.UNSIGNED_BYTE, layer.mist);
-      resetRectangle(layer.mistDirty);
+      layer.mistDirty.reset();
     }
     gl.pixelStorei(gl.UNPACK_ROW_LENGTH, 0);
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
@@ -101,10 +109,10 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
   };
 
   return {
-    resize(cssWidth, cssHeight) {
+    resize(cssWidth: number, cssHeight: number) {
       view = { width: cssWidth, height: cssHeight };
     },
-    setWall(image) {
+    setWall(image: HTMLImageElement) {
       wallTexture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, wallTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
@@ -114,7 +122,7 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       wallSize = { width: image.naturalWidth, height: image.naturalHeight };
     },
-    render(layers) {
+    render(layers: PaintLayer[]) {
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(0.05, 0.05, 0.06, 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -144,14 +152,10 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
       for (const layer of layers) {
         const textures = sync(layer);
         if (layer.opacity <= 0) continue;
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, textures.film);
-        gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, textures.mist);
-        gl.activeTexture(gl.TEXTURE3);
-        gl.bindTexture(gl.TEXTURE_2D, textures.pool);
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, wallTexture);
+        [wallTexture, textures.film, textures.mist, textures.pool].forEach((texture, unit) => {
+          gl.activeTexture(gl.TEXTURE0 + unit);
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+        });
         gl.uniform4f(paintUniform('uRect'), layer.bounds.x, layer.bounds.y, layer.bounds.width, layer.bounds.height);
         gl.uniform3f(paintUniform('uColor'), ...layer.shownColor());
         gl.uniform1f(paintUniform('uOpacity'), layer.opacity);
@@ -159,7 +163,7 @@ export function createGLRenderer(canvas: HTMLCanvasElement): Renderer {
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       }
     },
-    release(layer) {
+    release(layer: PaintLayer) {
       const textures = gpu.get(layer.id);
       if (!textures) return;
       free(textures);

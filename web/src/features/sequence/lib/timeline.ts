@@ -8,10 +8,12 @@ export type Run = {
 
 export class Timeline {
   scale = 1;
+  instant = false;
   private current = 0;
 
-  restart(): Run {
+  restart(instant = false): Run {
     this.scale = 1;
+    this.instant = instant;
     const id = ++this.current;
     const isCurrent = () => id === this.current;
     const check = () => {
@@ -25,6 +27,7 @@ export class Timeline {
         return value;
       },
       sleep: async (duration) => {
+        if (instant) return check();
         let left = duration;
         while (left > 0) {
           const startedAt = performance.now();
