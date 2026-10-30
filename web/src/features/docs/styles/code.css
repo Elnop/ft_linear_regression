@@ -1,40 +1,40 @@
-.doc-code {
+.documentation-code {
   margin: 0;
   padding: 18px 20px;
   border-radius: 12px;
   overflow-x: auto;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  font: 13px/1.6 var(--mono);
+  font: 13px/1.6 var(--monospace);
   color: var(--ink);
   tab-size: 2;
 }
-.doc-shell {
-  color: var(--ink-dim);
+.documentation-shell {
+  color: var(--ink-dimmed);
   white-space: pre;
 }
-.tk-string {
+.token-string {
   color: var(--acid);
 }
-.tk-number {
+.token-number {
   color: #ffb86b;
 }
-.tk-keyword {
+.token-keyword {
   color: var(--magenta);
 }
-.tk-type {
+.token-type {
   color: var(--cyan);
 }
-.tk-call {
+.token-call {
   color: #8fd0ff;
 }
-.doc-math {
+.documentation-math {
   color: var(--cyan);
   white-space: pre;
 }
 
 @media (max-width: 1023px) {
-  .doc-code {
+  .documentation-code {
     font-size: 12px;
     padding: 14px;
   }

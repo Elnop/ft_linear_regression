@@ -8,11 +8,11 @@ import { computeRoughness, type Roughness } from './roughness.ts';
 import { hexToRgb, type LayerOptions, type Nozzle, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
 
 const FLOW_STEP = 1 / 120;
-const MAX_DT = 1 / 10;
+const MAX_DELTA_SECONDS = 1 / 10;
 const SETTLE_BUDGET_MS = 120;
 
 type Running = { job: Job; layer: PaintLayer; done: () => void };
-type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; t: number; duration: number; done: () => void };
+type Tween = { layer: PaintLayer; from: number; to: number; grayFrom: number; grayTo: number; elapsed: number; duration: number; done: () => void };
 
 export class PaintEngine {
   readonly canvas: HTMLCanvasElement;
@@ -29,9 +29,9 @@ export class PaintEngine {
   private roughness: Roughness | null = null;
   private wall: HTMLImageElement | null = null;
   private frame = 0;
-  private last = 0;
+  private lastTime = 0;
   private needsDraw = true;
-  private dpr = 0;
+  private pixelRatio = 0;
   private observer: ResizeObserver;
 
   constructor(container: HTMLElement, wallUrl: string) {
@@ -46,16 +46,16 @@ export class PaintEngine {
     this.measure();
 
     this.ready = new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        this.wall = img;
-        this.renderer.setWall(img);
-        this.fitRoughness(img);
+      const image = new Image();
+      image.onload = () => {
+        this.wall = image;
+        this.renderer.setWall(image);
+        this.fitRoughness(image);
         this.wake();
         resolve();
       };
-      img.onerror = () => reject(new Error(`cannot load ${wallUrl}`));
-      img.src = wallUrl;
+      image.onerror = () => reject(new Error(`cannot load ${wallUrl}`));
+      image.src = wallUrl;
     });
 
     this.observer = new ResizeObserver(() => {
@@ -66,60 +66,60 @@ export class PaintEngine {
         this.renderer.render(this.layers);
       }
       this.wake();
-      for (const cb of this.resizeListeners) cb();
+      for (const listener of this.resizeListeners) listener();
     });
     this.observer.observe(container);
   }
 
-  createLayer(o: LayerOptions): PaintLayer {
+  createLayer(options: LayerOptions): PaintLayer {
     if (!this.roughness) throw new Error('PaintEngine used before ready');
-    const bounds = o.bounds ?? { x: 0, y: 0, w: this.width, h: this.height };
-    const layer = new PaintLayer(bounds, hexToRgb(o.color), o.opacity ?? 1, this.roughness);
-    const z = o.z ?? 0;
+    const bounds = options.bounds ?? { x: 0, y: 0, width: this.width, height: this.height };
+    const layer = new PaintLayer(bounds, hexToRgb(options.color), options.opacity ?? 1, this.roughness);
+    const z = options.z ?? 0;
     this.depth.set(layer, z);
-    const at = this.layers.findIndex((l) => (this.depth.get(l) ?? 0) > z);
+    const at = this.layers.findIndex((other) => (this.depth.get(other) ?? 0) > z);
     if (at < 0) this.layers.push(layer);
     else this.layers.splice(at, 0, layer);
     return layer;
   }
 
   removeLayer(layer: PaintLayer): void {
-    this.layers = this.layers.filter((l) => l !== layer);
+    this.layers = this.layers.filter((other) => other !== layer);
     this.renderer.release(layer);
     this.wake();
   }
 
   clear(): void {
-    for (const l of this.layers) this.renderer.release(l);
+    for (const layer of this.layers) this.renderer.release(layer);
     this.layers = [];
     this.jobs = [];
     this.tweens = [];
     this.wake();
   }
 
-  sprayPath(layer: PaintLayer, points: Vec2[], o: SprayPathOptions = {}): Promise<void> {
-    return this.run(layer, pathJob(layer, points, o));
+  sprayPath(layer: PaintLayer, points: Vec2[], options: SprayPathOptions = {}): Promise<void> {
+    return this.run(layer, pathJob(layer, points, options));
   }
 
-  sprayDot(layer: PaintLayer, x: number, y: number, o: SprayDotOptions = {}): Promise<void> {
-    return this.run(layer, dotJob(layer, x, y, o));
+  sprayDot(layer: PaintLayer, x: number, y: number, options: SprayDotOptions = {}): Promise<void> {
+    return this.run(layer, dotJob(layer, x, y, options));
   }
 
   sweep(layer: PaintLayer, points: Vec2[], speed: number): Promise<void> {
     return this.run(layer, moveJob(points, speed));
   }
 
-  stampPath(layer: PaintLayer, points: Vec2[], o: SprayPathOptions = {}): void {
-    this.stamp(pathJob(layer, points, o));
+  stampPath(layer: PaintLayer, points: Vec2[], options: SprayPathOptions = {}): void {
+    this.stamp(pathJob(layer, points, options));
   }
 
-  stampDot(layer: PaintLayer, x: number, y: number, o: SprayDotOptions = {}): void {
-    this.stamp(dotJob(layer, x, y, o));
+  stampDot(layer: PaintLayer, x: number, y: number, options: SprayDotOptions = {}): void {
+    this.stamp(dotJob(layer, x, y, options));
   }
 
   nozzle(): Nozzle | null {
-    const r = this.jobs[this.jobs.length - 1];
-    return r ? { x: r.job.pos.x, y: r.job.pos.y, color: r.layer.color, active: this.jobs.length } : null;
+    const running = this.jobs[this.jobs.length - 1];
+    return running ? { x: running.job.position.x, y: running.job.position.y, color: running.layer.color, active: this.jobs.length } : null;
   }
 
   setOpacity(layer: PaintLayer, opacity: number, gray = layer.gray): void {
@@ -129,9 +129,9 @@ export class PaintEngine {
   }
 
   fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
-    this.tweens = this.tweens.filter((t) => t.layer !== layer);
+    this.tweens = this.tweens.filter((tween) => tween.layer !== layer);
     return new Promise((done) => {
-      this.tweens.push({ layer, from: layer.opacity, to: opacity, grayFrom: layer.gray, grayTo: gray, t: 0, duration: durationMs / 1000, done });
+      this.tweens.push({ layer, from: layer.opacity, to: opacity, grayFrom: layer.gray, grayTo: gray, elapsed: 0, duration: durationMs / 1000, done });
       this.wake();
     });
   }
@@ -139,15 +139,15 @@ export class PaintEngine {
   // Runs the drips ahead of time, so freshly stamped paint shows up already dry.
   settle(): void {
     const until = performance.now() + SETTLE_BUDGET_MS;
-    for (const l of this.layers) {
-      while (l.wet && performance.now() < until) this.flow(l, MAX_DT);
+    for (const layer of this.layers) {
+      while (layer.wet && performance.now() < until) this.flow(layer, MAX_DELTA_SECONDS);
     }
     this.wake();
   }
 
-  onResize(cb: () => void): () => void {
-    this.resizeListeners.add(cb);
-    return () => this.resizeListeners.delete(cb);
+  onResize(listener: () => void): () => void {
+    this.resizeListeners.add(listener);
+    return () => this.resizeListeners.delete(listener);
   }
 
   destroy(): void {
@@ -172,17 +172,17 @@ export class PaintEngine {
 
   // Returns whether the size changed: assigning the canvas size clears it, even to the same value.
   private measure(): boolean {
-    const r = this.canvas.getBoundingClientRect();
-    const width = Math.max(1, Math.round(r.width));
-    const height = Math.max(1, Math.round(r.height));
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    if (width === this.width && height === this.height && dpr === this.dpr) return false;
+    const box = this.canvas.getBoundingClientRect();
+    const width = Math.max(1, Math.round(box.width));
+    const height = Math.max(1, Math.round(box.height));
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    if (width === this.width && height === this.height && pixelRatio === this.pixelRatio) return false;
     this.width = width;
     this.height = height;
-    this.dpr = dpr;
-    this.canvas.width = Math.round(width * dpr);
-    this.canvas.height = Math.round(height * dpr);
-    this.renderer.resize(width, height, dpr);
+    this.pixelRatio = pixelRatio;
+    this.canvas.width = Math.round(width * pixelRatio);
+    this.canvas.height = Math.round(height * pixelRatio);
+    this.renderer.resize(width, height, pixelRatio);
     this.needsDraw = true;
     return true;
   }
@@ -191,50 +191,50 @@ export class PaintEngine {
     this.roughness = computeRoughness(wall, this.width, this.height, FILM_SCALE);
   }
 
-  private flow(l: PaintLayer, dt: number): void {
-    const n = Math.max(2, Math.ceil(dt / FLOW_STEP));
-    for (let s = 0; s < n; s++) stepFlow(l, dt / n);
-    l.gloss = Math.max(0.35, l.gloss - dt * 0.08);
+  private flow(layer: PaintLayer, deltaSeconds: number): void {
+    const stepCount = Math.max(2, Math.ceil(deltaSeconds / FLOW_STEP));
+    for (let step = 0; step < stepCount; step++) stepFlow(layer, deltaSeconds / stepCount);
+    layer.gloss = Math.max(0.35, layer.gloss - deltaSeconds * 0.08);
   }
 
   private wake(): void {
     this.needsDraw = true;
     if (this.frame !== 0) return;
-    this.last = performance.now();
+    this.lastTime = performance.now();
     this.frame = requestAnimationFrame(this.tick);
   }
 
   private tick = (now: number): void => {
     this.frame = 0;
-    const dt = Math.min(MAX_DT, Math.max(0, (now - this.last) / 1000));
-    this.last = now;
+    const deltaSeconds = Math.min(MAX_DELTA_SECONDS, Math.max(0, (now - this.lastTime) / 1000));
+    this.lastTime = now;
 
     const jobs = this.jobs;
     this.jobs = [];
-    for (const r of jobs) {
-      if (r.job.update(dt)) r.done();
-      else this.jobs.push(r);
+    for (const running of jobs) {
+      if (running.job.update(deltaSeconds)) running.done();
+      else this.jobs.push(running);
     }
 
     let wet = false;
-    for (const l of this.layers) {
-      if (!l.wet) continue;
-      this.flow(l, dt);
-      wet ||= l.wet;
+    for (const layer of this.layers) {
+      if (!layer.wet) continue;
+      this.flow(layer, deltaSeconds);
+      wet ||= layer.wet;
       this.needsDraw = true;
     }
 
-    for (const t of this.tweens) {
-      t.t = Math.min(t.duration, t.t + dt);
-      const k = t.duration > 0 ? t.t / t.duration : 1;
-      const e = k * k * (3 - 2 * k);
-      t.layer.opacity = t.from + (t.to - t.from) * e;
-      t.layer.gray = t.grayFrom + (t.grayTo - t.grayFrom) * e;
+    for (const tween of this.tweens) {
+      tween.elapsed = Math.min(tween.duration, tween.elapsed + deltaSeconds);
+      const progress = tween.duration > 0 ? tween.elapsed / tween.duration : 1;
+      const eased = progress * progress * (3 - 2 * progress);
+      tween.layer.opacity = tween.from + (tween.to - tween.from) * eased;
+      tween.layer.gray = tween.grayFrom + (tween.grayTo - tween.grayFrom) * eased;
       this.needsDraw = true;
     }
-    const finished = this.tweens.filter((t) => t.t >= t.duration);
-    this.tweens = this.tweens.filter((t) => t.t < t.duration);
-    for (const t of finished) t.done();
+    const finished = this.tweens.filter((tween) => tween.elapsed >= tween.duration);
+    this.tweens = this.tweens.filter((tween) => tween.elapsed < tween.duration);
+    for (const tween of finished) tween.done();
 
     if (this.needsDraw && this.wall) this.renderer.render(this.layers);
     this.needsDraw = false;

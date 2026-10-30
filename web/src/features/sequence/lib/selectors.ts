@@ -1,7 +1,7 @@
 import type { SequenceState } from '@/features/sequence/types.ts';
 
-export const selectIntro = (s: SequenceState) => s.phase !== 'interactive';
+export const selectIntro = (state: SequenceState) => state.phase !== 'interactive';
 
-export const selectUiVisible = (s: SequenceState) => s.phase !== 'idle';
+export const selectInterfaceVisible = (state: SequenceState) => state.phase !== 'idle';
 
-export const selectCanSkip = (s: SequenceState) => selectIntro(s) && selectUiVisible(s) && !s.skipping;
+export const selectCanSkip = (state: SequenceState) => selectIntro(state) && selectInterfaceVisible(state) && !state.skipping;

@@ -2,66 +2,66 @@ import { mulberry32 } from '@/lib/random.ts';
 
 export type Roughness = { at(x: number, y: number): number };
 
-export function coverRect(imgW: number, imgH: number, w: number, h: number) {
-  const s = Math.max(w / imgW, h / imgH);
-  return { x: (w - imgW * s) / 2, y: (h - imgH * s) / 2, w: imgW * s, h: imgH * s };
+export function coverRectangle(imageWidth: number, imageHeight: number, width: number, height: number) {
+  const scale = Math.max(width / imageWidth, height / imageHeight);
+  return { x: (width - imageWidth * scale) / 2, y: (height - imageHeight * scale) / 2, width: imageWidth * scale, height: imageHeight * scale };
 }
 
-function boxBlur(src: Float32Array, w: number, h: number, r: number): Float32Array {
-  const tmp = new Float32Array(src.length);
-  const out = new Float32Array(src.length);
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      let s = 0;
-      let n = 0;
-      for (let i = Math.max(0, x - r); i <= Math.min(w - 1, x + r); i++, n++) s += src[y * w + i];
-      tmp[y * w + x] = s / n;
+function boxBlur(source: Float32Array, width: number, height: number, radius: number): Float32Array {
+  const horizontal = new Float32Array(source.length);
+  const blurred = new Float32Array(source.length);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let sum = 0;
+      let count = 0;
+      for (let i = Math.max(0, x - radius); i <= Math.min(width - 1, x + radius); i++, count++) sum += source[y * width + i];
+      horizontal[y * width + x] = sum / count;
     }
   }
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      let s = 0;
-      let n = 0;
-      for (let j = Math.max(0, y - r); j <= Math.min(h - 1, y + r); j++, n++) s += tmp[j * w + x];
-      out[y * w + x] = s / n;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let sum = 0;
+      let count = 0;
+      for (let j = Math.max(0, y - radius); j <= Math.min(height - 1, y + radius); j++, count++) sum += horizontal[j * width + x];
+      blurred[y * width + x] = sum / count;
     }
   }
-  return out;
+  return blurred;
 }
 
-export function computeRoughness(img: HTMLImageElement, cssW: number, cssH: number, scale: number): Roughness {
-  const w = Math.max(1, Math.ceil(cssW * scale));
-  const h = Math.max(1, Math.ceil(cssH * scale));
-  const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
-  const rng = mulberry32(1337);
-  const field = new Float32Array(w * h);
-  if (ctx) {
-    ctx.canvas.width = w;
-    ctx.canvas.height = h;
-    const c = coverRect(img.naturalWidth, img.naturalHeight, w, h);
-    ctx.drawImage(img, c.x, c.y, c.w, c.h);
-    const px = ctx.getImageData(0, 0, w, h).data;
-    const lum = new Float32Array(w * h);
-    for (let i = 0; i < w * h; i++) {
-      lum[i] = (0.3 * px[i * 4] + 0.59 * px[i * 4 + 1] + 0.11 * px[i * 4 + 2]) / 255;
+export function computeRoughness(image: HTMLImageElement, cssWidth: number, cssHeight: number, scale: number): Roughness {
+  const width = Math.max(1, Math.ceil(cssWidth * scale));
+  const height = Math.max(1, Math.ceil(cssHeight * scale));
+  const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  const random = mulberry32(1337);
+  const field = new Float32Array(width * height);
+  if (context) {
+    context.canvas.width = width;
+    context.canvas.height = height;
+    const cover = coverRectangle(image.naturalWidth, image.naturalHeight, width, height);
+    context.drawImage(image, cover.x, cover.y, cover.width, cover.height);
+    const pixels = context.getImageData(0, 0, width, height).data;
+    const luminance = new Float32Array(width * height);
+    for (let i = 0; i < width * height; i++) {
+      luminance[i] = (0.3 * pixels[i * 4] + 0.59 * pixels[i * 4 + 1] + 0.11 * pixels[i * 4 + 2]) / 255;
     }
-    const blur = boxBlur(lum, w, h, 3);
+    const blurred = boxBlur(luminance, width, height, 3);
     let mean = 0;
-    for (let i = 0; i < w * h; i++) mean += Math.abs(lum[i] - blur[i]);
-    mean = mean / (w * h) || 0.01;
-    for (let i = 0; i < w * h; i++) {
-      const d = (lum[i] - blur[i]) / mean;
-      const v = 0.3 * Math.abs(d) + (d < 0 ? 0.2 * -d : 0);
-      field[i] = Math.min(1, Math.max(0, 0.22 + v + 0.25 * (rng() - 0.5)));
+    for (let i = 0; i < width * height; i++) mean += Math.abs(luminance[i] - blurred[i]);
+    mean = mean / (width * height) || 0.01;
+    for (let i = 0; i < width * height; i++) {
+      const deviation = (luminance[i] - blurred[i]) / mean;
+      const value = 0.3 * Math.abs(deviation) + (deviation < 0 ? 0.2 * -deviation : 0);
+      field[i] = Math.min(1, Math.max(0, 0.22 + value + 0.25 * (random() - 0.5)));
     }
   } else {
-    for (let i = 0; i < w * h; i++) field[i] = 0.3 + 0.4 * rng();
+    for (let i = 0; i < width * height; i++) field[i] = 0.3 + 0.4 * random();
   }
   return {
     at(x: number, y: number) {
-      const i = Math.min(w - 1, Math.max(0, Math.floor(x)));
-      const j = Math.min(h - 1, Math.max(0, Math.floor(y)));
-      return field[j * w + i];
+      const i = Math.min(width - 1, Math.max(0, Math.floor(x)));
+      const j = Math.min(height - 1, Math.max(0, Math.floor(y)));
+      return field[j * width + i];
     },
   };
 }

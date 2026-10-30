@@ -12,7 +12,7 @@ const read = (): Viewport => ({ width: window.innerWidth, height: window.innerHe
 const viewportStore = createStore<Viewport>()(read);
 window.addEventListener('resize', () => viewportStore.setState(read()));
 
-export const useViewport = (): Viewport => useStore(viewportStore, (s) => s);
+export const useViewport = (): Viewport => useStore(viewportStore, (state) => state);
 
 export function useChart(): ChartMapping {
   const { width, height } = useViewport();

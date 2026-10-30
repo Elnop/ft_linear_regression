@@ -1,41 +1,41 @@
-.doc-figure {
+.documentation-figure {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.doc-figure svg {
+.documentation-figure svg {
   display: block;
   width: 100%;
   max-width: 520px;
   height: auto;
 }
-.doc-figure figcaption {
-  font: 12px/1.5 var(--mono);
-  color: var(--ink-dim);
+.documentation-figure figcaption {
+  font: 12px/1.5 var(--monospace);
+  color: var(--ink-dimmed);
 }
-.fig-axis {
+.figure-axis {
   stroke: rgba(255, 255, 255, 0.3);
   stroke-width: 1;
 }
-.fig-curve {
+.figure-curve {
   fill: none;
   stroke: var(--cyan);
   stroke-width: 2.5;
 }
-.fig-step {
+.figure-step {
   stroke: var(--magenta);
   stroke-width: 2;
   stroke-dasharray: 4 4;
 }
-.fig-dot {
+.figure-dot {
   fill: var(--magenta);
 }
-.fig-min {
+.figure-minimum {
   stroke: var(--acid);
   stroke-width: 1;
   stroke-dasharray: 2 4;
 }
-.fig-label {
-  fill: var(--ink-dim);
-  font: 12px var(--mono);
+.figure-label {
+  fill: var(--ink-dimmed);
+  font: 12px var(--monospace);
 }

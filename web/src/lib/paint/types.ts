@@ -1,12 +1,12 @@
 export type Vec2 = { x: number; y: number };
 
-export type Rect = { x: number; y: number; w: number; h: number };
+export type Rectangle = { x: number; y: number; width: number; height: number };
 
 export type Rgb = [number, number, number];
 
 export type LayerOptions = {
   color: string;
-  bounds?: Rect;
+  bounds?: Rectangle;
   opacity?: number;
   z?: number;
 };
@@ -31,10 +31,10 @@ export type SprayDotOptions = {
 };
 
 export function hexToRgb(hex: string): Rgb {
-  const n = parseInt(hex.replace('#', ''), 16);
-  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  const value = parseInt(hex.replace('#', ''), 16);
+  return [((value >> 16) & 255) / 255, ((value >> 8) & 255) / 255, (value & 255) / 255];
 }
 
-export function rgbToHex(c: Rgb): string {
-  return `#${c.map((v) => Math.round(v * 255).toString(16).padStart(2, '0')).join('')}`;
+export function rgbToHex(color: Rgb): string {
+  return `#${color.map((channel) => Math.round(channel * 255).toString(16).padStart(2, '0')).join('')}`;
 }

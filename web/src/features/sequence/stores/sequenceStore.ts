@@ -12,4 +12,4 @@ export const IDLE_ACTIONS: SequenceActions = {
 // Written only by the SequenceController (state) and useSequenceRuntime (actions).
 export const sequenceStore = createStore<Sequence>()(() => ({ ...IDLE_STATE, ...IDLE_ACTIONS }));
 
-export const useSequence = <T,>(selector: (s: Sequence) => T): T => useStore(sequenceStore, selector);
+export const useSequence = <T,>(selector: (state: Sequence) => T): T => useStore(sequenceStore, selector);

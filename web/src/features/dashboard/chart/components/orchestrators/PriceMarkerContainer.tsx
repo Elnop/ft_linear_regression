@@ -6,5 +6,5 @@ export function PriceMarkerContainer() {
   const { width } = useViewport();
   const { area } = useChart();
   const { price, at } = usePrediction();
-  return <PriceMarker at={at} price={price} axisY={area.y + area.h} width={width} />;
+  return <PriceMarker at={at} price={price} axisY={area.y + area.height} width={width} />;
 }

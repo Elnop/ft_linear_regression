@@ -13,14 +13,14 @@ export async function drawTitle(engine: PaintEngine, timeScale: () => number): P
   const tempo = () => Math.max(0.1, timeScale());
   for (const line of title.lines) {
     const at = (x: number): Vec2 => ({ x, y: line.y(x) });
-    let pos = at(line.letters[0].x - title.lead);
+    let position = at(line.letters[0].x - title.lead);
     for (const letter of line.letters) {
       const next = at(letter.x);
-      await engine.sweep(title.layer, [pos, next], title.sweep * tempo());
-      pos = next;
+      await engine.sweep(title.layer, [position, next], title.sweep * tempo());
+      position = next;
       title.stampLetter(letter);
     }
-    await engine.sweep(title.layer, [pos, at(pos.x + title.lead)], title.sweep * tempo());
+    await engine.sweep(title.layer, [position, at(position.x + title.lead)], title.sweep * tempo());
   }
 }
 
@@ -32,43 +32,43 @@ export function stampTitle(engine: PaintEngine): void {
 
 function prepareTitle(engine: PaintEngine) {
   const layout = titleLayout(engine.width, engine.height);
-  const rng = mulberry32(randomSeed());
-  const { rect, em } = layout;
+  const random = mulberry32(randomSeed());
+  const { rectangle, em } = layout;
   const layer = engine.createLayer({
     color: MAGENTA,
-    bounds: { x: rect.x - em, y: Math.max(0, rect.y - em), w: rect.w + 2 * em, h: rect.h + 5 * em },
+    bounds: { x: rectangle.x - em, y: Math.max(0, rectangle.y - em), width: rectangle.width + 2 * em, height: rectangle.height + 5 * em },
   });
 
   const width = Math.max(3.5, 0.6 * STROKE * em);
   const pace = Math.min(900, Math.max(300, em * 16));
   return {
     layer,
-    lines: letterLines(titleStrokes(layout, rng)),
+    lines: letterLines(titleStrokes(layout, random)),
     sweep: Math.min(1100, Math.max(400, em * 14)),
     lead: 1.5 * em,
     stampLetter: (letter: Letter) => {
-      for (const s of letter.strokes) stamp(engine, layer, s, width, pace, rng);
+      for (const stroke of letter.strokes) stamp(engine, layer, stroke, width, pace, random);
     },
   };
 }
 
 const STAMP_SPEED = 1e5;
 
-function stamp(engine: PaintEngine, layer: PaintLayer, s: Stroke, width: number, pace: number, rng: () => number): void {
-  const first = s.points[0];
-  if (s.dot) {
-    engine.stampDot(layer, first.x, first.y, { width: width * 1.25, duration: 120, load: s.thickness, seed: rng() * 2 ** 32 });
+function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
+  const first = stroke.points[0];
+  if (stroke.dot) {
+    engine.stampDot(layer, first.x, first.y, { width: width * 1.25, duration: 120, load: stroke.thickness, seed: random() * 2 ** 32 });
     return;
   }
-  const heavy = s.thickness > 1.1;
-  engine.stampPath(layer, s.points, {
+  const heavy = stroke.thickness > 1.1;
+  engine.stampPath(layer, stroke.points, {
     speed: STAMP_SPEED,
     width,
-    load: (s.thickness * STAMP_SPEED) / NOMINAL_SPEED,
+    load: (stroke.thickness * STAMP_SPEED) / NOMINAL_SPEED,
     dwell: ((heavy ? 70 : 12) * pace) / STAMP_SPEED,
     hesitations: 0,
     end: heavy ? 'blob' : 'taper',
-    seed: rng() * 2 ** 32,
+    seed: random() * 2 ** 32,
   });
 }
 
@@ -77,33 +77,33 @@ type Line = { letters: Letter[]; y: (x: number) => number };
 
 function letterLines(strokes: Stroke[]): Line[] {
   const letters: Letter[] = [];
-  for (const s of strokes) {
-    if (s.letterStart || !letters.length) letters.push({ x: 0, y: 0, strokes: [] });
-    letters[letters.length - 1].strokes.push(s);
+  for (const stroke of strokes) {
+    if (stroke.letterStart || !letters.length) letters.push({ x: 0, y: 0, strokes: [] });
+    letters[letters.length - 1].strokes.push(stroke);
   }
   const lines: Letter[][] = [];
-  for (const l of letters) {
-    const xs = l.strokes.flatMap((s) => s.points.map((p) => p.x));
-    const ys = l.strokes.flatMap((s) => s.points.map((p) => p.y));
-    l.x = (Math.min(...xs) + Math.max(...xs)) / 2;
-    l.y = (Math.min(...ys) + Math.max(...ys)) / 2;
+  for (const letter of letters) {
+    const xs = letter.strokes.flatMap((stroke) => stroke.points.map((point) => point.x));
+    const ys = letter.strokes.flatMap((stroke) => stroke.points.map((point) => point.y));
+    letter.x = (Math.min(...xs) + Math.max(...xs)) / 2;
+    letter.y = (Math.min(...ys) + Math.max(...ys)) / 2;
     const line = lines[lines.length - 1];
-    if (line && l.x > line[line.length - 1].x) line.push(l);
-    else lines.push([l]);
+    if (line && letter.x > line[line.length - 1].x) line.push(letter);
+    else lines.push([letter]);
   }
   return lines.map((letters) => ({ letters, y: fitLine(letters) }));
 }
 
 function fitLine(letters: Letter[]): (x: number) => number {
-  const n = letters.length;
-  const mx = letters.reduce((a, l) => a + l.x, 0) / n;
-  const my = letters.reduce((a, l) => a + l.y, 0) / n;
-  let num = 0;
-  let den = 0;
-  for (const l of letters) {
-    num += (l.x - mx) * (l.y - my);
-    den += (l.x - mx) ** 2;
+  const letterCount = letters.length;
+  const meanX = letters.reduce((sum, letter) => sum + letter.x, 0) / letterCount;
+  const meanY = letters.reduce((sum, letter) => sum + letter.y, 0) / letterCount;
+  let covariance = 0;
+  let variance = 0;
+  for (const letter of letters) {
+    covariance += (letter.x - meanX) * (letter.y - meanY);
+    variance += (letter.x - meanX) ** 2;
   }
-  const slope = den ? num / den : 0;
-  return (x) => my + slope * (x - mx);
+  const slope = variance ? covariance / variance : 0;
+  return (x) => meanY + slope * (x - meanX);
 }

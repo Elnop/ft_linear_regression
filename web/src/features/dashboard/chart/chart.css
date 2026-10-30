@@ -1,10 +1,10 @@
-.wu-axes {
+.wall-axes {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 2;
 }
-.wu-marker {
+.wall-marker {
   position: fixed;
   inset: 0;
   pointer-events: none;

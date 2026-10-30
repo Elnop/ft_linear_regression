@@ -4,7 +4,7 @@ export type Phase = 'idle' | 'title' | 'descent' | 'interactive';
 
 export type Metrics = { r2: number; rmse: number; mae: number };
 
-export type CostPoint = { iter: number; cost: number };
+export type CostPoint = { iteration: number; cost: number };
 
 export type SequenceState = {
   phase: Phase;

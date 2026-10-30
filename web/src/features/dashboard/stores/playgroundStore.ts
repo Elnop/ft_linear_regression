@@ -10,4 +10,4 @@ const playgroundStore = createStore<Playground>()(() => ({ km: '100000', learnin
 export const setKm = (km: string) => playgroundStore.setState({ km });
 export const setLearningRate = (learningRate: number) => playgroundStore.setState({ learningRate });
 
-export const usePlayground = <T,>(selector: (s: Playground) => T): T => useStore(playgroundStore, selector);
+export const usePlayground = <T,>(selector: (state: Playground) => T): T => useStore(playgroundStore, selector);

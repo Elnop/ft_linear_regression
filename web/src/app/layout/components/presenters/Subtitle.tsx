@@ -13,7 +13,7 @@ type Props = {
 export function Subtitle({ visible, fixed, left, top, small }: Props) {
   return (
     <Reveal visible={visible} style={{ position: fixed ? 'fixed' : 'absolute', left, top }}>
-      <p className="wu-subtitle" style={{ position: 'static', fontSize: small ? 14 : 17 }}>
+      <p className="wall-subtitle" style={{ position: 'static', fontSize: small ? 14 : 17 }}>
         {SUBTITLE}
       </p>
     </Reveal>

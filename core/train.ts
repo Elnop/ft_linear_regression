@@ -13,14 +13,14 @@ export function* trainSteps(data: Sample[], options: TrainOptions): Generator<Tr
     throw new Error('iterations must be a non-negative integer');
   }
 
-  const scale = computeScale(data.map((s) => s.km));
+  const scale = computeScale(data.map((sample) => sample.km));
   const trainingData = normalizeSamples(data, scale);
 
   let thetas: Thetas = { theta0: 0, theta1: 0 };
-  for (let iter = 0; iter <= iterations; iter++) {
-    if (iter > 0) thetas = gradientStep(trainingData, thetas, learningRate);
+  for (let iteration = 0; iteration <= iterations; iteration++) {
+    if (iteration > 0) thetas = gradientStep(trainingData, thetas, learningRate);
     const raw = denormalizeThetas(thetas, scale);
-    yield { iter, ...raw, cost: cost(data, raw) };
+    yield { iteration, ...raw, cost: cost(data, raw) };
     if (!Number.isFinite(raw.theta0) || !Number.isFinite(raw.theta1)) return;
   }
 }

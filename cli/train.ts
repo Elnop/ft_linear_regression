@@ -39,12 +39,12 @@ console.log(`Training: lr=${learningRate}, iterations=${iterations}`);
 let last: TrainStep | undefined;
 try {
   for (const step of trainSteps(data, { learningRate, iterations })) last = step;
-} catch (e) {
-  fail((e as Error).message);
+} catch (error) {
+  fail((error as Error).message);
 }
 
 if (!last || !Number.isFinite(last.theta0) || !Number.isFinite(last.theta1)) {
-  fail(`training diverged at iteration ${last?.iter ?? 0}, model not saved (try a smaller --lr)`);
+  fail(`training diverged at iteration ${last?.iteration ?? 0}, model not saved (try a smaller --lr)`);
 }
 
 console.log(
@@ -53,7 +53,7 @@ console.log(
 
 try {
   writeFileSync(MODEL_PATH, JSON.stringify({ theta0: last.theta0, theta1: last.theta1 }, null, 2) + '\n');
-} catch (e) {
-  fail(`cannot write model: ${errorCode(e)}`);
+} catch (error) {
+  fail(`cannot write model: ${errorCode(error)}`);
 }
 console.log('Saved to model.json');

@@ -27,14 +27,14 @@ export class SequenceController {
 
   private order = shuffled(DATA.length);
   private training: Training | null = null;
-  private unResize: () => void;
+  private unsubscribeResize: () => void;
   private resizeTimer = 0;
 
   constructor(engine: PaintEngine, store: StoreApi<SequenceState>) {
     this.engine = engine;
     this.store = store;
     this.painter = new WallPainter(engine, () => this.timeline.scale);
-    this.unResize = engine.onResize(() => {
+    this.unsubscribeResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
     });
@@ -49,7 +49,7 @@ export class SequenceController {
   destroy(): void {
     this.restart();
     clearTimeout(this.resizeTimer);
-    this.unResize();
+    this.unsubscribeResize();
   }
 
   skip = (): void => {
@@ -90,7 +90,7 @@ export class SequenceController {
   private show(step: Step, extra: Partial<SequenceState> = {}): void {
     this.set({
       thetas: { theta0: step.thetas.theta0, theta1: step.thetas.theta1 },
-      iteration: step.iter,
+      iteration: step.iteration,
       metrics: step.metrics,
       costHistory: step.history,
       ...extra,
@@ -103,7 +103,7 @@ export class SequenceController {
     this.order = shuffled(DATA.length);
     this.set({ ...IDLE_STATE, phase: 'title' });
 
-    await run.sleep(TIMING.uiIn);
+    await run.sleep(TIMING.interfaceIn);
     this.set({ visiblePoints: DATA.length });
     await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
 

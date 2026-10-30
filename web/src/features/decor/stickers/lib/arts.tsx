@@ -12,8 +12,8 @@ const LOGO_42 = (
 );
 
 export const logo42: Art = {
-  vw: 120,
-  vh: 120,
+  viewWidth: 120,
+  viewHeight: 120,
   body: (
     <>
       <rect width="120" height="120" rx="12" fill={PAPER} />
@@ -26,8 +26,8 @@ export const logo42: Art = {
 };
 
 export const piscine: Art = {
-  vw: 190,
-  vh: 96,
+  viewWidth: 190,
+  viewHeight: 96,
   body: (
     <>
       <rect width="190" height="96" rx="14" fill={PAPER} />
@@ -44,16 +44,16 @@ export const piscine: Art = {
 };
 
 export const formula: Art = {
-  vw: 220,
-  vh: 84,
+  viewWidth: 220,
+  viewHeight: 84,
   body: (
     <>
       <path d="M0 6 Q0 0 6 0 H206 l6 7 l-5 6 l8 6 l-6 7 l7 6 l-5 7 l6 7 l-7 6 l5 7 l-6 6 l6 7 l-3 8 H6 Q0 84 0 78 Z" fill="#f6f2e8" />
       <rect x="0" y="0" width="12" height="84" fill="#ff2bd6" />
-      <text x="24" y="26" fontFamily="var(--mono)" fontSize="12.5" fill="#555">
+      <text x="24" y="26" fontFamily="var(--monospace)" fontSize="12.5" fill="#555">
         estimatePrice(km) =
       </text>
-      <text x="24" y="62" fontFamily="var(--mono)" fontWeight="800" fontSize="29" fill="#111">
+      <text x="24" y="62" fontFamily="var(--monospace)" fontWeight="800" fontSize="29" fill="#111">
         θ₀ + θ₁·km
       </text>
     </>
@@ -61,8 +61,8 @@ export const formula: Art = {
 };
 
 export const car: Art = {
-  vw: 130,
-  vh: 130,
+  viewWidth: 130,
+  viewHeight: 130,
   body: (
     <>
       <circle cx="65" cy="65" r="65" fill={PAPER} />
@@ -74,16 +74,16 @@ export const car: Art = {
       <text x="65" y="108" textAnchor="middle" fontFamily="var(--anton)" fontSize="19" fill="#111">
         KM → €
       </text>
-      <text x="65" y="38" textAnchor="middle" fontFamily="var(--mono)" fontWeight="800" fontSize="10" fill="#111">
+      <text x="65" y="38" textAnchor="middle" fontFamily="var(--monospace)" fontWeight="800" fontSize="10" fill="#111">
         data.csv
       </text>
     </>
   ),
 };
 
-export const ts: Art = {
-  vw: 110,
-  vh: 110,
+export const typescript: Art = {
+  viewWidth: 110,
+  viewHeight: 110,
   body: (
     <>
       <rect width="110" height="110" rx="10" fill={PAPER} />
@@ -96,8 +96,8 @@ export const ts: Art = {
 };
 
 export const react: Art = {
-  vw: 124,
-  vh: 124,
+  viewWidth: 124,
+  viewHeight: 124,
   body: (
     <>
       <circle cx="62" cy="62" r="62" fill={PAPER} />
@@ -112,9 +112,9 @@ export const react: Art = {
   ),
 };
 
-export const norm: Art = {
-  vw: 180,
-  vh: 82,
+export const norminette: Art = {
+  viewWidth: 180,
+  viewHeight: 82,
   body: (
     <>
       <rect width="180" height="82" rx="8" fill="#f6f2e8" />
@@ -124,7 +124,7 @@ export const norm: Art = {
         NORMINETTE
       </text>
       <path d="M44 56 l4 4 l8 -9" fill="none" stroke="#1f9d55" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <text x="62" y="62" fontFamily="var(--mono)" fontWeight="800" fontSize="12" fill="#1f9d55">
+      <text x="62" y="62" fontFamily="var(--monospace)" fontWeight="800" fontSize="12" fill="#1f9d55">
         OK · 0 ERROR
       </text>
     </>
@@ -132,8 +132,8 @@ export const norm: Art = {
 };
 
 export const descent: Art = {
-  vw: 160,
-  vh: 120,
+  viewWidth: 160,
+  viewHeight: 120,
   body: (
     <>
       <rect width="160" height="120" rx="12" fill={PAPER} />

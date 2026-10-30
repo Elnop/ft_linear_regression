@@ -1,4 +1,4 @@
-import { WallUI } from '@/app/layout/components/orchestrators/WallUI.tsx';
+import { WallInterface } from '@/app/layout/components/orchestrators/WallInterface.tsx';
 import { PaintWall } from '@/components/shared/wall/orchestrators/PaintWall.tsx';
 import { SprayCan } from '@/features/decor/spray-can/components/orchestrators/SprayCan.tsx';
 import { Stickers } from '@/features/decor/stickers/components/orchestrators/Stickers.tsx';
@@ -10,7 +10,7 @@ export function App() {
     <>
       <PaintWall />
       <Stickers />
-      <WallUI />
+      <WallInterface />
       <SprayCan />
     </>
   );

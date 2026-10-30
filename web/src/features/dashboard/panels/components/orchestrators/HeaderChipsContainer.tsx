@@ -3,8 +3,8 @@ import { HeaderChips } from '@/features/dashboard/panels/components/presenters/H
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 
 export function HeaderChipsContainer() {
-  const theta0 = useSequence((s) => s.thetas?.theta0 ?? null);
-  const theta1 = useSequence((s) => s.thetas?.theta1 ?? null);
+  const theta0 = useSequence((state) => state.thetas?.theta0 ?? null);
+  const theta1 = useSequence((state) => state.thetas?.theta1 ?? null);
   const progress = useProgress();
   return <HeaderChips theta0={theta0} theta1={theta1} progress={progress} />;
 }

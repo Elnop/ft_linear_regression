@@ -1,4 +1,4 @@
-import type { Rect, Rgb } from './types.ts';
+import type { Rectangle, Rgb } from './types.ts';
 import type { Roughness } from './roughness.ts';
 import { mulberry32, noise2D } from '@/lib/random.ts';
 
@@ -8,183 +8,183 @@ const CELL = 1 / FILM_SCALE;
 const RESIDUAL = 0.85;
 const PIN = 0.55;
 
-export type CellRect = { x0: number; y0: number; x1: number; y1: number };
+export type CellRectangle = { x0: number; y0: number; x1: number; y1: number };
 
-function emptyRect(): CellRect {
+function emptyRectangle(): CellRectangle {
   return { x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity };
 }
 
-export function isEmpty(r: CellRect): boolean {
-  return r.x1 < r.x0;
+export function isEmpty(rectangle: CellRectangle): boolean {
+  return rectangle.x1 < rectangle.x0;
 }
 
-function grow(r: CellRect, x0: number, y0: number, x1: number, y1: number): void {
-  if (x0 < r.x0) r.x0 = x0;
-  if (y0 < r.y0) r.y0 = y0;
-  if (x1 > r.x1) r.x1 = x1;
-  if (y1 > r.y1) r.y1 = y1;
+function grow(rectangle: CellRectangle, x0: number, y0: number, x1: number, y1: number): void {
+  if (x0 < rectangle.x0) rectangle.x0 = x0;
+  if (y0 < rectangle.y0) rectangle.y0 = y0;
+  if (x1 > rectangle.x1) rectangle.x1 = x1;
+  if (y1 > rectangle.y1) rectangle.y1 = y1;
 }
 
-export function resetRect(r: CellRect): void {
-  r.x0 = r.y0 = Infinity;
-  r.x1 = r.y1 = -Infinity;
+export function resetRectangle(rectangle: CellRectangle): void {
+  rectangle.x0 = rectangle.y0 = Infinity;
+  rectangle.x1 = rectangle.y1 = -Infinity;
 }
 
 let nextId = 1;
 
 export class PaintLayer {
   readonly id = nextId++;
-  readonly bounds: Rect;
+  readonly bounds: Rectangle;
   readonly color: Rgb;
   opacity: number;
   gray = 0;
 
   shownColor(): Rgb {
-    const [r, g, b] = this.color;
-    const mix = (c: number) => c + (0.5 - c) * this.gray;
-    return [mix(r), mix(g), mix(b)];
+    const [red, green, blue] = this.color;
+    const mix = (channel: number) => channel + (0.5 - channel) * this.gray;
+    return [mix(red), mix(green), mix(blue)];
   }
 
-  readonly fw: number;
-  readonly fh: number;
+  readonly filmWidth: number;
+  readonly filmHeight: number;
   readonly film: Float32Array;
   readonly wetMass: Float32Array;
   readonly pooled: Float32Array;
   readonly residual: Float32Array;
   readonly pin: Float32Array;
-  readonly rough: Float32Array;
+  readonly roughness: Float32Array;
   readonly reached: Uint8Array;
-  readonly dFilm: Float32Array;
-  readonly dWet: Float32Array;
-  readonly dPooled: Float32Array;
+  readonly filmDelta: Float32Array;
+  readonly wetDelta: Float32Array;
+  readonly pooledDelta: Float32Array;
 
-  readonly mw: number;
-  readonly mh: number;
+  readonly mistWidth: number;
+  readonly mistHeight: number;
   readonly mist: Uint8Array;
 
-  readonly active = emptyRect();
-  readonly filmDirty = emptyRect();
-  readonly mistDirty = emptyRect();
+  readonly active = emptyRectangle();
+  readonly filmDirty = emptyRectangle();
+  readonly mistDirty = emptyRectangle();
   gloss = 1;
 
-  constructor(bounds: Rect, color: Rgb, opacity: number, roughness: Roughness) {
+  constructor(bounds: Rectangle, color: Rgb, opacity: number, roughness: Roughness) {
     const x = Math.floor(bounds.x / CELL) * CELL;
     const y = Math.floor(bounds.y / CELL) * CELL;
-    this.fw = Math.max(2, Math.ceil((bounds.x + bounds.w - x) / CELL));
-    this.fh = Math.max(2, Math.ceil((bounds.y + bounds.h - y) / CELL));
-    this.bounds = { x, y, w: this.fw * CELL, h: this.fh * CELL };
+    this.filmWidth = Math.max(2, Math.ceil((bounds.x + bounds.width - x) / CELL));
+    this.filmHeight = Math.max(2, Math.ceil((bounds.y + bounds.height - y) / CELL));
+    this.bounds = { x, y, width: this.filmWidth * CELL, height: this.filmHeight * CELL };
     this.color = color;
     this.opacity = opacity;
 
-    const n = this.fw * this.fh;
-    this.film = new Float32Array(n);
-    this.wetMass = new Float32Array(n);
-    this.pooled = new Float32Array(n);
-    this.residual = new Float32Array(n);
-    this.pin = new Float32Array(n);
-    this.rough = new Float32Array(n);
-    this.reached = new Uint8Array(n);
-    this.dFilm = new Float32Array(n);
-    this.dWet = new Float32Array(n);
-    this.dPooled = new Float32Array(n);
-    this.mw = this.bounds.w;
-    this.mh = this.bounds.h;
-    this.mist = new Uint8Array(this.mw * this.mh);
+    const cellCount = this.filmWidth * this.filmHeight;
+    this.film = new Float32Array(cellCount);
+    this.wetMass = new Float32Array(cellCount);
+    this.pooled = new Float32Array(cellCount);
+    this.residual = new Float32Array(cellCount);
+    this.pin = new Float32Array(cellCount);
+    this.roughness = new Float32Array(cellCount);
+    this.reached = new Uint8Array(cellCount);
+    this.filmDelta = new Float32Array(cellCount);
+    this.wetDelta = new Float32Array(cellCount);
+    this.pooledDelta = new Float32Array(cellCount);
+    this.mistWidth = this.bounds.width;
+    this.mistHeight = this.bounds.height;
+    this.mist = new Uint8Array(this.mistWidth * this.mistHeight);
 
-    const rng = mulberry32(this.id * 7919);
+    const random = mulberry32(this.id * 7919);
     const patch = noise2D(this.id);
-    const ox = x / CELL;
-    const oy = y / CELL;
-    for (let j = 0; j < this.fh; j++) {
-      for (let i = 0; i < this.fw; i++) {
-        const r = roughness.at(ox + i, oy + j);
-        const n = patch((ox + i) / 3, (oy + j) / 3);
-        const k = j * this.fw + i;
-        this.rough[k] = r;
-        this.residual[k] = RESIDUAL * (0.7 + 0.5 * r + 0.3 * n + 0.1 * (rng() - 0.5));
-        this.pin[k] = PIN * (0.3 + 1.1 * r * r + 1.4 * n * n * n + 0.4 * rng() * rng());
+    const originX = x / CELL;
+    const originY = y / CELL;
+    for (let j = 0; j < this.filmHeight; j++) {
+      for (let i = 0; i < this.filmWidth; i++) {
+        const cellRoughness = roughness.at(originX + i, originY + j);
+        const patchNoise = patch((originX + i) / 3, (originY + j) / 3);
+        const k = j * this.filmWidth + i;
+        this.roughness[k] = cellRoughness;
+        this.residual[k] = RESIDUAL * (0.7 + 0.5 * cellRoughness + 0.3 * patchNoise + 0.1 * (random() - 0.5));
+        this.pin[k] = PIN * (0.3 + 1.1 * cellRoughness * cellRoughness + 1.4 * patchNoise * patchNoise * patchNoise + 0.4 * random() * random());
       }
     }
   }
 
-  depositFilm(px: number, py: number, mass: number): void {
-    const fx = (px - this.bounds.x) / CELL - 0.5;
-    const fy = (py - this.bounds.y) / CELL - 0.5;
-    const ix = Math.floor(fx);
-    const iy = Math.floor(fy);
-    if (ix < 0 || iy < 0 || ix >= this.fw - 1 || iy >= this.fh - 1) return;
-    const tx = fx - ix;
-    const ty = fy - iy;
-    const t = mass / (CELL * CELL);
-    const k = iy * this.fw + ix;
-    this.add(k, t * (1 - tx) * (1 - ty));
-    this.add(k + 1, t * tx * (1 - ty));
-    this.add(k + this.fw, t * (1 - tx) * ty);
-    this.add(k + this.fw + 1, t * tx * ty);
-    grow(this.active, ix, iy, ix + 1, iy + 1);
-    grow(this.filmDirty, ix, iy, ix + 1, iy + 1);
+  depositFilm(pointX: number, pointY: number, mass: number): void {
+    const filmX = (pointX - this.bounds.x) / CELL - 0.5;
+    const filmY = (pointY - this.bounds.y) / CELL - 0.5;
+    const cellX = Math.floor(filmX);
+    const cellY = Math.floor(filmY);
+    if (cellX < 0 || cellY < 0 || cellX >= this.filmWidth - 1 || cellY >= this.filmHeight - 1) return;
+    const fractionX = filmX - cellX;
+    const fractionY = filmY - cellY;
+    const density = mass / (CELL * CELL);
+    const k = cellY * this.filmWidth + cellX;
+    this.add(k, density * (1 - fractionX) * (1 - fractionY));
+    this.add(k + 1, density * fractionX * (1 - fractionY));
+    this.add(k + this.filmWidth, density * (1 - fractionX) * fractionY);
+    this.add(k + this.filmWidth + 1, density * fractionX * fractionY);
+    grow(this.active, cellX, cellY, cellX + 1, cellY + 1);
+    grow(this.filmDirty, cellX, cellY, cellX + 1, cellY + 1);
   }
 
-  depositSplat(px: number, py: number, radius: number, mass: number): void {
-    const r = radius / CELL;
-    const cx = (px - this.bounds.x) / CELL - 0.5;
-    const cy = (py - this.bounds.y) / CELL - 0.5;
-    const x0 = Math.max(0, Math.floor(cx - r));
-    const x1 = Math.min(this.fw - 1, Math.ceil(cx + r));
-    const y0 = Math.max(0, Math.floor(cy - r));
-    const y1 = Math.min(this.fh - 1, Math.ceil(cy + r));
+  depositSplat(pointX: number, pointY: number, radius: number, mass: number): void {
+    const cellRadius = radius / CELL;
+    const centerX = (pointX - this.bounds.x) / CELL - 0.5;
+    const centerY = (pointY - this.bounds.y) / CELL - 0.5;
+    const x0 = Math.max(0, Math.floor(centerX - cellRadius));
+    const x1 = Math.min(this.filmWidth - 1, Math.ceil(centerX + cellRadius));
+    const y0 = Math.max(0, Math.floor(centerY - cellRadius));
+    const y1 = Math.min(this.filmHeight - 1, Math.ceil(centerY + cellRadius));
     if (x0 > x1 || y0 > y1) return;
     let total = 0;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const d2 = ((x - cx) ** 2 + (y - cy) ** 2) / (r * r);
-        if (d2 < 1) total += 1 - d2;
+        const distanceSquared = ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
+        if (distanceSquared < 1) total += 1 - distanceSquared;
       }
     }
     if (total === 0) return;
-    const t = mass / (CELL * CELL) / total;
+    const density = mass / (CELL * CELL) / total;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const d2 = ((x - cx) ** 2 + (y - cy) ** 2) / (r * r);
-        if (d2 >= 1) continue;
-        this.add(y * this.fw + x, t * (1 - d2));
+        const distanceSquared = ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
+        if (distanceSquared >= 1) continue;
+        this.add(y * this.filmWidth + x, density * (1 - distanceSquared));
       }
     }
     grow(this.active, x0, y0, x1, y1);
     grow(this.filmDirty, x0, y0, x1, y1);
   }
 
-  depositMist(px: number, py: number, amount: number, radius: number): void {
-    const cx = px - this.bounds.x;
-    const cy = py - this.bounds.y;
-    const r = Math.max(radius, 0.5);
-    const x0 = Math.max(0, Math.floor(cx - r - 0.5));
-    const y0 = Math.max(0, Math.floor(cy - r - 0.5));
-    const x1 = Math.min(this.mw - 1, Math.floor(cx + r + 0.5));
-    const y1 = Math.min(this.mh - 1, Math.floor(cy + r + 0.5));
+  depositMist(pointX: number, pointY: number, amount: number, radius: number): void {
+    const centerX = pointX - this.bounds.x;
+    const centerY = pointY - this.bounds.y;
+    const reach = Math.max(radius, 0.5);
+    const x0 = Math.max(0, Math.floor(centerX - reach - 0.5));
+    const y0 = Math.max(0, Math.floor(centerY - reach - 0.5));
+    const x1 = Math.min(this.mistWidth - 1, Math.floor(centerX + reach + 0.5));
+    const y1 = Math.min(this.mistHeight - 1, Math.floor(centerY + reach + 0.5));
     if (x0 > x1 || y0 > y1) return;
-    const a = amount * Math.min(1, radius / 0.5) ** 2;
+    const strength = amount * Math.min(1, radius / 0.5) ** 2;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const dx = x + 0.5 - cx;
-        const dy = y + 0.5 - cy;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        const c = Math.min(1, Math.max(0, r + 0.5 - d));
-        if (c <= 0) continue;
-        const k = y * this.mw + x;
-        this.mist[k] = Math.min(255, this.mist[k] + a * c);
+        const dx = x + 0.5 - centerX;
+        const dy = y + 0.5 - centerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const coverage = Math.min(1, Math.max(0, reach + 0.5 - distance));
+        if (coverage <= 0) continue;
+        const k = y * this.mistWidth + x;
+        this.mist[k] = Math.min(255, this.mist[k] + strength * coverage);
       }
     }
     grow(this.mistDirty, x0, y0, x1, y1);
   }
 
-  private add(k: number, mass: number): void {
-    this.film[k] += mass;
-    this.wetMass[k] += mass;
+  private add(index: number, mass: number): void {
+    this.film[index] += mass;
+    this.wetMass[index] += mass;
   }
 
-  markFilmDirty(r: CellRect): void {
-    grow(this.filmDirty, r.x0, r.y0, r.x1, r.y1);
+  markFilmDirty(rectangle: CellRectangle): void {
+    grow(this.filmDirty, rectangle.x0, rectangle.y0, rectangle.x1, rectangle.y1);
   }
 
   get wet(): boolean {

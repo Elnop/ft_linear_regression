@@ -7,15 +7,15 @@ export function PaintWall() {
   const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const e = new PaintEngine(box.current!, wallUrl);
+    const engine = new PaintEngine(box.current!, wallUrl);
     let alive = true;
-    void e.ready.then(() => {
-      if (alive) publishEngine(e);
+    void engine.ready.then(() => {
+      if (alive) publishEngine(engine);
     });
     return () => {
       alive = false;
       publishEngine(null);
-      e.destroy();
+      engine.destroy();
     };
   }, []);
 

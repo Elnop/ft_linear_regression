@@ -9,18 +9,18 @@ type Props = {
 
 export function StepList({ steps, prefix }: Props) {
   return (
-    <div className="doc-fns">
-      {steps.map((s, i) => (
-        <article key={s.title} id={stepId(prefix, i)} className="doc-fn">
-          <div className="doc-text">
-            <p className="doc-step">
+    <div className="documentation-steps">
+      {steps.map((step, i) => (
+        <article key={step.title} id={stepId(prefix, i)} className="documentation-step">
+          <div className="documentation-text">
+            <p className="documentation-step-label">
               <span>{stepNumber(i)}</span>
-              {s.label}
+              {step.label}
             </p>
-            <h3>{s.title}</h3>
-            {s.children}
+            <h3>{step.title}</h3>
+            {step.children}
           </div>
-          {s.aside}
+          {step.aside}
         </article>
       ))}
     </div>

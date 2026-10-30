@@ -1,4 +1,4 @@
-.wu-bar {
+.wall-bar {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -11,7 +11,7 @@
   display: flex;
   gap: 10px;
 }
-.btn-train {
+.button-train {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -27,11 +27,11 @@
   letter-spacing: 0.06em;
   box-shadow: 0 0 22px rgba(255, 43, 214, 0.25), 3px 4px 0 rgba(0, 0, 0, 0.55);
 }
-.btn-train:disabled {
+.button-train:disabled {
   cursor: default;
   opacity: 0.55;
 }
-.btn-icon {
+.button-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,23 +43,23 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--ink);
 }
-.btn-icon:disabled {
+.button-icon:disabled {
   cursor: default;
   opacity: 0.45;
 }
-.lr {
+.learning-rate {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1 1 220px;
   min-width: 0;
 }
-.lr input {
+.learning-rate input {
   flex: 1 1 auto;
   min-width: 80px;
   accent-color: var(--magenta);
 }
-.lr output {
+.learning-rate output {
   font-size: 15px;
   font-weight: 700;
   min-width: 44px;
@@ -78,7 +78,7 @@
   white-space: nowrap;
   pointer-events: none;
 }
-.btn-skip {
+.button-skip {
   position: absolute;
   display: flex;
   align-items: center;
@@ -88,12 +88,12 @@
   border-radius: 12px;
   cursor: pointer;
   color: var(--ink);
-  font: 700 13px var(--mono);
+  font: 700 13px var(--monospace);
   letter-spacing: 0.14em;
 }
 
 @media (max-width: 1023px) {
-  .wu-bar {
+  .wall-bar {
     gap: 14px 18px;
   }
   .hint {

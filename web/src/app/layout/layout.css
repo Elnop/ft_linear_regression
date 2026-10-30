@@ -1,16 +1,16 @@
-.wu-root {
+.wall-root {
   position: fixed;
   inset: 0;
   z-index: 4;
   pointer-events: none;
 }
-.wu-root * {
+.wall-root * {
   box-sizing: border-box;
 }
-.wu-root .wu-hit {
+.wall-root .wall-hit {
   pointer-events: auto;
 }
-.wu-subtitle {
+.wall-subtitle {
   position: absolute;
   margin: 0;
   font-family: var(--marker);
@@ -21,37 +21,37 @@
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
   white-space: nowrap;
 }
-.wu-head {
+.wall-head {
   display: flex;
   justify-content: flex-end;
   align-items: stretch;
   gap: 10px;
 }
-.wu-aside {
+.wall-aside {
   position: absolute;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-.wu-root button:focus-visible,
-.wu-root input:focus-visible {
+.wall-root button:focus-visible,
+.wall-root input:focus-visible {
   outline: 3px solid var(--acid);
   outline-offset: 2px;
 }
 
-.doc-page {
+.documentation-page {
   position: relative;
   z-index: 5;
   margin-top: calc(100vh + 40px);
   margin-top: calc(100dvh + 40px);
 }
-html:has(.doc-page) {
+html:has(.documentation-page) {
   scrollbar-width: none;
 }
-html:has(.doc-page)::-webkit-scrollbar {
+html:has(.documentation-page)::-webkit-scrollbar {
   display: none;
 }
-.doc-jump {
+.documentation-jump {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -61,28 +61,28 @@ html:has(.doc-page)::-webkit-scrollbar {
   border-radius: 12px;
   cursor: pointer;
   color: var(--ink);
-  font: 700 12px var(--mono);
+  font: 700 12px var(--monospace);
   letter-spacing: 0.14em;
 }
 
 @media (max-width: 1023px) {
-  .wu-root {
+  .wall-root {
     overflow-y: auto;
     overflow-x: hidden;
     pointer-events: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .wu-flow {
+  .wall-flow {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 18px;
   }
-  .wu-flow .wu-chips {
+  .wall-flow .wall-chips {
     justify-content: flex-start;
     flex: 1 1 auto;
   }
-  .doc-jump {
+  .documentation-jump {
     padding: 0 12px;
   }
 }

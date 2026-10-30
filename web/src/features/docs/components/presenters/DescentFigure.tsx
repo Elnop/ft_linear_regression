@@ -10,22 +10,22 @@ export function DescentFigure() {
   const steps = [40, 105, 148, 176, 191];
 
   return (
-    <figure className="doc-code doc-figure">
+    <figure className="documentation-code documentation-figure">
       <svg viewBox="0 0 400 230" role="img" aria-label="Courbe du coût J en forme de bol, avec des pas successifs qui descendent vers le minimum">
-        <line x1="20" y1="210" x2="390" y2="210" className="fig-axis" />
-        <line x1="20" y1="10" x2="20" y2="210" className="fig-axis" />
-        <text x="384" y="226" className="fig-label" textAnchor="end">θ</text>
-        <text x="28" y="22" className="fig-label">J(θ)</text>
-        <path d={path} className="fig-curve" />
+        <line x1="20" y1="210" x2="390" y2="210" className="figure-axis" />
+        <line x1="20" y1="10" x2="20" y2="210" className="figure-axis" />
+        <text x="384" y="226" className="figure-label" textAnchor="end">θ</text>
+        <text x="28" y="22" className="figure-label">J(θ)</text>
+        <path d={path} className="figure-curve" />
         {steps.slice(1).map((x, i) => (
-          <line key={x} x1={steps[i]} y1={curve(steps[i])} x2={x} y2={curve(x)} className="fig-step" />
+          <line key={x} x1={steps[i]} y1={curve(steps[i])} x2={x} y2={curve(x)} className="figure-step" />
         ))}
         {steps.map((x, i) => (
-          <circle key={x} cx={x} cy={curve(x)} r={i ? 4 : 6} className="fig-dot" />
+          <circle key={x} cx={x} cy={curve(x)} r={i ? 4 : 6} className="figure-dot" />
         ))}
-        <text x={steps[0] + 10} y={curve(steps[0]) + 4} className="fig-label">départ</text>
-        <line x1="200" y1="182" x2="200" y2="210" className="fig-min" />
-        <text x="200" y="174" className="fig-label" textAnchor="middle">minimum</text>
+        <text x={steps[0] + 10} y={curve(steps[0]) + 4} className="figure-label">départ</text>
+        <line x1="200" y1="182" x2="200" y2="210" className="figure-minimum" />
+        <text x="200" y="174" className="figure-label" textAnchor="middle">minimum</text>
       </svg>
       <figcaption>Chaque pas suit la pente ; les pas raccourcissent à mesure que la pente s'aplatit.</figcaption>
     </figure>

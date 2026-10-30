@@ -23,9 +23,9 @@
 .spray-can svg {
   display: block;
 }
-.spray-can-act {
+.spray-can-actuator {
   transition: transform 0.09s ease-out;
 }
-.spray-can.pressed .spray-can-act {
+.spray-can.pressed .spray-can-actuator {
   transform: translateY(2.6px);
 }

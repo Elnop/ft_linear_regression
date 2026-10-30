@@ -96,7 +96,7 @@ Ce sont ces `θ` (sur km brut) qui sont sauvegardés. **`predict` applique donc 
 [`core/train.ts`](../core/train.ts) expose l'entraînement sous forme de générateur. À chaque itération, il produit :
 
 ```ts
-{ iter, theta0, theta1, cost }   // θ déjà ramenés sur km brut
+{ iteration, theta0, theta1, cost }   // θ déjà ramenés sur km brut
 ```
 
 - L'itération `0` correspond à l'état initial (`θ0 = θ1 = 0`).

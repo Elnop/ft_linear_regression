@@ -1,17 +1,17 @@
 import type { Step } from '@/features/docs/types.ts';
 
-export type TocSection = { title: string; items: { step: Step; i: number }[] };
+export type TableOfContentsSection = { title: string; items: { step: Step; index: number }[] };
 
-export const stepId = (prefix: string, i: number) => `doc-${prefix}-${i + 1}`;
+export const stepId = (prefix: string, index: number) => `documentation-${prefix}-${index + 1}`;
 
-export const stepNumber = (i: number) => String(i + 1).padStart(2, '0');
+export const stepNumber = (index: number) => String(index + 1).padStart(2, '0');
 
-export function groupSections(steps: Step[]): TocSection[] {
-  const sections: TocSection[] = [];
-  steps.forEach((step, i) => {
+export function groupSections(steps: Step[]): TableOfContentsSection[] {
+  const sections: TableOfContentsSection[] = [];
+  steps.forEach((step, index) => {
     const last = sections.at(-1);
-    if (last?.title === step.section) last.items.push({ step, i });
-    else sections.push({ title: step.section, items: [{ step, i }] });
+    if (last?.title === step.section) last.items.push({ step, index });
+    else sections.push({ title: step.section, items: [{ step, index }] });
   });
   return sections;
 }

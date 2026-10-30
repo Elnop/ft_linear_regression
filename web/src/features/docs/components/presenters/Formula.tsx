@@ -1,5 +1,5 @@
 import '@/features/docs/styles/code.css';
 
 export function Formula({ children }: { children: string }) {
-  return <pre className="doc-code doc-math">{children}</pre>;
+  return <pre className="documentation-code documentation-math">{children}</pre>;
 }

@@ -10,18 +10,18 @@ export type PriceMarkerProps = {
   width: number;
 };
 
-const STICKER_W = 206;
-const STICKER_H = 112;
+const STICKER_WIDTH = 206;
+const STICKER_HEIGHT = 112;
 
 export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
   const visible = at !== null && price !== null && Number.isFinite(at.x) && Number.isFinite(at.y);
   const scale = width < SMALL ? 0.72 : 1;
-  const w = STICKER_W * scale;
-  const flip = visible && at.x + 26 + w > width - 8;
-  const left = visible ? Math.max(8, Math.min(width - w - 8, flip ? at.x - 26 - w : at.x + 26)) : 0;
-  const top = visible ? Math.max(8, at.y - STICKER_H * scale - 10) : 0;
+  const stickerWidth = STICKER_WIDTH * scale;
+  const flip = visible && at.x + 26 + stickerWidth > width - 8;
+  const left = visible ? Math.max(8, Math.min(width - stickerWidth - 8, flip ? at.x - 26 - stickerWidth : at.x + 26)) : 0;
+  const top = visible ? Math.max(8, at.y - STICKER_HEIGHT * scale - 10) : 0;
   return (
-    <div className="wu-marker" aria-hidden="true">
+    <div className="wall-marker" aria-hidden="true">
       {visible && (
         <>
           {axisY > at.y && (

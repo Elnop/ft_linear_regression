@@ -12,7 +12,7 @@ export function PredictPanel({ value, onChange, price }: PredictPanelProps) {
   const id = useId();
   const invalid = value.trim() !== '' && parseKm(value) === null;
   return (
-    <div className="panel glass wu-hit">
+    <div className="panel glass wall-hit">
       <div className="tape" aria-hidden="true" style={{ left: 24, transform: 'rotate(-4deg)' }} />
       <label htmlFor={id} className="label">
         Prédire · kilométrage
@@ -25,22 +25,22 @@ export function PredictPanel({ value, onChange, price }: PredictPanelProps) {
           autoComplete="off"
           spellCheck={false}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(event) => onChange(event.target.value)}
           aria-invalid={invalid}
-          aria-describedby={invalid ? `${id}-err` : undefined}
+          aria-describedby={invalid ? `${id}-error` : undefined}
         />
-        <span aria-hidden="true" style={{ fontSize: 13, color: 'var(--ink-dim)' }}>
+        <span aria-hidden="true" style={{ fontSize: 13, color: 'var(--ink-dimmed)' }}>
           km
         </span>
       </div>
-      <div className="predict-out">
-        <span style={{ fontSize: 12, color: 'var(--ink-dim)' }}>θ0 + θ1 × km</span>
+      <div className="predict-output">
+        <span style={{ fontSize: 12, color: 'var(--ink-dimmed)' }}>θ0 + θ1 × km</span>
         <output htmlFor={id} className="predict-price" aria-live="polite">
           {invalid || price === null ? '—' : `${formatNumber(price)} €`}
         </output>
       </div>
       {invalid && (
-        <span id={`${id}-err`} className="error" role="alert">
+        <span id={`${id}-error`} className="error" role="alert">
           kilométrage invalide : un nombre positif, sans signe ni exposant
         </span>
       )}

@@ -6,7 +6,7 @@ import '@/features/decor/spray-can/spray-can.css';
 
 export function SprayCan() {
   const engine = useEngine();
-  const skipping = useSequence((s) => s.skipping);
+  const skipping = useSequence((state) => state.skipping);
   const { box, mist } = useSprayCan(engine, skipping);
   return (
     <>

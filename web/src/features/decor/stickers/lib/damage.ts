@@ -1,29 +1,29 @@
 import { mulberry32 } from '@/lib/random.ts';
 import type { Corner } from '@/features/decor/stickers/types.ts';
 
-const pts = (p: number[][]) => p.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+const toPoints = (points: number[][]) => points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
 
-export function peelGeometry(W: number, H: number, [corner, f]: [Corner, number]) {
-  const p = f * Math.min(W, H);
-  const cuts: Record<Corner, { at: number; pair: number[][]; tri: number[][]; m: string }> = {
-    tl: { at: 0, pair: [[0, p], [p, 0]], tri: [[0, 0], [p, 0], [0, p]], m: `0 -1 -1 0 ${p} ${p}` },
-    tr: { at: 1, pair: [[W - p, 0], [W, p]], tri: [[W - p, 0], [W, 0], [W, p]], m: `0 1 1 0 ${W - p} ${p - W}` },
-    br: { at: 2, pair: [[W, H - p], [W - p, H]], tri: [[W, H - p], [W, H], [W - p, H]], m: `0 -1 -1 0 ${W + H - p} ${W + H - p}` },
-    bl: { at: 3, pair: [[p, H], [0, H - p]], tri: [[p, H], [0, H], [0, H - p]], m: `0 1 1 0 ${p - H} ${H - p}` },
+export function peelGeometry(width: number, height: number, [corner, fraction]: [Corner, number]) {
+  const size = fraction * Math.min(width, height);
+  const cuts: Record<Corner, { index: number; bevel: number[][]; triangle: number[][]; matrix: string }> = {
+    topLeft: { index: 0, bevel: [[0, size], [size, 0]], triangle: [[0, 0], [size, 0], [0, size]], matrix: `0 -1 -1 0 ${size} ${size}` },
+    topRight: { index: 1, bevel: [[width - size, 0], [width, size]], triangle: [[width - size, 0], [width, 0], [width, size]], matrix: `0 1 1 0 ${width - size} ${size - width}` },
+    bottomRight: { index: 2, bevel: [[width, height - size], [width - size, height]], triangle: [[width, height - size], [width, height], [width - size, height]], matrix: `0 -1 -1 0 ${width + height - size} ${width + height - size}` },
+    bottomLeft: { index: 3, bevel: [[size, height], [0, height - size]], triangle: [[size, height], [0, height], [0, height - size]], matrix: `0 1 1 0 ${size - height} ${height - size}` },
   };
-  const c = cuts[corner];
-  const keep = [[0, 0], [W, 0], [W, H], [0, H]].flatMap((q, i) => (i === c.at ? c.pair : [q]));
-  return { keep: pts(keep), cut: pts(c.tri), matrix: `matrix(${c.m})` };
+  const cut = cuts[corner];
+  const keep = [[0, 0], [width, 0], [width, height], [0, height]].flatMap((point, i) => (i === cut.index ? cut.bevel : [point]));
+  return { keep: toPoints(keep), cut: toPoints(cut.triangle), matrix: `matrix(${cut.matrix})` };
 }
 
-export function tornEdge(W: number, H: number, x: number, seed: number, inset = 0) {
-  const rng = mulberry32(seed);
-  const n = 14;
-  const slant = (rng() - 0.5) * 0.25 * W;
+export function tornEdge(width: number, height: number, x: number, seed: number, inset = 0) {
+  const random = mulberry32(seed);
+  const segmentCount = 14;
+  const slant = (random() - 0.5) * 0.25 * width;
   const edge: number[][] = [];
-  for (let i = 0; i <= n; i++) {
-    const t = i / n;
-    edge.push([x + slant * (t - 0.5) + (rng() - 0.5) * 0.06 * W + inset, t * H]);
+  for (let i = 0; i <= segmentCount; i++) {
+    const progress = i / segmentCount;
+    edge.push([x + slant * (progress - 0.5) + (random() - 0.5) * 0.06 * width + inset, progress * height]);
   }
-  return pts([[-1, -1], ...edge.map(([ex, ey], i) => [ex, i === 0 ? -1 : i === n ? H + 1 : ey]), [-1, H + 1]]);
+  return toPoints([[-1, -1], ...edge.map(([edgeX, edgeY], i) => [edgeX, i === 0 ? -1 : i === segmentCount ? height + 1 : edgeY]), [-1, height + 1]]);
 }

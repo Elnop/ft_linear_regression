@@ -1,25 +1,25 @@
-const NNBSP = ' ';
+const NARROW_NO_BREAK_SPACE = ' ';
 const MINUS = '−';
 const COMPACT_FROM = 1e9;
 
-export function formatNumber(n: number | null | undefined, decimals = 0): string {
-  if (n === null || n === undefined || Number.isNaN(n)) return '—';
-  if (!Number.isFinite(n)) return n > 0 ? '∞' : `${MINUS}∞`;
-  if (Math.abs(n) >= COMPACT_FROM) {
-    const [mantissa, exponent] = Math.abs(n).toExponential(1).split('e+');
-    return `${n < 0 ? MINUS : ''}${mantissa}e${exponent}`;
+export function formatNumber(value: number | null | undefined, decimals = 0): string {
+  if (value === null || value === undefined || Number.isNaN(value)) return '—';
+  if (!Number.isFinite(value)) return value > 0 ? '∞' : `${MINUS}∞`;
+  if (Math.abs(value) >= COMPACT_FROM) {
+    const [mantissa, exponent] = Math.abs(value).toExponential(1).split('e+');
+    return `${value < 0 ? MINUS : ''}${mantissa}e${exponent}`;
   }
-  const [int, frac] = Math.abs(n).toFixed(decimals).split('.');
-  const grouped = int.replace(/\B(?=(\d{3})+(?!\d))/g, NNBSP);
-  const sign = n < 0 && Number(Math.abs(n).toFixed(decimals)) !== 0 ? MINUS : '';
-  return sign + grouped + (frac ? `.${frac}` : '');
+  const [integerPart, fractionPart] = Math.abs(value).toFixed(decimals).split('.');
+  const grouped = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, NARROW_NO_BREAK_SPACE);
+  const sign = value < 0 && Number(Math.abs(value).toFixed(decimals)) !== 0 ? MINUS : '';
+  return sign + grouped + (fractionPart ? `.${fractionPart}` : '');
 }
 
 export const isDisplayablePrice = (price: number) => Number.isFinite(price) && Math.abs(price) < 1e7;
 
 export function parseKm(text: string): number | null {
-  const t = text.trim();
-  if (!/^\d+(\.\d+)?$/.test(t)) return null;
-  const v = Number(t);
-  return Number.isFinite(v) ? v : null;
+  const trimmed = text.trim();
+  if (!/^\d+(\.\d+)?$/.test(trimmed)) return null;
+  const km = Number(trimmed);
+  return Number.isFinite(km) ? km : null;
 }

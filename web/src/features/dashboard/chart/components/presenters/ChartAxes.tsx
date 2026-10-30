@@ -16,23 +16,23 @@ const PRICE_STEP = 1_000;
 
 const range = (from: number, to: number, step: number) => {
   const out: number[] = [];
-  for (let v = from; v <= to + 1e-9; v += step) out.push(v);
+  for (let value = from; value <= to + 1e-9; value += step) out.push(value);
   return out;
 };
 
-const short = (v: number) => (v === 0 ? '0' : `${Math.round(v / 1000)}k`);
+const short = (value: number) => (value === 0 ? '0' : `${Math.round(value / 1000)}k`);
 
 export function ChartAxes({ chart, width, height, visible = true }: ChartAxesProps) {
   const { area, domain } = chart;
-  const bottom = area.y + area.h;
-  const right = area.x + area.w;
+  const bottom = area.y + area.height;
+  const right = area.x + area.width;
   const small = width < SMALL;
-  const fs = small ? 12 : 15;
-  const kms = range(domain.kmMin, domain.kmMax, KM_STEP);
-  const prices = range(domain.priceMin, domain.priceMax, PRICE_STEP);
+  const fontSize = small ? 12 : 15;
+  const kmTicks = range(domain.kmMin, domain.kmMax, KM_STEP);
+  const priceTicks = range(domain.priceMin, domain.priceMax, PRICE_STEP);
   return (
     <motion.svg
-      className="wu-axes"
+      className="wall-axes"
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
@@ -43,37 +43,37 @@ export function ChartAxes({ chart, width, height, visible = true }: ChartAxesPro
       transition={{ duration: 0.8 }}
     >
       <g stroke="rgba(239,236,230,0.09)" strokeWidth="1" strokeDasharray="2 7">
-        {prices.slice(1).map((p) => (
-          <line key={p} x1={area.x} x2={right} y1={chart.y(p)} y2={chart.y(p)} />
+        {priceTicks.slice(1).map((price) => (
+          <line key={price} x1={area.x} x2={right} y1={chart.y(price)} y2={chart.y(price)} />
         ))}
-        {kms.slice(1).map((k) => (
-          <line key={k} x1={chart.x(k)} x2={chart.x(k)} y1={area.y} y2={bottom} />
+        {kmTicks.slice(1).map((km) => (
+          <line key={km} x1={chart.x(km)} x2={chart.x(km)} y1={area.y} y2={bottom} />
         ))}
       </g>
       <g stroke={CHALK} strokeWidth="2.5" strokeLinecap="round" fill="none">
         <path d={`M${area.x} ${area.y - 10} L${area.x} ${bottom} L${right + 10} ${bottom}`} strokeDasharray="18 5 4 5" />
-        {kms.map((k) => (
-          <line key={k} x1={chart.x(k)} x2={chart.x(k)} y1={bottom} y2={bottom + 7} />
+        {kmTicks.map((km) => (
+          <line key={km} x1={chart.x(km)} x2={chart.x(km)} y1={bottom} y2={bottom + 7} />
         ))}
-        {prices.map((p) => (
-          <line key={p} x1={area.x - 7} x2={area.x} y1={chart.y(p)} y2={chart.y(p)} />
+        {priceTicks.map((price) => (
+          <line key={price} x1={area.x - 7} x2={area.x} y1={chart.y(price)} y2={chart.y(price)} />
         ))}
       </g>
-      <g className="axis-text" fontSize={fs}>
-        {kms.map((k) => (
-          <text key={k} x={chart.x(k)} y={bottom + 12 + fs} textAnchor="middle">
-            {short(k)}
+      <g className="axis-text" fontSize={fontSize}>
+        {kmTicks.map((km) => (
+          <text key={km} x={chart.x(km)} y={bottom + 12 + fontSize} textAnchor="middle">
+            {short(km)}
           </text>
         ))}
-        {prices.map((p) => (
-          <text key={p} x={area.x - 12} y={chart.y(p) + fs * 0.36} textAnchor="end">
-            {short(p)}
+        {priceTicks.map((price) => (
+          <text key={price} x={area.x - 12} y={chart.y(price) + fontSize * 0.36} textAnchor="end">
+            {short(price)}
           </text>
         ))}
-        <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fs + 2}>
+        <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fontSize + 2}>
           kilométrage (km) →
         </text>
-        <text x={area.x - 12} y={area.y - (small ? 16 : 22)} textAnchor="start" fontSize={fs + 2}>
+        <text x={area.x - 12} y={area.y - (small ? 16 : 22)} textAnchor="start" fontSize={fontSize + 2}>
           ↑ prix (€)
         </text>
       </g>

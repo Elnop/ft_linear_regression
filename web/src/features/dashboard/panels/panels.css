@@ -1,4 +1,4 @@
-.wu-chips {
+.wall-chips {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -50,9 +50,9 @@
   border: 0;
   outline: none;
   color: #fff;
-  font: 700 18px var(--mono);
+  font: 700 18px var(--monospace);
 }
-.predict-out {
+.predict-output {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -68,7 +68,7 @@
   font-size: 12px;
   color: #ff9a9a;
 }
-.cost-head {
+.cost-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -80,11 +80,11 @@
   color: var(--cyan);
   font-variant-numeric: tabular-nums;
 }
-.cost-foot {
+.cost-footer {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: var(--ink-dim);
+  color: var(--ink-dimmed);
 }
 .metrics {
   display: grid;
@@ -108,7 +108,7 @@
 }
 
 @media (max-width: 1023px) {
-  .wu-chips {
+  .wall-chips {
     flex-wrap: nowrap;
     gap: 6px;
   }

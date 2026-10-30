@@ -11,8 +11,8 @@ export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 1000
 
 export const willDiverge = (learningRate: number) => learningRate > 1.75;
 
-export function isFinite2(t: Thetas): boolean {
-  return Number.isFinite(t.theta0) && Number.isFinite(t.theta1);
+export function hasFiniteThetas(thetas: Thetas): boolean {
+  return Number.isFinite(thetas.theta0) && Number.isFinite(thetas.theta1);
 }
 
 export type Training = {
@@ -22,7 +22,7 @@ export type Training = {
   diverged: boolean;
 };
 
-export function runTraining(data: Sample[], o: TrainOptions): Training {
+export function runTraining(data: Sample[], options: TrainOptions): Training {
   const steps: TrainStep[] = [];
   const history: CostPoint[] = [];
   let last: TrainStep | null = null;
@@ -31,49 +31,49 @@ export function runTraining(data: Sample[], o: TrainOptions): Training {
   let nextPass = 0;
   let nextSample = 0;
 
-  for (const step of trainSteps(data, o)) {
-    if (!isFinite2(step)) {
+  for (const step of trainSteps(data, options)) {
+    if (!hasFiniteThetas(step)) {
       nonFinite = true;
       break;
     }
-    if (step.iter === 0) first = step.cost;
-    if ((step.iter <= 64 || step.iter >= nextSample) && Number.isFinite(step.cost)) {
-      history.push({ iter: step.iter, cost: step.cost });
-      nextSample = Math.ceil(step.iter * 1.05);
+    if (step.iteration === 0) first = step.cost;
+    if ((step.iteration <= 64 || step.iteration >= nextSample) && Number.isFinite(step.cost)) {
+      history.push({ iteration: step.iteration, cost: step.cost });
+      nextSample = Math.ceil(step.iteration * 1.05);
     }
-    if (step.iter === nextPass) {
+    if (step.iteration === nextPass) {
       steps.push(step);
       nextPass = Math.max(1, nextPass * 2);
     }
     last = step;
   }
   if (!last) throw new Error('training produced no step');
-  if (Number.isFinite(last.cost) && history[history.length - 1].iter !== last.iter) history.push({ iter: last.iter, cost: last.cost });
-  if (steps[steps.length - 1]?.iter !== last.iter) steps.push(last);
+  if (Number.isFinite(last.cost) && history[history.length - 1].iteration !== last.iteration) history.push({ iteration: last.iteration, cost: last.cost });
+  if (steps[steps.length - 1]?.iteration !== last.iteration) steps.push(last);
 
   const diverged = nonFinite || last.cost > first;
   return { steps, history, last, diverged };
 }
 
-export type Step = { thetas: Thetas; iter: number; metrics: Metrics; history: CostPoint[] };
+export type Step = { thetas: Thetas; iteration: number; metrics: Metrics; history: CostPoint[] };
 
-export function stepAt(plan: Training, j: number): Step {
-  const s = plan.steps[j];
+export function stepAt(plan: Training, pass: number): Step {
+  const step = plan.steps[pass];
   return {
-    thetas: s,
-    iter: s.iter,
-    metrics: { r2: r2(DATA, s), rmse: rmse(DATA, s), mae: mae(DATA, s) },
-    history: plan.history.filter((h) => h.iter <= s.iter),
+    thetas: step,
+    iteration: step.iteration,
+    metrics: { r2: r2(DATA, step), rmse: rmse(DATA, step), mae: mae(DATA, step) },
+    history: plan.history.filter((point) => point.iteration <= step.iteration),
   };
 }
 
 export type LineKind = 'line' | 'finalLine' | 'diverge';
 
-export function isFinalPass(plan: Training, j: number): boolean {
-  return j === plan.steps.length - 1 && !plan.diverged;
+export function isFinalPass(plan: Training, pass: number): boolean {
+  return pass === plan.steps.length - 1 && !plan.diverged;
 }
 
-export function lineKindAt(plan: Training, j: number): LineKind {
+export function lineKindAt(plan: Training, pass: number): LineKind {
   if (plan.diverged) return 'diverge';
-  return isFinalPass(plan, j) ? 'finalLine' : 'line';
+  return isFinalPass(plan, pass) ? 'finalLine' : 'line';
 }

@@ -9,79 +9,79 @@ const SUBSTEP = 1 / 240;
 export type CanPose = { x: number; y: number; angle: number; rattle: number; spraying: boolean; color: string };
 
 export class CanMotion {
-  private pos: Vec2;
-  private vel = { x: 0, y: 0 };
-  private aim: { x: number; y: number; vx: number; vy: number };
+  private position: Vec2;
+  private velocity = { x: 0, y: 0 };
+  private aim: { x: number; y: number; velocityX: number; velocityY: number };
   private angle = BASE_TILT;
   private shake = 0;
   private idle = PARK_AFTER;
-  private fall: { vx: number; vy: number; spin: number } | null = null;
+  private fall: { velocityX: number; velocityY: number; spin: number } | null = null;
   private color = '';
 
   constructor(x: number, y: number) {
-    this.pos = { x, y };
-    this.aim = { x, y, vx: 0, vy: 0 };
+    this.position = { x, y };
+    this.aim = { x, y, velocityX: 0, velocityY: 0 };
   }
 
-  step(dt: number, n: Nozzle | null, hidden: boolean, canW: number): CanPose {
-    const { pos, vel, aim } = this;
-    const spraying = !!n && n.active <= 2 && !hidden;
+  step(deltaSeconds: number, nozzle: Nozzle | null, hidden: boolean, canWidth: number): CanPose {
+    const { position, velocity, aim } = this;
+    const spraying = !!nozzle && nozzle.active <= 2 && !hidden;
     if (spraying) {
       this.idle = 0;
-      const hex = rgbToHex(n.color);
+      const hex = rgbToHex(nozzle.color);
       if (hex !== this.color) {
         this.color = hex;
         this.shake = SHAKE;
       }
-      const tx = n.x + canW * 0.36;
-      const ty = n.y - canW * 0.1;
-      const jump = Math.hypot(tx - aim.x, ty - aim.y);
-      if (this.fall || jump > canW * 0.6 || dt === 0) {
-        aim.vx = 0;
-        aim.vy = 0;
+      const targetX = nozzle.x + canWidth * 0.36;
+      const targetY = nozzle.y - canWidth * 0.1;
+      const jump = Math.hypot(targetX - aim.x, targetY - aim.y);
+      if (this.fall || jump > canWidth * 0.6 || deltaSeconds === 0) {
+        aim.velocityX = 0;
+        aim.velocityY = 0;
       } else {
-        const k = Math.min(1, dt * 12);
-        aim.vx += ((tx - aim.x) / dt - aim.vx) * k;
-        aim.vy += ((ty - aim.y) / dt - aim.vy) * k;
+        const blend = Math.min(1, deltaSeconds * 12);
+        aim.velocityX += ((targetX - aim.x) / deltaSeconds - aim.velocityX) * blend;
+        aim.velocityY += ((targetY - aim.y) / deltaSeconds - aim.velocityY) * blend;
       }
-      aim.x = tx;
-      aim.y = ty;
+      aim.x = targetX;
+      aim.y = targetY;
     } else {
-      this.idle += dt;
+      this.idle += deltaSeconds;
     }
 
     if (spraying && this.fall) {
       this.fall = null;
-      vel.x = 0;
-      vel.y = 0;
+      velocity.x = 0;
+      velocity.y = 0;
       this.angle = BASE_TILT + ((((this.angle - BASE_TILT + 180) % 360) + 360) % 360) - 180;
     } else if (!spraying && !this.fall && this.idle >= PARK_AFTER) {
-      this.fall = { vx: vel.x * 0.3 + (Math.random() - 0.5) * 80, vy: -180, spin: (Math.random() < 0.5 ? -1 : 1) * (140 + Math.random() * 120) };
+      this.fall = { velocityX: velocity.x * 0.3 + (Math.random() - 0.5) * 80, velocityY: -180, spin: (Math.random() < 0.5 ? -1 : 1) * (140 + Math.random() * 120) };
     }
 
-    this.shake = Math.max(0, this.shake - dt);
+    this.shake = Math.max(0, this.shake - deltaSeconds);
     const rattle = this.shake > 0 ? Math.sin(this.shake * 30) * (this.shake / SHAKE) : 0;
     if (this.fall) {
-      if (pos.y < window.innerHeight + canW * 3) {
-        this.fall.vy += GRAVITY * dt;
-        pos.x += this.fall.vx * dt;
-        pos.y += this.fall.vy * dt;
-        this.angle += this.fall.spin * dt;
+      if (position.y < window.innerHeight + canWidth * 3) {
+        this.fall.velocityY += GRAVITY * deltaSeconds;
+        position.x += this.fall.velocityX * deltaSeconds;
+        position.y += this.fall.velocityY * deltaSeconds;
+        this.angle += this.fall.spin * deltaSeconds;
       }
     } else {
-      const w0 = spraying ? 26 : 14;
+      const frequency = spraying ? 26 : 14;
       const feed = spraying ? 1 : 0;
-      for (let left = dt; left > 1e-6; left -= SUBSTEP) {
-        const h = Math.min(SUBSTEP, left);
-        vel.x += (w0 * w0 * (aim.x - pos.x) + 2 * w0 * (aim.vx * feed - vel.x)) * h;
-        vel.y += (w0 * w0 * (aim.y - pos.y) + 2 * w0 * (aim.vy * feed - vel.y)) * h;
-        pos.x += vel.x * h;
-        pos.y += vel.y * h;
+      for (let remaining = deltaSeconds; remaining > 1e-6; remaining -= SUBSTEP) {
+        const substep = Math.min(SUBSTEP, remaining);
+        velocity.x += (frequency * frequency * (aim.x - position.x) + 2 * frequency * (aim.velocityX * feed - velocity.x)) * substep;
+        velocity.y += (frequency * frequency * (aim.y - position.y) + 2 * frequency * (aim.velocityY * feed - velocity.y)) * substep;
+        position.x += velocity.x * substep;
+        position.y += velocity.y * substep;
       }
-      const tilt = BASE_TILT + Math.max(-8, Math.min(8, vel.x * 0.008)) + rattle * 6;
-      this.angle += (tilt - this.angle) * Math.min(1, dt * 6);
+      const tilt = BASE_TILT + Math.max(-8, Math.min(8, velocity.x * 0.008)) + rattle * 6;
+      this.angle += (tilt - this.angle) * Math.min(1, deltaSeconds * 6);
     }
 
-    return { x: pos.x, y: pos.y, angle: this.angle, rattle, spraying, color: this.color };
+    return { x: position.x, y: position.y, angle: this.angle, rattle, spraying, color: this.color };
   }
 }

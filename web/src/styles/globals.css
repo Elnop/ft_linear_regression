@@ -4,13 +4,13 @@
   --magenta: #ff2bd6;
   --cyan: #00f0ff;
   --acid: #e6ff00;
-  --bg: #0d0c10;
+  --background: #0d0c10;
   --ink: #efece6;
-  --ink-dim: rgba(239, 236, 230, 0.78);
+  --ink-dimmed: rgba(239, 236, 230, 0.78);
   --danger: #ff5c5c;
   --glass: rgba(20, 19, 23, 0.62);
   --glass-line: rgba(255, 255, 255, 0.16);
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --monospace: 'JetBrains Mono', ui-monospace, monospace;
   --marker: 'Permanent Marker', 'Comic Sans MS', cursive;
   --anton: 'Anton', Impact, sans-serif;
 }
@@ -18,9 +18,9 @@
 html,
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--background);
   color: var(--ink);
-  font-family: var(--mono);
+  font-family: var(--monospace);
 }
 
 .sr-only {
@@ -61,7 +61,7 @@ body {
 .label {
   font-size: 11px;
   letter-spacing: 0.16em;
-  color: var(--ink-dim);
+  color: var(--ink-dimmed);
   text-transform: uppercase;
 }
 

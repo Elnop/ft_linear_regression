@@ -3,19 +3,19 @@ import { estimatePrice } from '../core/hypothesis.ts';
 import { fail, readModel } from './model.ts';
 
 function ask(question: string): Promise<string | null> {
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const readline = createInterface({ input: process.stdin, output: process.stdout });
   return new Promise((resolve) => {
     let answered = false;
-    rl.on('SIGINT', () => {
+    readline.on('SIGINT', () => {
       process.stderr.write('\nInterrupted\n');
       process.exit(130);
     });
-    rl.on('close', () => {
+    readline.on('close', () => {
       if (!answered) resolve(null);
     });
-    rl.question(question, (answer) => {
+    readline.question(question, (answer) => {
       answered = true;
-      rl.close();
+      readline.close();
       resolve(answer);
     });
   });

@@ -2,8 +2,8 @@ class Cancelled extends Error {}
 
 // A handle on one script run: its waits throw once a newer run has started.
 export type Run = {
-  sleep: (ms: number) => Promise<void>;
-  wait: <T>(p: Promise<T>) => Promise<T>;
+  sleep: (duration: number) => Promise<void>;
+  wait: <T>(promise: Promise<T>) => Promise<T>;
   isCurrent: () => boolean;
 };
 
@@ -20,18 +20,18 @@ export class Timeline {
     };
     return {
       isCurrent,
-      wait: async (p) => {
-        const v = await p;
+      wait: async (promise) => {
+        const value = await promise;
         check();
-        return v;
+        return value;
       },
-      sleep: async (ms) => {
-        let left = ms;
+      sleep: async (duration) => {
+        let left = duration;
         while (left > 0) {
-          const t0 = performance.now();
-          await new Promise((r) => setTimeout(r, Math.min(left / this.scale, 50)));
+          const startedAt = performance.now();
+          await new Promise((resolve) => setTimeout(resolve, Math.min(left / this.scale, 50)));
           check();
-          left -= (performance.now() - t0) * this.scale;
+          left -= (performance.now() - startedAt) * this.scale;
         }
       },
     };
@@ -41,9 +41,9 @@ export class Timeline {
   async play(run: Run, script: () => Promise<void>): Promise<boolean> {
     try {
       await script();
-    } catch (e) {
-      if (e instanceof Cancelled) return false;
-      throw e;
+    } catch (error) {
+      if (error instanceof Cancelled) return false;
+      throw error;
     }
     if (!run.isCurrent()) return false;
     this.scale = 1;

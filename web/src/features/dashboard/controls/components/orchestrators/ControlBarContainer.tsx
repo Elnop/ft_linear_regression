@@ -5,11 +5,11 @@ import { selectIntro } from '@/features/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 
 export function ControlBarContainer() {
-  const trainingActive = useSequence((s) => s.trainingActive);
+  const trainingActive = useSequence((state) => state.trainingActive);
   const intro = useSequence(selectIntro);
-  const train = useSequence((s) => s.train);
-  const replay = useSequence((s) => s.replay);
-  const learningRate = usePlayground((s) => s.learningRate);
+  const train = useSequence((state) => state.train);
+  const replay = useSequence((state) => state.replay);
+  const learningRate = usePlayground((state) => state.learningRate);
   const warn = useWarn();
   return (
     <ControlBar

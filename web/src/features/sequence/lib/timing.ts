@@ -1,5 +1,5 @@
 export const TIMING = {
-  uiIn: 700,
+  interfaceIn: 700,
   pointsIn: 600,
   dot: 110,
   redot: 70,

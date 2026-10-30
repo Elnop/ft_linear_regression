@@ -7,4 +7,4 @@ export type TrainOptions = {
   iterations: number;
 };
 
-export type TrainStep = Thetas & { iter: number; cost: number };
+export type TrainStep = Thetas & { iteration: number; cost: number };

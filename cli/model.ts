@@ -10,20 +10,20 @@ export function fail(message: string): never {
   process.exit(1);
 }
 
-export function errorCode(e: unknown): string {
-  return (e as NodeJS.ErrnoException).code ?? (e as Error).message;
+export function errorCode(error: unknown): string {
+  return (error as NodeJS.ErrnoException).code ?? (error as Error).message;
 }
 
 // Parses `[dataset.csv]` plus the given options, and handles --help and usage errors.
-export function parseCli<O extends ParseArgsOptionsConfig>(usage: string, options: O) {
+export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, options: Options) {
   let parsed;
   try {
     parsed = parseArgs({
       allowPositionals: true,
       options: { ...options, help: { type: 'boolean', short: 'h', default: false } },
     });
-  } catch (e) {
-    fail(`${(e as Error).message}\n\n${usage}`);
+  } catch (error) {
+    fail(`${(error as Error).message}\n\n${usage}`);
   }
   const { values, positionals } = parsed;
   if ((values as { help: boolean }).help) {
@@ -44,9 +44,9 @@ export function readModel(): Thetas | null {
   let text: string;
   try {
     text = readFileSync(MODEL_PATH, 'utf8');
-  } catch (e) {
-    if ((e as NodeJS.ErrnoException).code === 'ENOENT') return null;
-    fail(`cannot read model.json: ${errorCode(e)}`);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null;
+    fail(`cannot read model.json: ${errorCode(error)}`);
   }
   let parsed: unknown;
   try {
@@ -62,12 +62,12 @@ export function loadDataset(path: string): Sample[] {
   let text: string;
   try {
     text = readFileSync(path, 'utf8');
-  } catch (e) {
-    fail(`cannot read "${path}": ${errorCode(e)}`);
+  } catch (error) {
+    fail(`cannot read "${path}": ${errorCode(error)}`);
   }
   try {
     return parseDataset(text);
-  } catch (e) {
-    fail(`${path}: ${(e as Error).message}`);
+  } catch (error) {
+    fail(`${path}: ${(error as Error).message}`);
   }
 }

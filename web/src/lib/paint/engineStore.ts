@@ -7,4 +7,4 @@ const engineStore = createStore<{ engine: PaintEngine | null }>()(() => ({ engin
 
 export const publishEngine = (engine: PaintEngine | null) => engineStore.setState({ engine });
 
-export const useEngine = () => useStore(engineStore, (s) => s.engine);
+export const useEngine = () => useStore(engineStore, (state) => state.engine);

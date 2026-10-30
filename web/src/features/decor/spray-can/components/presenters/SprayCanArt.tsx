@@ -1,4 +1,4 @@
-import { VIEW_H, VIEW_W } from '@/features/decor/spray-can/lib/shape.ts';
+import { VIEW_HEIGHT, VIEW_WIDTH } from '@/features/decor/spray-can/lib/shape.ts';
 
 const LOGO_42 = [
   '76 0 50.68 0 0 50.62 0 71.12 50.68 71.12 50.68 96.6 76 96.6 76 50.62 25.34 50.62',
@@ -9,12 +9,12 @@ const LOGO_42 = [
 const BODY = 'M20 108 H120 V306 Q120 316 110 316 H30 Q20 316 20 306 Z';
 const CAP = 'M52 54 V31 Q52 20 63 20 H80 Q90 20 90 31 V54 Z';
 const SHOULDER = 'M20 106 C20 82 42 68 58 63 H82 C98 68 120 82 120 106 Z';
-const MONO = 'JetBrains Mono, monospace';
+const MONOSPACE_FONT = 'JetBrains Mono, monospace';
 
 export function SprayCanArt() {
   const paint = { fill: 'var(--paint)' };
   return (
-    <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} width="100%" role="img" aria-label="Bombe de peinture 42">
+    <svg viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`} width="100%" role="img" aria-label="Bombe de peinture 42">
       <defs>
         <linearGradient id="can-metal" x1="0" x2="1">
           <stop offset="0" stopColor="#34343c" />
@@ -25,7 +25,7 @@ export function SprayCanArt() {
           <stop offset="0.92" stopColor="#26262c" />
           <stop offset="1" stopColor="#6b6b76" />
         </linearGradient>
-        <linearGradient id="can-cyl" x1="0" x2="1">
+        <linearGradient id="can-cylinder" x1="0" x2="1">
           <stop offset="0" stopColor="#000" stopOpacity="0.6" />
           <stop offset="0.16" stopColor="#000" stopOpacity="0" />
           <stop offset="0.24" stopColor="#fff" stopOpacity="0.22" />
@@ -40,14 +40,14 @@ export function SprayCanArt() {
           <stop offset="0.25" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <g className="spray-can-act">
+      <g className="spray-can-actuator">
         <rect x="42" y="28.5" width="12" height="9" rx="2.2" fill="url(#can-metal)" />
         <ellipse cx="44.6" cy="33" rx="1.6" ry="2.3" fill="#050506" />
         <path d={CAP} style={paint} />
         <path d="M56 24 h10 v-1 Q60 22 56 24Z" fill="rgba(255,255,255,.5)" />
         <rect x="52" y="44" width="38" height="1.6" fill="rgba(0,0,0,.3)" />
         <rect x="52" y="48" width="38" height="1.6" fill="rgba(0,0,0,.3)" />
-        <path d={CAP} fill="url(#can-cyl)" />
+        <path d={CAP} fill="url(#can-cylinder)" />
         <path d={CAP} fill="url(#can-top)" />
       </g>
       <rect x="46" y="52" width="48" height="13" rx="3.5" fill="url(#can-metal)" />
@@ -62,18 +62,18 @@ export function SprayCanArt() {
           <polygon key={points} points={points} />
         ))}
       </g>
-      <text x="70" y="226" textAnchor="middle" fontFamily={MONO} fontWeight="700" fontSize="6.3" letterSpacing=".35" fill="#f5f5f7">
+      <text x="70" y="226" textAnchor="middle" fontFamily={MONOSPACE_FONT} fontWeight="700" fontSize="6.3" letterSpacing=".35" fill="#f5f5f7">
         ft_linear_regression
       </text>
-      <text x="70" y="238" textAnchor="middle" fontFamily={MONO} fontSize="4.4" letterSpacing="1.6" fill="rgba(245,245,247,.5)">
+      <text x="70" y="238" textAnchor="middle" fontFamily={MONOSPACE_FONT} fontSize="4.4" letterSpacing="1.6" fill="rgba(245,245,247,.5)">
         θ0 + θ1 · KM
       </text>
       <rect x="20" y="284" width="100" height="2.5" style={paint} />
-      <text x="70" y="298" textAnchor="middle" fontFamily={MONO} fontSize="4" letterSpacing="1.4" fill="rgba(245,245,247,.42)">
+      <text x="70" y="298" textAnchor="middle" fontFamily={MONOSPACE_FONT} fontSize="4" letterSpacing="1.4" fill="rgba(245,245,247,.42)">
         SPRAY · 400 ML
       </text>
-      <path d={BODY} fill="url(#can-cyl)" />
-      <path d={SHOULDER} fill="url(#can-cyl)" opacity=".7" />
+      <path d={BODY} fill="url(#can-cylinder)" />
+      <path d={SHOULDER} fill="url(#can-cylinder)" opacity=".7" />
       <rect x="17" y="307" width="106" height="11" rx="4.5" fill="url(#can-metal)" />
     </svg>
   );

@@ -5,10 +5,10 @@ import { formatNumber } from '@/lib/format.ts';
 
 export function useProgress(): { label: string; value: string } {
   return useSequence(
-    useShallow((s) =>
-      s.phase === 'descent' || s.phase === 'interactive'
-        ? { label: 'PASSAGE', value: formatNumber(s.iteration ?? s.trainOptions.iterations) }
-        : { label: 'POINTS', value: `${s.visiblePoints} / ${DATA.length}` },
+    useShallow((state) =>
+      state.phase === 'descent' || state.phase === 'interactive'
+        ? { label: 'PASSAGE', value: formatNumber(state.iteration ?? state.trainOptions.iterations) }
+        : { label: 'POINTS', value: `${state.visiblePoints} / ${DATA.length}` },
     ),
   );
 }
