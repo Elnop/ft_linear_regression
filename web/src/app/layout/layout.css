@@ -10,17 +10,6 @@
 .wall-root .wall-hit {
   pointer-events: auto;
 }
-.wall-subtitle {
-  position: absolute;
-  margin: 0;
-  font-family: var(--marker);
-  font-size: 17px;
-  color: var(--ink);
-  transform: rotate(-1deg);
-  transform-origin: left;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-  white-space: nowrap;
-}
 .wall-head {
   display: flex;
   justify-content: flex-end;

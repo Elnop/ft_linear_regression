@@ -4,7 +4,6 @@ export const SMALL = 600;
 export const WIDE = 1024;
 export const ASIDE_WIDTH = 340;
 
-export const SUBTITLE_GAP = 4;
 export const HEAD_TO_ASIDE = 92;
 export const CHART_TO_FLOW = 70;
 const CONTROL_BAR_HEIGHT = 72;

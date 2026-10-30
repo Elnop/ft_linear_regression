@@ -1,6 +1,5 @@
 import { FlowLayout } from '@/app/layout/components/presenters/FlowLayout.tsx';
 import { HeadBar } from '@/app/layout/components/presenters/HeadBar.tsx';
-import { Subtitle } from '@/app/layout/components/presenters/Subtitle.tsx';
 import { WideLayout } from '@/app/layout/components/presenters/WideLayout.tsx';
 import { DatasetPanelContainer } from '@/features/dashboard/chart/components/orchestrators/DatasetPanelContainer.tsx';
 import { OverlayTogglesContainer } from '@/features/dashboard/chart/components/orchestrators/OverlayTogglesContainer.tsx';
@@ -18,7 +17,7 @@ import { DocumentationPage } from '@/features/docs/components/orchestrators/Docu
 import { selectCanSkip, selectInterfaceVisible } from '@/features/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 import { useTitleLayout } from '@/features/title/hooks/useTitleLayout.ts';
-import { CHART_TO_FLOW, footerBottom, pagePadding, SKIP_ABOVE_BAR, SMALL, SUBTITLE_GAP, WIDE } from '@/lib/layout.ts';
+import { CHART_TO_FLOW, footerBottom, pagePadding, SKIP_ABOVE_BAR, WIDE } from '@/lib/layout.ts';
 import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
 import '@/app/layout/layout.css';
 
@@ -55,7 +54,6 @@ export function WallInterface() {
 
       <div className="wall-root" style={wide || interfaceVisible ? undefined : { overflowY: 'hidden' }}>
         <h1 className="sr-only">ft_linear_regression</h1>
-        <Subtitle visible={interfaceVisible} fixed={!wide} left={title.rectangle.x} top={title.rectangle.y + title.rectangle.height + SUBTITLE_GAP} small={width < SMALL} />
         {wide ? <WideLayout {...slots} top={title.rectangle.y} /> : <FlowLayout {...slots} top={area.y + area.height + CHART_TO_FLOW} documentation={<DocumentationPage />} />}
         <SkipButton
           visible={canSkip}
