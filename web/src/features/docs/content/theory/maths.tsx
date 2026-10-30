@@ -106,7 +106,7 @@ f' = 0   un creux (ou un sommet)`}</Formula>
           <code>f</code> varie si on bouge <code>x</code> d'un tout petit peu.
         </p>
         <p>
-          Son <strong>signe</strong> dit dans quel sens la courbe va, et elle vaut zéro au fond d'un creux. Une
+          Son signe dit dans quel sens la courbe va, et elle vaut zéro au fond d'un creux. Une
           fonction <strong>convexe</strong>, en forme de bol, n'a qu'un seul creux : son minimum.
         </p>
       </>
@@ -128,11 +128,11 @@ gradient   ∇g = ( ∂g/∂θ0 , ∂g/∂θ1 )`}</Formula>
       <>
         <p>
           Quand une fonction dépend de plusieurs variables, on la dérive par rapport à une seule en figeant les autres :
-          c'est une <strong>dérivée partielle</strong>, notée <code>∂</code>.
+          c'est une dérivée partielle, notée <code>∂</code>.
         </p>
         <p>
           Le vecteur de toutes les dérivées partielles est le <strong>gradient</strong>. Il pointe vers la montée la
-          plus raide ; la descente de gradient va dans le sens opposé.
+          plus raide. La descente de gradient va dans le sens opposé.
         </p>
       </>
     ),

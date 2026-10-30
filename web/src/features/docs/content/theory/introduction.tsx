@@ -35,11 +35,11 @@ classification   y discret   spam (1) ou non (0)`}</Formula>
       <>
         <p>
           Comme un élève avec un professeur, la machine étudie des exemples dont on connaît la réponse : des paires{' '}
-          <code>(x, y)</code> rassemblées dans un tableau, le <strong>dataset</strong>. Elle en tire un{' '}
-          <strong>modèle</strong>, la relation qui relie <code>x</code> à <code>y</code>.
+          <code>(x, y)</code> rassemblées dans un tableau, le <strong>dataset</strong>. Elle en tire un modèle,
+          la relation qui relie <code>x</code> à <code>y</code>.
         </p>
         <p>
-          Prédire un prix, qui peut prendre une infinité de valeurs, est un problème de <strong>régression</strong>.
+          Prédire un prix, qui peut prendre une infinité de valeurs, est un problème de régression.
           Prédire une catégorie serait un problème de classification.
         </p>
       </>

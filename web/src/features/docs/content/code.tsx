@@ -20,7 +20,7 @@ export const CODE: Step[] = [
           Reçoit le texte du CSV, pas un chemin : <code>core/</code> n'utilise aucune API Node. La CLI lit le fichier,
           le web l'importe au build.
         </p>
-        <p>Toute ligne invalide lève une erreur avec son numéro ; la CLI l'affiche sur la sortie d'erreur et quitte avec un code non nul.</p>
+        <p>Toute ligne invalide lève une erreur avec son numéro. La CLI l'affiche sur la sortie d'erreur et quitte avec le code 1.</p>
       </>
     ),
   },
@@ -35,8 +35,8 @@ export const CODE: Step[] = [
           La droite <code>θ0 + θ1 × km</code>, telle que le sujet l'écrit.
         </p>
         <p>
-          C'est la seule fonction utilisée par <code>npm run predict</code>, et c'est elle qui place le marqueur de prix sur
-          le mur.
+          C'est la seule fonction qu'appelle <code>npm run predict</code>. Sur le mur, elle place aussi le marqueur de
+          prix.
         </p>
       </>
     ),
@@ -53,7 +53,7 @@ export const CODE: Step[] = [
           courbe du panneau COÛT.
         </p>
         <p>
-          Le R² mesure la part de la variance des prix expliquée par la droite : <strong>0.733</strong> sur ce dataset.
+          Le R² mesure la part de la variance des prix expliquée par la droite : 0.733 sur ce dataset.
           RMSE et MAE donnent l'erreur typique en euros.
         </p>
       </>

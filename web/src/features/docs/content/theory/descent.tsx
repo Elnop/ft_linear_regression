@@ -11,8 +11,8 @@ export const DESCENT: Step[] = [
     children: (
       <>
         <p>
-          Vous êtes perdu en montagne, sans carte, et le refuge est au point le plus bas de la vallée. Stratégie :
-          regarder autour de soi où la pente descend le plus fort, marcher un peu dans cette direction, puis
+          Vous êtes perdu en montagne, sans carte, et le refuge est au point le plus bas de la vallée. Le plus simple :
+          regarder où la pente descend le plus fort, marcher un peu dans cette direction, puis
           recommencer.
         </p>
         <p>
@@ -39,8 +39,8 @@ pente > 0  →  θ − (positif)  →  θ diminue`}</Formula>
           <strong>learning rate</strong> (toujours positif).
         </p>
         <p>
-          Quel que soit le côté de la vallée où l'on démarre, le signe de la dérivée pousse θ vers le minimum. Mise
-          dans une boucle, cette seule ligne devient l'algorithme.
+          Quel que soit le côté de la vallée où l'on démarre, le signe de la dérivée pousse θ vers le minimum.
+          L'algorithme ne fait que répéter cette ligne.
         </p>
       </>
     ),
@@ -63,7 +63,7 @@ sur ce dataset (km normalisés) :
           <code>α</code> règle la taille du pas. Trop grand, on rebondit d'un flanc de la vallée à l'autre, de plus en
           plus haut. Trop petit, il faut un nombre d'itérations énorme.
         </p>
-        <p>Il n'y a pas de formule magique : on essaie plusieurs valeurs. Le curseur du mur permet de le tester.</p>
+        <p>On ne peut pas le calculer à l'avance, on essaie plusieurs valeurs. Le curseur du mur sert à ça.</p>
       </>
     ),
   },

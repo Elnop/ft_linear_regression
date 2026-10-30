@@ -15,8 +15,8 @@ export const REGRESSION: Step[] = [
     children: (
       <>
         <p>
-          Tout problème d'apprentissage supervisé se résout avec les quatre mêmes briques. Le conseil de base : les
-          écrire sur papier avant de coder, avec les dimensions du dataset.
+          Tout problème d'apprentissage supervisé se résout avec les quatre mêmes briques. La vidéo conseille de
+          les écrire sur papier avant de coder, avec les dimensions du dataset.
         </p>
         <p>Ici : le prix d'une voiture à partir de son kilométrage. La suite les prend dans l'ordre.</p>
       </>
@@ -37,8 +37,8 @@ x[2] = 139 800 km   y[2] = 3 800 €
     children: (
       <>
         <p>
-          <code>data.csv</code> contient 24 voitures. Chaque ligne est un exemple : une <strong>feature</strong>{' '}
-          <code>x</code> (le kilométrage) et une <strong>target</strong> <code>y</code> (le prix).
+          <code>data.csv</code> contient 24 voitures. Chaque ligne est un exemple : une feature <code>x</code>{' '}
+          (le kilométrage) et une target <code>y</code> (le prix).
         </p>
         <p>
           On note <code>m</code> le nombre d'exemples, <code>n</code> le nombre de features, et <code>x[i]</code>,{' '}
@@ -95,7 +95,7 @@ au carré               → 1 000 000 dans les deux cas`}</Formula>
     children: (
       <>
         <p>
-          Plutôt qu'une erreur par voiture, on les résume toutes en un seul nombre : la moyenne des erreurs au carré,
+          On résume toutes ces erreurs en un seul nombre : la moyenne des erreurs au carré,
           l'<strong>erreur quadratique moyenne</strong> (MSE). Le <code>½</code> sert seulement à simplifier la dérivée.
         </p>
         <p>
@@ -116,13 +116,13 @@ descente de gradient   petits pas, répétés`}</Formula>
     children: (
       <>
         <p>
-          <code>J</code> est une somme de carrés : sa courbe est un bol (une fonction <strong>convexe</strong>), avec un
+          <code>J</code> est une somme de carrés : sa courbe est un bol (une fonction convexe), avec un
           seul minimum.
         </p>
         <p>
-          On peut le trouver directement avec les <strong>moindres carrés</strong> (là où la dérivée s'annule), mais ça
+          On peut le trouver directement avec les moindres carrés (là où la dérivée s'annule), mais ça
           demande d'inverser une matrice, beaucoup trop coûteux avec des millions d'exemples. En machine learning on
-          utilise la <strong>descente de gradient</strong>, et le sujet l'impose.
+          utilise la descente de gradient, et le sujet l'impose.
         </p>
       </>
     ),

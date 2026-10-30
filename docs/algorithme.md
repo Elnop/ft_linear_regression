@@ -47,7 +47,7 @@ tmpθ1 = learningRate * 1/m * Σ (estimatePrice(mileage[i]) - price[i]) * mileag
 
 ### Mise à jour simultanée
 
-Les deux sommes sont calculées avec les **mêmes** `θ`, ceux d'avant l'itération. On ne met à jour `θ0` et `θ1` qu'une fois les deux `tmp` calculés. Si on mettait `θ0` à jour avant de calculer `tmpθ1`, `tmpθ1` utiliserait un `θ0` déjà modifié : ce ne serait plus le gradient de `J`.
+Les deux sommes sont calculées avec les mêmes `θ`, ceux d'avant l'itération. On ne met à jour `θ0` et `θ1` qu'une fois les deux `tmp` calculés. Si on mettait `θ0` à jour avant de calculer `tmpθ1`, `tmpθ1` utiliserait un `θ0` déjà modifié : ce ne serait plus le gradient de `J`.
 
 Dans [`core/gradient.ts`](../core/gradient.ts), une seule boucle accumule les deux sommes, puis la fonction renvoie un nouvel objet `{ theta0, theta1 }`. L'ancien n'est jamais modifié.
 
@@ -55,7 +55,7 @@ Dans [`core/gradient.ts`](../core/gradient.ts), une seule boucle accumule les de
 
 Les kilométrages vont de 22 899 à 240 000. Avec des valeurs aussi grandes, le gradient de `θ1` (multiplié par `mileage[i]`) est des milliards de fois plus grand que celui de `θ0` :
 
-- pour que `θ1` ne diverge pas, il faudrait un learning rate inférieur à environ **1.55 × 10⁻¹⁰** ;
+- pour que `θ1` ne diverge pas, il faudrait un learning rate inférieur à environ 1.55 × 10⁻¹⁰ ;
 - avec un pas aussi petit, `θ0` n'avancerait presque pas, et il faudrait des millions d'itérations.
 
 Par exemple, sans normalisation et avec un learning rate de 0.1, `θ1` part vers −∞ dès l'itération 34. C'est pourquoi le programme normalise toujours.
@@ -68,7 +68,7 @@ On ramène les kilométrages dans `[0, 1]` uniquement pour l'entraînement :
 km_norm = (km - min) / (max - min)
 ```
 
-Les deux gradients sont alors du même ordre de grandeur. Sur ce dataset, tout learning rate inférieur à environ **1.76** converge. De manière générale, avec une normalisation min-max, **tout learning rate ≤ 1 converge**, quel que soit le dataset.
+Les deux gradients sont alors du même ordre de grandeur. Sur ce dataset, tout learning rate inférieur à environ 1.76 converge. Avec une normalisation min-max, tout learning rate ≤ 1 converge, quel que soit le dataset.
 
 Code : [`core/normalize.ts`](../core/normalize.ts).
 
@@ -89,7 +89,7 @@ Donc :
 θ1 = θ1n / (max - min)
 ```
 
-Ce sont ces `θ` (sur km brut) qui sont sauvegardés. **`predict` applique donc l'hypothèse du sujet telle quelle**, sans rien savoir de la normalisation.
+Ce sont ces `θ` (sur km brut) qui sont sauvegardés. `predict` applique donc l'hypothèse du sujet telle quelle, sans rien savoir de la normalisation.
 
 ## 5. Le générateur `trainSteps`
 
@@ -100,7 +100,7 @@ Ce sont ces `θ` (sur km brut) qui sont sauvegardés. **`predict` applique donc 
 ```
 
 - L'itération `0` correspond à l'état initial (`θ0 = θ1 = 0`).
-- Le coût est toujours calculé sur les **données brutes** (km d'origine), comme celui qu'on cherche à minimiser.
+- Le coût est toujours calculé sur les données brutes (km d'origine), comme celui qu'on cherche à minimiser.
 - Si un `θ` devient non fini (`Infinity` ou `NaN`), le générateur produit cette étape puis s'arrête : c'est le signal de divergence.
 
 Le même générateur sert à deux usages :
@@ -116,7 +116,7 @@ Une régression linéaire simple a aussi une solution exacte (moindres carrés) 
 θ0 = moyenne_prix - θ1 * moyenne_km
 ```
 
-Elle n'est **pas** utilisée dans le projet : le sujet impose la descente de gradient. Elle sert seulement à vérifier le résultat.
+Le projet ne l'utilise pas, puisque le sujet impose la descente de gradient. Elle sert seulement à vérifier le résultat.
 
 | | θ0 | θ1 |
 |---|---|---|
@@ -135,5 +135,6 @@ Elle n'est **pas** utilisée dans le projet : le sujet impose la descente de gra
 
 ## 8. Limites du modèle
 
-- **Extrapolation** : au-delà d'environ **396 000 km**, la droite passe sous zéro et le prix estimé devient négatif. Ce n'est pas un bug, c'est la droite qui continue en dehors des données.
-- **Une seule variable** : l'âge, la marque ou l'état de la voiture sont ignorés. Ça explique en partie pourquoi R² n'est que de 0.73.
+Au-delà d'environ 396 000 km, la droite passe sous zéro et le prix estimé devient négatif. Le modèle prolonge la droite en dehors des données et ne sait pas qu'un prix est positif.
+
+Il n'y a qu'une variable : l'âge, la marque ou l'état de la voiture sont ignorés. Ça explique en partie pourquoi R² n'est que de 0.73.

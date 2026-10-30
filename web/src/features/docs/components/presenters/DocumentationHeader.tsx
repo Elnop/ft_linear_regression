@@ -9,8 +9,8 @@ export function DocumentationHeader() {
       </h2>
       <p className="documentation-lead">
         Régression linéaire du prix d'une voiture en fonction de son kilométrage, entraînée par descente de gradient
-        sur 24 voitures. La théorie d'abord, puis le code qui la met en œuvre : celui qui tourne, utilisé à
-        l'identique par la CLI et par cette page.
+        sur 24 voitures. La théorie d'abord, puis le code : celui du projet, que la CLI et cette page
+        utilisent tel quel.
       </p>
     </header>
   );

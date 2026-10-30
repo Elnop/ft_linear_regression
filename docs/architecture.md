@@ -40,7 +40,7 @@ ft_linear_regression/
 - dans la CLI, sous Node ;
 - dans le navigateur, via Vite.
 
-Les entrées-sorties restent à l'extérieur. Par exemple, `parseDataset` reçoit le **texte** du CSV : c'est `cli/train.ts` qui lit le fichier, et le web qui l'importe au build.
+Les entrées-sorties restent à l'extérieur. Par exemple, `parseDataset` reçoit le texte du CSV : c'est `cli/train.ts` qui lit le fichier, et le web qui l'importe au build.
 
 ### Une seule implémentation de l'algorithme
 
@@ -48,11 +48,11 @@ L'hypothèse et la formule d'entraînement imposées existent à un seul endroit
 
 ### Aucune lib ne fait le calcul
 
-Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.). La partie obligatoire n'a **aucune dépendance à l'exécution**. `typescript` et `@types/node` ne servent qu'à vérifier les types.
+Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.). La partie obligatoire n'a aucune dépendance à l'exécution. `typescript` et `@types/node` ne servent qu'à vérifier les types.
 
 ## TypeScript sans build
 
-Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant simplement les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
+Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
 
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types.ts'`).

@@ -27,7 +27,7 @@ export function DescentFigure() {
         <line x1="200" y1="182" x2="200" y2="210" className="figure-minimum" />
         <text x="200" y="174" className="figure-label" textAnchor="middle">minimum</text>
       </svg>
-      <figcaption>Chaque pas suit la pente ; les pas raccourcissent à mesure que la pente s'aplatit.</figcaption>
+      <figcaption>Chaque pas suit la pente. Les pas raccourcissent à mesure que la pente s'aplatit.</figcaption>
     </figure>
   );
 }

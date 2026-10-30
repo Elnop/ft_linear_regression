@@ -41,7 +41,7 @@ Il correspond à la solution exacte des moindres carrés à environ 10 chiffres 
 Chaque pas dépasse le minimum, de plus en plus loin, et les θ partent vers l'infini. `train` le détecte, s'arrête et ne sauvegarde pas le modèle.
 
 **Pourquoi le prix devient-il négatif pour un très grand kilométrage ?**
-La droite continue en dehors des données (au-delà d'environ 396 000 km). C'est une limite d'un modèle linéaire, pas un bug.
+La droite continue en dehors des données et passe sous zéro vers 396 000 km. Un modèle linéaire ne sait pas qu'un prix est positif.
 
 **Pourquoi le coût est-il divisé par 2m et pas par m ?**
 C'est une convention : le `1/2` s'annule en dérivant le carré. Le minimum reste le même.

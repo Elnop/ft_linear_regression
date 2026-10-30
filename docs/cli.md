@@ -83,11 +83,7 @@ MAE:  557.84  (mean absolute error, 8.8% of the mean price)
 
 ## Gestion des erreurs
 
-Les trois programmes ont le même comportement en cas d'erreur :
-
-- un message `Error: …` sur la **sortie d'erreur** (stderr) ;
-- un **code de sortie 1** ;
-- jamais de stack trace.
+En cas d'erreur, les trois programmes écrivent `Error: …` sur la sortie d'erreur (stderr) et quittent avec le code 1, sans stack trace.
 
 Ctrl+C pendant la saisie affiche `Interrupted` et quitte avec le code 130.
 
@@ -103,7 +99,7 @@ Ctrl+C pendant la saisie affiche `Interrupted` et quitte avec le code 130.
 | `model.json` qui n'est pas du JSON | `model.json is not valid JSON, run the training again` |
 | `model.json` sans `theta0` / `theta1` numériques | `model.json is corrupted, run the training again` |
 
-Un `model.json` **absent** n'est pas une erreur (θ = 0). Un `model.json` **présent mais invalide** en est une : renvoyer 0 en silence masquerait le problème.
+Un `model.json` absent n'est pas une erreur (θ = 0). Un `model.json` présent mais invalide en est une : renvoyer 0 en silence masquerait le problème.
 
 ### Cas gérés par `train`
 
@@ -119,7 +115,7 @@ Un `model.json` **absent** n'est pas une erreur (θ = 0). Un `model.json` **pré
 | divergence | `training diverged at iteration <n>, model not saved (…)` |
 | écriture de `model.json` impossible | `cannot write model: <code>` |
 
-En cas de divergence, `model.json` **n'est pas modifié** : le dernier modèle valide est conservé.
+En cas de divergence, `model.json` reste tel quel : le dernier modèle valide est conservé.
 
 ### Cas gérés par `precision`
 
