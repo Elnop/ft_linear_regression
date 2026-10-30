@@ -1,6 +1,7 @@
 import { gradientStep } from './gradient.ts';
 import { cost } from './metrics.ts';
 import { computeScale, denormalizeThetas, normalizeSamples } from './normalize.ts';
+import { hasFiniteThetas } from './thetas.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from './types.ts';
 
 export function* trainSteps(data: Sample[], options: TrainOptions): Generator<TrainStep> {
@@ -21,6 +22,6 @@ export function* trainSteps(data: Sample[], options: TrainOptions): Generator<Tr
     if (iteration > 0) thetas = gradientStep(trainingData, thetas, learningRate);
     const raw = denormalizeThetas(thetas, scale);
     yield { iteration, ...raw, cost: cost(data, raw) };
-    if (!Number.isFinite(raw.theta0) || !Number.isFinite(raw.theta1)) return;
+    if (!hasFiniteThetas(raw)) return;
   }
 }

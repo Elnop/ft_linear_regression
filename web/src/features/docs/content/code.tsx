@@ -45,7 +45,7 @@ export const CODE: Step[] = [
     label: 'core/metrics.ts',
     section: 'Le modèle',
     title: 'Coût et précision',
-    aside: <Code code={`${pick(metricsSource, 'cost')}\n\n${pick(metricsSource, 'r2')}`} />,
+    aside: <Code code={`${pick(metricsSource, 'sumOfSquaredErrors')}\n\n${pick(metricsSource, 'cost')}\n\n${pick(metricsSource, 'r2')}`} />,
     children: (
       <>
         <p>

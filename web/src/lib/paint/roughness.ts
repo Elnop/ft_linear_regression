@@ -1,11 +1,7 @@
 import { mulberry32 } from '@/lib/random.ts';
+import { coverRectangle } from './cover.ts';
 
 export type Roughness = { at(x: number, y: number): number };
-
-export function coverRectangle(imageWidth: number, imageHeight: number, width: number, height: number) {
-  const scale = Math.max(width / imageWidth, height / imageHeight);
-  return { x: (width - imageWidth * scale) / 2, y: (height - imageHeight * scale) / 2, width: imageWidth * scale, height: imageHeight * scale };
-}
 
 function boxBlur(source: Float32Array, width: number, height: number, radius: number): Float32Array {
   const horizontal = new Float32Array(source.length);

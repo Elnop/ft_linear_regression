@@ -1,5 +1,5 @@
 import { isEmpty, resetRectangle, type CellRectangle, type PaintLayer } from './layer.ts';
-import { coverRectangle } from './roughness.ts';
+import { coverRectangle } from './cover.ts';
 import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER, WALL_FRAGMENT_SHADER } from './shaders.ts';
 import type { Renderer } from './renderer.ts';
 

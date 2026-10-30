@@ -1,3 +1,4 @@
+import { smoothstep } from '@/lib/easing.ts';
 import type { PaintLayer } from './layer.ts';
 import { gaussian, mulberry32, noise1D, randomSeed, type RandomGenerator } from '@/lib/random.ts';
 import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
@@ -74,8 +75,6 @@ function samplePath(points: Vec2[]): SampledPath {
   };
 }
 
-const smooth = (value: number) => (value <= 0 ? 0 : value >= 1 ? 1 : value * value * (3 - 2 * value));
-
 export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOptions): Job {
   const random = mulberry32(options.seed ?? randomSeed());
   const path = samplePath(points);
@@ -101,8 +100,8 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
   }));
 
   const speedAt = (travelled: number) => {
-    let velocity = speed * (0.42 + 0.58 * smooth(travelled / ramp) * smooth((length - travelled) / ramp));
-    if (taper) velocity = Math.max(velocity, speed * 0.8 * smooth((travelled - (length - ramp)) / ramp));
+    let velocity = speed * (0.42 + 0.58 * smoothstep(travelled / ramp) * smoothstep((length - travelled) / ramp));
+    if (taper) velocity = Math.max(velocity, speed * 0.8 * smoothstep((travelled - (length - ramp)) / ramp));
     for (const stop of stops) velocity *= 1 - stop.depth * Math.exp(-(((travelled - stop.at) / stop.spread) ** 2));
     return velocity * (1 + 0.12 * pace(travelled / 110));
   };
@@ -119,7 +118,7 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
     position.y = point.y;
     const sigma = sigma0 * (1 + 0.12 * distance[0](travelled / 220) + 0.05 * distance[1](travelled / 60));
     let flow = 1 + 0.12 * pressure[0](travelled / 150) + 0.06 * pressure[1](travelled / 40);
-    if (taper) flow *= 0.15 + 0.85 * smooth((length - travelled) / 40);
+    if (taper) flow *= 0.15 + 0.85 * smoothstep((length - travelled) / 40);
     spray(layer, random, point.x, point.y, sigma, rate * flow * deltaSeconds, deltaSeconds);
   };
 

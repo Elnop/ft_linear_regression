@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useEngine } from '@/lib/paint/engineStore.ts';
 import { SequenceController } from '@/features/sequence/lib/controller.ts';
+import { DATA } from '@/features/sequence/lib/dataset.ts';
 import { IDLE_STATE } from '@/features/sequence/lib/state.ts';
 import { IDLE_ACTIONS, sequenceStore } from '@/features/sequence/stores/sequenceStore.ts';
 
@@ -8,7 +9,7 @@ export function useSequenceRuntime(): void {
   const engine = useEngine();
   useEffect(() => {
     if (!engine) return;
-    const controller = new SequenceController(engine, sequenceStore);
+    const controller = new SequenceController(engine, sequenceStore, DATA);
     sequenceStore.setState({
       skip: controller.skip,
       train: controller.train,

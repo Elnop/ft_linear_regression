@@ -1,4 +1,5 @@
-import { rgbToHex, type Nozzle, type Vec2 } from '@/lib/paint/types.ts';
+import { rgbToHex } from '@/lib/paint/color.ts';
+import type { Nozzle, Vec2 } from '@/lib/paint/types.ts';
 
 const BASE_TILT = -14;
 const PARK_AFTER = 2.5;

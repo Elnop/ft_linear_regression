@@ -1,3 +1,5 @@
+import { smoothstep } from '@/lib/easing.ts';
+
 export type RandomGenerator = () => number;
 
 export function mulberry32(seed: number): RandomGenerator {
@@ -28,8 +30,7 @@ export function noise1D(random: RandomGenerator, knots = 64): (x: number) => num
     const fraction = x - cell;
     const left = values[((cell % knots) + knots) % knots];
     const right = values[(((cell + 1) % knots) + knots) % knots];
-    const eased = fraction * fraction * (3 - 2 * fraction);
-    return left + (right - left) * eased;
+    return left + (right - left) * smoothstep(fraction);
   };
 }
 
@@ -42,10 +43,8 @@ export function noise2D(seed: number): (x: number, y: number) => number {
   return (x: number, y: number) => {
     const i = Math.floor(x);
     const j = Math.floor(y);
-    let blendX = x - i;
-    let blendY = y - j;
-    blendX = blendX * blendX * (3 - 2 * blendX);
-    blendY = blendY * blendY * (3 - 2 * blendY);
+    const blendX = smoothstep(x - i);
+    const blendY = smoothstep(y - j);
     const top = hash(i, j) + (hash(i + 1, j) - hash(i, j)) * blendX;
     const bottom = hash(i, j + 1) + (hash(i + 1, j + 1) - hash(i, j + 1)) * blendX;
     return top + (bottom - top) * blendY;

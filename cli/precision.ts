@@ -1,5 +1,8 @@
-import { mae, r2, rmse } from '../core/metrics.ts';
-import { fail, loadDataset, parseCli, readModel } from './model.ts';
+import { mae, mean, r2, rmse } from '../core/metrics.ts';
+import { parseCli } from './args.ts';
+import { loadDataset } from './dataset.ts';
+import { readModel } from './model.ts';
+import { fail } from './process.ts';
 
 const USAGE = `Usage: npm run precision -- [dataset.csv]
 
@@ -12,7 +15,7 @@ const thetas = readModel();
 if (!thetas) fail('model.json not found, run the training first (npm run train)');
 
 const data = loadDataset(datasetPath);
-const meanPrice = data.reduce((sum, { price }) => sum + price, 0) / data.length;
+const meanPrice = mean(data.map(({ price }) => price));
 const meanError = mae(data, thetas);
 
 console.log(`Model: theta0=${thetas.theta0}  theta1=${thetas.theta1}`);

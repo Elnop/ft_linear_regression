@@ -1,7 +1,10 @@
-import { writeFileSync } from 'node:fs';
+import { hasFiniteThetas } from '../core/thetas.ts';
 import { trainSteps } from '../core/train.ts';
 import type { TrainStep } from '../core/types.ts';
-import { errorCode, fail, loadDataset, MODEL_PATH, parseCli } from './model.ts';
+import { parseCli } from './args.ts';
+import { loadDataset } from './dataset.ts';
+import { writeModel } from './model.ts';
+import { fail } from './process.ts';
 
 const USAGE = `Usage: npm run train -- [dataset.csv] [--lr <rate>] [--iterations <n>]
 
@@ -43,7 +46,7 @@ try {
   fail((error as Error).message);
 }
 
-if (!last || !Number.isFinite(last.theta0) || !Number.isFinite(last.theta1)) {
+if (!last || !hasFiniteThetas(last)) {
   fail(`training diverged at iteration ${last?.iteration ?? 0}, model not saved (try a smaller --lr)`);
 }
 
@@ -51,9 +54,5 @@ console.log(
   `Done: theta0=${last.theta0}  theta1=${last.theta1}  cost=${last.cost.toFixed(2)}`,
 );
 
-try {
-  writeFileSync(MODEL_PATH, JSON.stringify({ theta0: last.theta0, theta1: last.theta1 }, null, 2) + '\n');
-} catch (error) {
-  fail(`cannot write model: ${errorCode(error)}`);
-}
+writeModel(last);
 console.log('Saved to model.json');

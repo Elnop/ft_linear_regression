@@ -1,16 +1,16 @@
 import { useId } from 'react';
-import { formatNumber, parseKm } from '@/lib/format.ts';
+import { formatNumber } from '@/lib/format.ts';
 import '@/features/dashboard/panels/panels.css';
 
 export type PredictPanelProps = {
   value: string;
   onChange: (value: string) => void;
+  invalid: boolean;
   price: number | null;
 };
 
-export function PredictPanel({ value, onChange, price }: PredictPanelProps) {
+export function PredictPanel({ value, onChange, invalid, price }: PredictPanelProps) {
   const id = useId();
-  const invalid = value.trim() !== '' && parseKm(value) === null;
   return (
     <div className="panel glass wall-hit">
       <div className="tape" aria-hidden="true" style={{ left: 24, transform: 'rotate(-4deg)' }} />
@@ -36,7 +36,7 @@ export function PredictPanel({ value, onChange, price }: PredictPanelProps) {
       <div className="predict-output">
         <span style={{ fontSize: 12, color: 'var(--ink-dimmed)' }}>θ0 + θ1 × km</span>
         <output htmlFor={id} className="predict-price" aria-live="polite">
-          {invalid || price === null ? '—' : `${formatNumber(price)} €`}
+          {price === null ? '—' : `${formatNumber(price)} €`}
         </output>
       </div>
       {invalid && (

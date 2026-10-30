@@ -4,6 +4,6 @@ import { setKm, usePlayground } from '@/features/dashboard/stores/playgroundStor
 
 export function PredictPanelContainer() {
   const km = usePlayground((state) => state.km);
-  const { price } = usePrediction();
-  return <PredictPanel value={km} onChange={setKm} price={price} />;
+  const { invalid, price } = usePrediction();
+  return <PredictPanel value={km} onChange={setKm} invalid={invalid} price={price} />;
 }

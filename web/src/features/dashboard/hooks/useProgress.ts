@@ -1,5 +1,5 @@
 import { useShallow } from 'zustand/react/shallow';
-import { DATA } from '@/features/sequence/lib/training.ts';
+import { DATA } from '@/features/sequence/lib/dataset.ts';
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
 import { formatNumber } from '@/lib/format.ts';
 

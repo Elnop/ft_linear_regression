@@ -39,12 +39,6 @@ export class PaintLayer {
   opacity: number;
   gray = 0;
 
-  shownColor(): Rgb {
-    const [red, green, blue] = this.color;
-    const mix = (channel: number) => channel + (0.5 - channel) * this.gray;
-    return [mix(red), mix(green), mix(blue)];
-  }
-
   readonly filmWidth: number;
   readonly filmHeight: number;
   readonly film: Float32Array;
@@ -181,6 +175,12 @@ export class PaintLayer {
   private add(index: number, mass: number): void {
     this.film[index] += mass;
     this.wetMass[index] += mass;
+  }
+
+  shownColor(): Rgb {
+    const [red, green, blue] = this.color;
+    const mix = (channel: number) => channel + (0.5 - channel) * this.gray;
+    return [mix(red), mix(green), mix(blue)];
   }
 
   markFilmDirty(rectangle: CellRectangle): void {

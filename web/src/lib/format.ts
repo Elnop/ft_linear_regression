@@ -16,10 +16,3 @@ export function formatNumber(value: number | null | undefined, decimals = 0): st
 }
 
 export const isDisplayablePrice = (price: number) => Number.isFinite(price) && Math.abs(price) < 1e7;
-
-export function parseKm(text: string): number | null {
-  const trimmed = text.trim();
-  if (!/^\d+(\.\d+)?$/.test(trimmed)) return null;
-  const km = Number(trimmed);
-  return Number.isFinite(km) ? km : null;
-}

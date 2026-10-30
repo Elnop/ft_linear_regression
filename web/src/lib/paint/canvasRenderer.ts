@@ -1,6 +1,6 @@
 import { FILM_SCALE, isEmpty, resetRectangle, type PaintLayer } from './layer.ts';
 import type { Renderer } from './renderer.ts';
-import { coverRectangle } from './roughness.ts';
+import { coverRectangle } from './cover.ts';
 
 export function createCanvasRenderer(canvas: HTMLCanvasElement): Renderer {
   const context = canvas.getContext('2d');

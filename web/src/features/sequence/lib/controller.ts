@@ -1,39 +1,33 @@
-import type { TrainOptions } from '@core/types.ts';
+import type { Sample, TrainOptions } from '@core/types.ts';
 import { drawTitle, stampTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
 import type { SequenceState } from '@/features/sequence/types.ts';
-import { WallPainter } from './painter.ts';
+import { lineKindAt, WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
 import { Timeline, type Run } from './timeline.ts';
 import { TIMING } from './timing.ts';
-import {
-  DATA,
-  DEFAULT_TRAIN,
-  isFinalPass,
-  lineKindAt,
-  runTraining,
-  stepAt,
-  type Step,
-  type Training,
-} from './training.ts';
+import { DEFAULT_TRAIN, isFinalPass, runTraining, stepAt, type Step, type Training } from './training.ts';
 
 export class SequenceController {
   private timeline = new Timeline();
   private engine: PaintEngine;
   private store: StoreApi<SequenceState>;
+  private samples: Sample[];
   private painter: WallPainter;
 
-  private order = shuffled(DATA.length);
+  private order: number[];
   private training: Training | null = null;
   private unsubscribeResize: () => void;
   private resizeTimer = 0;
 
-  constructor(engine: PaintEngine, store: StoreApi<SequenceState>) {
+  constructor(engine: PaintEngine, store: StoreApi<SequenceState>, samples: Sample[]) {
     this.engine = engine;
     this.store = store;
-    this.painter = new WallPainter(engine, () => this.timeline.scale);
+    this.samples = samples;
+    this.order = shuffled(samples.length);
+    this.painter = new WallPainter(engine, samples, () => this.timeline.scale);
     this.unsubscribeResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
@@ -62,7 +56,7 @@ export class SequenceController {
   train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
-    const plan = runTraining(DATA, options);
+    const plan = runTraining(this.samples, options);
     const run = this.restart();
     this.training = plan;
     this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
@@ -98,13 +92,13 @@ export class SequenceController {
   }
 
   private async playIntro(run: Run): Promise<void> {
-    const plan = runTraining(DATA, DEFAULT_TRAIN);
+    const plan = runTraining(this.samples, DEFAULT_TRAIN);
     this.training = plan;
-    this.order = shuffled(DATA.length);
+    this.order = shuffled(this.samples.length);
     this.set({ ...IDLE_STATE, phase: 'title' });
 
     await run.sleep(TIMING.interfaceIn);
-    this.set({ visiblePoints: DATA.length });
+    this.set({ visiblePoints: this.samples.length });
     await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
 
     await run.wait(drawTitle(this.engine, () => this.timeline.scale));
@@ -125,7 +119,7 @@ export class SequenceController {
 
   private async playPasses(run: Run, plan: Training): Promise<void> {
     for (let pass = 0; pass < plan.steps.length; pass++) {
-      this.show(stepAt(plan, pass));
+      this.show(stepAt(this.samples, plan, pass));
       const painting = this.sprayPass(plan, pass);
       this.painter.fadeFan();
       await run.wait(painting);
@@ -152,14 +146,14 @@ export class SequenceController {
 
     stampTitle(this.engine);
     void this.painter.stampPoints(this.order);
-    const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN);
+    const plan = this.training ?? runTraining(this.samples, DEFAULT_TRAIN);
     this.training = plan;
     plan.steps.forEach((step, pass) => this.painter.stampLine(step, lineKindAt(plan, pass), pass % 2 === 1));
     for (const i of this.order) this.painter.stampTopPoint(i);
     this.painter.fadeFan(true);
     this.engine.settle();
 
-    this.show(stepAt(plan, plan.steps.length - 1), { diverged: plan.diverged, trainingActive: false });
-    this.set({ phase: 'interactive', visiblePoints: DATA.length });
+    this.show(stepAt(this.samples, plan, plan.steps.length - 1), { diverged: plan.diverged, trainingActive: false });
+    this.set({ phase: 'interactive', visiblePoints: this.samples.length });
   }
 }

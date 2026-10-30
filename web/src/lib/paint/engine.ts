@@ -1,3 +1,5 @@
+import { smoothstep } from '@/lib/easing.ts';
+import { hexToRgb } from './color.ts';
 import { stepFlow } from './flow.ts';
 import { FILM_SCALE, PaintLayer } from './layer.ts';
 import { dotJob, moveJob, pathJob, type Job } from './nozzle.ts';
@@ -5,7 +7,7 @@ import { createGLRenderer } from './glRenderer.ts';
 import type { Renderer } from './renderer.ts';
 import { createCanvasRenderer } from './canvasRenderer.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
-import { hexToRgb, type LayerOptions, type Nozzle, type SprayDotOptions, type SprayPathOptions, type Vec2 } from './types.ts';
+import type { LayerOptions, Nozzle, SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;
@@ -209,32 +211,9 @@ export class PaintEngine {
     const deltaSeconds = Math.min(MAX_DELTA_SECONDS, Math.max(0, (now - this.lastTime) / 1000));
     this.lastTime = now;
 
-    const jobs = this.jobs;
-    this.jobs = [];
-    for (const running of jobs) {
-      if (running.job.update(deltaSeconds)) running.done();
-      else this.jobs.push(running);
-    }
-
-    let wet = false;
-    for (const layer of this.layers) {
-      if (!layer.wet) continue;
-      this.flow(layer, deltaSeconds);
-      wet ||= layer.wet;
-      this.needsDraw = true;
-    }
-
-    for (const tween of this.tweens) {
-      tween.elapsed = Math.min(tween.duration, tween.elapsed + deltaSeconds);
-      const progress = tween.duration > 0 ? tween.elapsed / tween.duration : 1;
-      const eased = progress * progress * (3 - 2 * progress);
-      tween.layer.opacity = tween.from + (tween.to - tween.from) * eased;
-      tween.layer.gray = tween.grayFrom + (tween.grayTo - tween.grayFrom) * eased;
-      this.needsDraw = true;
-    }
-    const finished = this.tweens.filter((tween) => tween.elapsed >= tween.duration);
-    this.tweens = this.tweens.filter((tween) => tween.elapsed < tween.duration);
-    for (const tween of finished) tween.done();
+    this.advanceJobs(deltaSeconds);
+    const wet = this.flowWetLayers(deltaSeconds);
+    this.advanceTweens(deltaSeconds);
 
     if (this.needsDraw && this.wall) this.renderer.render(this.layers);
     this.needsDraw = false;
@@ -243,4 +222,38 @@ export class PaintEngine {
       this.frame = requestAnimationFrame(this.tick);
     }
   };
+
+  private advanceJobs(deltaSeconds: number): void {
+    const jobs = this.jobs;
+    this.jobs = [];
+    for (const running of jobs) {
+      if (running.job.update(deltaSeconds)) running.done();
+      else this.jobs.push(running);
+    }
+  }
+
+  // Returns whether some paint is still running.
+  private flowWetLayers(deltaSeconds: number): boolean {
+    let wet = false;
+    for (const layer of this.layers) {
+      if (!layer.wet) continue;
+      this.flow(layer, deltaSeconds);
+      wet ||= layer.wet;
+      this.needsDraw = true;
+    }
+    return wet;
+  }
+
+  private advanceTweens(deltaSeconds: number): void {
+    for (const tween of this.tweens) {
+      tween.elapsed = Math.min(tween.duration, tween.elapsed + deltaSeconds);
+      const eased = smoothstep(tween.duration > 0 ? tween.elapsed / tween.duration : 1);
+      tween.layer.opacity = tween.from + (tween.to - tween.from) * eased;
+      tween.layer.gray = tween.grayFrom + (tween.grayTo - tween.grayFrom) * eased;
+      this.needsDraw = true;
+    }
+    const finished = this.tweens.filter((tween) => tween.elapsed >= tween.duration);
+    this.tweens = this.tweens.filter((tween) => tween.elapsed < tween.duration);
+    for (const tween of finished) tween.done();
+  }
 }
