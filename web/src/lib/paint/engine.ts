@@ -81,11 +81,12 @@ export class PaintEngine {
     this.wake();
   }
 
-  clear(): void {
-    for (const layer of this.layers) this.renderer.release(layer);
-    this.layers = [];
-    this.jobs = [];
-    this.tweens = [];
+  clear(keep: PaintLayer[] = []): void {
+    const kept = (layer: PaintLayer) => keep.includes(layer);
+    for (const layer of this.layers) if (!kept(layer)) this.renderer.release(layer);
+    this.layers = this.layers.filter(kept);
+    this.jobs = this.jobs.filter((running) => kept(running.job.layer));
+    this.tweens = this.tweens.filter((tween) => kept(tween.layer));
     this.wake();
   }
 

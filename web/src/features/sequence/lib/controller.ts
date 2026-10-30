@@ -1,6 +1,7 @@
 import type { Sample, TrainOptions } from '@core/types.ts';
 import { paintTitle } from '@/features/title/lib/draw.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
+import type { PaintLayer } from '@/lib/paint/layer.ts';
 import { shuffled } from '@/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
 import type { SequenceState } from '@/features/sequence/types.ts';
@@ -19,6 +20,7 @@ export class SequenceController {
 
   private order: number[];
   private training: Training | null = null;
+  private title: PaintLayer | null = null;
   private unsubscribeResize: () => void;
   private resizeTimer = 0;
 
@@ -36,7 +38,7 @@ export class SequenceController {
 
   start(): void {
     const run = this.restart();
-    this.painter.clear();
+    this.painter.clear(this.title ? [this.title] : []);
     void this.play(run, () => this.playIntro(run));
   }
 
@@ -109,7 +111,7 @@ export class SequenceController {
   private async paintBackdrop(run: Run): Promise<void> {
     this.set({ visiblePoints: this.samples.length });
     await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
-    await run.wait(paintTitle(this.engine, this.timeline));
+    if (!this.title) this.title = await run.wait(paintTitle(this.engine, this.timeline));
   }
 
   private async playTraining(run: Run, plan: Training): Promise<void> {
@@ -143,6 +145,7 @@ export class SequenceController {
 
   private repaint(): void {
     const run = this.restart(true);
+    this.title = null;
     this.painter.clear();
     this.painter.fit();
     const plan = this.training ?? runTraining(this.samples, DEFAULT_TRAIN);

@@ -8,7 +8,7 @@ import { STROKE, titleLayout, titleLetters, type Stroke, type TitleLine } from '
 
 export type Clock = { readonly scale: number; readonly instant: boolean };
 
-export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<void> {
+export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<PaintLayer> {
   const layout = titleLayout(engine.width, engine.height);
   const random = mulberry32(randomSeed());
   const { rectangle, em } = layout;
@@ -34,6 +34,7 @@ export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<voi
     }
     await sweep(position, at(position.x + lead));
   }
+  return layer;
 }
 
 const STAMP_SPEED = 1e5;

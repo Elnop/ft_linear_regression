@@ -36,8 +36,8 @@ export class WallPainter {
     this.chart = chartFor(engine.width, engine.height);
   }
 
-  clear(): void {
-    this.engine.clear();
+  clear(keep: PaintLayer[] = []): void {
+    this.engine.clear(keep);
     this.topPoints = [];
     this.fan = [];
   }
