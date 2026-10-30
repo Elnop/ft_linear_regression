@@ -11,18 +11,6 @@ void main() {
   gl_Position = vec4(vScreen.x * 2.0 - 1.0, 1.0 - vScreen.y * 2.0, 0.0, 1.0);
 }`;
 
-export const WALL_FRAGMENT_SHADER = `#version 300 es
-precision highp float;
-in vec2 vUv;
-in vec2 vScreen;
-uniform sampler2D uWall;
-uniform vec4 uCover;
-out vec4 outColor;
-void main() {
-  vec2 uv = (vScreen - uCover.xy) / uCover.zw;
-  outColor = vec4(texture(uWall, uv).rgb, 1.0);
-}`;
-
 export const PAINT_FRAGMENT_SHADER = `#version 300 es
 precision highp float;
 in vec2 vUv;

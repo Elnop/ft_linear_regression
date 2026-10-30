@@ -1,7 +1,7 @@
 .wall-root {
   position: fixed;
   inset: 0;
-  z-index: 4;
+  z-index: 6;
   pointer-events: none;
 }
 .wall-root * {
@@ -27,6 +27,27 @@
   align-items: stretch;
   gap: 10px;
 }
+.wall-head-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.wall-head-actions > button {
+  justify-content: center;
+  height: auto;
+  min-height: 0;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  gap: 6px;
+}
+.wall-head-actions > button svg {
+  width: 12px;
+  height: 12px;
+}
+.wall-head-actions > .documentation-jump {
+  grid-column: 1 / -1;
+}
 .wall-aside {
   position: absolute;
   display: flex;
@@ -41,7 +62,7 @@
 
 .documentation-page {
   position: relative;
-  z-index: 5;
+  z-index: 7;
   margin-top: calc(100vh + 40px);
   margin-top: calc(100dvh + 40px);
 }
@@ -77,6 +98,20 @@ html:has(.documentation-page)::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     gap: 18px;
+  }
+  .wall-flow .wall-head {
+    flex-wrap: wrap;
+  }
+  .wall-flow .wall-head-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .wall-flow .wall-head-actions > button {
+    min-height: 48px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    gap: 8px;
   }
   .wall-flow .wall-chips {
     justify-content: flex-start;

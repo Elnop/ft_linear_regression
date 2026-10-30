@@ -12,7 +12,6 @@ export function PaintWall() {
     try {
       engine = new PaintEngine(element, wallUrl);
     } catch {
-      element.style.background = `#0b0b0d url(${wallUrl}) center / cover`;
       return;
     }
     let alive = true;
@@ -26,5 +25,10 @@ export function PaintWall() {
     };
   }, []);
 
-  return <div ref={box} style={{ position: 'fixed', inset: 0, background: '#0b0b0d', zIndex: 0 }} />;
+  return (
+    <>
+      <div style={{ position: 'fixed', inset: 0, background: `#0b0b0d url(${wallUrl}) center / cover`, zIndex: 0 }} />
+      <div ref={box} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 2 }} />
+    </>
+  );
 }

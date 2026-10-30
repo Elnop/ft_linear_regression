@@ -1,6 +1,6 @@
 import type { CellRectangle, PaintLayer } from './layer.ts';
 import { coverRectangle } from './cover.ts';
-import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER, WALL_FRAGMENT_SHADER } from './shaders.ts';
+import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from './shaders.ts';
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
   const program = gl.createProgram();
@@ -30,11 +30,9 @@ type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
 export type Renderer = ReturnType<typeof createGLRenderer>;
 
 export function createGLRenderer(canvas: HTMLCanvasElement) {
-  const gl = canvas.getContext('webgl2', { alpha: false, antialias: false, premultipliedAlpha: true });
+  const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true });
   if (!gl) throw new Error('WebGL2 unavailable');
-  const wallProgram = compile(gl, QUAD_VERTEX_SHADER, WALL_FRAGMENT_SHADER);
   const paintProgram = compile(gl, QUAD_VERTEX_SHADER, PAINT_FRAGMENT_SHADER);
-  const wallUniform = uniforms(gl, wallProgram);
   const paintUniform = uniforms(gl, paintProgram);
 
   const vertexArray = gl.createVertexArray();
@@ -124,21 +122,11 @@ export function createGLRenderer(canvas: HTMLCanvasElement) {
     },
     render(layers: PaintLayer[]) {
       gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.clearColor(0.05, 0.05, 0.06, 1);
+      gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.bindVertexArray(vertexArray);
       if (!wallTexture) return;
       const cover = coverArea();
-
-      gl.disable(gl.BLEND);
-      gl.useProgram(wallProgram);
-      gl.uniform4f(wallUniform('uRect'), 0, 0, view.width, view.height);
-      gl.uniform2f(wallUniform('uView'), view.width, view.height);
-      gl.uniform4f(wallUniform('uCover'), ...cover);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, wallTexture);
-      gl.uniform1i(wallUniform('uWall'), 0);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);

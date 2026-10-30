@@ -2,13 +2,13 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 .wall-marker {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
+  z-index: 5;
 }
 .hello {
   position: absolute;
@@ -54,4 +54,155 @@
   stroke: rgba(8, 7, 10, 0.85);
   stroke-width: 4px;
   stroke-linejoin: round;
+}
+.overlay-panel {
+  position: fixed;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 14px;
+  background: #111014;
+  border: 1px solid var(--glass-line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+.overlay-panel svg {
+  display: block;
+  font-family: var(--monospace);
+}
+.plain-grid line {
+  stroke: rgba(239, 236, 230, 0.08);
+  stroke-width: 1;
+}
+.plain-axis {
+  fill: none;
+  stroke: rgba(239, 236, 230, 0.45);
+  stroke-width: 1.5;
+}
+.plain-text text {
+  fill: var(--ink-dimmed);
+  font-variant-numeric: tabular-nums;
+}
+.plain-line {
+  stroke: var(--magenta);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.plain-points circle {
+  fill: var(--cyan);
+  stroke: #111014;
+  stroke-width: 1.5;
+}
+.plain-prediction line {
+  stroke: var(--acid);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+}
+.plain-prediction circle {
+  fill: var(--acid);
+  stroke: #111014;
+  stroke-width: 2;
+}
+.plain-prediction text {
+  fill: var(--acid);
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: #111014;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.overlay-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--ink);
+  font: 700 12px var(--monospace);
+  letter-spacing: 0.14em;
+}
+.overlay-toggle[aria-pressed='true'] {
+  color: #111013;
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.dataset {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 20px 12px;
+  pointer-events: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(239, 236, 230, 0.2) transparent;
+}
+.dataset:focus-visible {
+  outline: 3px solid var(--acid);
+  outline-offset: -3px;
+}
+.dataset-caption {
+  margin: 0;
+  padding: 10px 0 4px;
+}
+.dataset table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.dataset th {
+  position: sticky;
+  top: 0;
+  padding: 6px 8px;
+  background: #111014;
+  border-bottom: 1px solid var(--glass-line);
+  color: var(--ink-dimmed);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-align: right;
+  white-space: nowrap;
+}
+.dataset td {
+  padding: 2px 8px;
+  border-bottom: 1px solid rgba(239, 236, 230, 0.06);
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+}
+.dataset th:first-child,
+.dataset td:first-child {
+  text-align: left;
+  color: var(--ink-dimmed);
+}
+.dataset-km {
+  color: var(--cyan) !important;
+}
+.dataset-estimate {
+  color: var(--magenta) !important;
+}
+.dataset tbody tr:hover td {
+  background: rgba(239, 236, 230, 0.04);
+}
+
+@media (max-width: 1023px) {
+  .overlay-toggle {
+    padding: 0 12px;
+  }
+  .dataset {
+    padding: 0 12px 8px;
+  }
+  .dataset table {
+    font-size: 11px;
+  }
+  .dataset th,
+  .dataset td {
+    padding: 1px 4px;
+    line-height: 1.5;
+  }
+  .dataset th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
 }
