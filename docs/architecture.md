@@ -12,13 +12,19 @@ ft_linear_regression/
 │   ├── hypothesis.ts         # estimatePrice
 │   ├── gradient.ts           # une étape de descente de gradient
 │   ├── normalize.ts          # normalisation min-max et retour à l'échelle d'origine
-│   ├── metrics.ts            # coût, RMSE, MAE, R²
+│   ├── metrics.ts            # moyenne, somme des carrés des erreurs, coût, RMSE, MAE, R²
+│   ├── thetas.ts             # hasFiniteThetas, partagé par l'entraînement, la CLI et le web
+│   ├── mileage.ts            # parseMileage : saisie du kilométrage, partagée CLI / web
 │   ├── csv.ts                # parsing et validation du dataset
 │   └── train.ts              # générateur trainSteps
 ├── cli/                      # partie obligatoire
-│   ├── model.ts              # chemin de model.json, fail(), validation des θ
+│   ├── process.ts            # fail(), errorCode()
+│   ├── args.ts               # parseCli : arguments, --help, erreurs d'usage
+│   ├── dataset.ts            # loadDataset : lecture et parsing du CSV
+│   ├── model.ts              # lecture / écriture de model.json, validation des θ
 │   ├── train.ts              # programme d'entraînement
-│   └── predict.ts            # programme de prédiction
+│   ├── predict.ts            # programme de prédiction
+│   └── precision.ts          # programme de précision (bonus)
 ├── web/                      # bonus : app React (Vite)
 ├── docs/                     # cette documentation
 ├── .github/workflows/        # déploiement GitHub Pages

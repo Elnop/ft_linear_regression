@@ -91,6 +91,6 @@ docs/    documentation détaillée
 |---|---|
 | [docs/algorithme.md](docs/algorithme.md) | hypothèse, coût, descente de gradient, normalisation, vérification |
 | [docs/architecture.md](docs/architecture.md) | organisation du code et choix techniques |
-| [docs/cli.md](docs/cli.md) | référence complète des deux programmes et de leurs erreurs |
+| [docs/cli.md](docs/cli.md) | référence complète des trois programmes et de leurs erreurs |
 | [docs/web.md](docs/web.md) | app web et déploiement GitHub Pages |
 | [docs/soutenance.md](docs/soutenance.md) | démonstration et questions probables |

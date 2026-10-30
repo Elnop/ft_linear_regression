@@ -35,6 +35,8 @@ Learning rate trop grand :
 
 ```
 $ npm run train -- --lr 3
+Dataset: data.csv (24 samples)
+Training: lr=3, iterations=10000
 Error: training diverged at iteration 788, model not saved (try a smaller --lr)
 ```
 
@@ -59,7 +61,7 @@ Estimated price: 6354.70
 Équivalent sans npm : `node cli/predict.ts`.
 
 - Si `model.json` n'existe pas (aucun entraînement encore), `θ0 = θ1 = 0` et le prix estimé vaut `0.00`, comme le demande le sujet.
-- Le kilométrage doit être un nombre décimal positif écrit simplement : `42`, `42.5`. Les notations `1e5` ou `0x10` sont refusées volontairement.
+- Le kilométrage doit être un nombre décimal positif écrit simplement : `42`, `42.5`. Les notations `1e5` ou `0x10` sont refusées volontairement. La règle est écrite une seule fois, dans `parseMileage` ([`core/mileage.ts`](../core/mileage.ts)), et l'app web utilise la même pour son champ de prédiction.
 
 ## `precision` (bonus)
 
@@ -96,6 +98,7 @@ Ctrl+C pendant la saisie affiche `Interrupted` et quitte avec le code 130.
 | entrée vide ou espaces | `no mileage given` |
 | Ctrl+D sans saisie | `no mileage given` |
 | `abc`, `-5`, `1e5`, `0x10`, `12 34` | `invalid mileage "…", expected a non-negative number of km` |
+| nombre trop grand pour être représenté (des centaines de chiffres) | même message `invalid mileage "…"` |
 | `model.json` illisible (droits, dossier…) | `cannot read model.json: <code>` |
 | `model.json` qui n'est pas du JSON | `model.json is not valid JSON, run the training again` |
 | `model.json` sans `theta0` / `theta1` numériques | `model.json is corrupted, run the training again` |
@@ -117,3 +120,27 @@ Un `model.json` **absent** n'est pas une erreur (θ = 0). Un `model.json` **pré
 | écriture de `model.json` impossible | `cannot write model: <code>` |
 
 En cas de divergence, `model.json` **n'est pas modifié** : le dernier modèle valide est conservé.
+
+### Cas gérés par `precision`
+
+| Situation | Message |
+|---|---|
+| `model.json` absent | `model.json not found, run the training first (npm run train)` |
+| `model.json` illisible, pas du JSON ou corrompu | mêmes messages que `predict` |
+| fichier CSV absent ou invalide, plusieurs fichiers, option inconnue | mêmes messages que `train` |
+
+Contrairement à `predict`, un `model.json` absent est une erreur : mesurer la précision de θ = 0 n'aurait pas de sens.
+
+## Organisation du code
+
+Les trois programmes partagent quelques modules, chacun avec un seul rôle. Le calcul lui-même vient de `core/`.
+
+| Fichier | Rôle |
+|---|---|
+| [`cli/train.ts`](../cli/train.ts) | programme `train` |
+| [`cli/predict.ts`](../cli/predict.ts) | programme `predict` |
+| [`cli/precision.ts`](../cli/precision.ts) | programme `precision` |
+| [`cli/args.ts`](../cli/args.ts) | `parseCli` : argument `[dataset.csv]`, options, `--help` et erreurs d'usage |
+| [`cli/dataset.ts`](../cli/dataset.ts) | `loadDataset` : lit le fichier et le passe à `parseDataset` |
+| [`cli/model.ts`](../cli/model.ts) | `readModel` / `writeModel` : lecture, validation et écriture de `model.json` |
+| [`cli/process.ts`](../cli/process.ts) | `fail` (message `Error: …` sur stderr, code 1) et `errorCode` |
