@@ -37,11 +37,30 @@
 .wall-head-actions > .documentation-jump {
   grid-column: 1 / -1;
 }
+.wall-head-slot {
+  position: absolute;
+  top: var(--wall-top);
+  right: var(--wall-padding);
+}
 .wall-aside {
   position: absolute;
+  top: calc(var(--wall-top) + 92px);
+  right: var(--wall-padding);
+  width: 340px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.wall-footer {
+  position: absolute;
+  left: var(--wall-padding);
+  right: var(--wall-padding);
+  bottom: calc(var(--wall-padding) * 0.2);
+}
+.wall-root .button-skip {
+  position: fixed;
+  right: var(--wall-padding);
+  bottom: calc(var(--wall-padding) * 0.2 + 86px);
 }
 .wall-root button:focus-visible,
 .wall-root input:focus-visible {
@@ -77,32 +96,41 @@ html:has(.documentation-page)::-webkit-scrollbar {
 
 @media (max-width: 1023px) {
   .wall-root {
-    overflow-y: auto;
-    overflow-x: hidden;
-    pointer-events: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .wall-flow {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 18px;
+    padding: var(--wall-top) var(--wall-padding) 0;
+    overflow-x: clip;
   }
-  .wall-flow .wall-head {
+  .wall-head-slot,
+  .wall-aside,
+  .wall-footer {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+  .wall-root .button-skip {
+    bottom: var(--wall-padding);
+  }
+  .documentation-page {
+    margin-top: 18px;
+  }
+  .wall-root .wall-head {
     flex-wrap: wrap;
   }
-  .wall-flow .wall-head-actions {
+  .wall-root .wall-head-actions {
     display: flex;
     gap: 10px;
   }
-  .wall-flow .wall-head-actions > button {
+  .wall-root .wall-head-actions > button {
     min-height: 48px;
     padding: 0 12px;
     border-radius: 12px;
     font-size: 12px;
     gap: 8px;
   }
-  .wall-flow .wall-chips {
+  .wall-root .wall-chips {
     justify-content: flex-start;
     flex: 1 1 auto;
   }

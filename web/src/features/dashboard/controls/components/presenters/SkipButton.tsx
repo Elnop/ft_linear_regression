@@ -1,21 +1,18 @@
 import { AnimatePresence, motion } from 'motion/react';
-import type { CSSProperties } from 'react';
 import '@/features/dashboard/controls/controls.css';
 
 export type SkipButtonProps = {
   visible: boolean;
   onSkip: () => void;
-  style?: CSSProperties;
 };
 
-export function SkipButton({ visible, onSkip, style }: SkipButtonProps) {
+export function SkipButton({ visible, onSkip }: SkipButtonProps) {
   return (
     <AnimatePresence>
       {visible && (
         <motion.button
           type="button"
           className="button-skip glass wall-hit"
-          style={style}
           onClick={onSkip}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
