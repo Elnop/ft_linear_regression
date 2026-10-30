@@ -1,13 +1,12 @@
-import { useEffect, useEffectEvent, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { CanMotion } from '@/features/decor/spray-can/lib/motion.ts';
 import { drawMist } from '@/features/decor/spray-can/lib/mist.ts';
 import { HOLE, VIEW_WIDTH } from '@/features/decor/spray-can/lib/shape.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 
-export function useSprayCan(engine: PaintEngine | null, hidden: boolean) {
+export function useSprayCan(engine: PaintEngine | null) {
   const box = useRef<HTMLDivElement>(null);
   const mist = useRef<HTMLCanvasElement>(null);
-  const isHidden = useEffectEvent(() => hidden);
 
   useEffect(() => {
     if (!engine || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -39,8 +38,7 @@ export function useSprayCan(engine: PaintEngine | null, hidden: boolean) {
       const scale = canWidth / VIEW_WIDTH;
 
       const nozzle = engine.nozzle();
-      const hidden = isHidden();
-      const pose = motion.step(deltaSeconds, nozzle, hidden, canWidth);
+      const pose = motion.step(deltaSeconds, nozzle, canWidth);
       if (pose.color !== color) {
         color = pose.color;
         element.style.setProperty('--paint', color);
@@ -52,7 +50,7 @@ export function useSprayCan(engine: PaintEngine | null, hidden: boolean) {
       element.style.transformOrigin = `${holeX}px ${holeY}px`;
       element.style.transform = `translate(${pose.x - holeX}px, ${pose.y - holeY + pose.rattle * 2}px) rotate(${pose.angle}deg)`;
       element.classList.toggle('pressed', pose.spraying);
-      element.classList.toggle('gone', hidden || (!!nozzle && nozzle.active > 2));
+      element.classList.toggle('gone', !!nozzle && nozzle.active > 2);
 
       if (misty) context.clearRect(0, 0, width, window.innerHeight);
       misty = pose.spraying;

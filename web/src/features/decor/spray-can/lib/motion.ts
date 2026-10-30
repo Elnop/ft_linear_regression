@@ -23,9 +23,9 @@ export class CanMotion {
     this.aim = { x, y, velocityX: 0, velocityY: 0 };
   }
 
-  step(deltaSeconds: number, nozzle: Nozzle | null, hidden: boolean, canWidth: number): CanPose {
+  step(deltaSeconds: number, nozzle: Nozzle | null, canWidth: number): CanPose {
     const { position, velocity, aim } = this;
-    const spraying = !!nozzle && nozzle.active <= 2 && !hidden;
+    const spraying = !!nozzle && nozzle.active <= 2;
     if (spraying) {
       this.idle = 0;
       if (nozzle.color !== this.color) {

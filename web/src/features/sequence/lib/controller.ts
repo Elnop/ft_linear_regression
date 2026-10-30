@@ -37,32 +37,31 @@ export class SequenceController {
   }
 
   start(): void {
-    const run = this.restart();
+    const run = this.timeline.restart();
     this.painter.clear(this.title ? [this.title] : []);
-    void this.play(run, () => this.playIntro(run));
+    void this.timeline.play(() => this.playIntro(run));
   }
 
   destroy(): void {
-    this.restart();
+    this.timeline.restart();
     clearTimeout(this.resizeTimer);
     this.unsubscribeResize();
   }
 
   skip = (): void => {
-    if (this.timeline.scale === TIMING.skipScale) return;
+    if (this.state.phase === 'idle') return;
     if (this.state.phase === 'interactive' && !this.state.trainingActive) return;
-    this.timeline.scale = TIMING.skipScale;
-    this.set({ skipping: true });
+    this.paintFinal();
   };
 
   train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
     const plan = runTraining(this.samples, options);
-    const run = this.restart();
+    const run = this.timeline.restart();
     this.training = plan;
     this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
-    await this.play(run, () => this.playTraining(run, plan));
+    await this.timeline.play(() => this.playTraining(run, plan));
   };
 
   private get state(): SequenceState {
@@ -71,16 +70,6 @@ export class SequenceController {
 
   private set(patch: Partial<SequenceState>): void {
     this.store.setState(patch);
-  }
-
-  private restart(instant = false): Run {
-    const run = this.timeline.restart(instant);
-    if (this.state.skipping) this.set({ skipping: false });
-    return run;
-  }
-
-  private async play(run: Run, script: () => Promise<void>): Promise<void> {
-    if (await this.timeline.play(run, script)) this.set({ skipping: false });
   }
 
   private show(step: Step, extra: Partial<SequenceState> = {}): void {
@@ -144,13 +133,17 @@ export class SequenceController {
   }
 
   private repaint(): void {
-    const run = this.restart(true);
     this.title = null;
-    this.painter.clear();
     this.painter.fit();
+    this.paintFinal();
+  }
+
+  private paintFinal(): void {
+    const run = this.timeline.restart(true);
+    this.painter.clear(this.title ? [this.title] : []);
     const plan = this.training ?? runTraining(this.samples, DEFAULT_TRAIN);
     this.training = plan;
-    void this.play(run, async () => {
+    void this.timeline.play(async () => {
       await this.paintBackdrop(run);
       await this.playPasses(run, plan);
       this.engine.settle();

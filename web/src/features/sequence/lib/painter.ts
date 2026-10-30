@@ -49,7 +49,7 @@ export class WallPainter {
   sprayPoint(index: number, duration: number): Promise<void> {
     const { layer, center, options } = this.pointLayer(index, 2);
     this.topPoints.push(layer);
-    return this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration: duration / this.timeline.scale }), this.timeline.instant);
+    return this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration }), this.timeline.instant);
   }
 
   stampPoints(order: number[], fade: number): Promise<void[]> {
@@ -77,8 +77,8 @@ export class WallPainter {
     const layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, width: x1 - x0, height: y1 - y0 } });
     this.fan.push(layer);
 
-    const { instant, scale } = this.timeline;
-    const seconds = Math.max(0.05, duration / 1000) / scale;
+    const { instant } = this.timeline;
+    const seconds = Math.max(0.05, duration / 1000);
     const speed = instant ? NOMINAL_SPEED : (Math.hypot(end.x - start.x, end.y - start.y) / seconds) * 1.2;
     const job = pathJob(layer, reverse ? [end, start] : [start, end], {
       speed,
@@ -107,7 +107,7 @@ export class WallPainter {
   }
 
   private fadeTime(duration: number): number {
-    return this.timeline.instant ? 0 : duration / this.timeline.scale;
+    return this.timeline.instant ? 0 : duration;
   }
 
   private pointLayer(index: number, z: number, opacity = 1) {

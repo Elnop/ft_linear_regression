@@ -6,7 +6,7 @@ import type { Vec2 } from '@/lib/paint/types.ts';
 import { mulberry32, randomSeed } from '@/lib/random.ts';
 import { STROKE, titleLayout, titleLetters, type Stroke, type TitleLine } from './layout.ts';
 
-export type Clock = { readonly scale: number; readonly instant: boolean };
+export type Clock = { readonly instant: boolean };
 
 export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<PaintLayer> {
   const layout = titleLayout(engine.width, engine.height);
@@ -21,7 +21,7 @@ export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<Pai
   const pace = Math.min(900, Math.max(300, em * 16));
   const speed = Math.min(1100, Math.max(400, em * 14));
   const lead = 1.5 * em;
-  const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed * Math.max(0.1, clock.scale)), clock.instant);
+  const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed), clock.instant);
 
   for (const line of letterLines(titleLetters(layout, random))) {
     const at = (x: number): Vec2 => ({ x, y: line.y(x) });

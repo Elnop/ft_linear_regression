@@ -10,6 +10,5 @@ export const IDLE_STATE: SequenceState = {
   costHistory: [],
   diverged: false,
   trainingActive: false,
-  skipping: false,
   trainOptions: DEFAULT_TRAIN,
 };

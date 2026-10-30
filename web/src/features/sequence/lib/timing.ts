@@ -6,7 +6,6 @@ export const TIMING = {
   redotGap: 150,
   beforeDescent: 800,
   fade: 400,
-  skipScale: 10,
 
   fanOut: 500,
   pass: 950,

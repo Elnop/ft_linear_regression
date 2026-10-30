@@ -4,4 +4,4 @@ export const selectIntro = (state: SequenceState) => state.phase !== 'interactiv
 
 export const selectInterfaceVisible = (state: SequenceState) => state.phase !== 'idle';
 
-export const selectCanSkip = (state: SequenceState) => selectIntro(state) && selectInterfaceVisible(state) && !state.skipping;
+export const selectCanSkip = (state: SequenceState) => selectIntro(state) && selectInterfaceVisible(state);
