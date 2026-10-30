@@ -138,7 +138,6 @@ export class SequenceController {
     return this.painter.sprayLine(plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
   }
 
-  // Rebuilds the finished wall at the new size in one go, already dry, so nothing replays.
   private repaint(): void {
     this.restart();
     this.painter.clear();

@@ -7,7 +7,6 @@ export const ASIDE_WIDTH = 340;
 export const SUBTITLE_GAP = 4;
 export const HEAD_TO_ASIDE = 92;
 export const CHART_TO_FLOW = 70;
-// 48px buttons + 2 × 12px padding, see controls.css
 const CONTROL_BAR_HEIGHT = 72;
 export const SKIP_ABOVE_BAR = CONTROL_BAR_HEIGHT + 14;
 

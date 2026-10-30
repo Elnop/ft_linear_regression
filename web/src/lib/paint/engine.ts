@@ -64,7 +64,6 @@ export class PaintEngine {
       if (!this.measure()) return;
       if (this.wall) {
         this.fitRoughness(this.wall);
-        // Resizing the canvas blanks it: draw again before the browser paints.
         this.renderer.render(this.layers);
       }
       this.wake();
@@ -138,7 +137,6 @@ export class PaintEngine {
     });
   }
 
-  // Runs the drips ahead of time, so freshly stamped paint shows up already dry.
   settle(): void {
     const until = performance.now() + SETTLE_BUDGET_MS;
     for (const layer of this.layers) {
@@ -172,7 +170,6 @@ export class PaintEngine {
     this.wake();
   }
 
-  // Returns whether the size changed: assigning the canvas size clears it, even to the same value.
   private measure(): boolean {
     const box = this.canvas.getBoundingClientRect();
     const width = Math.max(1, Math.round(box.width));
@@ -232,7 +229,6 @@ export class PaintEngine {
     }
   }
 
-  // Returns whether some paint is still running.
   private flowWetLayers(deltaSeconds: number): boolean {
     let wet = false;
     for (const layer of this.layers) {

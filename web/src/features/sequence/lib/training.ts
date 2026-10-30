@@ -6,7 +6,6 @@ import type { CostPoint, Metrics } from '@/features/sequence/types.ts';
 
 export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 10000 };
 
-// Gradient descent on the normalised mileages diverges past 2 / λmax ≈ 1.76 for data.csv.
 const DIVERGENCE_LEARNING_RATE = 1.75;
 
 export const willDiverge = (learningRate: number) => learningRate > DIVERGENCE_LEARNING_RATE;
@@ -18,11 +17,9 @@ export type Training = {
   diverged: boolean;
 };
 
-// Every early iteration, then one every 5 % more, so the log-scale curve stays smooth but short.
 const DENSE_HISTORY_UNTIL = 64;
 const nextHistorySample = (iteration: number) => Math.ceil(iteration * 1.05);
 
-// Passes painted on the wall: iterations 0, 1, 2, 4, 8… then the last one.
 const nextPass = (iteration: number) => Math.max(1, iteration * 2);
 
 export function runTraining(data: Sample[], options: TrainOptions): Training {

@@ -1,7 +1,6 @@
 import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
 import { fail } from './process.ts';
 
-// Parses `[dataset.csv]` plus the given options, and handles --help and usage errors.
 export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, options: Options) {
   let parsed;
   try {

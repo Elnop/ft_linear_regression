@@ -7,7 +7,6 @@ import { STROKE, titleLayout, titleStrokes, type Stroke } from './layout.ts';
 
 const MAGENTA = '#ff2bd6';
 
-// `timeScale` is read before every sweep so a skip speeds up the letters still to come.
 export async function drawTitle(engine: PaintEngine, timeScale: () => number): Promise<void> {
   const title = prepareTitle(engine);
   const tempo = () => Math.max(0.1, timeScale());
@@ -24,7 +23,6 @@ export async function drawTitle(engine: PaintEngine, timeScale: () => number): P
   }
 }
 
-// The same tag at once, without the can travelling between letters.
 export function stampTitle(engine: PaintEngine): void {
   const title = prepareTitle(engine);
   for (const line of title.lines) for (const letter of line.letters) title.stampLetter(letter);

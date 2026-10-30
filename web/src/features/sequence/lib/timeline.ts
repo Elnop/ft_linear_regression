@@ -1,6 +1,5 @@
 class Cancelled extends Error {}
 
-// A handle on one script run: its waits throw once a newer run has started.
 export type Run = {
   sleep: (duration: number) => Promise<void>;
   wait: <T>(promise: Promise<T>) => Promise<T>;
@@ -37,7 +36,6 @@ export class Timeline {
     };
   }
 
-  // Resolves true when the script finished without being superseded.
   async play(run: Run, script: () => Promise<void>): Promise<boolean> {
     try {
       await script();
