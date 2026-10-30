@@ -1,27 +1,27 @@
-.wall-root {
+.dashboard-root {
   position: fixed;
   inset: 0;
   z-index: 6;
   pointer-events: none;
 }
-.wall-root * {
+.dashboard-root * {
   box-sizing: border-box;
 }
-.wall-root .wall-hit {
+.dashboard-root .dashboard-hit {
   pointer-events: auto;
 }
-.wall-head {
+.dashboard-head {
   display: flex;
   justify-content: flex-end;
   align-items: stretch;
   gap: 10px;
 }
-.wall-head-actions {
+.dashboard-head-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
 }
-.wall-head-actions > button {
+.dashboard-head-actions > button {
   justify-content: center;
   height: auto;
   min-height: 0;
@@ -30,40 +30,40 @@
   font-size: 10px;
   gap: 6px;
 }
-.wall-head-actions > button svg {
+.dashboard-head-actions > button svg {
   width: 12px;
   height: 12px;
 }
-.wall-head-actions > .documentation-jump {
+.dashboard-head-actions > .documentation-jump {
   grid-column: 1 / -1;
 }
-.wall-head-slot {
+.dashboard-head-slot {
   position: absolute;
-  top: var(--wall-top);
-  right: var(--wall-padding);
+  top: var(--dashboard-top);
+  right: var(--dashboard-padding);
 }
-.wall-aside {
+.dashboard-aside {
   position: absolute;
-  top: calc(var(--wall-top) + 92px);
-  right: var(--wall-padding);
+  top: calc(var(--dashboard-top) + 92px);
+  right: var(--dashboard-padding);
   width: 340px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-.wall-footer {
+.dashboard-footer {
   position: absolute;
-  left: var(--wall-padding);
-  right: var(--wall-padding);
-  bottom: calc(var(--wall-padding) * 0.2);
+  left: var(--dashboard-padding);
+  right: var(--dashboard-padding);
+  bottom: calc(var(--dashboard-padding) * 0.2);
 }
-.wall-root .button-skip {
+.dashboard-root .button-skip {
   position: fixed;
-  right: var(--wall-padding);
-  bottom: calc(var(--wall-padding) * 0.2 + 86px);
+  right: var(--dashboard-padding);
+  bottom: calc(var(--dashboard-padding) * 0.2 + 86px);
 }
-.wall-root button:focus-visible,
-.wall-root input:focus-visible {
+.dashboard-root button:focus-visible,
+.dashboard-root input:focus-visible {
   outline: 3px solid var(--acid);
   outline-offset: 2px;
 }
@@ -95,42 +95,42 @@ html:has(.documentation-page)::-webkit-scrollbar {
 }
 
 @media (max-width: 1023px) {
-  .wall-root {
+  .dashboard-root {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding: var(--wall-top) var(--wall-padding) 0;
+    padding: var(--dashboard-top) var(--dashboard-padding) 0;
     overflow-x: clip;
   }
-  .wall-head-slot,
-  .wall-aside,
-  .wall-footer {
+  .dashboard-head-slot,
+  .dashboard-aside,
+  .dashboard-footer {
     position: relative;
     inset: auto;
     width: auto;
   }
-  .wall-root .button-skip {
-    bottom: var(--wall-padding);
+  .dashboard-root .button-skip {
+    bottom: var(--dashboard-padding);
   }
   .documentation-page {
     margin-top: 18px;
   }
-  .wall-root .wall-head {
+  .dashboard-root .dashboard-head {
     flex-wrap: wrap;
   }
-  .wall-root .wall-head-actions {
+  .dashboard-root .dashboard-head-actions {
     display: flex;
     gap: 10px;
   }
-  .wall-root .wall-head-actions > button {
+  .dashboard-root .dashboard-head-actions > button {
     min-height: 48px;
     padding: 0 12px;
     border-radius: 12px;
     font-size: 12px;
     gap: 8px;
   }
-  .wall-root .wall-chips {
+  .dashboard-root .dashboard-chips {
     justify-content: flex-start;
     flex: 1 1 auto;
   }

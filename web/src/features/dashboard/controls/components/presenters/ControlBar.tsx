@@ -14,7 +14,7 @@ export type ControlBarProps = {
 export function ControlBar(props: ControlBarProps) {
   const learningRateId = useId();
   return (
-    <div className="wall-bar glass wall-hit" role="group" aria-label="Entraînement">
+    <div className="dashboard-bar glass dashboard-hit" role="group" aria-label="Entraînement">
       <div className="bar-buttons">
         <button type="button" className="button-train" onClick={props.onTrain} disabled={props.disabled || props.trainingActive}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">

@@ -1,4 +1,4 @@
-.wall-chips {
+.dashboard-chips {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -108,7 +108,7 @@
 }
 
 @media (max-width: 1023px) {
-  .wall-chips {
+  .dashboard-chips {
     flex-wrap: nowrap;
     gap: 6px;
   }

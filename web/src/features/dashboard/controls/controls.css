@@ -1,4 +1,4 @@
-.wall-bar {
+.dashboard-bar {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -93,7 +93,7 @@
 }
 
 @media (max-width: 1023px) {
-  .wall-bar {
+  .dashboard-bar {
     gap: 14px 18px;
   }
   .hint {

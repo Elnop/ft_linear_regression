@@ -12,7 +12,7 @@ export type PredictPanelProps = {
 export function PredictPanel({ value, onChange, invalid, price }: PredictPanelProps) {
   const id = useId();
   return (
-    <div className="panel glass wall-hit">
+    <div className="panel glass dashboard-hit">
       <div className="tape" aria-hidden="true" style={{ left: 24, transform: 'rotate(-4deg)' }} />
       <label htmlFor={id} className="label">
         Prédire · kilométrage

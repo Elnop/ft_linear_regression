@@ -9,7 +9,7 @@ export type PrecisionPanelProps = {
 
 export function PrecisionPanel({ r2, rmse, mae }: PrecisionPanelProps) {
   return (
-    <dl className="panel glass metrics wall-hit" aria-label="Précision" style={{ margin: 0 }}>
+    <dl className="panel glass metrics dashboard-hit" aria-label="Précision" style={{ margin: 0 }}>
       <Metric label="R²" value={formatNumber(r2, 3)} color="var(--magenta)" />
       <Metric label="RMSE" value={formatNumber(rmse)} />
       <Metric label="MAE" value={formatNumber(mae)} />

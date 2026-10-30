@@ -12,7 +12,7 @@ export function SkipButton({ visible, onSkip }: SkipButtonProps) {
       {visible && (
         <motion.button
           type="button"
-          className="button-skip glass wall-hit"
+          className="button-skip glass dashboard-hit"
           onClick={onSkip}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

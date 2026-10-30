@@ -22,21 +22,21 @@ export function DashboardLayout() {
   const visible = useSequence(selectInterfaceVisible);
   const padding = pagePadding(width);
   const top = width >= WIDE ? title.rectangle.y : area.y + area.height + CHART_TO_FLOW;
-  const geometry: CSSProperties & Record<`--${string}`, string> = { '--wall-top': `${top}px`, '--wall-padding': `${padding}px` };
+  const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${top}px`, '--dashboard-padding': `${padding}px` };
 
   return (
     <>
-      <div className="wall-root" style={geometry}>
+      <div className="dashboard-root" style={geometry}>
         <h1 className="sr-only">ft_linear_regression</h1>
-        <Reveal visible={visible} from={{ y: -12 }} className="wall-head-slot">
+        <Reveal visible={visible} from={{ y: -12 }} className="dashboard-head-slot">
           <HeadBar chips={<HeaderChipsContainer />} toggles={<OverlayTogglesContainer />} />
         </Reveal>
-        <Reveal visible={visible} from={{ x: 24 }} as="aside" label="Prédiction et précision" className="wall-aside">
+        <Reveal visible={visible} from={{ x: 24 }} as="aside" label="Prédiction et précision" className="dashboard-aside">
           <PredictPanelContainer />
           <CostPanelContainer />
           <PrecisionPanelContainer />
         </Reveal>
-        <Reveal visible={visible} from={{ y: 24 }} as="footer" className="wall-footer">
+        <Reveal visible={visible} from={{ y: 24 }} as="footer" className="dashboard-footer">
           <ControlBarContainer />
         </Reveal>
         <SkipButtonContainer />

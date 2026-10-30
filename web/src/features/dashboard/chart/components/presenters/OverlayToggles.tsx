@@ -16,7 +16,7 @@ export function OverlayToggles({ overlay, onToggle }: OverlayTogglesProps) {
     <button
       key={toggle.overlay}
       type="button"
-      className="overlay-toggle glass wall-hit"
+      className="overlay-toggle glass dashboard-hit"
       aria-pressed={overlay === toggle.overlay}
       onClick={() => onToggle(toggle.overlay)}
       title={toggle.title}

@@ -18,7 +18,7 @@ export function DocumentationPage() {
   const { tab, setTab, tabRefs, onTabKeyDown } = useDocumentationTabs();
 
   return (
-    <section id="documentation" className="documentation glass wall-hit" aria-labelledby="documentation-title">
+    <section id="documentation" className="documentation glass dashboard-hit" aria-labelledby="documentation-title">
       <span className="tape" style={{ left: 48, transform: 'rotate(-4deg)' }} />
       <span className="tape" style={{ right: 64, transform: 'rotate(5deg)' }} />
       <DocumentationHeader />
