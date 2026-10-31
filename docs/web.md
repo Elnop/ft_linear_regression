@@ -94,7 +94,7 @@ web/src/
 │   │   ├── spray-can/    la bombe qui suit la buse
 │   │   └── stickers/     les autocollants
 │   ├── dashboard/        l'interface posée sur le mur
-│   │   ├── shared/       ports, playgroundStore, prédiction, panneau de verre, formatage
+│   │   ├── shared/       ports, kilométrage et prédiction, overlay affiché, panneau de verre, formatage
 │   │   ├── controls/     barre de réglages, Passer, choix des overlays
 │   │   ├── panels/       coût, précision, prédiction, puces d'en-tête
 │   │   └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
@@ -141,7 +141,8 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 | `features/wall/sequence/stores/sequenceStore.ts` | phase, points visibles, entraînement en cours | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
 | `features/model/stores/modelStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le `SequenceController`, à travers `modelActions` |
 | `features/model/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
-| `features/dashboard/shared/stores/playgroundStore.ts` | kilométrage saisi, overlay affiché | ses actions `setKm`, `toggleOverlay` |
+| `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`setKm`) |
+| `features/dashboard/shared/stores/overlayStore.ts` | overlay affiché (mur, graphe, données) | les boutons d'overlay (`toggleOverlay`) |
 
 Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `dashboard/shared/lib/` et portent sur les types de ses ports.
 
