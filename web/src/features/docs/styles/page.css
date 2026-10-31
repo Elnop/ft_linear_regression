@@ -12,6 +12,14 @@
 .documentation * {
   box-sizing: border-box;
 }
+.documentation-tape-left {
+  left: 48px;
+  transform: rotate(-4deg);
+}
+.documentation-tape-right {
+  right: 64px;
+  transform: rotate(5deg);
+}
 .documentation h2,
 .documentation h3 {
   margin: 0;

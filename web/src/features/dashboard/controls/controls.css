@@ -54,6 +54,9 @@
   flex: 1 1 220px;
   min-width: 0;
 }
+.learning-rate .label {
+  white-space: nowrap;
+}
 .learning-rate input {
   flex: 1 1 auto;
   min-width: 80px;

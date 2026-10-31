@@ -1,7 +1,8 @@
 import { smoothstep } from '@/lib/easing.ts';
 import type { PaintLayer } from './layer.ts';
 import { gaussian, mulberry32, noise1D, randomSeed, type RandomGenerator } from '@/lib/random.ts';
-import type { SprayDotOptions, SprayPathOptions, Vec2 } from './types.ts';
+import type { Vec2 } from '@/lib/geometry.ts';
+import type { SprayDotOptions, SprayPathOptions } from './types.ts';
 
 export type Job = { layer: PaintLayer; position: Vec2; update(deltaSeconds: number): boolean };
 
@@ -169,7 +170,7 @@ export function moveJob(layer: PaintLayer, points: Vec2[], speed: number): Job {
   };
 }
 
-export function dotJob(layer: PaintLayer, x: number, y: number, options: SprayDotOptions): Job {
+export function dotJob(layer: PaintLayer, center: Vec2, options: SprayDotOptions): Job {
   const random = mulberry32(options.seed ?? randomSeed());
   const duration = (options.duration ?? 180) / 1000;
   const sigma = (options.width ?? 14) / 4.2;
@@ -181,7 +182,7 @@ export function dotJob(layer: PaintLayer, x: number, y: number, options: SprayDo
   let elapsed = 0;
   return {
     layer,
-    position: { x, y },
+    position: { ...center },
     update(deltaSeconds) {
       const step = Math.min(deltaSeconds, duration - elapsed);
       for (let k = 0; k < 6; k++) {
@@ -189,7 +190,7 @@ export function dotJob(layer: PaintLayer, x: number, y: number, options: SprayDo
         const offsetX = 1.3 * jitterX(phase) + gaussian(random) * 0.12 * sigma;
         const offsetY = 1.3 * jitterY(phase) + gaussian(random) * 0.12 * sigma;
         const boost = 1 + 0.5 * puff(phase * 2);
-        spray(layer, random, x + offsetX, y + offsetY, sigma * (0.85 + 0.3 * random()), (rate * step * boost) / 6, step / 6);
+        spray(layer, random, center.x + offsetX, center.y + offsetY, sigma * (0.85 + 0.3 * random()), (rate * step * boost) / 6, step / 6);
       }
       elapsed += step;
       return elapsed >= duration;

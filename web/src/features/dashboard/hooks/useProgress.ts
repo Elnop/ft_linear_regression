@@ -7,7 +7,7 @@ export function useProgress(): { label: string; value: string } {
   return useSequence(
     useShallow((state) =>
       state.phase === 'descent' || state.phase === 'interactive'
-        ? { label: 'PASSAGE', value: formatNumber(state.iteration ?? state.trainOptions.iterations) }
+        ? { label: 'PASSAGE', value: formatNumber(state.iteration) }
         : { label: 'POINTS', value: `${state.visiblePoints} / ${DATA.length}` },
     ),
   );

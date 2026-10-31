@@ -57,6 +57,18 @@ body {
   background: rgba(240, 234, 214, 0.42);
   pointer-events: none;
 }
+.wall-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #0b0b0d center / cover;
+}
+.wall-paint {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
 
 .label {
   font-size: 11px;

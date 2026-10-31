@@ -1,7 +1,7 @@
 import { formatNumber } from '@/lib/format.ts';
 import '@/features/dashboard/panels/panels.css';
 
-export type PrecisionPanelProps = {
+type PrecisionPanelProps = {
   r2: number | null;
   rmse: number | null;
   mae: number | null;
@@ -9,7 +9,7 @@ export type PrecisionPanelProps = {
 
 export function PrecisionPanel({ r2, rmse, mae }: PrecisionPanelProps) {
   return (
-    <dl className="panel glass metrics dashboard-hit" aria-label="Précision" style={{ margin: 0 }}>
+    <dl className="panel glass metrics dashboard-hit" aria-label="Précision">
       <Metric label="R²" value={formatNumber(r2, 3)} color="var(--magenta)" />
       <Metric label="RMSE" value={formatNumber(rmse)} />
       <Metric label="MAE" value={formatNumber(mae)} />

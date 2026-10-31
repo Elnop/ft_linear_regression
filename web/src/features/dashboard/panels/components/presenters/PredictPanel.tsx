@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { formatNumber } from '@/lib/format.ts';
 import '@/features/dashboard/panels/panels.css';
 
-export type PredictPanelProps = {
+type PredictPanelProps = {
   value: string;
   onChange: (value: string) => void;
   invalid: boolean;
@@ -13,7 +13,7 @@ export function PredictPanel({ value, onChange, invalid, price }: PredictPanelPr
   const id = useId();
   return (
     <div className="panel glass dashboard-hit">
-      <div className="tape" aria-hidden="true" style={{ left: 24, transform: 'rotate(-4deg)' }} />
+      <div className="tape predict-tape" aria-hidden="true" />
       <label htmlFor={id} className="label">
         Prédire · kilométrage
       </label>
@@ -29,12 +29,12 @@ export function PredictPanel({ value, onChange, invalid, price }: PredictPanelPr
           aria-invalid={invalid}
           aria-describedby={invalid ? `${id}-error` : undefined}
         />
-        <span aria-hidden="true" style={{ fontSize: 13, color: 'var(--ink-dimmed)' }}>
+        <span aria-hidden="true" className="km-unit">
           km
         </span>
       </div>
       <div className="predict-output">
-        <span style={{ fontSize: 12, color: 'var(--ink-dimmed)' }}>θ0 + θ1 × km</span>
+        <span className="predict-formula">θ0 + θ1 × km</span>
         <output htmlFor={id} className="predict-price" aria-live="polite">
           {price === null ? '—' : `${formatNumber(price)} €`}
         </output>

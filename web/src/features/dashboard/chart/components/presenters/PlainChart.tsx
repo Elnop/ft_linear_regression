@@ -1,11 +1,11 @@
 import type { Sample } from '@core/types.ts';
-import type { ChartMapping } from '@/lib/chart.ts';
+import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
 import { formatNumber } from '@/lib/format.ts';
 import { SMALL } from '@/lib/layout.ts';
-import type { Rectangle, Vec2 } from '@/lib/paint/types.ts';
+import type { Rectangle, Vec2 } from '@/lib/geometry.ts';
 import '@/features/dashboard/chart/chart.css';
 
-export type PlainChartProps = {
+type PlainChartProps = {
   chart: ChartMapping;
   width: number;
   rectangle: Rectangle;
@@ -14,24 +14,12 @@ export type PlainChartProps = {
   prediction: { km: number; price: number; at: Vec2 } | null;
 };
 
-const KM_STEP = 50_000;
-const PRICE_STEP = 1_000;
-
-const range = (from: number, to: number, step: number) => {
-  const out: number[] = [];
-  for (let value = from; value <= to + 1e-9; value += step) out.push(value);
-  return out;
-};
-
-const short = (value: number) => (value === 0 ? '0' : `${Math.round(value / 1000)}k`);
-
 export function PlainChart({ chart, width, rectangle, samples, line, prediction }: PlainChartProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.height;
   const right = area.x + area.width;
   const fontSize = width < SMALL ? 11 : 13;
-  const kmTicks = range(domain.kmMin, domain.kmMax, KM_STEP);
-  const priceTicks = range(domain.priceMin, domain.priceMax, PRICE_STEP);
+  const { kmTicks, priceTicks } = chartTicks(domain);
 
   return (
     <svg
@@ -54,12 +42,12 @@ export function PlainChart({ chart, width, rectangle, samples, line, prediction 
       <g className="plain-text">
         {kmTicks.map((km) => (
           <text key={km} x={chart.x(km)} y={bottom + fontSize + 8} textAnchor="middle">
-            {short(km)}
+            {formatTick(km)}
           </text>
         ))}
         {priceTicks.map((price) => (
           <text key={price} x={area.x - 10} y={chart.y(price) + fontSize * 0.35} textAnchor="end">
-            {short(price)}
+            {formatTick(price)}
           </text>
         ))}
         <text x={right - 8} y={bottom - 10} textAnchor="end">

@@ -1,7 +1,7 @@
 import type { Overlay } from '@/features/dashboard/chart/lib/overlay.ts';
 import '@/features/dashboard/chart/chart.css';
 
-export type OverlayTogglesProps = {
+type OverlayTogglesProps = {
   overlay: Overlay;
   onToggle: (overlay: Overlay) => void;
 };

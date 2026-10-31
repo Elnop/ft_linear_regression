@@ -2,7 +2,7 @@ import { PALETTE } from '@/lib/paint/color.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
 import { dotJob, moveJob, NOMINAL_SPEED, pathJob } from '@/lib/paint/nozzle.ts';
-import type { Vec2 } from '@/lib/paint/types.ts';
+import type { Vec2 } from '@/lib/geometry.ts';
 import { mulberry32, randomSeed } from '@/lib/random.ts';
 import { STROKE, titleLayout, titleLetters, type Stroke, type TitleLine } from './layout.ts';
 
@@ -40,9 +40,8 @@ export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<Pai
 const STAMP_SPEED = 1e5;
 
 function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
-  const first = stroke.points[0];
   if (stroke.dot) {
-    void engine.spray(dotJob(layer, first.x, first.y, { width: width * 1.25, duration: 120, load: stroke.thickness, seed: random() * 2 ** 32 }), true);
+    void engine.spray(dotJob(layer, stroke.points[0], { width: width * 1.25, duration: 120, load: stroke.thickness, seed: random() * 2 ** 32 }), true);
     return;
   }
   const heavy = stroke.thickness > 1.1;

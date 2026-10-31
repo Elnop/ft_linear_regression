@@ -4,7 +4,7 @@ import '@/features/dashboard/chart/chart.css';
 
 export type DatasetRow = Sample & { estimate: number | null };
 
-export type DatasetPanelProps = {
+type DatasetPanelProps = {
   rows: DatasetRow[];
 };
 

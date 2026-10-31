@@ -14,5 +14,3 @@ export function formatNumber(value: number | null | undefined, decimals = 0): st
   const sign = value < 0 && Number(Math.abs(value).toFixed(decimals)) !== 0 ? MINUS : '';
   return sign + grouped + (fractionPart ? `.${fractionPart}` : '');
 }
-
-export const isDisplayablePrice = (price: number) => Number.isFinite(price) && Math.abs(price) < 1e7;

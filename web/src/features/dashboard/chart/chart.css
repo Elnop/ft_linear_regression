@@ -10,6 +10,29 @@
   pointer-events: none;
   z-index: 5;
 }
+.price-guide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+.price-halo,
+.price-dot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.price-halo {
+  width: 36px;
+  height: 36px;
+  background: radial-gradient(circle, rgba(230, 255, 0, 0.5) 0%, transparent 70%);
+}
+.price-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--acid);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.55);
+}
 .hello {
   position: absolute;
   width: 206px;

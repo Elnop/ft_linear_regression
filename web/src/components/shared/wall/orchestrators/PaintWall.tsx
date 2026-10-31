@@ -27,8 +27,8 @@ export function PaintWall() {
 
   return (
     <>
-      <div style={{ position: 'fixed', inset: 0, background: `#0b0b0d url(${wallUrl}) center / cover`, zIndex: 0 }} />
-      <div ref={box} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 2 }} />
+      <div className="wall-backdrop" style={{ backgroundImage: `url(${wallUrl})` }} />
+      <div ref={box} className="wall-paint" />
     </>
   );
 }

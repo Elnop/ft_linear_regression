@@ -19,8 +19,8 @@ export function DocumentationPage() {
 
   return (
     <section id="documentation" className="documentation glass dashboard-hit" aria-labelledby="documentation-title">
-      <span className="tape" style={{ left: 48, transform: 'rotate(-4deg)' }} />
-      <span className="tape" style={{ right: 64, transform: 'rotate(5deg)' }} />
+      <span className="tape documentation-tape-left" />
+      <span className="tape documentation-tape-right" />
       <DocumentationHeader />
       <DocumentationTabs tab={tab} tabRefs={tabRefs} onSelect={setTab} onKeyDown={onTabKeyDown} />
       <div role="tabpanel" id={`documentation-panel-${tab}`} aria-labelledby={`documentation-tab-${tab}`} className="documentation-panel">

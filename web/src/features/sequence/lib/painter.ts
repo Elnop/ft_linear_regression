@@ -4,7 +4,7 @@ import { chartFor } from '@/lib/layout.ts';
 import type { PaintEngine } from '@/lib/paint/engine.ts';
 import type { PaintLayer } from '@/lib/paint/layer.ts';
 import { dotJob, NOMINAL_SPEED, pathJob } from '@/lib/paint/nozzle.ts';
-import type { Rectangle } from '@/lib/paint/types.ts';
+import type { Rectangle } from '@/lib/geometry.ts';
 import { lineSegment } from './geometry.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE } from './style.ts';
 import type { Timeline } from './timeline.ts';
@@ -49,14 +49,14 @@ export class WallPainter {
   sprayPoint(index: number, duration: number): Promise<void> {
     const { layer, center, options } = this.pointLayer(index, 2);
     this.topPoints.push(layer);
-    return this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration }), this.timeline.instant);
+    return this.engine.spray(dotJob(layer, center, { ...options, duration }), this.timeline.instant);
   }
 
   stampPoints(order: number[], fade: number): Promise<void[]> {
     return Promise.all(
       order.map((i) => {
         const { layer, center, options } = this.pointLayer(i, 0, 0);
-        void this.engine.spray(dotJob(layer, center.x, center.y, { ...options, duration: TIMING.dot }), true);
+        void this.engine.spray(dotJob(layer, center, { ...options, duration: TIMING.dot }), true);
         return this.engine.fadeLayer(layer, 1, this.fadeTime(fade));
       }),
     );

@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/lib/format.ts';
+import type { Vec2 } from '@/lib/geometry.ts';
 import { SMALL } from '@/lib/layout.ts';
 import '@/features/dashboard/chart/chart.css';
 
-export type PriceMarkerProps = {
-  at: { x: number; y: number } | null;
+type PriceMarkerProps = {
+  at: Vec2 | null;
   price: number | null;
   axisY: number;
   width: number;
@@ -25,33 +26,12 @@ export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
       {visible && (
         <>
           {axisY > at.y && (
-            <svg width={width} height={axisY + 4} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible' }}>
+            <svg className="price-guide" width={width} height={axisY + 4}>
               <line x1={at.x} y1={at.y} x2={at.x} y2={axisY} stroke="var(--acid)" strokeWidth="2" strokeDasharray="2 8" strokeLinecap="round" opacity="0.8" />
             </svg>
           )}
-          <div
-            style={{
-              position: 'absolute',
-              left: at.x - 18,
-              top: at.y - 18,
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(230,255,0,0.5) 0%, transparent 70%)',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              left: at.x - 8,
-              top: at.y - 8,
-              width: 16,
-              height: 16,
-              borderRadius: '50%',
-              background: 'var(--acid)',
-              boxShadow: '0 0 0 3px rgba(0,0,0,0.55)',
-            }}
-          />
+          <div className="price-halo" style={{ left: at.x, top: at.y }} />
+          <div className="price-dot" style={{ left: at.x, top: at.y }} />
         </>
       )}
       <AnimatePresence>

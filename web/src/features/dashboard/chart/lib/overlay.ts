@@ -1,5 +1,5 @@
 import type { ChartMapping } from '@/lib/chart.ts';
-import type { Rectangle } from '@/lib/paint/types.ts';
+import type { Rectangle } from '@/lib/geometry.ts';
 
 export type Overlay = 'wall' | 'chart' | 'dataset';
 

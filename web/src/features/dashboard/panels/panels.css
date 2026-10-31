@@ -1,4 +1,5 @@
 .dashboard-chips {
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -13,6 +14,7 @@
   border-radius: 12px;
 }
 .chip-value {
+  margin: 0;
   font-size: 18px;
   font-weight: 700;
   color: var(--cyan);
@@ -21,11 +23,43 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.chip-value-plain {
+  color: var(--ink);
+}
 .panel {
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 20px 20px 16px;
+}
+.predict-tape {
+  left: 24px;
+  transform: rotate(-4deg);
+}
+.cost-tape {
+  right: 30px;
+  top: -10px;
+  width: 70px;
+  height: 20px;
+  transform: rotate(5deg);
+}
+.km-unit {
+  font-size: 13px;
+  color: var(--ink-dimmed);
+}
+.predict-formula {
+  font-size: 12px;
+  color: var(--ink-dimmed);
+}
+.cost-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.cost-glow {
+  opacity: 0.18;
+  filter: blur(4px);
 }
 .km-field {
   display: flex;

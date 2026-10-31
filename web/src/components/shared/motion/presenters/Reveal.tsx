@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import type { CSSProperties, ReactNode } from 'react';
 
-type Props = {
+type RevealProps = {
   visible: boolean;
   from?: { x?: number; y?: number };
   className?: string;
@@ -11,7 +11,7 @@ type Props = {
   children: ReactNode;
 };
 
-export function Reveal({ visible, from = { y: 14 }, className, style, label, as = 'div', children }: Props) {
+export function Reveal({ visible, from = { y: 14 }, className, style, label, as = 'div', children }: RevealProps) {
   const Tag = motion[as];
   return (
     <Tag

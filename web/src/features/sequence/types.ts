@@ -15,7 +15,6 @@ export type SequenceState = {
   costHistory: CostPoint[];
   diverged: boolean;
   trainingActive: boolean;
-  trainOptions: TrainOptions;
 };
 
 export type SequenceActions = {

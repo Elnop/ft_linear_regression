@@ -1,9 +1,10 @@
 import { chartMapping } from '@/lib/chart.ts';
 import { pagePadding, WIDE } from '@/lib/layout.ts';
-import type { Rectangle, Vec2 } from '@/lib/paint/types.ts';
+import type { Rectangle, Vec2 } from '@/lib/geometry.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
 
 const TITLE = 'ft_linear_regression';
+const SPLIT_TITLE_BELOW = 700;
 const ASCENT = 1.72;
 const DESCENT = 0.66;
 const LINE_GAP = 0.12;
@@ -26,7 +27,7 @@ const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
 export function titleLayout(width: number, height: number): TitleLayout {
   const padding = pagePadding(width);
   const top = Math.max(14, Math.min(28, height * 0.025));
-  const texts = width < 700 ? ['ft_linear_', 'regression'] : [TITLE];
+  const texts = width < SPLIT_TITLE_BELOW ? ['ft_linear_', 'regression'] : [TITLE];
   const maxWidth = width >= WIDE ? Math.min(width * 0.6, 920, width - 2 * padding - 420) : width - 2 * padding;
   const maxHeight = chartMapping(width, height).area.y - top - TITLE_GAP_BELOW;
   const unit = measure(texts);

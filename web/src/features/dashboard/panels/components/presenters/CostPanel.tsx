@@ -2,9 +2,9 @@ import { formatNumber } from '@/lib/format.ts';
 import type { CostPoint } from '@/features/sequence/types.ts';
 import '@/features/dashboard/panels/panels.css';
 
-export type CostPanelProps = {
+type CostPanelProps = {
   history: CostPoint[];
-  diverged?: boolean;
+  diverged: boolean;
 };
 
 const WIDTH = 280;
@@ -28,25 +28,25 @@ function sparkline(history: CostPoint[]): string {
     .join(' ');
 }
 
-export function CostPanel({ history, diverged = false }: CostPanelProps) {
+export function CostPanel({ history, diverged }: CostPanelProps) {
   const last = history[history.length - 1];
   const points = sparkline(history);
   const color = diverged ? 'var(--danger)' : 'var(--cyan)';
   const lastIteration = last?.iteration ?? 0;
   return (
-    <figure className="panel glass dashboard-hit" style={{ margin: 0 }}>
-      <div className="tape" aria-hidden="true" style={{ right: 30, top: -10, width: 70, height: 20, transform: 'rotate(5deg)' }} />
+    <figure className="panel glass dashboard-hit">
+      <div className="tape cost-tape" aria-hidden="true" />
       <figcaption className="cost-header">
         <span className="label">Coût J(θ) · log</span>
         <span className="cost-value" style={{ color }}>
           {last ? formatNumber(last.cost) : '—'}
         </span>
       </figcaption>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} passages`} style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} passages`} className="cost-chart">
         <line x1="0" y1={HEIGHT} x2={WIDTH} y2={HEIGHT} stroke="rgba(239,236,230,0.2)" strokeWidth="1" strokeDasharray="3 5" />
         {points && (
           <>
-            <polyline points={points} fill="none" stroke={color} strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" opacity="0.18" style={{ filter: 'blur(4px)' }} />
+            <polyline points={points} fill="none" stroke={color} strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" className="cost-glow" />
             <polyline points={points} fill="none" stroke={color} strokeWidth="4" strokeLinejoin="round" strokeLinecap="round" />
           </>
         )}

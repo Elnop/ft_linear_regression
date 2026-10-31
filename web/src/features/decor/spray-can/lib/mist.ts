@@ -1,5 +1,5 @@
 import { gaussian } from '@/lib/random.ts';
-import type { Vec2 } from '@/lib/paint/types.ts';
+import type { Vec2 } from '@/lib/geometry.ts';
 
 export function drawMist(context: CanvasRenderingContext2D, from: Vec2, to: Vec2, color: string, canWidth: number) {
   const glow = context.createRadialGradient(to.x, to.y, 0, to.x, to.y, canWidth * 0.28);

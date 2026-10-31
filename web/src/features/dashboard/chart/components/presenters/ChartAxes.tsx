@@ -1,35 +1,23 @@
 import { motion } from 'motion/react';
-import type { ChartMapping } from '@/lib/chart.ts';
+import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
 import { SMALL } from '@/lib/layout.ts';
 import '@/features/dashboard/chart/chart.css';
 
-export type ChartAxesProps = {
+type ChartAxesProps = {
   chart: ChartMapping;
   width: number;
   height: number;
-  visible?: boolean;
+  visible: boolean;
 };
 
 const CHALK = 'rgba(239,236,230,0.62)';
-const KM_STEP = 50_000;
-const PRICE_STEP = 1_000;
-
-const range = (from: number, to: number, step: number) => {
-  const out: number[] = [];
-  for (let value = from; value <= to + 1e-9; value += step) out.push(value);
-  return out;
-};
-
-const short = (value: number) => (value === 0 ? '0' : `${Math.round(value / 1000)}k`);
-
-export function ChartAxes({ chart, width, height, visible = true }: ChartAxesProps) {
+export function ChartAxes({ chart, width, height, visible }: ChartAxesProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.height;
   const right = area.x + area.width;
   const small = width < SMALL;
   const fontSize = small ? 12 : 15;
-  const kmTicks = range(domain.kmMin, domain.kmMax, KM_STEP);
-  const priceTicks = range(domain.priceMin, domain.priceMax, PRICE_STEP);
+  const { kmTicks, priceTicks } = chartTicks(domain);
   return (
     <motion.svg
       className="wall-axes"
@@ -37,7 +25,7 @@ export function ChartAxes({ chart, width, height, visible = true }: ChartAxesPro
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       role="img"
-      aria-label={`Graphe du prix (${short(domain.priceMin)} à ${short(domain.priceMax)} €) en fonction du kilométrage (${short(domain.kmMin)} à ${short(domain.kmMax)} km)`}
+      aria-label={`Graphe du prix (${formatTick(domain.priceMin)} à ${formatTick(domain.priceMax)} €) en fonction du kilométrage (${formatTick(domain.kmMin)} à ${formatTick(domain.kmMax)} km)`}
       initial={false}
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.8 }}
@@ -62,12 +50,12 @@ export function ChartAxes({ chart, width, height, visible = true }: ChartAxesPro
       <g className="axis-text" fontSize={fontSize}>
         {kmTicks.map((km) => (
           <text key={km} x={chart.x(km)} y={bottom + 12 + fontSize} textAnchor="middle">
-            {short(km)}
+            {formatTick(km)}
           </text>
         ))}
         {priceTicks.map((price) => (
           <text key={price} x={area.x - 12} y={chart.y(price) + fontSize * 0.36} textAnchor="end">
-            {short(price)}
+            {formatTick(price)}
           </text>
         ))}
         <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fontSize + 2}>

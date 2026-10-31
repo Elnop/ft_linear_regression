@@ -60,7 +60,7 @@ export class SequenceController {
     const plan = runTraining(this.samples, options);
     const run = this.timeline.restart();
     this.training = plan;
-    this.set({ trainingActive: true, trainOptions: options, diverged: false, costHistory: [] });
+    this.set({ trainingActive: true, diverged: false, costHistory: [] });
     await this.timeline.play(() => this.playTraining(run, plan));
   };
 

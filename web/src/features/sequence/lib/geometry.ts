@@ -2,7 +2,7 @@ import { estimatePrice } from '@core/hypothesis.ts';
 import { hasFiniteThetas } from '@core/thetas.ts';
 import type { Thetas } from '@core/types.ts';
 import type { ChartMapping } from '@/lib/chart.ts';
-import type { Rectangle, Vec2 } from '@/lib/paint/types.ts';
+import type { Rectangle, Vec2 } from '@/lib/geometry.ts';
 
 function clipSegment(start: Vec2, end: Vec2, rectangle: Rectangle): [Vec2, Vec2] | null {
   const dx = end.x - start.x;

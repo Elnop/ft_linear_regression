@@ -92,11 +92,11 @@ web/src/
 │   ├── decor/      autocollants et bombe de peinture
 │   └── docs/       documentation intégrée (contenu, onglets)
 ├── components/shared/   composants sans domaine (PaintWall, Reveal)
-├── lib/            technique sans domaine : moteur de peinture, viewport, graphe, aléatoire, formatage
+├── lib/            technique sans domaine : moteur de peinture, viewport, graphe, géométrie, aléatoire, formatage
 └── styles/         tokens et styles globaux
 ```
 
-- Dans une feature, les composants sont rangés par rôle : `orchestrators/` lisent les stores, `presenters/` affichent ce qu'on leur passe par props. La logique va dans `hooks/` et `lib/`.
+- Dans une feature, les composants sont rangés par rôle : `orchestrators/` lisent les stores, `presenters/` affichent ce qu'on leur passe par props. La logique va dans `hooks/` et `lib/`. Un orchestrateur qui branche un presenter du même nom prend le suffixe `Container` (`CostPanelContainer` affiche `CostPanel`).
 - L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul propriétaire qui écrit dedans :
 
   | Store | Contenu | Écrit par |
