@@ -15,7 +15,7 @@ estimatePrice(mileage) = θ0 + (θ1 * mileage)
 
 Avant tout entraînement, `θ0 = θ1 = 0`, donc toute estimation vaut 0.
 
-Code : [`core/hypothesis.ts`](../core/hypothesis.ts).
+Code : [`core/estimatePrice.ts`](../core/estimatePrice.ts).
 
 ## 2. Fonction de coût
 
@@ -49,7 +49,7 @@ tmpθ1 = learningRate * 1/m * Σ (estimatePrice(mileage[i]) - price[i]) * mileag
 
 Les deux sommes sont calculées avec les mêmes `θ`, ceux d'avant l'itération. On ne met à jour `θ0` et `θ1` qu'une fois les deux `tmp` calculés. Si on mettait `θ0` à jour avant de calculer `tmpθ1`, `tmpθ1` utiliserait un `θ0` déjà modifié : ce ne serait plus le gradient de `J`.
 
-Dans [`core/gradient.ts`](../core/gradient.ts), une seule boucle accumule les deux sommes, puis la fonction renvoie un nouvel objet `{ theta0, theta1 }`. L'ancien n'est jamais modifié.
+Dans [`core/gradientStep.ts`](../core/gradientStep.ts), une seule boucle accumule les deux sommes, puis la fonction renvoie un nouvel objet `{ theta0, theta1 }`. L'ancien n'est jamais modifié.
 
 ## 4. Pourquoi normaliser le kilométrage
 

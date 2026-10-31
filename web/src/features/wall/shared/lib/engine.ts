@@ -1,10 +1,10 @@
-import { smoothstep } from '@/shared/lib/easing.ts';
-import { stepFlow } from './flow.ts';
+import { smoothstep } from '@/shared/lib/smoothstep.ts';
+import { stepFlow } from './stepFlow.ts';
 import { FILM_SCALE, PaintLayer } from './layer.ts';
 import type { Job } from './nozzle.ts';
 import { createGLRenderer, type Renderer } from './glRenderer.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
-import type { LayerOptions, Nozzle } from './SprayTypes.ts';
+import type { LayerOptions, Nozzle } from '@/features/wall/shared/SprayTypes.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;

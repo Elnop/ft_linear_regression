@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
+import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import type { Vec2 } from '@/shared/lib/geometry.ts';
 import { SMALL } from '@/features/dashboard/shared/lib/layout.ts';
 import '@/features/dashboard/wall-marker/wall-marker.css';

@@ -1,7 +1,7 @@
-import { estimatePrice } from '@core/hypothesis.ts';
-import { hasFiniteThetas } from '@core/thetas.ts';
+import { estimatePrice } from '@core/estimatePrice.ts';
+import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
 import type { Thetas } from '@core/CoreTypes.ts';
-import type { ChartMapping } from '@/shared/lib/chart.ts';
+import type { ChartMapping } from '@/shared/lib/chartMapping.ts';
 import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
 
 function clipSegment(start: Vec2, end: Vec2, rectangle: Rectangle): [Vec2, Vec2] | null {

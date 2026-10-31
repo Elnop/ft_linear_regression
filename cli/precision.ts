@@ -1,6 +1,6 @@
 import { mae, mean, r2, rmse } from '../core/metrics.ts';
-import { parseCli } from './args.ts';
-import { loadDataset } from './dataset.ts';
+import { parseCli } from './parseCli.ts';
+import { loadDataset } from './loadDataset.ts';
 import { readModel } from './model.ts';
 import { fail } from './process.ts';
 

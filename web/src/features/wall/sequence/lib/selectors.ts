@@ -1,4 +1,4 @@
-import { hasFiniteThetas } from '@core/thetas.ts';
+import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
 import type { SequenceState } from '@/features/wall/sequence/SequenceTypes.ts';
 
 export const selectIntro = (state: SequenceState) => state.phase !== 'interactive';

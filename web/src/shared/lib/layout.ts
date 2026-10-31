@@ -1,4 +1,4 @@
-import { chartMapping, type ChartMapping } from './chart.ts';
+import { chartMapping, type ChartMapping } from './chartMapping.ts';
 
 export const WIDE = 1024;
 export const ASIDE_WIDTH = 340;

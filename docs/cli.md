@@ -61,7 +61,7 @@ Estimated price: 6354.70
 Équivalent sans npm : `node cli/predict.ts`.
 
 - Si `model.json` n'existe pas (aucun entraînement encore), `θ0 = θ1 = 0` et le prix estimé vaut `0.00`, comme le demande le sujet.
-- Le kilométrage doit être un nombre décimal positif écrit simplement : `42`, `42.5`. Les notations `1e5` ou `0x10` sont refusées volontairement. La règle est écrite une seule fois, dans `parseMileage` ([`core/mileage.ts`](../core/mileage.ts)), et l'app web utilise la même pour son champ de prédiction.
+- Le kilométrage doit être un nombre décimal positif écrit simplement : `42`, `42.5`. Les notations `1e5` ou `0x10` sont refusées volontairement. La règle est écrite une seule fois, dans `parseMileage` ([`core/parseMileage.ts`](../core/parseMileage.ts)), et l'app web utilise la même pour son champ de prédiction.
 
 ## `precision` (bonus)
 
@@ -136,7 +136,7 @@ Les trois programmes partagent quelques modules, chacun avec un seul rôle. Le c
 | [`cli/train.ts`](../cli/train.ts) | programme `train` |
 | [`cli/predict.ts`](../cli/predict.ts) | programme `predict` |
 | [`cli/precision.ts`](../cli/precision.ts) | programme `precision` |
-| [`cli/args.ts`](../cli/args.ts) | `parseCli` : argument `[dataset.csv]`, options, `--help` et erreurs d'usage |
-| [`cli/dataset.ts`](../cli/dataset.ts) | `loadDataset` : lit le fichier et le passe à `parseDataset` |
+| [`cli/parseCli.ts`](../cli/parseCli.ts) | `parseCli` : argument `[dataset.csv]`, options, `--help` et erreurs d'usage |
+| [`cli/loadDataset.ts`](../cli/loadDataset.ts) | `loadDataset` : lit le fichier et le passe à `parseDataset` |
 | [`cli/model.ts`](../cli/model.ts) | `readModel` / `writeModel` : lecture, validation et écriture de `model.json` |
 | [`cli/process.ts`](../cli/process.ts) | `fail` (message `Error: …` sur stderr, code 1) et `errorCode` |

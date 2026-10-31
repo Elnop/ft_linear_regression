@@ -1,4 +1,4 @@
-import type { ChartMapping } from '@/shared/lib/chart.ts';
+import type { ChartMapping } from '@/shared/lib/chartMapping.ts';
 import type { Rectangle } from '@/shared/lib/geometry.ts';
 
 export function overlayRectangle({ area }: ChartMapping, width: number): Rectangle {

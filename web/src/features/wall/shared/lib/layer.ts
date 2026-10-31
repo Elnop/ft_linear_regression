@@ -1,6 +1,6 @@
-import { hexToRgb } from './color.ts';
+import { hexToRgb } from './hexToRgb.ts';
 import type { Rectangle } from '@/shared/lib/geometry.ts';
-import type { LayerOptions, Rgb } from './SprayTypes.ts';
+import type { LayerOptions, Rgb } from '@/features/wall/shared/SprayTypes.ts';
 import type { Roughness } from './roughness.ts';
 import { mulberry32, noise2D } from '@/shared/lib/random.ts';
 

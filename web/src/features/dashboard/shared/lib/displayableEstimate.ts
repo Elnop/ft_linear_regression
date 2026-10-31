@@ -1,4 +1,4 @@
-import { estimatePrice } from '@core/hypothesis.ts';
+import { estimatePrice } from '@core/estimatePrice.ts';
 import type { Thetas } from '@core/CoreTypes.ts';
 
 const DISPLAYABLE_LIMIT = 1e7;

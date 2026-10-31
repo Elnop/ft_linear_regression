@@ -1,4 +1,4 @@
-import { PALETTE } from '@/features/wall/shared/lib/color.ts';
+import { PALETTE } from '@/features/wall/shared/PaletteConfig.ts';
 
 export const STYLE = {
   dot: { width: 15, load: [1.8, 2.7] },

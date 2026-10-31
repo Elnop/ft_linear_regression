@@ -1,5 +1,5 @@
 import { mae, r2, rmse } from '@core/metrics.ts';
-import { hasFiniteThetas } from '@core/thetas.ts';
+import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
 import { trainSteps } from '@core/train.ts';
 import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/CoreTypes.ts';
 import type { CostPoint, Metrics } from '@/features/wall/sequence/SequenceTypes.ts';

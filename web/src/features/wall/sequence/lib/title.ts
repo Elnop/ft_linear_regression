@@ -1,4 +1,4 @@
-import { PALETTE } from '@/features/wall/shared/lib/color.ts';
+import { PALETTE } from '@/features/wall/shared/PaletteConfig.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
 import { dotJob, moveJob, NOMINAL_SPEED, pathJob } from '@/features/wall/shared/lib/nozzle.ts';

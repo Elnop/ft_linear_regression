@@ -1,5 +1,5 @@
 import type { CellRectangle, PaintLayer } from './layer.ts';
-import { coverRectangle } from './cover.ts';
+import { coverRectangle } from './coverRectangle.ts';
 import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from './shaders.ts';
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {

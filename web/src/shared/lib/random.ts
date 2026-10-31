@@ -1,4 +1,4 @@
-import { smoothstep } from '@/shared/lib/easing.ts';
+import { smoothstep } from '@/shared/lib/smoothstep.ts';
 
 export type RandomGenerator = () => number;
 

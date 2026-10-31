@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
 import { chartFor } from '@/shared/lib/layout.ts';
-import type { ChartMapping } from '@/shared/lib/chart.ts';
+import type { ChartMapping } from '@/shared/lib/chartMapping.ts';
 
 type Viewport = { width: number; height: number };
 

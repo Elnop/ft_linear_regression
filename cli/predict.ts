@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline';
-import { estimatePrice } from '../core/hypothesis.ts';
-import { parseMileage } from '../core/mileage.ts';
+import { estimatePrice } from '../core/estimatePrice.ts';
+import { parseMileage } from '../core/parseMileage.ts';
 import { readModel } from './model.ts';
 import { fail } from './process.ts';
 

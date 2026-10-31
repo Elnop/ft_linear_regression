@@ -1,6 +1,4 @@
-import type { Rgb } from './SprayTypes.ts';
-
-export const PALETTE = { cyan: '#00f0ff', magenta: '#ff2bd6', yellow: '#e6ff00' } as const;
+import type { Rgb } from '@/features/wall/shared/SprayTypes.ts';
 
 export function hexToRgb(hex: string): Rgb {
   const value = parseInt(hex.replace('#', ''), 16);

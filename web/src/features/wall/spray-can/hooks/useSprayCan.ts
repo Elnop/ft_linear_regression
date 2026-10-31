@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { CanMotion } from '@/features/wall/spray-can/lib/motion.ts';
-import { drawMist } from '@/features/wall/spray-can/lib/mist.ts';
+import { drawMist } from '@/features/wall/spray-can/lib/drawMist.ts';
 import { HOLE, VIEW_WIDTH } from '@/features/wall/spray-can/lib/shape.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
 

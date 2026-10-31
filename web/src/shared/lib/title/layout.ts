@@ -1,4 +1,4 @@
-import { chartMapping } from '@/shared/lib/chart.ts';
+import { chartMapping } from '@/shared/lib/chartMapping.ts';
 import { pagePadding, WIDE } from '@/shared/lib/layout.ts';
 import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';

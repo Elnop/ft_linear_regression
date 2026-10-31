@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { hasFiniteThetas } from '../core/thetas.ts';
+import { hasFiniteThetas } from '../core/hasFiniteThetas.ts';
 import type { Thetas } from '../core/CoreTypes.ts';
 import { errorCode, fail } from './process.ts';
 

@@ -1,5 +1,5 @@
 import type { Sample } from '@core/CoreTypes.ts';
-import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
+import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import '@/features/dashboard/dataset-panel/dataset-panel.css';
 
 export type DatasetRow = Sample & { estimate: number | null };

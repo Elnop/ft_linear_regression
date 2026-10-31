@@ -8,19 +8,19 @@ ft_linear_regression/
 ├── package.json              # workspace npm, scripts train / predict / web / build
 ├── tsconfig.json             # typecheck de core/ et cli/
 ├── core/                     # calcul pur, partagé entre CLI et web
-│   ├── types.ts              # Sample, Thetas, TrainOptions, TrainStep
-│   ├── hypothesis.ts         # estimatePrice
-│   ├── gradient.ts           # une étape de descente de gradient
+│   ├── CoreTypes.ts          # Sample, Thetas, TrainOptions, TrainStep
+│   ├── estimatePrice.ts      # l'hypothèse imposée
+│   ├── gradientStep.ts       # une étape de descente de gradient
 │   ├── normalize.ts          # normalisation min-max et retour à l'échelle d'origine
 │   ├── metrics.ts            # moyenne, somme des carrés des erreurs, coût, RMSE, MAE, R²
-│   ├── thetas.ts             # hasFiniteThetas, partagé par l'entraînement, la CLI et le web
-│   ├── mileage.ts            # parseMileage : saisie du kilométrage, partagée CLI / web
+│   ├── hasFiniteThetas.ts    # partagé par l'entraînement, la CLI et le web
+│   ├── parseMileage.ts       # saisie du kilométrage, partagée CLI / web
 │   ├── csv.ts                # parsing et validation du dataset
 │   └── train.ts              # générateur trainSteps
 ├── cli/                      # partie obligatoire
 │   ├── process.ts            # fail(), errorCode()
-│   ├── args.ts               # parseCli : arguments, --help, erreurs d'usage
-│   ├── dataset.ts            # loadDataset : lecture et parsing du CSV
+│   ├── parseCli.ts           # arguments, --help, erreurs d'usage
+│   ├── loadDataset.ts        # lecture et parsing du CSV
 │   ├── model.ts              # lecture / écriture de model.json, validation des θ
 │   ├── train.ts              # programme d'entraînement
 │   ├── predict.ts            # programme de prédiction
@@ -44,7 +44,7 @@ Les entrées-sorties restent à l'extérieur. Par exemple, `parseDataset` reçoi
 
 ### Une seule implémentation de l'algorithme
 
-L'hypothèse et la formule d'entraînement imposées existent à un seul endroit : `core/hypothesis.ts` et `core/gradient.ts`. La CLI et le web appellent ces mêmes fonctions. Le correcteur n'a que deux petits fichiers à lire pour vérifier la conformité au sujet.
+L'hypothèse et la formule d'entraînement imposées existent à un seul endroit : `core/estimatePrice.ts` et `core/gradientStep.ts`. La CLI et le web appellent ces mêmes fonctions. Le correcteur n'a que deux petits fichiers à lire pour vérifier la conformité au sujet.
 
 ### Aucune lib ne fait le calcul
 
@@ -55,7 +55,7 @@ Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.)
 Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
 
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
-- les imports locaux finissent par `.ts` (`import { … } from './types.ts'`).
+- les imports locaux finissent par `.ts` (`import { … } from './CoreTypes.ts'`).
 
 `npm run typecheck` vérifie les types de `core/`, `cli/` et `web/`.
 

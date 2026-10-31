@@ -1,6 +1,6 @@
 import csvSource from '@core/csv.ts?raw';
-import gradientSource from '@core/gradient.ts?raw';
-import hypothesisSource from '@core/hypothesis.ts?raw';
+import gradientSource from '@core/gradientStep.ts?raw';
+import hypothesisSource from '@core/estimatePrice.ts?raw';
 import metricsSource from '@core/metrics.ts?raw';
 import normalizeSource from '@core/normalize.ts?raw';
 import trainSource from '@core/train.ts?raw';
@@ -25,7 +25,7 @@ export const CODE: Step[] = [
     ),
   },
   {
-    label: 'core/hypothesis.ts',
+    label: 'core/estimatePrice.ts',
     section: 'Le modèle',
     title: 'Estimer un prix',
     aside: <Code code={pick(hypothesisSource, 'estimatePrice')} />,
@@ -60,7 +60,7 @@ export const CODE: Step[] = [
     ),
   },
   {
-    label: 'core/gradient.ts',
+    label: 'core/gradientStep.ts',
     section: "L'entraînement",
     title: 'Une étape de descente',
     aside: <Code code={pick(gradientSource, 'gradientStep')} />,

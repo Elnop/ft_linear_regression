@@ -1,6 +1,6 @@
-import { parseMileage } from '@core/mileage.ts';
+import { parseMileage } from '@core/parseMileage.ts';
 import { useMemo } from 'react';
-import { displayableEstimate } from '@/features/dashboard/shared/lib/estimate.ts';
+import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
 import { selectIntro, selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';

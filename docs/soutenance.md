@@ -5,8 +5,8 @@
 | Point | Où le montrer |
 |---|---|
 | Aucune lib ne fait le travail | `package.json` : aucune dépendance à l'exécution pour `core/` et `cli/` |
-| Hypothèse imposée | [`core/hypothesis.ts`](../core/hypothesis.ts) |
-| Fonction d'entraînement imposée | [`core/gradient.ts`](../core/gradient.ts) |
+| Hypothèse imposée | [`core/estimatePrice.ts`](../core/estimatePrice.ts) |
+| Fonction d'entraînement imposée | [`core/gradientStep.ts`](../core/gradientStep.ts) |
 
 ## Démonstration conseillée
 

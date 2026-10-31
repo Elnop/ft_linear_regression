@@ -1,5 +1,5 @@
 import { mulberry32 } from '@/shared/lib/random.ts';
-import { coverRectangle } from './cover.ts';
+import { coverRectangle } from './coverRectangle.ts';
 
 export type Roughness = { at(x: number, y: number): number };
 

@@ -1,8 +1,8 @@
 import { DatasetPanel } from '@/features/dashboard/dataset-panel/components/presenters/DatasetPanel.tsx';
 import { OverlayPanel } from '@/features/dashboard/shared/components/presenters/OverlayPanel.tsx';
-import { overlayRectangle } from '@/features/dashboard/shared/lib/overlay.ts';
+import { overlayRectangle } from '@/features/dashboard/shared/lib/overlayRectangle.ts';
 import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
-import { displayableEstimate } from '@/features/dashboard/shared/lib/estimate.ts';
+import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { DATA } from '@/features/wall/sequence/lib/dataset.ts';
 import { selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';

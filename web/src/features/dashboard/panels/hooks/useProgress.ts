@@ -1,7 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
 import { DATA } from '@/features/wall/sequence/lib/dataset.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
-import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
+import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 
 export function useProgress(): { label: string; value: string } {
   return useSequence(
