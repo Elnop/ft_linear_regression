@@ -20,7 +20,7 @@ Le mur est une photo de béton banché assombrie (Poly Haven, CC0). La droite, l
 
 Une bombe de peinture en SVG (logo 42, aux couleurs du site) suit la buse du moteur. Elle prend la couleur de la peinture en cours, secoue quand la couleur change et enfonce le diffuseur pendant le spray. Quand plus rien n'est peint, elle tombe en tournant jusqu'en bas de l'écran. Elle est masquée pendant *Passer* et si l'utilisateur a demandé moins d'animations.
 
-Les autocollants sont dessinés en SVG dans `web/src/features/wall/stickers/configs/ArtsConfig.tsx` : logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient. Ils font environ 8 cm à l'échelle du mur et sont regroupés. Certains sont grattés jusqu'au papier blanc, d'autres ont un coin décollé ou un bord déchiré. L'usure vient de filtres SVG, avec une graine aléatoire fixe par autocollant.
+Les autocollants sont dessinés en SVG dans `web/src/features/wall/features/stickers/configs/ArtsConfig.tsx` : logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient. Ils font environ 8 cm à l'échelle du mur et sont regroupés. Certains sont grattés jusqu'au papier blanc, d'autres ont un coin décollé ou un bord déchiré. L'usure vient de filtres SVG, avec une graine aléatoire fixe par autocollant.
 
 Les panneaux de l'interface (θ0, θ1, coût, précision, champ kilométrage, réglages) sont en verre dépoli.
 
@@ -84,29 +84,33 @@ Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est i
 ```
 web/src/
 ├── main.tsx
-├── app/                          App : place WallLayout et DashboardLayout
+├── app/                              App : place WallLayout et DashboardLayout
 ├── features/
-│   ├── wall/                     le mur peint, composé par WallLayout
-│   │   ├── shared/               moteur de peinture, aléatoire
-│   │   ├── canvas/               PaintWall : crée le moteur et le publie
-│   │   ├── animation-director/   enchaîne titre, points et droites, sans interface
-│   │   ├── spray-can/            la bombe qui suit la buse
-│   │   └── stickers/             les autocollants
-│   ├── dashboard/                l'interface posée sur le mur, composée par DashboardLayout
-│   │   ├── shared/               kilométrage et prédiction, overlay affiché, panneau de verre, formatage
-│   │   ├── controls/             barre de réglages, Passer, choix des overlays
-│   │   ├── panels/               coût, précision, prédiction, puces d'en-tête
-│   │   └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
-│   └── docs/                     documentation intégrée (contenu, onglets)
-├── states/                       l'état métier que plusieurs features lisent ou écrivent
-│   ├── regression/               dataset, réglages par défaut, θ, métriques, historique du coût, divergence, learning rate
-│   └── animation-playback/       où en est l'animation : phase, points visibles, entraînement en cours, actions
-└── shared/                       code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
+│   ├── wall/                         le mur peint
+│   │   ├── components/               WallLayout : assemble les sous-features du mur
+│   │   ├── shared/                   moteur de peinture, aléatoire
+│   │   └── features/
+│   │       ├── canvas/               PaintWall : crée le moteur et le publie
+│   │       ├── animation-director/   enchaîne titre, points et droites, sans interface
+│   │       ├── spray-can/            la bombe qui suit la buse
+│   │       └── stickers/             les autocollants
+│   ├── dashboard/                    l'interface posée sur le mur
+│   │   ├── components/               DashboardLayout, HeadBar, Reveal
+│   │   ├── shared/                   kilométrage et prédiction, overlay affiché, panneau de verre, formatage
+│   │   └── features/
+│   │       ├── controls/             barre de réglages, Passer, choix des overlays
+│   │       ├── panels/               coût, précision, prédiction, puces d'en-tête
+│   │       └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
+│   └── docs/                         documentation intégrée (contenu, onglets)
+├── states/                           l'état métier que plusieurs features lisent ou écrivent
+│   ├── regression/                   dataset, réglages par défaut, θ, métriques, historique du coût, divergence, learning rate
+│   └── animation-playback/           où en est l'animation : phase, points visibles, entraînement en cours, actions
+└── shared/                           code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
 ```
 
 Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `app/` → `features/` → `states/` → `shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
 
-- Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
+- Une feature range ses sous-features dans son propre dossier `features/`, à côté de son `shared/` et de ses dossiers techniques, comme `src/` le fait pour les features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
 - Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `states/` : le wall écrit `states/regression` et `states/animation-playback` pendant l'animation, et le dashboard les lit.
 - Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par l'`AnimationDirector` du wall.
 - `src/shared/` ne contient aucun état métier, seulement du code transverse.
@@ -154,7 +158,7 @@ dependency-cruiser vérifie le sens des dépendances :
 
 - une couche n'importe que les couches en dessous d'elle : `src/shared/` ne connaît ni `states/` ni les features, `states/` ne connaît ni les features ni `app/`, et une feature ne remonte jamais vers `app/` ;
 - une feature n'importe jamais une autre feature (`no-cross-feature`), et un état n'importe pas un autre état (`no-cross-state`) ;
-- une sous-feature n'importe aucune de ses voisines, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
+- une sous-feature (`features/<x>/features/<y>/`) n'importe ni ses voisines ni la racine de sa feature, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
 - un presenter n'importe aucun store ni aucun hook d'état, et les stores restent dans un dossier `stores/`.
 
 Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.

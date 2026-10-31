@@ -58,12 +58,9 @@ module.exports = {
     {
       name: 'no-cross-sub-feature',
       severity: 'error',
-      comment: 'Une sous-feature n’importe aucune de ses voisines : ce qui sert à plusieurs va dans shared/ de la feature.',
-      from: {
-        path: '^src/features/([^/]+)/([^/]+)/',
-        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|shared|stores|styles|types)/',
-      },
-      to: { path: '^src/features/$1/', pathNot: '^src/features/$1/($2|shared)/' },
+      comment: 'Une sous-feature (features/<x>/features/<y>/) n’importe ni ses voisines ni la racine de sa feature : ce qui sert à plusieurs va dans le shared/ de la feature.',
+      from: { path: '^src/features/([^/]+)/features/([^/]+)/' },
+      to: { path: '^src/features/$1/', pathNot: '^src/features/$1/(features/$2|shared)/' },
     },
     {
       name: 'feature-shared-not-to-sub-features',
@@ -88,7 +85,8 @@ module.exports = {
         path: 'Store\\.ts$',
         pathNot: [
           '^src/features/[^/]+/stores/[^/]+Store\\.ts$',
-          '^src/features/[^/]+/[^/]+/stores/[^/]+Store\\.ts$',
+          '^src/features/[^/]+/shared/stores/[^/]+Store\\.ts$',
+          '^src/features/[^/]+/features/[^/]+/stores/[^/]+Store\\.ts$',
           '^src/shared/stores/[^/]+Store\\.ts$',
           '^src/states/[^/]+/stores/[^/]+Store\\.ts$',
         ],
