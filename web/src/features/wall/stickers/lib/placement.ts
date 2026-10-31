@@ -1,6 +1,6 @@
 import type { ChartMapping } from '@/shared/lib/chart.ts';
 import { WIDE } from '@/shared/lib/layout.ts';
-import type { Cluster, Damage, PlacedSticker } from '@/features/wall/stickers/types.ts';
+import type { Cluster, Damage, PlacedSticker } from '@/features/wall/stickers/StickersTypes.ts';
 import { car, descent, formula, logo42, norminette, piscine, react, typescript } from './arts.tsx';
 
 const CLUSTERS: Cluster[] = [

@@ -1,4 +1,4 @@
-import type { Thetas, TrainOptions } from '@core/types.ts';
+import type { Thetas, TrainOptions } from '@core/CoreTypes.ts';
 
 export type Phase = 'idle' | 'title' | 'descent' | 'interactive';
 

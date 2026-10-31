@@ -1,4 +1,4 @@
-import type { Sample } from '@core/types.ts';
+import type { Sample } from '@core/CoreTypes.ts';
 import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
 import '@/features/dashboard/dataset-panel/dataset-panel.css';
 

@@ -6,7 +6,7 @@ import normalizeSource from '@core/normalize.ts?raw';
 import trainSource from '@core/train.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
 import { pick } from '@/features/docs/lib/source.ts';
-import type { Step } from '@/features/docs/types.ts';
+import type { Step } from '@/features/docs/DocsTypes.ts';
 
 export const CODE: Step[] = [
   {

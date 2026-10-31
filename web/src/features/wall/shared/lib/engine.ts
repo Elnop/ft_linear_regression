@@ -4,7 +4,7 @@ import { FILM_SCALE, PaintLayer } from './layer.ts';
 import type { Job } from './nozzle.ts';
 import { createGLRenderer, type Renderer } from './glRenderer.ts';
 import { computeRoughness, type Roughness } from './roughness.ts';
-import type { LayerOptions, Nozzle } from './types.ts';
+import type { LayerOptions, Nozzle } from './SprayTypes.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;

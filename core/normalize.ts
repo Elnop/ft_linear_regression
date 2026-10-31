@@ -1,4 +1,4 @@
-import type { Sample, Thetas } from './types.ts';
+import type { Sample, Thetas } from './CoreTypes.ts';
 
 export type Scale = { min: number; max: number };
 

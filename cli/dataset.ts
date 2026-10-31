@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { parseDataset } from '../core/csv.ts';
-import type { Sample } from '../core/types.ts';
+import type { Sample } from '../core/CoreTypes.ts';
 import { errorCode, errorMessage, fail } from './process.ts';
 
 export function loadDataset(path: string): Sample[] {

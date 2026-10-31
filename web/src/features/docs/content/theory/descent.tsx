@@ -1,6 +1,6 @@
 import { DescentFigure } from '@/features/docs/components/presenters/DescentFigure.tsx';
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
-import type { Step } from '@/features/docs/types.ts';
+import type { Step } from '@/features/docs/DocsTypes.ts';
 
 export const DESCENT: Step[] = [
   {

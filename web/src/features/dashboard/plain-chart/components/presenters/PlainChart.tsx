@@ -1,4 +1,4 @@
-import type { Sample } from '@core/types.ts';
+import type { Sample } from '@core/CoreTypes.ts';
 import { chartTicks, formatTick } from '@/features/dashboard/shared/lib/ticks.ts';
 import type { ChartMapping } from '@/shared/lib/chart.ts';
 import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';

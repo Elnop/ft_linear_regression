@@ -1,5 +1,5 @@
 import { estimatePrice } from './hypothesis.ts';
-import type { Sample, Thetas } from './types.ts';
+import type { Sample, Thetas } from './CoreTypes.ts';
 
 export function gradientStep(data: Sample[], thetas: Thetas, learningRate: number): Thetas {
   const m = data.length;

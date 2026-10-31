@@ -1,8 +1,8 @@
 import { mae, r2, rmse } from '@core/metrics.ts';
 import { hasFiniteThetas } from '@core/thetas.ts';
 import { trainSteps } from '@core/train.ts';
-import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/types.ts';
-import type { CostPoint, Metrics } from '@/features/wall/sequence/types.ts';
+import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/CoreTypes.ts';
+import type { CostPoint, Metrics } from '@/features/wall/sequence/SequenceTypes.ts';
 
 export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 10000 };
 

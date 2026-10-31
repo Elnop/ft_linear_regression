@@ -1,6 +1,6 @@
 import { estimatePrice } from '@core/hypothesis.ts';
 import { hasFiniteThetas } from '@core/thetas.ts';
-import type { Thetas } from '@core/types.ts';
+import type { Thetas } from '@core/CoreTypes.ts';
 import type { ChartMapping } from '@/shared/lib/chart.ts';
 import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
 

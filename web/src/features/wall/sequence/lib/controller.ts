@@ -1,10 +1,10 @@
-import type { Sample, TrainOptions } from '@core/types.ts';
+import type { Sample, TrainOptions } from '@core/CoreTypes.ts';
 import { paintTitle } from '@/features/wall/sequence/lib/title.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
 import { shuffled } from '@/shared/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { SequenceState } from '@/features/wall/sequence/types.ts';
+import type { SequenceState } from '@/features/wall/sequence/SequenceTypes.ts';
 import { lineKindAt, WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
 import { Timeline, type Run } from './timeline.ts';

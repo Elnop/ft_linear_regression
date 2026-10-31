@@ -1,4 +1,4 @@
-import type { Step } from '@/features/docs/types.ts';
+import type { Step } from '@/features/docs/DocsTypes.ts';
 
 export type TableOfContentsSection = { title: string; items: { step: Step; index: number }[] };
 

@@ -1,6 +1,6 @@
 import { hasFiniteThetas } from '../core/thetas.ts';
 import { trainSteps } from '../core/train.ts';
-import type { TrainStep } from '../core/types.ts';
+import type { TrainStep } from '../core/CoreTypes.ts';
 import { parseCli } from './args.ts';
 import { loadDataset } from './dataset.ts';
 import { writeModel } from './model.ts';

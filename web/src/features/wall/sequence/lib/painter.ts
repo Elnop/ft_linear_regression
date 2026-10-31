@@ -1,4 +1,4 @@
-import type { Sample, Thetas } from '@core/types.ts';
+import type { Sample, Thetas } from '@core/CoreTypes.ts';
 import type { ChartMapping } from '@/shared/lib/chart.ts';
 import { chartFor } from '@/shared/lib/layout.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';

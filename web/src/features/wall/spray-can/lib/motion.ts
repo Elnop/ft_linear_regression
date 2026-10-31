@@ -1,5 +1,5 @@
 import type { Vec2 } from '@/shared/lib/geometry.ts';
-import type { Nozzle } from '@/features/wall/shared/lib/types.ts';
+import type { Nozzle } from '@/features/wall/shared/lib/SprayTypes.ts';
 
 const BASE_TILT = -14;
 const PARK_AFTER = 2.5;
