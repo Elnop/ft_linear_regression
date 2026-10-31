@@ -12,14 +12,14 @@ import { CostPanelContainer } from '@/features/dashboard/panels/components/orche
 import { HeaderChipsContainer } from '@/features/dashboard/panels/components/orchestrators/HeaderChipsContainer.tsx';
 import { PrecisionPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PrecisionPanelContainer.tsx';
 import { PredictPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PredictPanelContainer.tsx';
-import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
-import { useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
+import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
 import { useScene } from '@/shared/hooks/useScene.ts';
 import '@/features/dashboard/styles/dashboard.css';
 
 export function DashboardLayout({ documentation }: { documentation: ReactNode }) {
   const { padding, dashboardTop } = useScene();
-  const visible = useSequencePort(selectInterfaceVisible);
+  const visible = useAnimationPlayback(selectInterfaceVisible);
   const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${dashboardTop}px`, '--dashboard-padding': `${padding}px` };
 
   return (

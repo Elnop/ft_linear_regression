@@ -1,5 +1,5 @@
 import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
-import type { ModelView } from '@/features/dashboard/shared/types/PortsTypes.ts';
+import type { RegressionState } from '@/states/regression/types/RegressionTypes.ts';
 
-export const selectUsableThetas = (state: ModelView) =>
+export const selectUsableThetas = (state: RegressionState) =>
   state.thetas && !state.diverged && hasFiniteThetas(state.thetas) ? state.thetas : null;

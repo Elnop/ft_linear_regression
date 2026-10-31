@@ -1,11 +1,10 @@
 import { PaintWall } from '@/features/wall/canvas/components/orchestrators/PaintWall.tsx';
 import { SprayCan } from '@/features/wall/spray-can/components/orchestrators/SprayCan.tsx';
 import { Stickers } from '@/features/wall/stickers/components/orchestrators/Stickers.tsx';
-import { useSequenceRuntime } from '@/features/wall/sequence/hooks/useSequenceRuntime.ts';
-import type { SequenceDependencies } from '@/features/wall/sequence/types/SequenceTypes.ts';
+import { useAnimationDirector } from '@/features/wall/animation-director/hooks/useAnimationDirector.ts';
 
-export function WallLayout({ sequence }: { sequence: SequenceDependencies }) {
-  useSequenceRuntime(sequence);
+export function WallLayout() {
+  useAnimationDirector();
   return (
     <>
       <PaintWall />

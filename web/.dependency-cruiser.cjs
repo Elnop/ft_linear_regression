@@ -23,9 +23,23 @@ module.exports = {
     {
       name: 'shared-not-to-features',
       severity: 'error',
-      comment: 'shared/ sert toute l’app : il ne connaît aucune feature.',
+      comment: 'shared/ sert toute l’app : il ne connaît ni les états, ni les features.',
       from: { path: '^src/shared/' },
+      to: { path: '^src/(app|features|states)/' },
+    },
+    {
+      name: 'states-not-to-features',
+      severity: 'error',
+      comment: 'states/ est sous les features : un état ne connaît aucune feature ni app/.',
+      from: { path: '^src/states/' },
       to: { path: '^src/(app|features)/' },
+    },
+    {
+      name: 'no-cross-state',
+      severity: 'error',
+      comment: 'Un état n’importe pas un autre état : ce qui les relie vit dans la feature qui les utilise.',
+      from: { path: '^src/states/([^/]+)/' },
+      to: { path: '^src/states/', pathNot: '^src/states/$1/' },
     },
     {
       name: 'features-not-to-app',
@@ -37,7 +51,7 @@ module.exports = {
     {
       name: 'no-cross-feature',
       severity: 'error',
-      comment: 'Une feature n’importe jamais une autre feature : elle déclare ses besoins dans ports/ et app/ fait la jonction.',
+      comment: 'Une feature n’importe jamais une autre feature : ce qu’elles partagent descend dans states/.',
       from: { path: '^src/features/([^/]+)/' },
       to: { path: '^src/features/', pathNot: '^src/features/$1/' },
     },
@@ -47,7 +61,7 @@ module.exports = {
       comment: 'Une sous-feature n’importe aucune de ses voisines : ce qui sert à plusieurs va dans shared/ de la feature.',
       from: {
         path: '^src/features/([^/]+)/([^/]+)/',
-        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|ports|shared|stores|styles|types)/',
+        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|shared|stores|styles|types)/',
       },
       to: { path: '^src/features/$1/', pathNot: '^src/features/$1/($2|shared)/' },
     },
@@ -61,14 +75,14 @@ module.exports = {
     {
       name: 'presenters-are-pure',
       severity: 'error',
-      comment: 'Un presenter ne lit aucun store ni aucun port : son orchestrateur lui passe tout par props.',
+      comment: 'Un presenter ne lit aucun store : son orchestrateur lui passe tout par props.',
       from: { path: '/presenters/' },
-      to: { path: '(Store\\.ts$|node_modules/zustand/|/ports/)' },
+      to: { path: '(Store\\.ts$|node_modules/zustand/|^src/states/[^/]+/hooks/)' },
     },
     {
       name: 'stores-in-their-folder',
       severity: 'error',
-      comment: 'Un store vit dans le stores/ d’une feature, d’une sous-feature ou d’un shared/.',
+      comment: 'Un store vit dans le stores/ d’un état, d’une feature, d’une sous-feature ou d’un shared/.',
       from: {},
       to: {
         path: 'Store\\.ts$',
@@ -76,6 +90,7 @@ module.exports = {
           '^src/features/[^/]+/stores/[^/]+Store\\.ts$',
           '^src/features/[^/]+/[^/]+/stores/[^/]+Store\\.ts$',
           '^src/shared/stores/[^/]+Store\\.ts$',
+          '^src/states/[^/]+/stores/[^/]+Store\\.ts$',
         ],
       },
     },

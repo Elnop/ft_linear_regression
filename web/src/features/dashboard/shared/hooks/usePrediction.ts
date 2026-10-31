@@ -2,9 +2,10 @@ import { parseMileage } from '@core/parseMileage.ts';
 import { useMemo } from 'react';
 import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { useKm } from '@/features/dashboard/shared/stores/predictionStore.ts';
-import { selectIntro } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
+import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
+import { useRegression } from '@/states/regression/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { useScene } from '@/shared/hooks/useScene.ts';
 
@@ -12,8 +13,8 @@ type Prediction = { invalid: boolean; mileage: number | null; price: number | nu
 
 export function usePrediction(): Prediction {
   const km = useKm();
-  const thetas = useModelPort(selectUsableThetas);
-  const intro = useSequencePort(selectIntro);
+  const thetas = useRegression(selectUsableThetas);
+  const intro = useAnimationPlayback(selectIntro);
   const { chart } = useScene();
 
   return useMemo(() => {

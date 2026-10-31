@@ -1,11 +1,12 @@
 import { useShallow } from 'zustand/react/shallow';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
+import { useRegression } from '@/states/regression/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
 
 export function useProgress(): { label: string; value: string } {
-  const iteration = useModelPort((state) => state.iteration);
-  const total = useModelPort((state) => state.samples.length);
-  return useSequencePort(
+  const iteration = useRegression((state) => state.iteration);
+  const total = useRegression((state) => state.samples.length);
+  return useAnimationPlayback(
     useShallow((state) =>
       state.phase === 'descent' || state.phase === 'interactive'
         ? { label: 'PASSAGE', value: formatNumber(iteration) }

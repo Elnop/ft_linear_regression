@@ -5,15 +5,16 @@ import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlaySho
 import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
 import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
+import { useRegression } from '@/states/regression/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
 import { useScene } from '@/shared/hooks/useScene.ts';
 
 export function PlainChartContainer() {
   const { width, chart } = useScene();
   const visible = useOverlayShown('chart');
-  const visiblePoints = useSequencePort((state) => state.visiblePoints);
-  const samples = useModelPort((state) => state.samples);
-  const thetas = useModelPort(selectUsableThetas);
+  const visiblePoints = useAnimationPlayback((state) => state.visiblePoints);
+  const samples = useRegression((state) => state.samples);
+  const thetas = useRegression(selectUsableThetas);
   const { mileage, price, at } = usePrediction();
   const rectangle = overlayRectangle(chart, width);
 
