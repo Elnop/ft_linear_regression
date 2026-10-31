@@ -1,4 +1,4 @@
-import type { ChartDomain } from '@/shared/lib/chartMapping.ts';
+import type { ChartDomain } from '@/shared/types/ChartTypes.ts';
 
 const KM_STEP = 50_000;
 const PRICE_STEP = 1_000;

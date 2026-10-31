@@ -1,9 +1,6 @@
-class Cancelled extends Error {}
+import type { Run } from '@/features/wall/sequence/types/SequenceTypes.ts';
 
-export type Run = {
-  sleep: (duration: number) => Promise<void>;
-  wait: <T>(promise: Promise<T>) => Promise<T>;
-};
+class Cancelled extends Error {}
 
 export class Timeline {
   instant = false;

@@ -1,4 +1,4 @@
-import type { PlacedSticker } from '@/features/wall/stickers/StickersTypes.ts';
+import type { PlacedSticker } from '@/features/wall/stickers/types/StickersTypes.ts';
 import { peelGeometry, tornEdge } from '@/features/wall/stickers/lib/damage.ts';
 
 type Props = PlacedSticker & { id: string };

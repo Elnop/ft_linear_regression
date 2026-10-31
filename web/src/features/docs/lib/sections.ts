@@ -1,12 +1,10 @@
-import type { Step } from '@/features/docs/DocsTypes.ts';
-
-export type TableOfContentsSection = { title: string; items: { step: Step; index: number }[] };
+import type { DocStep, TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
 
 export const stepId = (prefix: string, index: number) => `documentation-${prefix}-${index + 1}`;
 
 export const stepNumber = (index: number) => String(index + 1).padStart(2, '0');
 
-export function groupSections(steps: Step[]): TableOfContentsSection[] {
+export function groupSections(steps: DocStep[]): TableOfContentsSection[] {
   const sections: TableOfContentsSection[] = [];
   steps.forEach((step, index) => {
     const last = sections.at(-1);

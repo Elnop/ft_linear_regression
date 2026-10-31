@@ -1,6 +1,6 @@
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
-import type { Overlay } from '@/features/dashboard/shared/DashboardTypes.ts';
+import type { Overlay } from '@/features/dashboard/shared/types/DashboardTypes.ts';
 import { DEFAULT_TRAIN } from '@/features/wall/sequence/lib/training.ts';
 
 type Playground = { km: string; learningRate: number; overlay: Overlay };

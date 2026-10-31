@@ -1,17 +1,17 @@
-import type { Sample, Thetas } from '@core/CoreTypes.ts';
-import type { ChartMapping } from '@/shared/lib/chartMapping.ts';
+import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
+
 import { chartFor } from '@/shared/lib/layout.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
 import { dotJob, NOMINAL_SPEED, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
-import type { Rectangle } from '@/shared/lib/geometry.ts';
+import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import { lineSegment } from './geometry.ts';
 import { COLORS, fadeGray, fadeOpacity, STYLE } from './style.ts';
 import type { Timeline } from './timeline.ts';
 import { TIMING } from './timing.ts';
-import { isFinalPass, type Training } from './training.ts';
-
-export type LineKind = 'line' | 'finalLine' | 'diverge';
+import { isFinalPass } from './training.ts';
+import type { LineKind, Training } from '@/features/wall/sequence/types/SequenceTypes.ts';
+import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
 export function lineKindAt(plan: Training, pass: number): LineKind {
   if (plan.diverged) return 'diverge';

@@ -1,6 +1,7 @@
-import type { CellRectangle, PaintLayer } from './layer.ts';
+import type { PaintLayer } from './layer.ts';
 import { coverRectangle } from './coverRectangle.ts';
 import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from './shaders.ts';
+import type { CellRectangle } from '@/features/wall/shared/types/LayerTypes.ts';
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
   const program = gl.createProgram();
@@ -26,8 +27,6 @@ function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram) {
 }
 
 type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
-
-export type Renderer = ReturnType<typeof createGLRenderer>;
 
 export function createGLRenderer(canvas: HTMLCanvasElement) {
   const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true });

@@ -1,16 +1,16 @@
 import { hexToRgb } from './hexToRgb.ts';
-import type { Rectangle } from '@/shared/lib/geometry.ts';
-import type { LayerOptions, Rgb } from '@/features/wall/shared/SprayTypes.ts';
-import type { Roughness } from './roughness.ts';
+import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
+import type { Rgb } from '@/features/wall/shared/types/ColorTypes.ts';
+import type { LayerOptions, CellRectangle } from '@/features/wall/shared/types/LayerTypes.ts';
+
 import { mulberry32, noise2D } from '@/shared/lib/random.ts';
+import type { Roughness } from '@/features/wall/shared/types/RoughnessTypes.ts';
 
 export const FILM_SCALE = 0.25;
 const CELL = 1 / FILM_SCALE;
 
 const RESIDUAL = 0.85;
 const PIN = 0.55;
-
-export type CellRectangle = { x0: number; y0: number; x1: number; y1: number };
 
 export class DirtyRectangle implements CellRectangle {
   x0 = Infinity;

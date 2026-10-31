@@ -2,7 +2,7 @@ import { gradientStep } from './gradientStep.ts';
 import { cost } from './metrics.ts';
 import { computeScale, denormalizeThetas, normalizeSamples } from './normalize.ts';
 import { hasFiniteThetas } from './hasFiniteThetas.ts';
-import type { Sample, Thetas, TrainOptions, TrainStep } from './CoreTypes.ts';
+import type { Sample, Thetas, TrainOptions, TrainStep } from './types/CoreTypes.ts';
 
 export function* trainSteps(data: Sample[], options: TrainOptions): Generator<TrainStep> {
   const { learningRate, iterations } = options;

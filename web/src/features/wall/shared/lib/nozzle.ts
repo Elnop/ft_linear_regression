@@ -1,10 +1,9 @@
 import { smoothstep } from '@/shared/lib/smoothstep.ts';
 import type { PaintLayer } from './layer.ts';
-import { gaussian, mulberry32, noise1D, randomSeed, type RandomGenerator } from '@/shared/lib/random.ts';
-import type { Vec2 } from '@/shared/lib/geometry.ts';
-import type { SprayDotOptions, SprayPathOptions } from '@/features/wall/shared/SprayTypes.ts';
-
-export type Job = { layer: PaintLayer; position: Vec2; update(deltaSeconds: number): boolean };
+import { gaussian, mulberry32, noise1D, randomSeed } from '@/shared/lib/random.ts';
+import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { SprayDotOptions, SprayPathOptions, Job } from '@/features/wall/shared/types/SprayTypes.ts';
+import type { RandomGenerator } from '@/shared/types/RandomTypes.ts';
 
 export const NOMINAL_SPEED = 520;
 const DROPLET = 0.05;

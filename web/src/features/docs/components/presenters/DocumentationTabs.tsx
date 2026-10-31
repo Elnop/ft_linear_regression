@@ -1,6 +1,7 @@
 import type { KeyboardEvent, RefObject } from 'react';
-import { TABS, type TabId } from '@/features/docs/lib/tabs.ts';
+import { TABS } from '@/features/docs/lib/tabs.ts';
 import '@/features/docs/styles/tabs.css';
+import type { TabId } from '@/features/docs/types/DocsTypes.ts';
 
 type Props = {
   tab: TabId;

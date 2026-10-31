@@ -1,13 +1,5 @@
-import type { Rectangle } from '@/shared/lib/geometry.ts';
-
-export type Rgb = [number, number, number];
-
-export type LayerOptions = {
-  color: string;
-  bounds?: Rectangle;
-  opacity?: number;
-  z?: number;
-};
+import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
+import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 
 export type Nozzle = { x: number; y: number; color: string; active: number };
 
@@ -27,3 +19,5 @@ export type SprayDotOptions = {
   load?: number;
   seed?: number;
 };
+
+export type Job = { layer: PaintLayer; position: Vec2; update(deltaSeconds: number): boolean };

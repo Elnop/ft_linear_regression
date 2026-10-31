@@ -1,21 +1,14 @@
 import { mae, r2, rmse } from '@core/metrics.ts';
 import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
 import { trainSteps } from '@core/train.ts';
-import type { Sample, Thetas, TrainOptions, TrainStep } from '@core/CoreTypes.ts';
-import type { CostPoint, Metrics } from '@/features/wall/sequence/SequenceTypes.ts';
+import type { Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
+import type { CostPoint, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
 
 export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 10000 };
 
 const DIVERGENCE_LEARNING_RATE = 1.75;
 
 export const willDiverge = (learningRate: number) => learningRate > DIVERGENCE_LEARNING_RATE;
-
-export type Training = {
-  steps: TrainStep[];
-  history: CostPoint[];
-  last: TrainStep;
-  diverged: boolean;
-};
 
 const DENSE_HISTORY_UNTIL = 64;
 const nextHistorySample = (iteration: number) => Math.ceil(iteration * 1.05);
@@ -55,9 +48,7 @@ export function runTraining(data: Sample[], options: TrainOptions): Training {
   return { steps, history, last, diverged };
 }
 
-export type Step = { thetas: Thetas; iteration: number; metrics: Metrics; history: CostPoint[] };
-
-export function stepAt(data: Sample[], plan: Training, pass: number): Step {
+export function stepAt(data: Sample[], plan: Training, pass: number): SequenceStep {
   const step = plan.steps[pass];
   return {
     thetas: step,

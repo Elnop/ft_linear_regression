@@ -1,8 +1,8 @@
 import { DescentFigure } from '@/features/docs/components/presenters/DescentFigure.tsx';
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
-import type { Step } from '@/features/docs/DocsTypes.ts';
+import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
 
-export const DESCENT: Step[] = [
+export const DESCENT: DocStep[] = [
   {
     label: 'Descente de gradient',
     section: 'Descente de gradient',

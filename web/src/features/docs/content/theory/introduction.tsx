@@ -1,7 +1,7 @@
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
-import type { Step } from '@/features/docs/DocsTypes.ts';
+import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
 
-export const INTRODUCTION: Step[] = [
+export const INTRODUCTION: DocStep[] = [
   {
     label: 'Introduction',
     section: 'Introduction',

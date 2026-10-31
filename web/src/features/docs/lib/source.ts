@@ -1,3 +1,5 @@
+import type { Token } from '@/features/docs/types/DocsTypes.ts';
+
 export function pick(source: string, name: string): string {
   const lines = source.split('\n');
   const start = lines.findIndex((line) => new RegExp(`^export function\\*? ${name}\\b`).test(line));
@@ -5,8 +7,6 @@ export function pick(source: string, name: string): string {
   const end = lines.findIndex((line, i) => i > start && line === '}');
   return lines.slice(start, end + 1).join('\n');
 }
-
-export type Token = { kind: 'string' | 'number' | 'keyword' | 'type' | 'call' | 'text'; text: string };
 
 const KEYWORDS = new Set([
   'export', 'function', 'const', 'let', 'return', 'for', 'of', 'if', 'throw', 'new', 'yield',

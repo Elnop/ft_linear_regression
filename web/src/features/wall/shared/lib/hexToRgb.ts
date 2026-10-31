@@ -1,4 +1,4 @@
-import type { Rgb } from '@/features/wall/shared/SprayTypes.ts';
+import type { Rgb } from '@/features/wall/shared/types/ColorTypes.ts';
 
 export function hexToRgb(hex: string): Rgb {
   const value = parseInt(hex.replace('#', ''), 16);

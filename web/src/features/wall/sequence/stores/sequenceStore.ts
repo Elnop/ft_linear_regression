@@ -1,7 +1,7 @@
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
 import { IDLE_STATE } from '@/features/wall/sequence/lib/state.ts';
-import type { Sequence, SequenceActions } from '@/features/wall/sequence/SequenceTypes.ts';
+import type { Sequence, SequenceActions } from '@/features/wall/sequence/types/SequenceTypes.ts';
 
 export const IDLE_ACTIONS: SequenceActions = {
   skip: () => {},

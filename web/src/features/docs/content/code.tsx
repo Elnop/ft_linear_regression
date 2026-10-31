@@ -6,9 +6,9 @@ import normalizeSource from '@core/normalize.ts?raw';
 import trainSource from '@core/train.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
 import { pick } from '@/features/docs/lib/source.ts';
-import type { Step } from '@/features/docs/DocsTypes.ts';
+import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
 
-export const CODE: Step[] = [
+export const CODE: DocStep[] = [
   {
     label: 'core/csv.ts',
     section: 'Le modèle',

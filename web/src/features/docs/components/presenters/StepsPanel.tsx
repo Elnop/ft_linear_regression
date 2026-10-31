@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import { TableOfContents } from '@/features/docs/components/presenters/TableOfContents.tsx';
 import { StepList } from '@/features/docs/components/presenters/StepList.tsx';
-import type { TableOfContentsSection } from '@/features/docs/lib/sections.ts';
-import type { Step } from '@/features/docs/DocsTypes.ts';
+
+import type { DocStep, TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
 
 type Props = {
-  steps: Step[];
+  steps: DocStep[];
   sections: TableOfContentsSection[];
   prefix: string;
   footer: ReactNode;

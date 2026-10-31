@@ -1,4 +1,4 @@
-import type { SequenceState } from '@/features/wall/sequence/SequenceTypes.ts';
+import type { SequenceState } from '@/features/wall/sequence/types/SequenceTypes.ts';
 
 export const IDLE_STATE: SequenceState = {
   phase: 'idle',

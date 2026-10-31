@@ -1,4 +1,4 @@
-import type { Sample } from './CoreTypes.ts';
+import type { Sample } from './types/CoreTypes.ts';
 
 function parseField(field: string, name: string, line: number): number {
   const trimmed = field.trim();

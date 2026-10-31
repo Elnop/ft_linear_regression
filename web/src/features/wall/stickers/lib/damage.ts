@@ -1,5 +1,5 @@
 import { mulberry32 } from '@/shared/lib/random.ts';
-import type { Corner } from '@/features/wall/stickers/StickersTypes.ts';
+import type { Corner } from '@/features/wall/stickers/types/StickersTypes.ts';
 
 const toPoints = (points: number[][]) => points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
 

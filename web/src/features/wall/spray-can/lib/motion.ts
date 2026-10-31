@@ -1,13 +1,12 @@
-import type { Vec2 } from '@/shared/lib/geometry.ts';
-import type { Nozzle } from '@/features/wall/shared/SprayTypes.ts';
+import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { Nozzle } from '@/features/wall/shared/types/SprayTypes.ts';
+import type { CanPose } from '@/features/wall/spray-can/types/SprayCanTypes.ts';
 
 const BASE_TILT = -14;
 const PARK_AFTER = 2.5;
 const SHAKE = 0.6;
 const GRAVITY = 2600;
 const SUBSTEP = 1 / 240;
-
-export type CanPose = { x: number; y: number; angle: number; rattle: number; spraying: boolean; color: string };
 
 export class CanMotion {
   private position: Vec2;

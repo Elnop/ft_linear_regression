@@ -8,7 +8,7 @@ ft_linear_regression/
 ├── package.json              # workspace npm, scripts train / predict / web / build
 ├── tsconfig.json             # typecheck de core/ et cli/
 ├── core/                     # calcul pur, partagé entre CLI et web
-│   ├── CoreTypes.ts          # Sample, Thetas, TrainOptions, TrainStep
+│   ├── types/CoreTypes.ts    # Sample, Thetas, TrainOptions, TrainStep
 │   ├── estimatePrice.ts      # l'hypothèse imposée
 │   ├── gradientStep.ts       # une étape de descente de gradient
 │   ├── normalize.ts          # normalisation min-max et retour à l'échelle d'origine
@@ -55,7 +55,7 @@ Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.)
 Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
 
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
-- les imports locaux finissent par `.ts` (`import { … } from './CoreTypes.ts'`).
+- les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).
 
 `npm run typecheck` vérifie les types de `core/`, `cli/` et `web/`.
 

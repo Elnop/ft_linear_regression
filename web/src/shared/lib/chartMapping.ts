@@ -1,16 +1,6 @@
-import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
-
-export type ChartDomain = { kmMin: number; kmMax: number; priceMin: number; priceMax: number };
+import type { ChartDomain, ChartMapping } from '@/shared/types/ChartTypes.ts';
 
 const DEFAULT_DOMAIN: ChartDomain = { kmMin: 0, kmMax: 250_000, priceMin: 3_000, priceMax: 9_000 };
-
-export type ChartMapping = {
-  area: Rectangle;
-  domain: ChartDomain;
-  x(km: number): number;
-  y(price: number): number;
-  point(km: number, price: number): Vec2;
-};
 
 export function chartMapping(width: number, height: number, domain: ChartDomain = DEFAULT_DOMAIN): ChartMapping {
   const left = Math.max(40, width * 0.1);

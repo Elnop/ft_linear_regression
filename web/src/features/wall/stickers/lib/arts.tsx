@@ -1,4 +1,4 @@
-import type { Art } from '@/features/wall/stickers/StickersTypes.ts';
+import type { Art } from '@/features/wall/stickers/types/StickersTypes.ts';
 
 const PAPER = '#ebe5d6';
 

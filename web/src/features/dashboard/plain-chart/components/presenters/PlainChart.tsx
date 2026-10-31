@@ -1,10 +1,11 @@
-import type { Sample } from '@core/CoreTypes.ts';
+import type { Sample } from '@core/types/CoreTypes.ts';
 import { chartTicks, formatTick } from '@/features/dashboard/shared/lib/ticks.ts';
-import type { ChartMapping } from '@/shared/lib/chartMapping.ts';
+
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import { SMALL } from '@/features/dashboard/shared/lib/layout.ts';
-import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
+import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import '@/features/dashboard/plain-chart/plain-chart.css';
+import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
 type PlainChartProps = {
   chart: ChartMapping;

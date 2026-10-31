@@ -1,7 +1,8 @@
 import { chartMapping } from '@/shared/lib/chartMapping.ts';
 import { pagePadding, WIDE } from '@/shared/lib/layout.ts';
-import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
+import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { GLYPHS, smoothStroke } from './glyphs.ts';
+import type { TitleLayout, Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
 
 const TITLE = 'ft_linear_regression';
 const SPLIT_TITLE_BELOW = 700;
@@ -14,12 +15,6 @@ const COS = Math.cos(TILT);
 const SIN = Math.sin(TILT);
 export const STROKE = 0.2;
 const TRACKING = 0.14;
-
-export type TitleLayout = {
-  rectangle: Rectangle;
-  em: number;
-  lines: { text: string; x: number; baseline: number }[];
-};
 
 const TITLE_GAP_BELOW = 60;
 const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
@@ -49,10 +44,6 @@ function measure(texts: string[]): Rectangle {
   const y = Math.min(...ys) - margin;
   return { x, y, width: Math.max(...xs) + margin - x, height: Math.max(...ys) + margin - y };
 }
-
-export type Stroke = { points: Vec2[]; thickness: number; dot: boolean };
-
-export type TitleLine = Stroke[][];
 
 export function titleLetters(layout: Pick<TitleLayout, 'em' | 'lines'>, random: () => number): TitleLine[] {
   const { em } = layout;

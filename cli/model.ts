@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { hasFiniteThetas } from '../core/hasFiniteThetas.ts';
-import type { Thetas } from '../core/CoreTypes.ts';
+import type { Thetas } from '../core/types/CoreTypes.ts';
 import { errorCode, fail } from './process.ts';
 
 const MODEL_PATH = new URL('../model.json', import.meta.url);

@@ -1,4 +1,4 @@
-import type { Thetas, TrainOptions } from '@core/CoreTypes.ts';
+import type { Thetas, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 
 export type Phase = 'idle' | 'title' | 'descent' | 'interactive';
 
@@ -24,3 +24,21 @@ export type SequenceActions = {
 };
 
 export type Sequence = SequenceState & SequenceActions;
+
+export type Run = {
+  sleep: (duration: number) => Promise<void>;
+  wait: <T>(promise: Promise<T>) => Promise<T>;
+};
+
+export type LineKind = 'line' | 'finalLine' | 'diverge';
+
+export type Training = {
+  steps: TrainStep[];
+  history: CostPoint[];
+  last: TrainStep;
+  diverged: boolean;
+};
+
+export type SequenceStep = { thetas: Thetas; iteration: number; metrics: Metrics; history: CostPoint[] };
+
+export type Clock = { readonly instant: boolean };

@@ -1,6 +1,4 @@
-import type { Sample, Thetas } from './CoreTypes.ts';
-
-export type Scale = { min: number; max: number };
+import type { Sample, Thetas, Scale } from './types/CoreTypes.ts';
 
 export function computeScale(values: number[]): Scale {
   if (values.length === 0) throw new Error('cannot compute a scale on an empty set');

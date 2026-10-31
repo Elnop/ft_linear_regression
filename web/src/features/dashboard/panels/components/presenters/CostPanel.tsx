@@ -1,5 +1,5 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import type { CostPoint } from '@/features/wall/sequence/SequenceTypes.ts';
+import type { CostPoint } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import '@/features/dashboard/panels/panels.css';
 
 type CostPanelProps = {

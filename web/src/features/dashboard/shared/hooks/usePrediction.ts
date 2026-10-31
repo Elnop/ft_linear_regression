@@ -4,7 +4,7 @@ import { displayableEstimate } from '@/features/dashboard/shared/lib/displayable
 import { usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
 import { selectIntro, selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
-import type { Vec2 } from '@/shared/lib/geometry.ts';
+import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { useChart } from '@/shared/stores/viewportStore.ts';
 
 type Prediction = { invalid: boolean; mileage: number | null; price: number | null; at: Vec2 | null };

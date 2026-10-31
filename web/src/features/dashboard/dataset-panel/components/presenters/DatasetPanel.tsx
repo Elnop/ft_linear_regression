@@ -1,8 +1,6 @@
-import type { Sample } from '@core/CoreTypes.ts';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import '@/features/dashboard/dataset-panel/dataset-panel.css';
-
-export type DatasetRow = Sample & { estimate: number | null };
+import type { DatasetRow } from '@/features/dashboard/dataset-panel/types/DatasetPanelTypes.ts';
 
 type DatasetPanelProps = {
   rows: DatasetRow[];

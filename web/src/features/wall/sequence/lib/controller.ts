@@ -1,15 +1,15 @@
-import type { Sample, TrainOptions } from '@core/CoreTypes.ts';
+import type { Sample, TrainOptions } from '@core/types/CoreTypes.ts';
 import { paintTitle } from '@/features/wall/sequence/lib/title.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
 import { shuffled } from '@/shared/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { SequenceState } from '@/features/wall/sequence/SequenceTypes.ts';
+import type { SequenceState, Run, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import { lineKindAt, WallPainter } from './painter.ts';
 import { IDLE_STATE } from './state.ts';
-import { Timeline, type Run } from './timeline.ts';
+import { Timeline } from './timeline.ts';
 import { TIMING } from './timing.ts';
-import { DEFAULT_TRAIN, isFinalPass, runTraining, stepAt, type Step, type Training } from './training.ts';
+import { DEFAULT_TRAIN, isFinalPass, runTraining, stepAt } from './training.ts';
 
 export class SequenceController {
   private timeline = new Timeline();
@@ -72,7 +72,7 @@ export class SequenceController {
     this.store.setState(patch);
   }
 
-  private show(step: Step, extra: Partial<SequenceState> = {}): void {
+  private show(step: SequenceStep, extra: Partial<SequenceState> = {}): void {
     this.set({
       thetas: { theta0: step.thetas.theta0, theta1: step.thetas.theta1 },
       iteration: step.iteration,

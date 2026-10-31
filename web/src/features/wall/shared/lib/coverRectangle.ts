@@ -1,4 +1,4 @@
-import type { Rectangle } from '@/shared/lib/geometry.ts';
+import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 
 export function coverRectangle(imageWidth: number, imageHeight: number, width: number, height: number): Rectangle {
   const scale = Math.max(width / imageWidth, height / imageHeight);

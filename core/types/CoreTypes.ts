@@ -8,3 +8,5 @@ export type TrainOptions = {
 };
 
 export type TrainStep = Thetas & { iteration: number; cost: number };
+
+export type Scale = { min: number; max: number };
