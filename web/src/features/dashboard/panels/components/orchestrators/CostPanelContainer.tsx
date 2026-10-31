@@ -1,8 +1,8 @@
 import { CostPanel } from '@/features/dashboard/panels/components/presenters/CostPanel.tsx';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { useModelPort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 
 export function CostPanelContainer() {
-  const history = useSequence((state) => state.costHistory);
-  const diverged = useSequence((state) => state.diverged);
+  const history = useModelPort((state) => state.costHistory);
+  const diverged = useModelPort((state) => state.diverged);
   return <CostPanel history={history} diverged={diverged} />;
 }

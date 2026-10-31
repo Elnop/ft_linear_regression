@@ -4,13 +4,12 @@ import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import { shuffled } from '@/features/wall/shared/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { SequenceState, Run, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
+import type { ModelReporter, SequenceDependencies, SequenceState, Run, Training } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import { WallPainter } from './WallPainter.ts';
 import { IDLE_STATE } from '@/features/wall/sequence/configs/StateConfig.ts';
 import { Timeline } from './Timeline.ts';
 import { TIMING } from '@/features/wall/sequence/configs/TimingConfig.ts';
 import { isFinalPass, runTraining, stepAt } from './training.ts';
-import { DEFAULT_TRAIN } from '@/shared/configs/TrainingConfig.ts';
 import { lineKindAt } from './lineKindAt.ts';
 
 export class SequenceController {
@@ -18,6 +17,8 @@ export class SequenceController {
   private engine: PaintEngine;
   private store: StoreApi<SequenceState>;
   private samples: Sample[];
+  private defaults: TrainOptions;
+  private model: ModelReporter;
   private painter: WallPainter;
 
   private order: number[];
@@ -26,10 +27,12 @@ export class SequenceController {
   private unsubscribeResize: () => void;
   private resizeTimer = 0;
 
-  constructor(engine: PaintEngine, store: StoreApi<SequenceState>, samples: Sample[]) {
+  constructor(engine: PaintEngine, store: StoreApi<SequenceState>, { samples, defaults, model }: SequenceDependencies) {
     this.engine = engine;
     this.store = store;
     this.samples = samples;
+    this.defaults = defaults;
+    this.model = model;
     this.order = shuffled(samples.length);
     this.painter = new WallPainter(engine, samples, this.timeline);
     this.unsubscribeResize = engine.onResize(() => {
@@ -58,11 +61,12 @@ export class SequenceController {
 
   train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
-    const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
+    const options: TrainOptions = { ...this.defaults, ...overrides };
     const plan = runTraining(this.samples, options);
     const run = this.timeline.restart();
     this.training = plan;
-    this.set({ trainingActive: true, diverged: false, costHistory: [] });
+    this.set({ trainingActive: true });
+    this.model.restart();
     await this.timeline.play(() => this.playTraining(run, plan));
   };
 
@@ -74,21 +78,12 @@ export class SequenceController {
     this.store.setState(patch);
   }
 
-  private show(step: SequenceStep, extra: Partial<SequenceState> = {}): void {
-    this.set({
-      thetas: { theta0: step.thetas.theta0, theta1: step.thetas.theta1 },
-      iteration: step.iteration,
-      metrics: step.metrics,
-      costHistory: step.history,
-      ...extra,
-    });
-  }
-
   private async playIntro(run: Run): Promise<void> {
-    const plan = runTraining(this.samples, DEFAULT_TRAIN);
+    const plan = runTraining(this.samples, this.defaults);
     this.training = plan;
     this.order = shuffled(this.samples.length);
     this.set({ ...IDLE_STATE, phase: 'title' });
+    this.model.reset();
 
     await run.sleep(TIMING.interfaceIn);
     await this.paintBackdrop(run);
@@ -115,13 +110,13 @@ export class SequenceController {
 
   private async playPasses(run: Run, plan: Training): Promise<void> {
     for (let pass = 0; pass < plan.steps.length; pass++) {
-      this.show(stepAt(this.samples, plan, pass));
+      this.model.show(stepAt(this.samples, plan, pass));
       const painting = this.sprayPass(plan, pass);
       this.painter.fadeFan();
       await run.wait(painting);
       await run.sleep(TIMING.afterPass);
     }
-    this.set({ diverged: plan.diverged });
+    this.model.finish(plan.diverged);
 
     for (const i of this.order) {
       await run.wait(this.painter.sprayPoint(i, TIMING.redot));
@@ -143,7 +138,7 @@ export class SequenceController {
   private paintFinal(): void {
     const run = this.timeline.restart(true);
     this.painter.clear(this.title ? [this.title] : []);
-    const plan = this.training ?? runTraining(this.samples, DEFAULT_TRAIN);
+    const plan = this.training ?? runTraining(this.samples, this.defaults);
     this.training = plan;
     void this.timeline.play(async () => {
       await this.paintBackdrop(run);

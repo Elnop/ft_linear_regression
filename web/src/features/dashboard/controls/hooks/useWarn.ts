@@ -1,9 +1,7 @@
-import { usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
-import { willDiverge } from '@/features/dashboard/controls/lib/willDiverge.ts';
+import { useModelPort, useTrainingOptionsPort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 
 export function useWarn(): boolean {
-  const diverged = useSequence((state) => state.diverged);
-  const learningRate = usePlayground((state) => state.learningRate);
-  return diverged || willDiverge(learningRate);
+  const diverged = useModelPort((state) => state.diverged);
+  const willDiverge = useTrainingOptionsPort((state) => state.willDiverge);
+  return diverged || willDiverge;
 }

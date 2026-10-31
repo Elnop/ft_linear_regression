@@ -1,19 +1,10 @@
-import type { Thetas, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
+import type { CostPoint, Metrics, Sample, Thetas, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 
 type Phase = 'idle' | 'title' | 'descent' | 'interactive';
-
-type Metrics = { r2: number; rmse: number; mae: number };
-
-export type CostPoint = { iteration: number; cost: number };
 
 export type SequenceState = {
   phase: Phase;
   visiblePoints: number;
-  thetas: Thetas | null;
-  iteration: number | null;
-  metrics: Metrics | null;
-  costHistory: CostPoint[];
-  diverged: boolean;
   trainingActive: boolean;
 };
 
@@ -40,5 +31,18 @@ export type Training = {
 };
 
 export type SequenceStep = { thetas: Thetas; iteration: number; metrics: Metrics; history: CostPoint[] };
+
+export type ModelReporter = {
+  reset: () => void;
+  show: (step: SequenceStep) => void;
+  restart: () => void;
+  finish: (diverged: boolean) => void;
+};
+
+export type SequenceDependencies = {
+  samples: Sample[];
+  defaults: TrainOptions;
+  model: ModelReporter;
+};
 
 export type Clock = { readonly instant: boolean };

@@ -3,17 +3,17 @@ import { OverlayPanel } from '@/features/dashboard/shared/components/presenters/
 import { overlayRectangle } from '@/features/dashboard/shared/lib/overlayRectangle.ts';
 import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
 import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
-import { DATA } from '@/shared/configs/DatasetConfig.ts';
-import { selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
+import { useModelPort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 
 export function DatasetPanelContainer() {
   const { width } = useViewport();
   const chart = useChart();
   const visible = useOverlayShown('dataset');
-  const thetas = useSequence(selectUsableThetas);
-  const rows = DATA.map((sample) => ({ ...sample, estimate: displayableEstimate(thetas, sample.km) }));
+  const thetas = useModelPort(selectUsableThetas);
+  const samples = useModelPort((state) => state.samples);
+  const rows = samples.map((sample) => ({ ...sample, estimate: displayableEstimate(thetas, sample.km) }));
 
   return (
     <OverlayPanel visible={visible} rectangle={overlayRectangle(chart, width)}>

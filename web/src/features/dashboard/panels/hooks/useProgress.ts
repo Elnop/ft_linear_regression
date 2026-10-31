@@ -1,14 +1,15 @@
 import { useShallow } from 'zustand/react/shallow';
-import { DATA } from '@/shared/configs/DatasetConfig.ts';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
+import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 
 export function useProgress(): { label: string; value: string } {
-  return useSequence(
+  const iteration = useModelPort((state) => state.iteration);
+  const total = useModelPort((state) => state.samples.length);
+  return useSequencePort(
     useShallow((state) =>
       state.phase === 'descent' || state.phase === 'interactive'
-        ? { label: 'PASSAGE', value: formatNumber(state.iteration) }
-        : { label: 'POINTS', value: `${state.visiblePoints} / ${DATA.length}` },
+        ? { label: 'PASSAGE', value: formatNumber(iteration) }
+        : { label: 'POINTS', value: `${state.visiblePoints} / ${total}` },
     ),
   );
 }

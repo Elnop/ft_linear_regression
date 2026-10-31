@@ -13,8 +13,8 @@ import { HeaderChipsContainer } from '@/features/dashboard/panels/components/orc
 import { PrecisionPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PrecisionPanelContainer.tsx';
 import { PredictPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PredictPanelContainer.tsx';
 import { DocumentationPage } from '@/features/docs/components/orchestrators/DocumentationPage.tsx';
-import { selectInterfaceVisible } from '@/features/wall/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
+import { useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 import { useTitleLayout } from '@/features/wall/stickers/hooks/useTitleLayout.ts';
 import { pagePadding } from '@/shared/lib/layout.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
@@ -27,7 +27,7 @@ export function Dashboard() {
   const { width } = useViewport();
   const { area } = useChart();
   const title = useTitleLayout();
-  const visible = useSequence(selectInterfaceVisible);
+  const visible = useSequencePort(selectInterfaceVisible);
   const padding = pagePadding(width);
   const top = width >= WIDE ? title.rectangle.y : area.y + area.height + CHART_TO_FLOW;
   const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${top}px`, '--dashboard-padding': `${padding}px` };

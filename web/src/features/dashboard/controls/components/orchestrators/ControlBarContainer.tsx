@@ -1,15 +1,15 @@
 import { ControlBar } from '@/features/dashboard/controls/components/presenters/ControlBar.tsx';
 import { useWarn } from '@/features/dashboard/controls/hooks/useWarn.ts';
-import { setLearningRate, usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
-import { selectIntro } from '@/features/wall/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { selectIntro } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
+import { useSequencePort, useTrainingOptionsPort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 
 export function ControlBarContainer() {
-  const trainingActive = useSequence((state) => state.trainingActive);
-  const intro = useSequence(selectIntro);
-  const train = useSequence((state) => state.train);
-  const replay = useSequence((state) => state.replay);
-  const learningRate = usePlayground((state) => state.learningRate);
+  const trainingActive = useSequencePort((state) => state.trainingActive);
+  const intro = useSequencePort(selectIntro);
+  const train = useSequencePort((state) => state.train);
+  const replay = useSequencePort((state) => state.replay);
+  const learningRate = useTrainingOptionsPort((state) => state.learningRate);
+  const setLearningRate = useTrainingOptionsPort((state) => state.setLearningRate);
   const warn = useWarn();
   return (
     <ControlBar

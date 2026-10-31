@@ -35,11 +35,11 @@ module.exports = {
       to: { path: '^src/app/' },
     },
     {
-      name: 'no-cross-feature-components',
+      name: 'no-cross-feature',
       severity: 'error',
-      comment: 'Une feature n’importe pas les composants d’une autre : composer depuis app/ ou promouvoir dans shared/components/.',
+      comment: 'Une feature n’importe jamais une autre feature : elle déclare ses besoins dans ports/ et app/ fait la jonction.',
       from: { path: '^src/features/([^/]+)/' },
-      to: { path: '^src/features/[^/]+/(components|[^/]+/components)/', pathNot: '^src/features/$1/' },
+      to: { path: '^src/features/', pathNot: '^src/features/$1/' },
     },
     {
       name: 'no-cross-sub-feature',
@@ -47,7 +47,7 @@ module.exports = {
       comment: 'Une sous-feature n’importe aucune de ses voisines : ce qui sert à plusieurs va dans shared/ de la feature.',
       from: {
         path: '^src/features/([^/]+)/([^/]+)/',
-        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|shared|stores|styles|types)/',
+        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|ports|shared|stores|styles|types)/',
       },
       to: { path: '^src/features/$1/', pathNot: '^src/features/$1/($2|shared)/' },
     },
@@ -61,9 +61,9 @@ module.exports = {
     {
       name: 'presenters-are-pure',
       severity: 'error',
-      comment: 'Un presenter ne lit aucun store : son orchestrateur lui passe tout par props.',
+      comment: 'Un presenter ne lit aucun store ni aucun port : son orchestrateur lui passe tout par props.',
       from: { path: '/presenters/' },
-      to: { path: '(Store\\.ts$|node_modules/zustand/)' },
+      to: { path: '(Store\\.ts$|node_modules/zustand/|/ports/)' },
     },
     {
       name: 'stores-in-their-folder',
@@ -78,13 +78,6 @@ module.exports = {
           '^src/shared/stores/[^/]+Store\\.ts$',
         ],
       },
-    },
-    {
-      name: 'sequence-is-headless',
-      severity: 'error',
-      comment: 'La séquence ne connaît que le shared/ du mur : ni ses voisines, ni le dashboard, ni la doc.',
-      from: { path: '^src/features/wall/sequence/' },
-      to: { path: '^src/features/', pathNot: '^src/features/wall/(sequence|shared)/' },
     },
   ],
   options: {

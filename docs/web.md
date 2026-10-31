@@ -84,8 +84,9 @@ Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est i
 ```
 web/src/
 ├── main.tsx
-├── app/                  composition de la page (App, Dashboard, HeadBar, Reveal) et styles globaux
+├── app/                  composition de la page et jonction entre features (App, Dashboard, HeadBar, Reveal)
 ├── features/
+│   ├── model/            état du modèle affiché : dataset, θ, métriques, historique, learning rate
 │   ├── wall/             le mur peint
 │   │   ├── shared/       moteur de peinture, aléatoire, tracé du titre
 │   │   ├── canvas/       PaintWall : crée le moteur et le publie
@@ -93,16 +94,24 @@ web/src/
 │   │   ├── spray-can/    la bombe qui suit la buse
 │   │   └── stickers/     les autocollants
 │   ├── dashboard/        l'interface posée sur le mur
-│   │   ├── shared/       playgroundStore, prédiction, panneau de verre, formatage
+│   │   ├── shared/       ports, playgroundStore, prédiction, panneau de verre, formatage
 │   │   ├── controls/     barre de réglages, Passer, choix des overlays
 │   │   ├── panels/       coût, précision, prédiction, puces d'en-tête
 │   │   └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
 │   └── docs/             documentation intégrée (contenu, onglets)
 └── shared/               ce que le mur et le dashboard utilisent tous les deux :
-                          viewport, mise en page, repère du graphe, dataset, réglages d'entraînement
+                          viewport, mise en page, repère du graphe
 ```
 
-Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature, et ce qui sert à plusieurs features va dans `src/shared/`.
+Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature, et le code transverse sans domaine propre va dans `src/shared/`.
+
+Une feature n'importe jamais une autre feature. Quand elle a besoin d'une donnée qui vient d'ailleurs, elle déclare ce besoin chez elle, et `app/` branche la vraie source :
+
+- le dashboard déclare dans `dashboard/shared/ports/DashboardPorts.ts` un contexte qui transporte trois stores (séquence, modèle, options d'entraînement), typés de son côté dans `PortsTypes.ts`, et les lit avec `useSequencePort`, `useModelPort` et `useTrainingOptionsPort` ;
+- la séquence reçoit ses dépendances en paramètre, `useSequenceRuntime({ samples, defaults, model })`, et écrit le modèle à travers ce `model` sans savoir d'où il vient ;
+- `App.tsx` fournit les stores au contexte et les dépendances à la séquence.
+
+Les types de résultat partagés (`Metrics`, `CostPoint`) sont dans `core/types/CoreTypes.ts`.
 
 Chaque niveau range ses fichiers dans les mêmes dossiers :
 
@@ -113,6 +122,7 @@ Chaque niveau range ses fichiers dans les mêmes dossiers :
 | `hooks/` | hooks React (`useX.ts`) |
 | `lib/` | fonctions et classes, sans types ni constantes exportées |
 | `stores/` | stores Zustand (`xStore.ts`) |
+| `ports/` | contextes qui reçoivent les données d'une autre feature, et leurs hooks de lecture |
 | `types/` | types exportés, un `XTypes.ts` par domaine |
 | `configs/` | constantes exportées, un `XConfig.ts` par domaine |
 | `styles/` | CSS |
@@ -126,18 +136,19 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 |---|---|---|
 | `features/wall/shared/stores/engineStore.ts` | le moteur de peinture | `PaintWall` |
 | `shared/stores/viewportStore.ts` | taille de la fenêtre | l'écouteur `resize` |
-| `features/wall/sequence/stores/sequenceStore.ts` | phase, θ, métriques, historique du coût | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
-| `features/dashboard/shared/stores/playgroundStore.ts` | kilométrage saisi, learning rate, overlays affichés | ses actions `setKm`, `setLearningRate`, `toggleOverlay` |
+| `features/wall/sequence/stores/sequenceStore.ts` | phase, points visibles, entraînement en cours | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
+| `features/model/stores/modelStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le `SequenceController`, à travers `modelActions` |
+| `features/model/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
+| `features/dashboard/shared/stores/playgroundStore.ts` | kilométrage saisi, overlay affiché | ses actions `setKm`, `toggleOverlay` |
 
-Le dashboard lit la séquence par son store et ses sélecteurs (`features/wall/sequence/lib/selectors.ts`). La prédiction est calculée dans `dashboard/shared/hooks/usePrediction.ts` et l'avertissement de divergence dans `dashboard/controls/hooks/useWarn.ts`.
+Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `dashboard/shared/lib/` et portent sur les types de ses ports.
 
 dependency-cruiser vérifie le sens des dépendances :
 
 - `src/shared/` ne connaît ni `app/` ni les features, et une feature ne remonte jamais vers `app/` ;
-- une feature n'importe pas les composants d'une autre, c'est `app/` qui les assemble ;
+- une feature n'importe jamais une autre feature (`no-cross-feature`), c'est `app/` qui fait la jonction ;
 - une sous-feature n'importe aucune de ses voisines, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
-- un presenter n'importe aucun store, et les stores restent dans un dossier `stores/` ;
-- `wall/sequence/` ne dépend que de `wall/shared/` (et de `src/shared/`).
+- un presenter n'importe aucun store ni aucun port, et les stores restent dans un dossier `stores/`.
 
 Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
 
