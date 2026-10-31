@@ -1,4 +1,4 @@
-import { mulberry32 } from '@/shared/lib/random.ts';
+import { mulberry32 } from './random.ts';
 import { coverRectangle } from './coverRectangle.ts';
 import type { Roughness } from '@/features/wall/shared/types/RoughnessTypes.ts';
 

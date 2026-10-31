@@ -2,7 +2,7 @@ import type { Sample, TrainOptions } from '@core/types/CoreTypes.ts';
 import { paintTitle } from './paintTitle.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
-import { shuffled } from '@/shared/lib/random.ts';
+import { shuffled } from '@/features/wall/shared/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
 import type { SequenceState, Run, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import { WallPainter } from './WallPainter.ts';

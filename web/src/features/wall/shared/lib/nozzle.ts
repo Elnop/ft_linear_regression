@@ -1,9 +1,9 @@
-import { smoothstep } from '@/shared/lib/smoothstep.ts';
+import { smoothstep } from './smoothstep.ts';
 import type { PaintLayer } from './PaintLayer.ts';
-import { gaussian, mulberry32, noise1D, randomSeed } from '@/shared/lib/random.ts';
+import { gaussian, mulberry32, noise1D, randomSeed } from './random.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import type { SprayDotOptions, SprayPathOptions, Job } from '@/features/wall/shared/types/SprayTypes.ts';
-import type { RandomGenerator } from '@/shared/types/RandomTypes.ts';
+import type { RandomGenerator } from '@/features/wall/shared/types/RandomTypes.ts';
 import { NOMINAL_SPEED } from '@/features/wall/shared/configs/NozzleConfig.ts';
 
 const DROPLET = 0.05;

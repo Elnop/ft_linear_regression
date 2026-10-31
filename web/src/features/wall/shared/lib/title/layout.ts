@@ -2,10 +2,10 @@ import { chartMapping } from '@/shared/lib/chartMapping.ts';
 import { pagePadding } from '@/shared/lib/layout.ts';
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { smoothStroke } from './smoothStroke.ts';
-import type { TitleLayout, Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
+import type { TitleLayout, Stroke, TitleLine } from '@/features/wall/shared/types/TitleTypes.ts';
 import { WIDE } from '@/shared/configs/LayoutConfig.ts';
-import { STROKE } from '@/shared/configs/TitleConfig.ts';
-import { GLYPHS } from '@/shared/configs/GlyphsConfig.ts';
+import { STROKE } from '@/features/wall/shared/configs/TitleConfig.ts';
+import { GLYPHS } from '@/features/wall/shared/configs/GlyphsConfig.ts';
 
 const TITLE = 'ft_linear_regression';
 const SPLIT_TITLE_BELOW = 700;

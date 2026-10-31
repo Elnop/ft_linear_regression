@@ -1,4 +1,4 @@
-import { gaussian } from '@/shared/lib/random.ts';
+import { gaussian } from '@/features/wall/shared/lib/random.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 
 export function drawMist(context: CanvasRenderingContext2D, from: Vec2, to: Vec2, color: string, canWidth: number) {

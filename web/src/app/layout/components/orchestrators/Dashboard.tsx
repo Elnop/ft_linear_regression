@@ -15,7 +15,7 @@ import { PredictPanelContainer } from '@/features/dashboard/panels/components/or
 import { DocumentationPage } from '@/features/docs/components/orchestrators/DocumentationPage.tsx';
 import { selectInterfaceVisible } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
-import { useTitleLayout } from '@/shared/hooks/useTitleLayout.ts';
+import { useTitleLayout } from '@/features/wall/shared/hooks/useTitleLayout.ts';
 import { pagePadding } from '@/shared/lib/layout.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 import '@/app/layout/layout.css';

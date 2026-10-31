@@ -1,5 +1,5 @@
-import { smoothstep } from '@/shared/lib/smoothstep.ts';
-import type { RandomGenerator } from '@/shared/types/RandomTypes.ts';
+import { smoothstep } from './smoothstep.ts';
+import type { RandomGenerator } from '@/features/wall/shared/types/RandomTypes.ts';
 
 export function mulberry32(seed: number): RandomGenerator {
   let state = seed >>> 0;

@@ -3,7 +3,7 @@ import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import type { Rgb } from '@/features/wall/shared/types/ColorTypes.ts';
 import type { LayerOptions, CellRectangle } from '@/features/wall/shared/types/LayerTypes.ts';
 
-import { mulberry32, noise2D } from '@/shared/lib/random.ts';
+import { mulberry32, noise2D } from './random.ts';
 import type { Roughness } from '@/features/wall/shared/types/RoughnessTypes.ts';
 import { FILM_SCALE } from '@/features/wall/shared/configs/LayerConfig.ts';
 

@@ -1,5 +1,5 @@
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import type { Glyph } from '@/shared/types/TitleTypes.ts';
+import type { Glyph } from '@/features/wall/shared/types/TitleTypes.ts';
 
 const points = (...xy: number[]): Vec2[] => {
   const out: Vec2[] = [];

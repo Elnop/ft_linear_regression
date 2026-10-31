@@ -1,4 +1,4 @@
-import { smoothstep } from '@/shared/lib/smoothstep.ts';
+import { smoothstep } from './smoothstep.ts';
 import { stepFlow } from './stepFlow.ts';
 import { PaintLayer } from './PaintLayer.ts';
 
