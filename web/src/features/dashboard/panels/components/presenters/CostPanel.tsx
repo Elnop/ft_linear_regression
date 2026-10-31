@@ -1,6 +1,6 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import type { CostPoint } from '@/features/wall/sequence/types/SequenceTypes.ts';
-import '@/features/dashboard/panels/panels.css';
+import '@/features/dashboard/panels/styles/panels.css';
 
 type CostPanelProps = {
   history: CostPoint[];

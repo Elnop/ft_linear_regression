@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import '@/features/dashboard/controls/controls.css';
+import '@/features/dashboard/controls/styles/controls.css';
 
 type ControlBarProps = {
   trainingActive: boolean;

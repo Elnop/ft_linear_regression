@@ -1,7 +1,7 @@
 import { SprayCanArt } from '@/features/wall/spray-can/components/presenters/SprayCanArt.tsx';
 import { useSprayCan } from '@/features/wall/spray-can/hooks/useSprayCan.ts';
 import { useEngine } from '@/features/wall/shared/stores/engineStore.ts';
-import '@/features/wall/spray-can/spray-can.css';
+import '@/features/wall/spray-can/styles/spray-can.css';
 
 export function SprayCan() {
   const engine = useEngine();

@@ -16,7 +16,7 @@ ft_linear_regression/
 │   ├── hasFiniteThetas.ts    # partagé par l'entraînement, la CLI et le web
 │   ├── parseMileage.ts       # saisie du kilométrage, partagée CLI / web
 │   ├── parseDataset.ts       # parsing et validation du dataset
-│   └── train.ts              # générateur trainSteps
+│   └── trainSteps.ts         # générateur d'entraînement
 ├── cli/                      # partie obligatoire
 │   ├── process.ts            # fail(), errorCode()
 │   ├── parseCli.ts           # arguments, --help, erreurs d'usage

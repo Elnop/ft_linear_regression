@@ -1,5 +1,5 @@
 import { hasFiniteThetas } from '../core/hasFiniteThetas.ts';
-import { trainSteps } from '../core/train.ts';
+import { trainSteps } from '../core/trainSteps.ts';
 import type { TrainStep } from '../core/types/CoreTypes.ts';
 import { parseCli } from './parseCli.ts';
 import { loadDataset } from './loadDataset.ts';

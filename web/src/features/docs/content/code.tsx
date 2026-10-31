@@ -3,7 +3,7 @@ import gradientSource from '@core/gradientStep.ts?raw';
 import hypothesisSource from '@core/estimatePrice.ts?raw';
 import metricsSource from '@core/metrics.ts?raw';
 import normalizeSource from '@core/normalize.ts?raw';
-import trainSource from '@core/train.ts?raw';
+import trainSource from '@core/trainSteps.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
 import { pick } from '@/features/docs/lib/source.ts';
 import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
@@ -94,7 +94,7 @@ export const CODE: DocStep[] = [
     ),
   },
   {
-    label: 'core/train.ts',
+    label: 'core/trainSteps.ts',
     section: "L'entraînement",
     title: 'La boucle de descente',
     aside: <Code code={pick(trainSource, 'trainSteps')} />,

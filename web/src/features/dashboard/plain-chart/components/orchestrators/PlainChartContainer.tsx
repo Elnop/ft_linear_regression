@@ -3,8 +3,8 @@ import { PlainChart } from '@/features/dashboard/plain-chart/components/presente
 import { overlayRectangle } from '@/features/dashboard/shared/lib/overlayRectangle.ts';
 import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
 import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
-import { DATA } from '@/features/wall/sequence/configs/DatasetConfig.ts';
-import { lineSegment } from '@/features/wall/sequence/lib/lineSegment.ts';
+import { DATA } from '@/shared/configs/DatasetConfig.ts';
+import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';

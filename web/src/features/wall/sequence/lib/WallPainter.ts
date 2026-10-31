@@ -5,7 +5,7 @@ import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import { dotJob, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
-import { lineSegment } from './lineSegment.ts';
+import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { fadeGray, fadeOpacity } from './fade.ts';
 import type { Timeline } from './Timeline.ts';
 import { TIMING } from '@/features/wall/sequence/configs/TimingConfig.ts';

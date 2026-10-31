@@ -93,7 +93,7 @@ Ce sont ces `θ` (sur km brut) qui sont sauvegardés. `predict` applique donc l'
 
 ## 5. Le générateur `trainSteps`
 
-[`core/train.ts`](../core/train.ts) expose l'entraînement sous forme de générateur. À chaque itération, il produit :
+[`core/trainSteps.ts`](../core/trainSteps.ts) expose l'entraînement sous forme de générateur. À chaque itération, il produit :
 
 ```ts
 { iteration, theta0, theta1, cost }   // θ déjà ramenés sur km brut

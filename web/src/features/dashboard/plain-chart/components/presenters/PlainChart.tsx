@@ -2,9 +2,9 @@ import type { Sample } from '@core/types/CoreTypes.ts';
 import { chartTicks, formatTick } from '@/features/dashboard/shared/lib/ticks.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { SMALL } from '@/features/dashboard/shared/configs/LayoutConfig.ts';
+import { SMALL } from '@/features/dashboard/shared/configs/DashboardLayoutConfig.ts';
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
-import '@/features/dashboard/plain-chart/plain-chart.css';
+import '@/features/dashboard/plain-chart/styles/plain-chart.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
 type PlainChartProps = {

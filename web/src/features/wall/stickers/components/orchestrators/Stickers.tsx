@@ -3,7 +3,7 @@ import { Sticker } from '@/features/wall/stickers/components/presenters/Sticker.
 import { placeStickers } from '@/features/wall/stickers/lib/placeStickers.ts';
 import { useTitleLayout } from '@/features/wall/shared/hooks/useTitleLayout.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
-import '@/features/wall/stickers/stickers.css';
+import '@/features/wall/stickers/styles/stickers.css';
 
 export function Stickers() {
   const { width } = useViewport();

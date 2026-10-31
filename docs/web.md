@@ -84,32 +84,62 @@ Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est i
 ```
 web/src/
 ├── main.tsx
-├── app/            composition de la page, démarrage de la séquence
-├── features/       une feature par domaine
-│   ├── sequence/   chorégraphie entraînement ↔ peinture (controller, painter, training)
-│   ├── title/      tracé du titre tagué
-│   ├── dashboard/  interface posée sur le mur (layout, panels, controls, chart)
-│   ├── decor/      autocollants et bombe de peinture
-│   └── docs/       documentation intégrée (contenu, onglets)
-├── components/shared/   composants sans domaine (PaintWall, Reveal)
-├── lib/            technique sans domaine : moteur de peinture, viewport, graphe, géométrie, aléatoire, formatage
-└── styles/         tokens et styles globaux
+├── app/                  composition de la page (App, Dashboard, HeadBar, Reveal) et styles globaux
+├── features/
+│   ├── wall/             le mur peint
+│   │   ├── shared/       moteur de peinture, aléatoire, tracé du titre
+│   │   ├── canvas/       PaintWall : crée le moteur et le publie
+│   │   ├── sequence/     chorégraphie entraînement ↔ peinture, sans interface
+│   │   ├── spray-can/    la bombe qui suit la buse
+│   │   └── stickers/     les autocollants
+│   ├── dashboard/        l'interface posée sur le mur
+│   │   ├── shared/       playgroundStore, prédiction, panneau de verre, formatage
+│   │   ├── controls/     barre de réglages, Passer, choix des overlays
+│   │   ├── panels/       coût, précision, prédiction, puces d'en-tête
+│   │   └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
+│   └── docs/             documentation intégrée (contenu, onglets)
+└── shared/               ce que le mur et le dashboard utilisent tous les deux :
+                          viewport, mise en page, repère du graphe, dataset, réglages d'entraînement
 ```
 
-- Dans une feature, les composants sont rangés par rôle : `orchestrators/` lisent les stores, `presenters/` affichent ce qu'on leur passe par props. La logique va dans `hooks/` et `lib/`. Un orchestrateur qui branche un presenter du même nom prend le suffixe `Container` (`CostPanelContainer` affiche `CostPanel`).
-- L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul propriétaire qui écrit dedans :
+Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature, et ce qui sert à plusieurs features va dans `src/shared/`.
 
-  | Store | Contenu | Écrit par |
-  |---|---|---|
-  | `lib/paint/engineStore.ts` | le moteur de peinture | `PaintWall` |
-  | `lib/viewport/viewportStore.ts` | taille de la fenêtre | l'écouteur `resize` |
-  | `features/sequence/stores/sequenceStore.ts` | phase, θ, métriques, historique du coût | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
-  | `features/dashboard/stores/playgroundStore.ts` | kilométrage saisi, learning rate | ses actions `setKm`, `setLearningRate` |
+Chaque niveau range ses fichiers dans les mêmes dossiers :
 
-  Les autres domaines lisent ces stores avec des sélecteurs. Les valeurs dérivées qui croisent plusieurs domaines (prédiction, avertissement de divergence) sont calculées dans `features/dashboard/hooks/`.
-- Les dépendances vont dans un seul sens : `app → features → components/shared → lib`. Une feature n'importe pas les composants d'une autre feature : c'est `app/` qui les assemble.
-- dependency-cruiser vérifie aussi qu'un presenter n'importe aucun store, que les stores restent dans `stores/` ou `lib/`, et que `sequence/` ne dépend que de `title/`.
-- Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
+| Dossier | Contenu |
+|---|---|
+| `components/orchestrators/` | composants qui lisent les stores |
+| `components/presenters/` | composants qui affichent ce qu'on leur passe par props |
+| `hooks/` | hooks React (`useX.ts`) |
+| `lib/` | fonctions et classes, sans types ni constantes exportées |
+| `stores/` | stores Zustand (`xStore.ts`) |
+| `types/` | types exportés, un `XTypes.ts` par domaine |
+| `configs/` | constantes exportées, un `XConfig.ts` par domaine |
+| `styles/` | CSS |
+| `content/` | textes de la documentation (seulement dans `docs/`) |
+
+Un fichier qui n'exporte qu'une fonction ou une classe porte son nom (`hexToRgb.ts`, `PaintEngine.ts`). Un orchestrateur qui branche un presenter du même nom prend le suffixe `Container` (`CostPanelContainer` affiche `CostPanel`).
+
+L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul propriétaire qui écrit dedans :
+
+| Store | Contenu | Écrit par |
+|---|---|---|
+| `features/wall/shared/stores/engineStore.ts` | le moteur de peinture | `PaintWall` |
+| `shared/stores/viewportStore.ts` | taille de la fenêtre | l'écouteur `resize` |
+| `features/wall/sequence/stores/sequenceStore.ts` | phase, θ, métriques, historique du coût | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
+| `features/dashboard/shared/stores/playgroundStore.ts` | kilométrage saisi, learning rate, overlays affichés | ses actions `setKm`, `setLearningRate`, `toggleOverlay` |
+
+Le dashboard lit la séquence par son store et ses sélecteurs (`sequence/lib/selectors.ts`). La prédiction est calculée dans `dashboard/shared/hooks/usePrediction.ts` et l'avertissement de divergence dans `dashboard/controls/hooks/useWarn.ts`.
+
+dependency-cruiser vérifie le sens des dépendances :
+
+- `src/shared/` ne connaît ni `app/` ni les features, et une feature ne remonte jamais vers `app/` ;
+- une feature n'importe pas les composants d'une autre, c'est `app/` qui les assemble ;
+- une sous-feature n'importe aucune de ses voisines, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
+- un presenter n'importe aucun store, et les stores restent dans un dossier `stores/` ;
+- `wall/sequence/` ne dépend que de `wall/shared/` (et de `src/shared/`).
+
+Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
 
 `npm run check` (dans `web/`) lance le typecheck, Oxlint et dependency-cruiser.
 

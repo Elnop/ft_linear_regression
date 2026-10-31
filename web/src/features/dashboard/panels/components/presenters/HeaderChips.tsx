@@ -1,5 +1,5 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import '@/features/dashboard/panels/panels.css';
+import '@/features/dashboard/panels/styles/panels.css';
 
 type HeaderChipsProps = {
   theta0: number | null;

@@ -10,7 +10,7 @@ import { IDLE_STATE } from '@/features/wall/sequence/configs/StateConfig.ts';
 import { Timeline } from './Timeline.ts';
 import { TIMING } from '@/features/wall/sequence/configs/TimingConfig.ts';
 import { isFinalPass, runTraining, stepAt } from './training.ts';
-import { DEFAULT_TRAIN } from '@/features/wall/sequence/configs/TrainingConfig.ts';
+import { DEFAULT_TRAIN } from '@/shared/configs/TrainingConfig.ts';
 import { lineKindAt } from './lineKindAt.ts';
 
 export class SequenceController {

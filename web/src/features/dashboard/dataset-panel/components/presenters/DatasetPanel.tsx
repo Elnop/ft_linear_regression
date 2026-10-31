@@ -1,5 +1,5 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import '@/features/dashboard/dataset-panel/dataset-panel.css';
+import '@/features/dashboard/dataset-panel/styles/dataset-panel.css';
 import type { DatasetRow } from '@/features/dashboard/dataset-panel/types/DatasetPanelTypes.ts';
 
 type DatasetPanelProps = {

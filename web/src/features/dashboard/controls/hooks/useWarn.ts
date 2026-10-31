@@ -1,6 +1,6 @@
 import { usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
-import { willDiverge } from '@/features/wall/sequence/lib/training.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { willDiverge } from '@/features/dashboard/controls/lib/willDiverge.ts';
 
 export function useWarn(): boolean {
   const diverged = useSequence((state) => state.diverged);
