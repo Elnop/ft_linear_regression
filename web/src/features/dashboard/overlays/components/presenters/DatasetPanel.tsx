@@ -1,6 +1,6 @@
 import type { Sample } from '@core/types.ts';
 import { formatNumber } from '@/lib/format.ts';
-import '@/features/dashboard/chart/chart.css';
+import '@/features/dashboard/overlays/overlays.css';
 
 export type DatasetRow = Sample & { estimate: number | null };
 

@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react';
 import { HeadBar } from '@/app/layout/components/presenters/HeadBar.tsx';
 import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
-import { ChartAxesContainer } from '@/features/dashboard/chart/components/orchestrators/ChartAxesContainer.tsx';
-import { DatasetPanelContainer } from '@/features/dashboard/chart/components/orchestrators/DatasetPanelContainer.tsx';
-import { OverlayTogglesContainer } from '@/features/dashboard/chart/components/orchestrators/OverlayTogglesContainer.tsx';
-import { PlainChartContainer } from '@/features/dashboard/chart/components/orchestrators/PlainChartContainer.tsx';
-import { PriceMarkerContainer } from '@/features/dashboard/chart/components/orchestrators/PriceMarkerContainer.tsx';
+import { WallAxesContainer } from '@/features/dashboard/overlays/components/orchestrators/WallAxesContainer.tsx';
+import { DatasetPanelContainer } from '@/features/dashboard/overlays/components/orchestrators/DatasetPanelContainer.tsx';
+import { OverlayTogglesContainer } from '@/features/dashboard/overlays/components/orchestrators/OverlayTogglesContainer.tsx';
+import { PlainChartContainer } from '@/features/dashboard/overlays/components/orchestrators/PlainChartContainer.tsx';
+import { WallMarkerContainer } from '@/features/dashboard/overlays/components/orchestrators/WallMarkerContainer.tsx';
 import { ControlBarContainer } from '@/features/dashboard/controls/components/orchestrators/ControlBarContainer.tsx';
 import { SkipButtonContainer } from '@/features/dashboard/controls/components/orchestrators/SkipButtonContainer.tsx';
 import { CostPanelContainer } from '@/features/dashboard/panels/components/orchestrators/CostPanelContainer.tsx';
@@ -31,8 +31,8 @@ export function Dashboard() {
 
   return (
     <>
-      <ChartAxesContainer />
-      <PriceMarkerContainer />
+      <WallAxesContainer />
+      <WallMarkerContainer />
       <PlainChartContainer />
       <DatasetPanelContainer />
       <div className="dashboard-root" style={geometry}>

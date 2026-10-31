@@ -2,9 +2,9 @@ import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/lib/format.ts';
 import type { Vec2 } from '@/lib/geometry.ts';
 import { SMALL } from '@/lib/layout.ts';
-import '@/features/dashboard/chart/chart.css';
+import '@/features/dashboard/overlays/overlays.css';
 
-type PriceMarkerProps = {
+type WallMarkerProps = {
   at: Vec2 | null;
   price: number | null;
   axisY: number;
@@ -14,7 +14,7 @@ type PriceMarkerProps = {
 const STICKER_WIDTH = 206;
 const STICKER_HEIGHT = 112;
 
-export function PriceMarker({ at, price, axisY, width }: PriceMarkerProps) {
+export function WallMarker({ at, price, axisY, width }: WallMarkerProps) {
   const visible = at !== null && price !== null && Number.isFinite(at.x) && Number.isFinite(at.y);
   const scale = width < SMALL ? 0.72 : 1;
   const stickerWidth = STICKER_WIDTH * scale;

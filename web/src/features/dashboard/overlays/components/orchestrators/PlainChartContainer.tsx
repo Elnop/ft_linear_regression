@@ -1,6 +1,6 @@
-import { OverlayPanel } from '@/features/dashboard/chart/components/presenters/OverlayPanel.tsx';
-import { PlainChart } from '@/features/dashboard/chart/components/presenters/PlainChart.tsx';
-import { overlayRectangle } from '@/features/dashboard/chart/lib/overlay.ts';
+import { OverlayPanel } from '@/features/dashboard/overlays/components/presenters/OverlayPanel.tsx';
+import { PlainChart } from '@/features/dashboard/overlays/components/presenters/PlainChart.tsx';
+import { overlayRectangle } from '@/features/dashboard/overlays/lib/overlay.ts';
 import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
 import { usePrediction } from '@/features/dashboard/hooks/usePrediction.ts';
 import { DATA } from '@/features/sequence/lib/dataset.ts';

@@ -1,4 +1,4 @@
-import { OverlayToggles } from '@/features/dashboard/chart/components/presenters/OverlayToggles.tsx';
+import { OverlayToggles } from '@/features/dashboard/overlays/components/presenters/OverlayToggles.tsx';
 import { toggleOverlay, usePlayground } from '@/features/dashboard/stores/playgroundStore.ts';
 
 export function OverlayTogglesContainer() {

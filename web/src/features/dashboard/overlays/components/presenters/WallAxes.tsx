@@ -1,9 +1,9 @@
 import { motion } from 'motion/react';
 import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
 import { SMALL } from '@/lib/layout.ts';
-import '@/features/dashboard/chart/chart.css';
+import '@/features/dashboard/overlays/overlays.css';
 
-type ChartAxesProps = {
+type WallAxesProps = {
   chart: ChartMapping;
   width: number;
   height: number;
@@ -11,7 +11,7 @@ type ChartAxesProps = {
 };
 
 const CHALK = 'rgba(239,236,230,0.62)';
-export function ChartAxes({ chart, width, height, visible }: ChartAxesProps) {
+export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.height;
   const right = area.x + area.width;
