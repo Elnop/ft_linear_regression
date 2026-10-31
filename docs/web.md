@@ -116,7 +116,7 @@ Chaque niveau range ses fichiers dans les mêmes dossiers :
 | `types/` | types exportés, un `XTypes.ts` par domaine |
 | `configs/` | constantes exportées, un `XConfig.ts` par domaine |
 | `styles/` | CSS |
-| `content/` | textes de la documentation (seulement dans `docs/`) |
+| `content/` | textes de la documentation, un `XContent.ts` par sujet (seulement dans `docs/`) |
 
 Un fichier qui n'exporte qu'une fonction ou une classe porte son nom (`hexToRgb.ts`, `PaintEngine.ts`). Un orchestrateur qui branche un presenter du même nom prend le suffixe `Container` (`CostPanelContainer` affiche `CostPanel`).
 
@@ -129,7 +129,7 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 | `features/wall/sequence/stores/sequenceStore.ts` | phase, θ, métriques, historique du coût | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
 | `features/dashboard/shared/stores/playgroundStore.ts` | kilométrage saisi, learning rate, overlays affichés | ses actions `setKm`, `setLearningRate`, `toggleOverlay` |
 
-Le dashboard lit la séquence par son store et ses sélecteurs (`sequence/lib/selectors.ts`). La prédiction est calculée dans `dashboard/shared/hooks/usePrediction.ts` et l'avertissement de divergence dans `dashboard/controls/hooks/useWarn.ts`.
+Le dashboard lit la séquence par son store et ses sélecteurs (`features/wall/sequence/lib/selectors.ts`). La prédiction est calculée dans `dashboard/shared/hooks/usePrediction.ts` et l'avertissement de divergence dans `dashboard/controls/hooks/useWarn.ts`.
 
 dependency-cruiser vérifie le sens des dépendances :
 

@@ -1,5 +1,5 @@
-import { CLI, TREE } from '@/features/docs/content/project.ts';
-import { REPOSITORY } from '@/features/docs/content/sources.ts';
+import { CLI, TREE } from '@/features/docs/content/ProjectContent.ts';
+import { REPOSITORY } from '@/features/docs/content/SourcesContent.ts';
 import '@/features/docs/styles/cards.css';
 import '@/features/docs/styles/code.css';
 

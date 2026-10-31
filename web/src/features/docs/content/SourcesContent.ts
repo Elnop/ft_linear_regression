@@ -5,5 +5,3 @@ export const VIDEOS = {
   machineLearning3: { id: 'wg7-roETbbM', tag: 'ML#3', title: 'La régression linéaire (partie 1/2)' },
   machineLearning4: { id: 'rcl_YRyoLIY', tag: 'ML#4', title: 'Descente de gradient' },
 } as const;
-
-export const videoUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;

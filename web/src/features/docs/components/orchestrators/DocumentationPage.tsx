@@ -3,8 +3,8 @@ import { DocumentationTabs } from '@/features/docs/components/presenters/Documen
 import { ProjectCards } from '@/features/docs/components/presenters/ProjectCards.tsx';
 import { SourcesCard } from '@/features/docs/components/presenters/SourcesCard.tsx';
 import { StepsPanel } from '@/features/docs/components/presenters/StepsPanel.tsx';
-import { CODE } from '@/features/docs/content/code.tsx';
-import { THEORY } from '@/features/docs/content/theory.ts';
+import { CODE } from '@/features/docs/content/CodeContent.tsx';
+import { THEORY } from '@/features/docs/content/TheoryContent.ts';
 import { useDocumentationTabs } from '@/features/docs/hooks/useDocumentationTabs.ts';
 import { groupSections } from '@/features/docs/lib/sections.ts';
 import '@/features/docs/styles/page.css';

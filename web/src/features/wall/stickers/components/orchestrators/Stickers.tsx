@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Sticker } from '@/features/wall/stickers/components/presenters/Sticker.tsx';
 import { placeStickers } from '@/features/wall/stickers/lib/placeStickers.ts';
-import { useTitleLayout } from '@/features/wall/shared/hooks/useTitleLayout.ts';
+import { useTitleLayout } from '@/features/wall/stickers/hooks/useTitleLayout.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 import '@/features/wall/stickers/styles/stickers.css';
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { titleLayout } from '@/features/wall/shared/lib/title/layout.ts';
+import { titleLayout } from '@/features/wall/shared/lib/titleLayout.ts';
 import { useViewport } from '@/shared/stores/viewportStore.ts';
 import type { TitleLayout } from '@/features/wall/shared/types/TitleTypes.ts';
 

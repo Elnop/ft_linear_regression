@@ -1,10 +1,11 @@
-import { smoothstep } from './smoothstep.ts';
-import type { PaintLayer } from './PaintLayer.ts';
-import { gaussian, mulberry32, noise1D, randomSeed } from './random.ts';
+import { smoothstep } from '@/features/wall/shared/lib/smoothstep.ts';
+import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
+import { gaussian, mulberry32, noise1D, randomSeed } from '@/features/wall/shared/lib/random.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import type { SprayDotOptions, SprayPathOptions, Job } from '@/features/wall/shared/types/SprayTypes.ts';
+import type { Job } from '@/features/wall/shared/types/SprayTypes.ts';
+import type { SprayDotOptions, SprayPathOptions } from '@/features/wall/sequence/types/NozzleTypes.ts';
 import type { RandomGenerator } from '@/features/wall/shared/types/RandomTypes.ts';
-import { NOMINAL_SPEED } from '@/features/wall/shared/configs/NozzleConfig.ts';
+import { NOMINAL_SPEED } from '@/features/wall/sequence/configs/NozzleConfig.ts';
 
 const DROPLET = 0.05;
 const SPRAY_SIGMA = 3.6;
