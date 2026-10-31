@@ -4,7 +4,7 @@ import type { TrainStep } from '../core/types.ts';
 import { parseCli } from './args.ts';
 import { loadDataset } from './dataset.ts';
 import { writeModel } from './model.ts';
-import { fail } from './process.ts';
+import { errorMessage, fail } from './process.ts';
 
 const USAGE = `Usage: npm run train -- [dataset.csv] [--lr <rate>] [--iterations <n>]
 
@@ -43,7 +43,7 @@ let last: TrainStep | undefined;
 try {
   for (const step of trainSteps(data, { learningRate, iterations })) last = step;
 } catch (error) {
-  fail((error as Error).message);
+  fail(errorMessage(error));
 }
 
 if (!last || !hasFiniteThetas(last)) {

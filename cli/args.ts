@@ -1,5 +1,5 @@
 import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
-import { fail } from './process.ts';
+import { errorMessage, fail } from './process.ts';
 
 export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, options: Options) {
   let parsed;
@@ -9,7 +9,7 @@ export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, 
       options: { ...options, help: { type: 'boolean', short: 'h', default: false } },
     });
   } catch (error) {
-    fail(`${(error as Error).message}\n\n${usage}`);
+    fail(`${errorMessage(error)}\n\n${usage}`);
   }
   const { values, positionals } = parsed;
   if ((values as { help: boolean }).help) {
