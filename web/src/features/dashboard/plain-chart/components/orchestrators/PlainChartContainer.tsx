@@ -6,11 +6,10 @@ import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.t
 import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
-import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
+import { useScene } from '@/shared/hooks/useScene.ts';
 
 export function PlainChartContainer() {
-  const { width } = useViewport();
-  const chart = useChart();
+  const { width, chart } = useScene();
   const visible = useOverlayShown('chart');
   const visiblePoints = useSequencePort((state) => state.visiblePoints);
   const samples = useModelPort((state) => state.samples);

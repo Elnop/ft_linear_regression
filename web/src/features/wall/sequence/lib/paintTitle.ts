@@ -4,14 +4,15 @@ import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import { dotJob, moveJob, pathJob } from './nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed } from '@/features/wall/shared/lib/random.ts';
-import { titleLayout, titleLetters } from '@/features/wall/shared/lib/titleLayout.ts';
+import { sceneFor } from '@/shared/lib/sceneFor.ts';
+import { titleLetters } from '@/shared/lib/titleLetters.ts';
 import type { Clock } from '@/features/wall/sequence/types/SequenceTypes.ts';
-import type { Stroke, TitleLine } from '@/features/wall/shared/types/TitleTypes.ts';
+import type { Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
 import { NOMINAL_SPEED } from '@/features/wall/sequence/configs/NozzleConfig.ts';
-import { STROKE } from '@/features/wall/shared/configs/TitleConfig.ts';
+import { STROKE } from '@/shared/configs/TitleConfig.ts';
 
 export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<PaintLayer> {
-  const layout = titleLayout(engine.width, engine.height);
+  const layout = sceneFor(engine.width, engine.height).title;
   const random = mulberry32(randomSeed());
   const { rectangle, em } = layout;
   const layer = engine.createLayer({

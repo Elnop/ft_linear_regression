@@ -6,7 +6,7 @@ import { selectIntro } from '@/features/dashboard/shared/lib/sequenceSelectors.t
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useModelPort, useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { useChart } from '@/shared/stores/viewportStore.ts';
+import { useScene } from '@/shared/hooks/useScene.ts';
 
 type Prediction = { invalid: boolean; mileage: number | null; price: number | null; at: Vec2 | null };
 
@@ -14,7 +14,7 @@ export function usePrediction(): Prediction {
   const km = usePlayground((state) => state.km);
   const thetas = useModelPort(selectUsableThetas);
   const intro = useSequencePort(selectIntro);
-  const chart = useChart();
+  const { chart } = useScene();
 
   return useMemo(() => {
     const mileage = parseMileage(km);

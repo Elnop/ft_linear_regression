@@ -88,7 +88,7 @@ web/src/
 ├── features/
 │   ├── model/            état du modèle affiché : dataset, θ, métriques, historique, learning rate
 │   ├── wall/             le mur peint
-│   │   ├── shared/       moteur de peinture, aléatoire, tracé du titre
+│   │   ├── shared/       moteur de peinture, aléatoire
 │   │   ├── canvas/       PaintWall : crée le moteur et le publie
 │   │   ├── sequence/     chorégraphie entraînement ↔ peinture, sans interface
 │   │   ├── spray-can/    la bombe qui suit la buse
@@ -99,8 +99,8 @@ web/src/
 │   │   ├── panels/       coût, précision, prédiction, puces d'en-tête
 │   │   └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
 │   └── docs/             documentation intégrée (contenu, onglets)
-└── shared/               ce que le mur et le dashboard utilisent tous les deux :
-                          viewport, mise en page, repère du graphe
+└── shared/               ce que le mur, le dashboard et app/ utilisent tous :
+                          la scène (mise en page, repère du graphe, titre)
 ```
 
 Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature, et le code transverse sans domaine propre va dans `src/shared/`.
@@ -112,6 +112,8 @@ Une feature n'importe jamais une autre feature. Quand elle a besoin d'une donné
 - `App.tsx` fournit les stores au contexte et les dépendances à la séquence.
 
 Les types de résultat partagés (`Metrics`, `CostPoint`) sont dans `core/types/CoreTypes.ts`.
+
+La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height)` (`src/shared/lib/sceneFor.ts`) renvoie la scène : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. Le store `sceneStore` la garde à jour, les composants la lisent avec `useScene()` (`src/shared/hooks/`), et la séquence, qui n'est pas un composant, appelle `sceneFor` avec la taille du moteur. Comme ce calcul ne dépend que de la taille de la fenêtre, il reste dans `src/shared/` sans passer par des ports.
 
 Chaque niveau range ses fichiers dans les mêmes dossiers :
 
@@ -135,7 +137,7 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 | Store | Contenu | Écrit par |
 |---|---|---|
 | `features/wall/shared/stores/engineStore.ts` | le moteur de peinture | `PaintWall` |
-| `shared/stores/viewportStore.ts` | taille de la fenêtre | l'écouteur `resize` |
+| `shared/stores/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` |
 | `features/wall/sequence/stores/sequenceStore.ts` | phase, points visibles, entraînement en cours | le `SequenceController` (ses actions sont branchées par `useSequenceRuntime`) |
 | `features/model/stores/modelStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le `SequenceController`, à travers `modelActions` |
 | `features/model/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |

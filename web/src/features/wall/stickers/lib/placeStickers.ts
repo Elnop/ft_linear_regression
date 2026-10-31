@@ -1,7 +1,6 @@
 import type { Cluster, Damage, PlacedSticker } from '@/features/wall/stickers/types/StickersTypes.ts';
 import { car, descent, formula, logo42, norminette, piscine, react, typescript } from '@/features/wall/stickers/configs/ArtsConfig.tsx';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
-import { WIDE } from '@/shared/configs/LayoutConfig.ts';
+import type { Scene } from '@/shared/types/SceneTypes.ts';
 
 const CLUSTERS: Cluster[] = [
   {
@@ -28,8 +27,8 @@ const CLUSTERS: Cluster[] = [
 
 const TITLE_DAMAGE: Damage = { seed: 21, scrape: 0.64, peel: ['bottomRight', 0.32] };
 
-export function placeStickers(chart: ChartMapping, width: number, titleRight: number): PlacedSticker[] {
-  const { area } = chart;
+export function placeStickers({ width, wide, chart: { area }, title }: Scene): PlacedSticker[] {
+  const titleRight = title.rectangle.x + title.rectangle.width;
   const scale = Math.min(1, Math.max(0.6, width / 1440));
   const placed: PlacedSticker[] = [];
   for (const cluster of CLUSTERS) {
@@ -38,7 +37,7 @@ export function placeStickers(chart: ChartMapping, width: number, titleRight: nu
     const anchorY = area.y + cluster.v * area.height;
     for (const item of cluster.items) placed.push({ art: item.art, damage: item.damage, width: item.width * scale, x: anchorX + item.offsetX * scale, y: anchorY + item.offsetY * scale, rotation: item.rotation });
   }
-  if (width >= WIDE && titleRight + 110 < width - 420) {
+  if (wide && titleRight + 110 < width - 420) {
     placed.push({ art: logo42, damage: TITLE_DAMAGE, width: 50 * scale, x: titleRight + 40, y: Math.max(20, area.y * 0.3), rotation: 15 });
   }
   return placed;

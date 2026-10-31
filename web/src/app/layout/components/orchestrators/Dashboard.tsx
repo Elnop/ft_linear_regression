@@ -15,22 +15,13 @@ import { PredictPanelContainer } from '@/features/dashboard/panels/components/or
 import { DocumentationPage } from '@/features/docs/components/orchestrators/DocumentationPage.tsx';
 import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
 import { useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
-import { useTitleLayout } from '@/features/wall/stickers/hooks/useTitleLayout.ts';
-import { pagePadding } from '@/shared/lib/layout.ts';
-import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
+import { useScene } from '@/shared/hooks/useScene.ts';
 import '@/app/layout/styles/layout.css';
-import { WIDE } from '@/shared/configs/LayoutConfig.ts';
-
-const CHART_TO_FLOW = 70;
 
 export function Dashboard() {
-  const { width } = useViewport();
-  const { area } = useChart();
-  const title = useTitleLayout();
+  const { padding, dashboardTop } = useScene();
   const visible = useSequencePort(selectInterfaceVisible);
-  const padding = pagePadding(width);
-  const top = width >= WIDE ? title.rectangle.y : area.y + area.height + CHART_TO_FLOW;
-  const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${top}px`, '--dashboard-padding': `${padding}px` };
+  const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${dashboardTop}px`, '--dashboard-padding': `${padding}px` };
 
   return (
     <>

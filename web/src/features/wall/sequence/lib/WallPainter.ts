@@ -1,6 +1,6 @@
 import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
 
-import { chartFor } from '@/shared/lib/layout.ts';
+import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import { dotJob, pathJob } from './nozzle.ts';
@@ -29,7 +29,7 @@ export class WallPainter {
     this.engine = engine;
     this.samples = samples;
     this.timeline = timeline;
-    this.chart = chartFor(engine.width, engine.height);
+    this.chart = sceneFor(engine.width, engine.height).chart;
   }
 
   clear(keep: PaintLayer[] = []): void {
@@ -39,7 +39,7 @@ export class WallPainter {
   }
 
   fit(): void {
-    this.chart = chartFor(this.engine.width, this.engine.height);
+    this.chart = sceneFor(this.engine.width, this.engine.height).chart;
   }
 
   sprayPoint(index: number, duration: number): Promise<void> {
