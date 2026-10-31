@@ -84,16 +84,16 @@ Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est i
 ```
 web/src/
 ├── main.tsx
-├── app/                  composition de la page et jonction entre features (App, Dashboard, HeadBar, Reveal)
+├── app/                  App : assemble les features et fait la jonction entre elles
 ├── features/
 │   ├── model/            état du modèle affiché : dataset, θ, métriques, historique, learning rate
-│   ├── wall/             le mur peint
+│   ├── wall/             le mur peint, composé par WallLayout
 │   │   ├── shared/       moteur de peinture, aléatoire
 │   │   ├── canvas/       PaintWall : crée le moteur et le publie
 │   │   ├── sequence/     chorégraphie entraînement ↔ peinture, sans interface
 │   │   ├── spray-can/    la bombe qui suit la buse
 │   │   └── stickers/     les autocollants
-│   ├── dashboard/        l'interface posée sur le mur
+│   ├── dashboard/        l'interface posée sur le mur, composée par DashboardLayout
 │   │   ├── shared/       ports, kilométrage et prédiction, overlay affiché, panneau de verre, formatage
 │   │   ├── controls/     barre de réglages, Passer, choix des overlays
 │   │   ├── panels/       coût, précision, prédiction, puces d'en-tête
@@ -104,6 +104,11 @@ web/src/
 ```
 
 Une feature est découpée en sous-features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature, et le code transverse sans domaine propre va dans `src/shared/`.
+
+La racine d'une feature peut assembler ses sous-features, et `App.tsx` n'utilise que ces assemblages :
+
+- `wall/components/orchestrators/WallLayout.tsx` place le canvas, les stickers et la bombe, et lance la séquence avec les dépendances qu'il reçoit (`sequence={...}`) ;
+- `dashboard/components/orchestrators/DashboardLayout.tsx` place tous les panneaux du dashboard et reçoit la documentation en prop (`documentation={<DocumentationPage />}`), ce qui lui évite d'importer la feature docs.
 
 Une feature n'importe jamais une autre feature. Quand elle a besoin d'une donnée qui vient d'ailleurs, elle déclare ce besoin chez elle, et `app/` branche la vraie source :
 

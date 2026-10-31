@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react';
-import { HeadBar } from '@/app/layout/components/presenters/HeadBar.tsx';
-import { Reveal } from '@/app/layout/components/presenters/Reveal.tsx';
+import type { CSSProperties, ReactNode } from 'react';
+import { HeadBar } from '@/features/dashboard/components/presenters/HeadBar.tsx';
+import { Reveal } from '@/features/dashboard/components/presenters/Reveal.tsx';
 import { WallAxesContainer } from '@/features/dashboard/wall-axes/components/orchestrators/WallAxesContainer.tsx';
 import { DatasetPanelContainer } from '@/features/dashboard/dataset-panel/components/orchestrators/DatasetPanelContainer.tsx';
 import { OverlayTogglesContainer } from '@/features/dashboard/controls/components/orchestrators/OverlayTogglesContainer.tsx';
@@ -12,13 +12,12 @@ import { CostPanelContainer } from '@/features/dashboard/panels/components/orche
 import { HeaderChipsContainer } from '@/features/dashboard/panels/components/orchestrators/HeaderChipsContainer.tsx';
 import { PrecisionPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PrecisionPanelContainer.tsx';
 import { PredictPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PredictPanelContainer.tsx';
-import { DocumentationPage } from '@/features/docs/components/orchestrators/DocumentationPage.tsx';
 import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/sequenceSelectors.ts';
 import { useSequencePort } from '@/features/dashboard/shared/ports/DashboardPorts.ts';
 import { useScene } from '@/shared/hooks/useScene.ts';
-import '@/app/layout/styles/layout.css';
+import '@/features/dashboard/styles/dashboard.css';
 
-export function Dashboard() {
+export function DashboardLayout({ documentation }: { documentation: ReactNode }) {
   const { padding, dashboardTop } = useScene();
   const visible = useSequencePort(selectInterfaceVisible);
   const geometry: CSSProperties & Record<`--${string}`, string> = { '--dashboard-top': `${dashboardTop}px`, '--dashboard-padding': `${padding}px` };
@@ -46,7 +45,7 @@ export function Dashboard() {
       </div>
       {visible && (
         <div className="documentation-page" style={{ padding: `0 ${padding}px ${padding}px` }}>
-          <DocumentationPage />
+          {documentation}
         </div>
       )}
     </>
