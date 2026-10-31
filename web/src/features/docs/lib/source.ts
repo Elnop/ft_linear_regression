@@ -2,7 +2,7 @@ import type { Token } from '@/features/docs/types/DocsTypes.ts';
 
 export function pick(source: string, name: string): string {
   const lines = source.split('\n');
-  const start = lines.findIndex((line) => new RegExp(`^export function\\*? ${name}\\b`).test(line));
+  const start = lines.findIndex((line) => new RegExp(`^(export )?function\\*? ${name}\\b`).test(line));
   if (start < 0) throw new Error(`function ${name} not found`);
   const end = lines.findIndex((line, i) => i > start && line === '}');
   return lines.slice(start, end + 1).join('\n');

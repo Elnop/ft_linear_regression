@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { TableOfContents } from '@/features/docs/components/presenters/TableOfContents.tsx';
-import { StepList } from '@/features/docs/components/presenters/StepList.tsx';
+import { TableOfContents } from './TableOfContents.tsx';
+import { StepList } from './StepList.tsx';
 
 import type { DocStep, TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
 

@@ -1,4 +1,4 @@
-import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle, Vec2 } from './GeometryTypes.ts';
 
 export type ChartDomain = { kmMin: number; kmMax: number; priceMin: number; priceMax: number };
 

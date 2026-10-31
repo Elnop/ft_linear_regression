@@ -9,7 +9,7 @@ function errors(data: Sample[], thetas: Thetas): number[] {
   return data.map(({ km, price }) => estimatePrice(thetas, km) - price);
 }
 
-export function sumOfSquaredErrors(data: Sample[], thetas: Thetas): number {
+function sumOfSquaredErrors(data: Sample[], thetas: Thetas): number {
   return errors(data, thetas).reduce((sum, error) => sum + error * error, 0);
 }
 

@@ -1,8 +1,8 @@
 import type { Thetas, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 
-export type Phase = 'idle' | 'title' | 'descent' | 'interactive';
+type Phase = 'idle' | 'title' | 'descent' | 'interactive';
 
-export type Metrics = { r2: number; rmse: number; mae: number };
+type Metrics = { r2: number; rmse: number; mae: number };
 
 export type CostPoint = { iteration: number; cost: number };
 
