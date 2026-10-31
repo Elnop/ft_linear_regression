@@ -1,7 +1,7 @@
 import { WallMarker } from '@/features/dashboard/wall-marker/components/presenters/WallMarker.tsx';
-import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
-import { usePrediction } from '@/features/dashboard/hooks/usePrediction.ts';
-import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
+import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
+import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
+import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 
 export function WallMarkerContainer() {
   const { width } = useViewport();

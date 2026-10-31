@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
-import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
-import { SMALL } from '@/lib/layout.ts';
+import { chartTicks, formatTick } from '@/features/dashboard/shared/lib/ticks.ts';
+import type { ChartMapping } from '@/shared/lib/chart.ts';
+import { SMALL } from '@/features/dashboard/shared/lib/layout.ts';
 import '@/features/dashboard/wall-axes/wall-axes.css';
 
 type WallAxesProps = {

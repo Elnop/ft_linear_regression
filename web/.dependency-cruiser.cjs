@@ -16,15 +16,15 @@ module.exports = {
     {
       name: 'lib-is-leaf',
       severity: 'error',
-      comment: 'lib/ est du technique pur : il ne dépend ni de l’app, ni des features, ni des composants.',
-      from: { path: '^src/lib/' },
-      to: { path: '^src/(app|features|components)/' },
+      comment: 'shared/lib/ est du technique pur : il ne dépend ni de l’app, ni des features, ni des composants.',
+      from: { path: '^src/shared/lib/' },
+      to: { path: '^src/(app|features|shared/components)/' },
     },
     {
       name: 'shared-not-to-features',
       severity: 'error',
-      comment: 'components/shared/ sert toute l’app : il ne connaît aucune feature.',
-      from: { path: '^src/components/' },
+      comment: 'shared/ sert toute l’app : il ne connaît aucune feature.',
+      from: { path: '^src/shared/' },
       to: { path: '^src/(app|features)/' },
     },
     {
@@ -37,9 +37,26 @@ module.exports = {
     {
       name: 'no-cross-feature-components',
       severity: 'error',
-      comment: 'Une feature n’importe pas les composants d’une autre : composer depuis app/ ou promouvoir dans components/shared/.',
+      comment: 'Une feature n’importe pas les composants d’une autre : composer depuis app/ ou promouvoir dans shared/components/.',
       from: { path: '^src/features/([^/]+)/' },
       to: { path: '^src/features/[^/]+/(components|[^/]+/components)/', pathNot: '^src/features/$1/' },
+    },
+    {
+      name: 'no-cross-sub-feature',
+      severity: 'error',
+      comment: 'Une sous-feature n’importe aucune de ses voisines : ce qui sert à plusieurs va dans shared/ de la feature.',
+      from: {
+        path: '^src/features/([^/]+)/([^/]+)/',
+        pathNot: '^src/features/[^/]+/(components|content|hooks|lib|shared|stores|styles)/',
+      },
+      to: { path: '^src/features/$1/', pathNot: '^src/features/$1/($2|shared)/' },
+    },
+    {
+      name: 'feature-shared-not-to-sub-features',
+      severity: 'error',
+      comment: 'shared/ d’une feature sert ses sous-features : il n’en connaît aucune.',
+      from: { path: '^src/features/([^/]+)/shared/' },
+      to: { path: '^src/features/$1/', pathNot: '^src/features/$1/shared/' },
     },
     {
       name: 'presenters-are-pure',
@@ -51,16 +68,23 @@ module.exports = {
     {
       name: 'stores-in-their-folder',
       severity: 'error',
-      comment: 'Un store vit dans stores/ d’une feature, ou dans lib/ pour l’infra partagée (engine, viewport).',
+      comment: 'Un store vit dans le stores/ d’une feature, d’une sous-feature ou d’un shared/.',
       from: {},
-      to: { path: 'Store\\.ts$', pathNot: '^src/(features/[^/]+/stores|lib/[^/]+)/[^/]+Store\\.ts$' },
+      to: {
+        path: 'Store\\.ts$',
+        pathNot: [
+          '^src/features/[^/]+/stores/[^/]+Store\\.ts$',
+          '^src/features/[^/]+/[^/]+/stores/[^/]+Store\\.ts$',
+          '^src/shared/stores/[^/]+Store\\.ts$',
+        ],
+      },
     },
     {
       name: 'sequence-is-headless',
       severity: 'error',
-      comment: 'La séquence ne connaît que le titre qu’elle peint : jamais le dashboard, le décor ni la doc.',
-      from: { path: '^src/features/sequence/' },
-      to: { path: '^src/features/', pathNot: '^src/features/(sequence|title)/' },
+      comment: 'La séquence ne connaît que le shared/ du mur : ni ses voisines, ni le dashboard, ni la doc.',
+      from: { path: '^src/features/wall/sequence/' },
+      to: { path: '^src/features/', pathNot: '^src/features/wall/(sequence|shared)/' },
     },
   ],
   options: {

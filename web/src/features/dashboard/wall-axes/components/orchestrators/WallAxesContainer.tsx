@@ -1,6 +1,6 @@
 import { WallAxes } from '@/features/dashboard/wall-axes/components/presenters/WallAxes.tsx';
-import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
-import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
+import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
+import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 
 export function WallAxesContainer() {
   const { width, height } = useViewport();

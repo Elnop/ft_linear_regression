@@ -1,5 +1,5 @@
 import { OverlayToggles } from '@/features/dashboard/controls/components/presenters/OverlayToggles.tsx';
-import { toggleOverlay, usePlayground } from '@/features/dashboard/stores/playgroundStore.ts';
+import { toggleOverlay, usePlayground } from '@/features/dashboard/shared/stores/playgroundStore.ts';
 
 export function OverlayTogglesContainer() {
   const overlay = usePlayground((state) => state.overlay);

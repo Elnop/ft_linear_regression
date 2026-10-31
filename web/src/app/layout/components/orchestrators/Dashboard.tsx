@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { HeadBar } from '@/app/layout/components/presenters/HeadBar.tsx';
-import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
+import { Reveal } from '@/app/layout/components/presenters/Reveal.tsx';
 import { WallAxesContainer } from '@/features/dashboard/wall-axes/components/orchestrators/WallAxesContainer.tsx';
 import { DatasetPanelContainer } from '@/features/dashboard/dataset-panel/components/orchestrators/DatasetPanelContainer.tsx';
 import { OverlayTogglesContainer } from '@/features/dashboard/controls/components/orchestrators/OverlayTogglesContainer.tsx';
@@ -13,12 +13,14 @@ import { HeaderChipsContainer } from '@/features/dashboard/panels/components/orc
 import { PrecisionPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PrecisionPanelContainer.tsx';
 import { PredictPanelContainer } from '@/features/dashboard/panels/components/orchestrators/PredictPanelContainer.tsx';
 import { DocumentationPage } from '@/features/docs/components/orchestrators/DocumentationPage.tsx';
-import { selectInterfaceVisible } from '@/features/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
-import { useTitleLayout } from '@/features/title/hooks/useTitleLayout.ts';
-import { CHART_TO_FLOW, pagePadding, WIDE } from '@/lib/layout.ts';
-import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
+import { selectInterfaceVisible } from '@/features/wall/sequence/lib/selectors.ts';
+import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { useTitleLayout } from '@/shared/hooks/useTitleLayout.ts';
+import { pagePadding, WIDE } from '@/shared/lib/layout.ts';
+import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 import '@/app/layout/layout.css';
+
+const CHART_TO_FLOW = 70;
 
 export function Dashboard() {
   const { width } = useViewport();

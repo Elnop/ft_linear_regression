@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { formatNumber } from '@/lib/format.ts';
+import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
 import '@/features/dashboard/panels/panels.css';
 
 type PredictPanelProps = {

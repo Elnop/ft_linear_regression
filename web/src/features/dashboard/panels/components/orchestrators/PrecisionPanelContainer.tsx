@@ -1,5 +1,5 @@
 import { PrecisionPanel } from '@/features/dashboard/panels/components/presenters/PrecisionPanel.tsx';
-import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
+import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
 
 export function PrecisionPanelContainer() {
   const metrics = useSequence((state) => state.metrics);

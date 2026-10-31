@@ -1,8 +1,9 @@
 import type { Sample } from '@core/types.ts';
-import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
-import { formatNumber } from '@/lib/format.ts';
-import { SMALL } from '@/lib/layout.ts';
-import type { Rectangle, Vec2 } from '@/lib/geometry.ts';
+import { chartTicks, formatTick } from '@/features/dashboard/shared/lib/ticks.ts';
+import type { ChartMapping } from '@/shared/lib/chart.ts';
+import { formatNumber } from '@/features/dashboard/shared/lib/format.ts';
+import { SMALL } from '@/features/dashboard/shared/lib/layout.ts';
+import type { Rectangle, Vec2 } from '@/shared/lib/geometry.ts';
 import '@/features/dashboard/plain-chart/plain-chart.css';
 
 type PlainChartProps = {

@@ -1,12 +1,12 @@
 import { DatasetPanel } from '@/features/dashboard/dataset-panel/components/presenters/DatasetPanel.tsx';
-import { OverlayPanel } from '@/features/dashboard/components/presenters/OverlayPanel.tsx';
-import { overlayRectangle } from '@/features/dashboard/lib/overlay.ts';
-import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
-import { displayableEstimate } from '@/features/dashboard/lib/estimate.ts';
-import { DATA } from '@/features/sequence/lib/dataset.ts';
-import { selectUsableThetas } from '@/features/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
-import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
+import { OverlayPanel } from '@/features/dashboard/shared/components/presenters/OverlayPanel.tsx';
+import { overlayRectangle } from '@/features/dashboard/shared/lib/overlay.ts';
+import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
+import { displayableEstimate } from '@/features/dashboard/shared/lib/estimate.ts';
+import { DATA } from '@/features/wall/sequence/lib/dataset.ts';
+import { selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
+import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 
 export function DatasetPanelContainer() {
   const { width } = useViewport();

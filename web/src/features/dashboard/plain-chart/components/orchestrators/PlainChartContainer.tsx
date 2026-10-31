@@ -1,13 +1,13 @@
-import { OverlayPanel } from '@/features/dashboard/components/presenters/OverlayPanel.tsx';
+import { OverlayPanel } from '@/features/dashboard/shared/components/presenters/OverlayPanel.tsx';
 import { PlainChart } from '@/features/dashboard/plain-chart/components/presenters/PlainChart.tsx';
-import { overlayRectangle } from '@/features/dashboard/lib/overlay.ts';
-import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
-import { usePrediction } from '@/features/dashboard/hooks/usePrediction.ts';
-import { DATA } from '@/features/sequence/lib/dataset.ts';
-import { lineSegment } from '@/features/sequence/lib/geometry.ts';
-import { selectUsableThetas } from '@/features/sequence/lib/selectors.ts';
-import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';
-import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
+import { overlayRectangle } from '@/features/dashboard/shared/lib/overlay.ts';
+import { useOverlayShown } from '@/features/dashboard/shared/hooks/useOverlayShown.ts';
+import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
+import { DATA } from '@/features/wall/sequence/lib/dataset.ts';
+import { lineSegment } from '@/features/wall/sequence/lib/geometry.ts';
+import { selectUsableThetas } from '@/features/wall/sequence/lib/selectors.ts';
+import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
+import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 
 export function PlainChartContainer() {
   const { width } = useViewport();
