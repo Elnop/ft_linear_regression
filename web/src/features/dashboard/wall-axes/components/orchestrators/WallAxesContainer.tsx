@@ -1,4 +1,4 @@
-import { WallAxes } from '@/features/dashboard/overlays/components/presenters/WallAxes.tsx';
+import { WallAxes } from '@/features/dashboard/wall-axes/components/presenters/WallAxes.tsx';
 import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
 import { useChart, useViewport } from '@/lib/viewport/viewportStore.ts';
 

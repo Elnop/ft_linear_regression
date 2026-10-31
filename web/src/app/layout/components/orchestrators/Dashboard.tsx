@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react';
 import { HeadBar } from '@/app/layout/components/presenters/HeadBar.tsx';
 import { Reveal } from '@/components/shared/motion/presenters/Reveal.tsx';
-import { WallAxesContainer } from '@/features/dashboard/overlays/components/orchestrators/WallAxesContainer.tsx';
-import { DatasetPanelContainer } from '@/features/dashboard/overlays/components/orchestrators/DatasetPanelContainer.tsx';
-import { OverlayTogglesContainer } from '@/features/dashboard/overlays/components/orchestrators/OverlayTogglesContainer.tsx';
-import { PlainChartContainer } from '@/features/dashboard/overlays/components/orchestrators/PlainChartContainer.tsx';
-import { WallMarkerContainer } from '@/features/dashboard/overlays/components/orchestrators/WallMarkerContainer.tsx';
+import { WallAxesContainer } from '@/features/dashboard/wall-axes/components/orchestrators/WallAxesContainer.tsx';
+import { DatasetPanelContainer } from '@/features/dashboard/dataset-panel/components/orchestrators/DatasetPanelContainer.tsx';
+import { OverlayTogglesContainer } from '@/features/dashboard/controls/components/orchestrators/OverlayTogglesContainer.tsx';
+import { PlainChartContainer } from '@/features/dashboard/plain-chart/components/orchestrators/PlainChartContainer.tsx';
+import { WallMarkerContainer } from '@/features/dashboard/wall-marker/components/orchestrators/WallMarkerContainer.tsx';
 import { ControlBarContainer } from '@/features/dashboard/controls/components/orchestrators/ControlBarContainer.tsx';
 import { SkipButtonContainer } from '@/features/dashboard/controls/components/orchestrators/SkipButtonContainer.tsx';
 import { CostPanelContainer } from '@/features/dashboard/panels/components/orchestrators/CostPanelContainer.tsx';

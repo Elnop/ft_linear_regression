@@ -1,5 +1,5 @@
-import type { Overlay } from '@/features/dashboard/overlays/lib/overlay.ts';
-import '@/features/dashboard/overlays/overlays.css';
+import type { Overlay } from '@/features/dashboard/types.ts';
+import '@/features/dashboard/controls/controls.css';
 
 type OverlayTogglesProps = {
   overlay: Overlay;

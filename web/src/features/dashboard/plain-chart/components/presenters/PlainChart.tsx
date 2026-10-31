@@ -3,7 +3,7 @@ import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
 import { formatNumber } from '@/lib/format.ts';
 import { SMALL } from '@/lib/layout.ts';
 import type { Rectangle, Vec2 } from '@/lib/geometry.ts';
-import '@/features/dashboard/overlays/overlays.css';
+import '@/features/dashboard/plain-chart/plain-chart.css';
 
 type PlainChartProps = {
   chart: ChartMapping;

@@ -1,0 +1,41 @@
+.plain-grid line {
+  stroke: rgba(239, 236, 230, 0.08);
+  stroke-width: 1;
+}
+.plain-axis {
+  fill: none;
+  stroke: rgba(239, 236, 230, 0.45);
+  stroke-width: 1.5;
+}
+.plain-text text {
+  fill: var(--ink-dimmed);
+  font-variant-numeric: tabular-nums;
+}
+.plain-line {
+  stroke: var(--magenta);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.plain-points circle {
+  fill: var(--cyan);
+  stroke: #111014;
+  stroke-width: 1.5;
+}
+.plain-prediction line {
+  stroke: var(--acid);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+}
+.plain-prediction circle {
+  fill: var(--acid);
+  stroke: #111014;
+  stroke-width: 2;
+}
+.plain-prediction text {
+  fill: var(--acid);
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: #111014;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}

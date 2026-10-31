@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { chartTicks, formatTick, type ChartMapping } from '@/lib/chart.ts';
 import { SMALL } from '@/lib/layout.ts';
-import '@/features/dashboard/overlays/overlays.css';
+import '@/features/dashboard/wall-axes/wall-axes.css';
 
 type WallAxesProps = {
   chart: ChartMapping;

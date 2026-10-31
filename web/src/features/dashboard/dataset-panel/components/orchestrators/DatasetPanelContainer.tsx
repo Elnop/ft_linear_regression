@@ -1,6 +1,6 @@
-import { DatasetPanel } from '@/features/dashboard/overlays/components/presenters/DatasetPanel.tsx';
-import { OverlayPanel } from '@/features/dashboard/overlays/components/presenters/OverlayPanel.tsx';
-import { overlayRectangle } from '@/features/dashboard/overlays/lib/overlay.ts';
+import { DatasetPanel } from '@/features/dashboard/dataset-panel/components/presenters/DatasetPanel.tsx';
+import { OverlayPanel } from '@/features/dashboard/components/presenters/OverlayPanel.tsx';
+import { overlayRectangle } from '@/features/dashboard/lib/overlay.ts';
 import { useOverlayShown } from '@/features/dashboard/hooks/useOverlayShown.ts';
 import { displayableEstimate } from '@/features/dashboard/lib/estimate.ts';
 import { DATA } from '@/features/sequence/lib/dataset.ts';

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import type { Rectangle } from '@/lib/geometry.ts';
-import '@/features/dashboard/overlays/overlays.css';
+import '@/features/dashboard/dashboard.css';
 
 type OverlayPanelProps = {
   visible: boolean;

@@ -1,8 +1,6 @@
 import type { ChartMapping } from '@/lib/chart.ts';
 import type { Rectangle } from '@/lib/geometry.ts';
 
-export type Overlay = 'wall' | 'chart' | 'dataset';
-
 export function overlayRectangle({ area }: ChartMapping, width: number): Rectangle {
   const x = Math.max(8, area.x - 64);
   const y = area.y - 34;

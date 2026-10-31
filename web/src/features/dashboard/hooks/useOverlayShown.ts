@@ -1,4 +1,4 @@
-import type { Overlay } from '@/features/dashboard/overlays/lib/overlay.ts';
+import type { Overlay } from '@/features/dashboard/types.ts';
 import { usePlayground } from '@/features/dashboard/stores/playgroundStore.ts';
 import { selectInterfaceVisible } from '@/features/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/sequence/stores/sequenceStore.ts';

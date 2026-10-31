@@ -1,0 +1,14 @@
+.wall-axes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.axis-text {
+  font-family: var(--marker);
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: rgba(8, 7, 10, 0.85);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
