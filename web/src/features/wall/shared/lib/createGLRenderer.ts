@@ -1,6 +1,6 @@
-import type { PaintLayer } from './layer.ts';
+import type { PaintLayer } from './PaintLayer.ts';
 import { coverRectangle } from './coverRectangle.ts';
-import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from './shaders.ts';
+import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from '@/features/wall/shared/configs/ShadersConfig.ts';
 import type { CellRectangle } from '@/features/wall/shared/types/LayerTypes.ts';
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {

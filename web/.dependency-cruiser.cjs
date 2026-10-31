@@ -47,7 +47,7 @@ module.exports = {
       comment: 'Une sous-feature n’importe aucune de ses voisines : ce qui sert à plusieurs va dans shared/ de la feature.',
       from: {
         path: '^src/features/([^/]+)/([^/]+)/',
-        pathNot: '^src/features/[^/]+/(components|content|hooks|lib|shared|stores|styles|types)/',
+        pathNot: '^src/features/[^/]+/(components|configs|content|hooks|lib|shared|stores|styles|types)/',
       },
       to: { path: '^src/features/$1/', pathNot: '^src/features/$1/($2|shared)/' },
     },

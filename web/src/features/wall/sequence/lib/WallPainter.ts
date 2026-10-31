@@ -1,22 +1,18 @@
 import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
 
 import { chartFor } from '@/shared/lib/layout.ts';
-import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
-import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
-import { dotJob, NOMINAL_SPEED, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
+import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
+import { dotJob, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
-import { lineSegment } from './geometry.ts';
-import { COLORS, fadeGray, fadeOpacity, STYLE } from './style.ts';
-import type { Timeline } from './timeline.ts';
-import { TIMING } from './timing.ts';
-import { isFinalPass } from './training.ts';
-import type { LineKind, Training } from '@/features/wall/sequence/types/SequenceTypes.ts';
+import { lineSegment } from './lineSegment.ts';
+import { fadeGray, fadeOpacity } from './fade.ts';
+import type { Timeline } from './Timeline.ts';
+import { TIMING } from '@/features/wall/sequence/configs/TimingConfig.ts';
+import type { LineKind } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
-
-export function lineKindAt(plan: Training, pass: number): LineKind {
-  if (plan.diverged) return 'diverge';
-  return isFinalPass(plan, pass) ? 'finalLine' : 'line';
-}
+import { STYLE, COLORS } from '@/features/wall/sequence/configs/StyleConfig.ts';
+import { NOMINAL_SPEED } from '@/features/wall/shared/configs/NozzleConfig.ts';
 
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 

@@ -1,12 +1,14 @@
-import { PALETTE } from '@/features/wall/shared/PaletteConfig.ts';
-import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
-import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
-import { dotJob, moveJob, NOMINAL_SPEED, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
+import { PALETTE } from '@/features/wall/shared/configs/PaletteConfig.ts';
+import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
+import { dotJob, moveJob, pathJob } from '@/features/wall/shared/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed } from '@/shared/lib/random.ts';
-import { STROKE, titleLayout, titleLetters } from '@/shared/lib/title/layout.ts';
+import { titleLayout, titleLetters } from '@/shared/lib/title/layout.ts';
 import type { Clock } from '@/features/wall/sequence/types/SequenceTypes.ts';
 import type { Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
+import { NOMINAL_SPEED } from '@/features/wall/shared/configs/NozzleConfig.ts';
+import { STROKE } from '@/shared/configs/TitleConfig.ts';
 
 export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<PaintLayer> {
   const layout = titleLayout(engine.width, engine.height);

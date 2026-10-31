@@ -1,4 +1,4 @@
-import csvSource from '@core/csv.ts?raw';
+import csvSource from '@core/parseDataset.ts?raw';
 import gradientSource from '@core/gradientStep.ts?raw';
 import hypothesisSource from '@core/estimatePrice.ts?raw';
 import metricsSource from '@core/metrics.ts?raw';
@@ -10,7 +10,7 @@ import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
 
 export const CODE: DocStep[] = [
   {
-    label: 'core/csv.ts',
+    label: 'core/parseDataset.ts',
     section: 'Le modèle',
     title: 'Lire le dataset',
     aside: <Code code={pick(csvSource, 'parseDataset')} />,

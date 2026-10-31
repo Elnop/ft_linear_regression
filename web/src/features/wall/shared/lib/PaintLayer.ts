@@ -5,14 +5,14 @@ import type { LayerOptions, CellRectangle } from '@/features/wall/shared/types/L
 
 import { mulberry32, noise2D } from '@/shared/lib/random.ts';
 import type { Roughness } from '@/features/wall/shared/types/RoughnessTypes.ts';
+import { FILM_SCALE } from '@/features/wall/shared/configs/LayerConfig.ts';
 
-export const FILM_SCALE = 0.25;
 const CELL = 1 / FILM_SCALE;
 
 const RESIDUAL = 0.85;
 const PIN = 0.55;
 
-export class DirtyRectangle implements CellRectangle {
+class DirtyRectangle implements CellRectangle {
   x0 = Infinity;
   y0 = Infinity;
   x1 = -Infinity;

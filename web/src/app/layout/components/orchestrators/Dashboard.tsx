@@ -16,9 +16,10 @@ import { DocumentationPage } from '@/features/docs/components/orchestrators/Docu
 import { selectInterfaceVisible } from '@/features/wall/sequence/lib/selectors.ts';
 import { useSequence } from '@/features/wall/sequence/stores/sequenceStore.ts';
 import { useTitleLayout } from '@/shared/hooks/useTitleLayout.ts';
-import { pagePadding, WIDE } from '@/shared/lib/layout.ts';
+import { pagePadding } from '@/shared/lib/layout.ts';
 import { useChart, useViewport } from '@/shared/stores/viewportStore.ts';
 import '@/app/layout/layout.css';
+import { WIDE } from '@/shared/configs/LayoutConfig.ts';
 
 const CHART_TO_FLOW = 70;
 

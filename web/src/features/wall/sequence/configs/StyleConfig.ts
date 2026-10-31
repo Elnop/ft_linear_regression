@@ -1,4 +1,4 @@
-import { PALETTE } from '@/features/wall/shared/PaletteConfig.ts';
+import { PALETTE } from '@/features/wall/shared/configs/PaletteConfig.ts';
 
 export const STYLE = {
   dot: { width: 15, load: [1.8, 2.7] },
@@ -10,11 +10,3 @@ export const STYLE = {
 } as const;
 
 export const COLORS = { point: PALETTE.cyan, line: PALETTE.magenta, diverge: PALETTE.yellow } as const;
-
-export function fadeGray(age: number): number {
-  return age <= 0 ? 0 : 1;
-}
-
-export function fadeOpacity(age: number): number {
-  return age <= 0 ? 1 : STYLE.fadeFloor + (1 - STYLE.fadeFloor) * STYLE.fadeBase ** age;
-}

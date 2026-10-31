@@ -1,4 +1,4 @@
-import { VIEW_HEIGHT, VIEW_WIDTH } from '@/features/wall/spray-can/lib/shape.ts';
+import { VIEW_HEIGHT, VIEW_WIDTH } from '@/features/wall/spray-can/configs/ShapeConfig.ts';
 
 const LOGO_42 = [
   '76 0 50.68 0 0 50.62 0 71.12 50.68 71.12 50.68 96.6 76 96.6 76 50.62 25.34 50.62',

@@ -1,8 +1,6 @@
 import { chartMapping } from './chartMapping.ts';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
-
-export const WIDE = 1024;
-export const ASIDE_WIDTH = 340;
+import { WIDE, ASIDE_WIDTH } from '@/shared/configs/LayoutConfig.ts';
 
 export const pagePadding = (width: number) => Math.min(44, Math.max(16, width * 0.03));
 

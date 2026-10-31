@@ -1,13 +1,14 @@
 import { smoothstep } from '@/shared/lib/smoothstep.ts';
 import { stepFlow } from './stepFlow.ts';
-import { FILM_SCALE, PaintLayer } from './layer.ts';
+import { PaintLayer } from './PaintLayer.ts';
 
 import { createGLRenderer } from './createGLRenderer.ts';
 import type { Renderer } from '@/features/wall/shared/types/RendererTypes.ts';
-import { computeRoughness } from './roughness.ts';
+import { computeRoughness } from './computeRoughness.ts';
 import type { LayerOptions } from '@/features/wall/shared/types/LayerTypes.ts';
 import type { Nozzle, Job } from '@/features/wall/shared/types/SprayTypes.ts';
 import type { Roughness } from '@/features/wall/shared/types/RoughnessTypes.ts';
+import { FILM_SCALE } from '@/features/wall/shared/configs/LayerConfig.ts';
 
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;

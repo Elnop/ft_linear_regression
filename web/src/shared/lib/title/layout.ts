@@ -1,8 +1,11 @@
 import { chartMapping } from '@/shared/lib/chartMapping.ts';
-import { pagePadding, WIDE } from '@/shared/lib/layout.ts';
+import { pagePadding } from '@/shared/lib/layout.ts';
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { GLYPHS, smoothStroke } from './glyphs.ts';
+import { smoothStroke } from './smoothStroke.ts';
 import type { TitleLayout, Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
+import { WIDE } from '@/shared/configs/LayoutConfig.ts';
+import { STROKE } from '@/shared/configs/TitleConfig.ts';
+import { GLYPHS } from '@/shared/configs/GlyphsConfig.ts';
 
 const TITLE = 'ft_linear_regression';
 const SPLIT_TITLE_BELOW = 700;
@@ -13,7 +16,6 @@ const SLANT = 0.26;
 const TILT = (-2.2 * Math.PI) / 180;
 const COS = Math.cos(TILT);
 const SIN = Math.sin(TILT);
-export const STROKE = 0.2;
 const TRACKING = 0.14;
 
 const TITLE_GAP_BELOW = 60;

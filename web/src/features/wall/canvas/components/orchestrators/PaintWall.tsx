@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import wallUrl from '@/assets/wall-night.jpg';
-import { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
+import { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 import { publishEngine } from '@/features/wall/shared/stores/engineStore.ts';
 import '@/features/wall/canvas/canvas.css';
 

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { CanMotion } from '@/features/wall/spray-can/lib/motion.ts';
+import { CanMotion } from '@/features/wall/spray-can/lib/CanMotion.ts';
 import { drawMist } from '@/features/wall/spray-can/lib/drawMist.ts';
-import { HOLE, VIEW_WIDTH } from '@/features/wall/spray-can/lib/shape.ts';
-import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
+import { HOLE, VIEW_WIDTH } from '@/features/wall/spray-can/configs/ShapeConfig.ts';
+import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
 
 export function useSprayCan(engine: PaintEngine | null) {
   const box = useRef<HTMLDivElement>(null);

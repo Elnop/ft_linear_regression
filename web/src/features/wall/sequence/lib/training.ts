@@ -4,8 +4,6 @@ import { trainSteps } from '@core/train.ts';
 import type { Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 import type { CostPoint, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
 
-export const DEFAULT_TRAIN: TrainOptions = { learningRate: 0.5, iterations: 10000 };
-
 const DIVERGENCE_LEARNING_RATE = 1.75;
 
 export const willDiverge = (learningRate: number) => learningRate > DIVERGENCE_LEARNING_RATE;

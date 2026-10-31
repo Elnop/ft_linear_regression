@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { parseDataset } from '../core/csv.ts';
+import { parseDataset } from '../core/parseDataset.ts';
 import type { Sample } from '../core/types/CoreTypes.ts';
 import { errorCode, errorMessage, fail } from './process.ts';
 

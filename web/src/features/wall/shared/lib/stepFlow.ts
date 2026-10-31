@@ -1,4 +1,4 @@
-import type { PaintLayer } from './layer.ts';
+import type { PaintLayer } from './PaintLayer.ts';
 
 const GRAVITY = 36;
 const SPREAD = 22;

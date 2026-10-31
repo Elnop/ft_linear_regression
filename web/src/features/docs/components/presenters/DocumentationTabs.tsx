@@ -1,5 +1,5 @@
 import type { KeyboardEvent, RefObject } from 'react';
-import { TABS } from '@/features/docs/lib/tabs.ts';
+import { TABS } from '@/features/docs/configs/TabsConfig.ts';
 import '@/features/docs/styles/tabs.css';
 import type { TabId } from '@/features/docs/types/DocsTypes.ts';
 

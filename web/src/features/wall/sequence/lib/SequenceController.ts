@@ -1,15 +1,17 @@
 import type { Sample, TrainOptions } from '@core/types/CoreTypes.ts';
-import { paintTitle } from '@/features/wall/sequence/lib/title.ts';
-import type { PaintEngine } from '@/features/wall/shared/lib/engine.ts';
-import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
+import { paintTitle } from './paintTitle.ts';
+import type { PaintEngine } from '@/features/wall/shared/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import { shuffled } from '@/shared/lib/random.ts';
 import type { StoreApi } from 'zustand/vanilla';
 import type { SequenceState, Run, Training, SequenceStep } from '@/features/wall/sequence/types/SequenceTypes.ts';
-import { lineKindAt, WallPainter } from './painter.ts';
-import { IDLE_STATE } from './state.ts';
-import { Timeline } from './timeline.ts';
-import { TIMING } from './timing.ts';
-import { DEFAULT_TRAIN, isFinalPass, runTraining, stepAt } from './training.ts';
+import { WallPainter } from './WallPainter.ts';
+import { IDLE_STATE } from '@/features/wall/sequence/configs/StateConfig.ts';
+import { Timeline } from './Timeline.ts';
+import { TIMING } from '@/features/wall/sequence/configs/TimingConfig.ts';
+import { isFinalPass, runTraining, stepAt } from './training.ts';
+import { DEFAULT_TRAIN } from '@/features/wall/sequence/configs/TrainingConfig.ts';
+import { lineKindAt } from './lineKindAt.ts';
 
 export class SequenceController {
   private timeline = new Timeline();

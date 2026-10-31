@@ -1,4 +1,4 @@
-import type { PaintLayer } from '@/features/wall/shared/lib/layer.ts';
+import type { PaintLayer } from '@/features/wall/shared/lib/PaintLayer.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 
 export type Nozzle = { x: number; y: number; color: string; active: number };

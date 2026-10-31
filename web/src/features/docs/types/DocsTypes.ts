@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { TABS } from '@/features/docs/lib/tabs.ts';
+import type { TABS } from '@/features/docs/configs/TabsConfig.ts';
 
 export type DocStep = {
   section: string;

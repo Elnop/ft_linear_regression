@@ -15,7 +15,7 @@ ft_linear_regression/
 │   ├── metrics.ts            # moyenne, somme des carrés des erreurs, coût, RMSE, MAE, R²
 │   ├── hasFiniteThetas.ts    # partagé par l'entraînement, la CLI et le web
 │   ├── parseMileage.ts       # saisie du kilométrage, partagée CLI / web
-│   ├── csv.ts                # parsing et validation du dataset
+│   ├── parseDataset.ts       # parsing et validation du dataset
 │   └── train.ts              # générateur trainSteps
 ├── cli/                      # partie obligatoire
 │   ├── process.ts            # fail(), errorCode()
