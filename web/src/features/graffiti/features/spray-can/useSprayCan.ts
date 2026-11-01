@@ -33,7 +33,6 @@ export function useSprayCan(engine: PaintEngine | null) {
     const unsubscribe = sceneStore.subscribe(resize);
 
     const tick = (now: number) => {
-      frame = requestAnimationFrame(tick);
       const deltaSeconds = Math.min(0.05, (now - last) / 1000);
       last = now;
       const { width, height } = sceneStore.getState();
@@ -53,16 +52,25 @@ export function useSprayCan(engine: PaintEngine | null) {
       element.style.transformOrigin = `${holeX}px ${holeY}px`;
       element.style.transform = `translate(${pose.x - holeX}px, ${pose.y - holeY + pose.rattle * 2}px) rotate(${pose.angle}deg)`;
       element.classList.toggle('pressed', pose.spraying);
-      element.classList.toggle('gone', !!nozzle && nozzle.active > 2);
+      element.classList.toggle('gone', !!nozzle && !nozzle.followable);
 
       if (misty) context.clearRect(0, 0, width, height);
       misty = pose.spraying;
       if (pose.spraying && nozzle) drawMist(context, pose, nozzle, color, canWidth);
+
+      frame = pose.resting && !nozzle ? 0 : requestAnimationFrame(tick);
     };
-    frame = requestAnimationFrame(tick);
+    const wake = () => {
+      if (frame !== 0) return;
+      last = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+    wake();
+    const unsubscribeActivity = engine.onActivity(wake);
 
     return () => {
       cancelAnimationFrame(frame);
+      unsubscribeActivity();
       unsubscribe();
     };
   }, [engine]);

@@ -14,6 +14,7 @@ import { FILM_SCALE } from '@/features/graffiti/shared/configs/LayerConfig.ts';
 const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;
 const SETTLE_BUDGET_MS = 120;
+const FOLLOWABLE_JOBS = 2;
 
 export class PaintEngine {
   readonly ready: Promise<void>;
@@ -25,6 +26,7 @@ export class PaintEngine {
   private layers: PaintLayer[] = [];
   private scheduler = new Scheduler();
   private resizeListeners = new Set<() => void>();
+  private activityListeners = new Set<() => void>();
   private roughness: Roughness | null = null;
   private wall: HTMLImageElement | null = null;
   private frame = 0;
@@ -90,12 +92,13 @@ export class PaintEngine {
     }
     const running = this.scheduler.run(job);
     this.wake();
+    for (const listener of this.activityListeners) listener();
     return running;
   }
 
   nozzle(): Nozzle | null {
     const job = this.scheduler.currentJob;
-    return job ? { x: job.position.x, y: job.position.y, color: job.layer.hex, active: this.scheduler.jobCount } : null;
+    return job ? { x: job.position.x, y: job.position.y, color: job.layer.hex, followable: this.scheduler.jobCount <= FOLLOWABLE_JOBS } : null;
   }
 
   fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
@@ -118,6 +121,11 @@ export class PaintEngine {
   onResize(listener: () => void): () => void {
     this.resizeListeners.add(listener);
     return () => this.resizeListeners.delete(listener);
+  }
+
+  onActivity(listener: () => void): () => void {
+    this.activityListeners.add(listener);
+    return () => this.activityListeners.delete(listener);
   }
 
   destroy(): void {

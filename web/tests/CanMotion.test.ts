@@ -4,7 +4,7 @@ import { CanMotion } from '@/features/graffiti/features/spray-can/lib/CanMotion.
 
 const CAN_WIDTH = 100;
 const FLOOR = 800;
-const nozzle = { x: 400, y: 300, color: '#ff2bd6', active: 1 };
+const nozzle = { x: 400, y: 300, color: '#ff2bd6', followable: true };
 
 function steps(motion: CanMotion, seconds: number, active: typeof nozzle | null) {
   let pose = motion.step(0, active, CAN_WIDTH, FLOOR);
@@ -25,8 +25,10 @@ test('an idle can falls below the floor and stops there', () => {
   steps(motion, 1, nozzle);
   const resting = steps(motion, 2, null);
   assert.ok(resting.y < FLOOR);
+  assert.equal(resting.resting, false);
   const fallen = steps(motion, 5, null);
   assert.equal(fallen.spraying, false);
+  assert.equal(fallen.resting, true);
   assert.ok(fallen.y >= FLOOR + CAN_WIDTH * 3);
   assert.ok(fallen.y < FLOOR + CAN_WIDTH * 3 + 200);
 });
@@ -36,4 +38,9 @@ test('a fallen can comes back when the nozzle sprays again', () => {
   steps(motion, 6, null);
   const pose = steps(motion, 1, nozzle);
   assert.ok(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2);
+});
+
+test('a crowd of jobs is not followed', () => {
+  const pose = steps(new CanMotion(1200, 240), 0.5, { ...nozzle, followable: false });
+  assert.equal(pose.spraying, false);
 });
