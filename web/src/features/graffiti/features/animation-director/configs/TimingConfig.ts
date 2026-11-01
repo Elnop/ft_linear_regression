@@ -11,4 +11,6 @@ export const TIMING = {
   pass: 950,
   afterPass: 300,
   finalPass: 2600,
+
+  resizeSettle: 300,
 } as const;

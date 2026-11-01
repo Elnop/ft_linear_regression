@@ -1,30 +1,28 @@
+import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
 import { paintTitle } from './paintTitle.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { shuffled } from '@/features/graffiti/shared/lib/random.ts';
-import type { StoreApi } from 'zustand/vanilla';
-import type { Run, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type { Director, DirectorDependencies, Run, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
-import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
-import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
-import { regressionActions } from '@/states/regression/stores/regressionStore.ts';
 import { WallPainter } from './WallPainter.ts';
 import { IDLE_PLAYBACK } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
 import { Timeline } from './Timeline.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
 import { isFinalPass, runTraining, stepAt } from './training.ts';
 import { lineKindAt } from './lineKindAt.ts';
+import { resetStores } from './resetStores.ts';
 
 const MINOR_INTRO_RESIZE = 0.15;
 
-export class AnimationDirector {
+export class AnimationDirector implements Director {
   private timeline = new Timeline();
   private engine: PaintEngine;
-  private store: StoreApi<AnimationPlaybackState>;
+  private dependencies: DirectorDependencies;
   private painter: WallPainter;
 
-  private order: number[];
+  private order: number[] = [];
   private training: Training | null = null;
   private title: PaintLayer | null = null;
   private unsubscribeResize: () => void;
@@ -32,17 +30,17 @@ export class AnimationDirector {
   private paintedWidth: number;
   private paintedHeight: number;
 
-  constructor(engine: PaintEngine, store: StoreApi<AnimationPlaybackState>) {
+  constructor(engine: PaintEngine, dependencies: DirectorDependencies) {
     this.engine = engine;
-    this.store = store;
-    this.order = shuffled(DATA.length);
-    this.painter = new WallPainter(engine, DATA, this.timeline);
+    this.dependencies = dependencies;
+    this.painter = new WallPainter(engine, dependencies.samples, this.timeline);
     this.paintedWidth = engine.width;
     this.paintedHeight = engine.height;
     this.unsubscribeResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
-      this.resizeTimer = window.setTimeout(() => this.onResized(), 300);
+      this.resizeTimer = window.setTimeout(() => this.onResized(), TIMING.resizeSettle);
     });
+    dependencies.playback.setState({ skip: this.skip, train: this.train, replay: () => this.start() });
   }
 
   start(): void {
@@ -56,39 +54,40 @@ export class AnimationDirector {
     this.timeline.restart();
     clearTimeout(this.resizeTimer);
     this.unsubscribeResize();
+    resetStores(this.dependencies);
   }
 
-  skip = (): void => {
+  private skip = (): void => {
     if (this.state.phase === 'idle') return;
     if (this.state.phase === 'interactive' && !this.state.trainingActive) return;
     this.paintFinal();
   };
 
-  train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
+  private train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
-    const plan = runTraining(DATA, options);
+    const plan = runTraining(this.dependencies.samples, options);
     const run = this.timeline.restart();
     this.training = plan;
     this.set({ trainingActive: true });
-    regressionActions.restart();
+    this.dependencies.regression.restart();
     await this.timeline.play(() => this.playTraining(run, plan));
   };
 
   private get state(): AnimationPlaybackState {
-    return this.store.getState();
+    return this.dependencies.playback.getState();
   }
 
   private set(patch: Partial<AnimationPlaybackState>): void {
-    this.store.setState(patch);
+    this.dependencies.playback.setState(patch);
   }
 
   private async playIntro(run: Run): Promise<void> {
-    const plan = runTraining(DATA, DEFAULT_TRAIN);
+    const plan = runTraining(this.dependencies.samples, DEFAULT_TRAIN);
     this.training = plan;
-    this.order = shuffled(DATA.length);
+    this.order = shuffled(this.dependencies.samples.length);
     this.set({ ...IDLE_PLAYBACK, phase: 'title' });
-    regressionActions.reset();
+    this.dependencies.regression.reset();
 
     await run.sleep(TIMING.interfaceIn);
     await this.paintBackdrop(run);
@@ -101,7 +100,7 @@ export class AnimationDirector {
   }
 
   private async paintBackdrop(run: Run): Promise<void> {
-    this.set({ visiblePoints: DATA.length });
+    this.set({ visiblePoints: this.dependencies.samples.length });
     await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
     if (!this.title) this.title = await run.wait(paintTitle(this.engine, this.timeline));
   }
@@ -115,14 +114,15 @@ export class AnimationDirector {
   }
 
   private async playPasses(run: Run, plan: Training): Promise<void> {
+    const { regression, samples } = this.dependencies;
     for (let pass = 0; pass < plan.steps.length; pass++) {
-      regressionActions.show(stepAt(DATA, plan, pass));
+      regression.show(stepAt(samples, plan, pass));
       const painting = this.sprayPass(plan, pass);
       this.painter.fadeFan();
       await run.wait(painting);
       await run.sleep(TIMING.afterPass);
     }
-    regressionActions.finish(plan.diverged);
+    regression.finish(plan.diverged);
 
     for (const i of this.order) {
       await run.wait(this.painter.sprayPoint(i, TIMING.redot));
@@ -164,10 +164,10 @@ export class AnimationDirector {
   }
 
   private paintFinal(): void {
+    const plan = this.training;
+    if (!plan) return;
     const run = this.timeline.restart(true);
     this.painter.clear(this.title ? [this.title] : []);
-    const plan = this.training ?? runTraining(DATA, DEFAULT_TRAIN);
-    this.training = plan;
     void this.timeline.play(async () => {
       await this.paintBackdrop(run);
       await this.playPasses(run, plan);

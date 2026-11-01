@@ -23,7 +23,7 @@ function partition<T>(items: T[], keep: (item: T) => boolean): [T[], T[]] {
 }
 
 export class PaintEngine {
-  readonly canvas: HTMLCanvasElement;
+  private readonly canvas: HTMLCanvasElement;
   readonly ready: Promise<void>;
   width = 0;
   height = 0;

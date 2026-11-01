@@ -147,8 +147,8 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 |---|---|---|
 | `features/wall/shared/stores/engineStore.ts` | le moteur de peinture | `PaintWall` |
 | `shared/stores/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` |
-| `states/animation-playback/stores/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours | l'`AnimationDirector` (ses actions sont branchées par `useAnimationDirector`) |
-| `states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | l'`AnimationDirector`, à travers `regressionActions` |
+| `states/animation-playback/stores/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, actions | le director actif : `AnimationDirector`, ou `PaintlessDirector` quand WebGL manque. Il publie ses actions à sa création et remet le store à zéro dans `destroy()` |
+| `states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
 | `states/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
 | `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`setKm`) |
 | `features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`toggleView`) |

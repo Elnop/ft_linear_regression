@@ -40,7 +40,7 @@ export function runTraining(data: Sample[], options: TrainOptions): Training {
   if (steps.at(-1)?.iteration !== last.iteration) steps.push(last);
 
   const diverged = nonFinite || last.cost > firstCost;
-  return { steps, history, last, diverged };
+  return { steps, history, diverged };
 }
 
 export function stepAt(data: Sample[], plan: Training, pass: number): RegressionSnapshot {
