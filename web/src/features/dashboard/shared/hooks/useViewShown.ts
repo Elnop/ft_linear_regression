@@ -1,0 +1,10 @@
+import type { View } from '@/features/dashboard/shared/types/DashboardTypes.ts';
+import { useView } from '@/features/dashboard/shared/stores/viewStore.ts';
+import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
+
+export function useViewShown(view: View): boolean {
+  const current = useView();
+  const interfaceVisible = useAnimationPlayback(selectInterfaceVisible);
+  return interfaceVisible && current === view;
+}

@@ -96,11 +96,12 @@ web/src/
 │   │       └── stickers/             les autocollants
 │   ├── dashboard/                    l'interface posée sur le mur
 │   │   ├── components/               DashboardLayout, HeadBar, Reveal
-│   │   ├── shared/                   kilométrage et prédiction, overlay affiché, panneau de verre, formatage
+│   │   ├── shared/                   kilométrage et prédiction, vue affichée, style des panneaux, formatage
 │   │   └── features/
-│   │       ├── controls/             barre de réglages, Passer, choix des overlays
-│   │       ├── panels/               coût, précision, prédiction, puces d'en-tête
-│   │       └── dataset-panel/, plain-chart/, wall-axes/, wall-marker/
+│   │       ├── training/             lancer l'entraînement, effacer, learning rate, Passer
+│   │       ├── views/                boutons GRAPHE et DATA, et les vues qu'ils affichent (axes du mur, graphe, dataset)
+│   │       ├── prediction/           champ kilométrage et marqueur du prix sur le mur
+│   │       └── regression-readout/   θ et progression, coût, précision (lecture seule)
 │   └── docs/                         documentation intégrée (contenu, onglets)
 ├── states/                           l'état métier que plusieurs features lisent ou écrivent
 │   ├── regression/                   dataset, réglages par défaut, θ, métriques, historique du coût, divergence, learning rate
@@ -150,7 +151,7 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 | `states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | l'`AnimationDirector`, à travers `regressionActions` |
 | `states/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
 | `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`setKm`) |
-| `features/dashboard/shared/stores/overlayStore.ts` | overlay affiché (mur, graphe, données) | les boutons d'overlay (`toggleOverlay`) |
+| `features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`toggleView`) |
 
 Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions` (dans le `hooks/` de chaque état). Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `dashboard/shared/lib/`.
 

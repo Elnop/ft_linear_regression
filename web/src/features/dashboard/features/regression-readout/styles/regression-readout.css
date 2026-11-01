@@ -1,0 +1,97 @@
+.dashboard-chips {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 92px;
+  padding: 10px 16px;
+  border-radius: 12px;
+}
+.chip-value {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chip-value-plain {
+  color: var(--ink);
+}
+.cost-tape {
+  right: 30px;
+  top: -10px;
+  width: 70px;
+  height: 20px;
+  transform: rotate(5deg);
+}
+.cost-chart {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.cost-glow {
+  opacity: 0.18;
+  filter: blur(4px);
+}
+.cost-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.cost-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+}
+.cost-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ink-dimmed);
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+.metric dd {
+  margin: 0;
+  font-family: var(--marker);
+  font-size: 26px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1023px) {
+  .dashboard-chips {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .chip {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px;
+  }
+  .chip-value {
+    font-size: clamp(11px, 3.3vw, 15px);
+  }
+}

@@ -1,1 +1,1 @@
-export type Overlay = 'wall' | 'chart' | 'dataset';
+export type View = 'wall' | 'chart' | 'dataset';
