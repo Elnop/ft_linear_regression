@@ -55,7 +55,7 @@ pente > 0  →  θ − (positif)  →  θ diminue`}</Formula>
 
 sur ce dataset (km normalisés) :
 α = 0.5  →  converge
-α = 3    →  diverge à l'itération 788`}</Formula>
+α = 3    →  diverge à l'itération 392`}</Formula>
     ),
     children: (
       <>

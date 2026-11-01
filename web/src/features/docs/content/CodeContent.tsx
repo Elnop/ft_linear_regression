@@ -102,7 +102,7 @@ export const CODE: DocStep[] = [
       <>
         <p>
           Un générateur : il produit l'état après chaque itération (θ sur km brut et coût). L'itération 0 est l'état
-          initial, <code>θ0 = θ1 = 0</code>. Il s'arrête dès qu'un θ devient infini : c'est la divergence.
+          initial, <code>θ0 = θ1 = 0</code>. Il s'arrête dès qu'un θ ou le coût devient infini : c'est la divergence.
         </p>
         <p>
           La CLI le parcourt jusqu'au bout et écrit <code>model.json</code>. Cette page consomme le{' '}

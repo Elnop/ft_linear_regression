@@ -14,7 +14,7 @@ RMSE: 667.57
 MAE:  557.84  (8.8% of the mean price)
 
 $ npm run train -- data.csv --lr 3
-Error: training diverged at iteration 788, model not saved (try a smaller --lr)`;
+Error: training diverged at iteration 392, model not saved (try a smaller --lr)`;
 
 export const TREE = `core/  calcul pur, partagé
 cli/   train, predict, precision

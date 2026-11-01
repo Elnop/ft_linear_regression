@@ -1,5 +1,5 @@
 import { mae, r2, rmse } from '@core/metrics.ts';
-import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
+import { hasDiverged } from '@core/hasDiverged.ts';
 import { trainSteps } from '@core/trainSteps.ts';
 import type { CostPoint, Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 import type { Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
@@ -20,7 +20,7 @@ export function runTraining(data: Sample[], options: TrainOptions): Training {
   let sampleAt = 0;
 
   for (const step of trainSteps(data, options)) {
-    if (!hasFiniteThetas(step)) {
+    if (hasDiverged(step)) {
       nonFinite = true;
       break;
     }

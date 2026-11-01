@@ -1,4 +1,4 @@
-import { hasFiniteThetas } from '../core/hasFiniteThetas.ts';
+import { hasDiverged } from '../core/hasDiverged.ts';
 import { trainSteps } from '../core/trainSteps.ts';
 import type { TrainStep } from '../core/types/CoreTypes.ts';
 import { parseCli } from './parseCli.ts';
@@ -46,7 +46,7 @@ try {
   fail(errorMessage(error));
 }
 
-if (!last || !hasFiniteThetas(last)) {
+if (!last || hasDiverged(last)) {
   fail(`training diverged at iteration ${last?.iteration ?? 0}, model not saved (try a smaller --lr)`);
 }
 
