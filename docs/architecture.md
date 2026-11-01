@@ -6,14 +6,17 @@
 ft_linear_regression/
 ├── data.csv                  # dataset fourni (km,price)
 ├── package.json              # workspace npm, scripts train / predict / web / build
-├── tsconfig.json             # typecheck de core/ et cli/
+├── tsconfig.json             # typecheck de core/, cli/ et tests/
 ├── core/                     # calcul pur, partagé entre CLI et web
 │   ├── types/CoreTypes.ts    # Sample, Thetas, TrainOptions, TrainStep
+│   ├── configs/TrainingConfig.ts # réglages par défaut (lr 0.5, 10 000 itérations), partagés CLI / web
 │   ├── estimatePrice.ts      # l'hypothèse imposée
 │   ├── gradientStep.ts       # une étape de descente de gradient
 │   ├── normalize.ts          # normalisation min-max et retour à l'échelle d'origine
 │   ├── metrics.ts            # moyenne, somme des carrés des erreurs, coût, RMSE, MAE, R²
 │   ├── hasFiniteThetas.ts    # partagé par l'entraînement, la CLI et le web
+│   ├── hasDiverged.ts        # θ ou coût non fini : critère d'arrêt de l'entraînement
+│   ├── maxStableLearningRate.ts # plus grand learning rate qui converge sur un dataset
 │   ├── parseMileage.ts       # saisie du kilométrage, partagée CLI / web
 │   ├── parseDataset.ts       # parsing et validation du dataset
 │   └── trainSteps.ts         # générateur d'entraînement
@@ -25,6 +28,7 @@ ft_linear_regression/
 │   ├── train.ts              # programme d'entraînement
 │   ├── predict.ts            # programme de prédiction
 │   └── precision.ts          # programme de précision (bonus)
+├── tests/                    # tests de core/ (node --test)
 ├── web/                      # bonus : app React (Vite)
 ├── docs/                     # cette documentation
 ├── .github/workflows/        # déploiement GitHub Pages
@@ -57,7 +61,19 @@ Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotati
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).
 
-`npm run typecheck` vérifie les types de `core/`, `cli/` et `web/`.
+`npm run typecheck` vérifie les types de `core/`, `cli/`, `tests/` et `web/`.
+
+## Tests et vérifications
+
+Les tests tournent avec `node --test`, sans dépendance en plus. `tests/` couvre `core/` (parsing, normalisation, métriques, convergence sur `data.csv`, divergence, borne de stabilité). `web/tests/` couvre les fonctions pures du web (plan d'entraînement animé, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Les alias `@/` et `@core/` y sont résolus par `web/tests/aliases.ts`, un hook `registerHooks` de Node.
+
+```
+npm test            # tests de core/ puis du web
+npm run typecheck   # types de core/, cli/, tests/ et web/
+npm run check       # Oxlint sur core/, cli/ et tests/, puis le check du web
+```
+
+Le workflow de déploiement lance ces trois commandes avant le build.
 
 ## Flux de données
 

@@ -37,7 +37,7 @@ Learning rate trop grand :
 $ npm run train -- --lr 3
 Dataset: data.csv (24 samples)
 Training: lr=3, iterations=10000
-Error: training diverged at iteration 788, model not saved (try a smaller --lr)
+Error: training diverged at iteration 392, model not saved (try a smaller --lr)
 ```
 
 ### Format du dataset

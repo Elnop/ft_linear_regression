@@ -53,7 +53,7 @@ Dans [`core/gradientStep.ts`](../core/gradientStep.ts), une seule boucle accumul
 
 ## 4. Pourquoi normaliser le kilométrage
 
-Les kilométrages vont de 22 899 à 240 000. Avec des valeurs aussi grandes, le gradient de `θ1` (multiplié par `mileage[i]`) est des milliards de fois plus grand que celui de `θ0` :
+Les kilométrages vont de 22 899 à 240 000. Avec des valeurs aussi grandes, le coût est des milliards de fois plus courbé selon `θ1` que selon `θ0` : la courbure selon `θ1` est la moyenne de `mileage[i]²`, environ 1.3 × 10¹⁰, contre 1 pour `θ0`. Au départ, le gradient de `θ1` est déjà environ 92 000 fois plus grand que celui de `θ0`.
 
 - pour que `θ1` ne diverge pas, il faudrait un learning rate inférieur à environ 1.55 × 10⁻¹⁰ ;
 - avec un pas aussi petit, `θ0` n'avancerait presque pas, et il faudrait des millions d'itérations.
@@ -68,7 +68,7 @@ On ramène les kilométrages dans `[0, 1]` uniquement pour l'entraînement :
 km_norm = (km - min) / (max - min)
 ```
 
-Les deux gradients sont alors du même ordre de grandeur. Sur ce dataset, tout learning rate inférieur à environ 1.76 converge. Avec une normalisation min-max, tout learning rate ≤ 1 converge, quel que soit le dataset.
+Les deux gradients sont alors du même ordre de grandeur. Sur ce dataset, tout learning rate inférieur à environ 1.76 converge. Cette borne vaut 2/λmax, où λmax est la plus grande valeur propre de la matrice `[[1, moyenne(x)], [moyenne(x), moyenne(x²)]]` des km normalisés. [`core/maxStableLearningRate.ts`](../core/maxStableLearningRate.ts) la calcule (1.7599 sur `data.csv`), et le slider du web s'en sert pour prévenir avant de lancer un entraînement qui va diverger. Avec une normalisation min-max, tout learning rate ≤ 1 converge, quel que soit le dataset.
 
 Code : [`core/normalize.ts`](../core/normalize.ts).
 
@@ -101,7 +101,7 @@ Ce sont ces `θ` (sur km brut) qui sont sauvegardés. `predict` applique donc l'
 
 - L'itération `0` correspond à l'état initial (`θ0 = θ1 = 0`).
 - Le coût est toujours calculé sur les données brutes (km d'origine), comme celui qu'on cherche à minimiser.
-- Si un `θ` devient non fini (`Infinity` ou `NaN`), le générateur produit cette étape puis s'arrête : c'est le signal de divergence.
+- Si un `θ` ou le coût devient non fini (`Infinity` ou `NaN`), le générateur produit cette étape puis s'arrête : c'est le signal de divergence. Le coût déborde avant les `θ` : à `--lr 1.8`, les `θ` restent finis jusqu'à la fin alors que le coût vaut `Infinity` dès l'itération 7739.
 
 Le même générateur sert à deux usages :
 - la CLI le parcourt jusqu'au bout et garde la dernière étape ;

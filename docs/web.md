@@ -104,7 +104,7 @@ web/src/
 │   │       └── regression-readout/   θ et progression, coût, précision (lecture seule)
 │   └── docs/                         documentation intégrée (contenu, onglets)
 ├── states/                           l'état métier que plusieurs features lisent ou écrivent
-│   ├── regression/                   dataset, réglages par défaut, θ, métriques, historique du coût, divergence, learning rate
+│   ├── regression/                   dataset, θ, métriques, historique du coût, divergence, learning rate
 │   └── animation-playback/           où en est l'animation : phase, points visibles, entraînement en cours, actions
 └── shared/                           code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
 ```
@@ -164,7 +164,9 @@ dependency-cruiser vérifie le sens des dépendances :
 
 Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
 
-`npm run check` (dans `web/`) lance le typecheck, Oxlint et dependency-cruiser.
+`npm run check` (dans `web/`) lance le typecheck, Oxlint, dependency-cruiser et la vérification des dossiers. `npm test` (dans `web/`) lance les tests de `web/tests/`.
+
+L'avertissement de divergence du slider ne repose pas sur un seuil écrit à la main : `willDiverge` compare le learning rate à `maxStableLearningRate(DATA)` (`core/`), la borne 2/λmax calculée sur les km normalisés, soit 1.7599 pour `data.csv`.
 
 ## Lancer en local
 
