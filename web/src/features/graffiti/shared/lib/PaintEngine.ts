@@ -18,6 +18,10 @@ type Running = { job: Job; done: () => void };
 type Look = { opacity: number; gray: number };
 type Tween = { layer: PaintLayer; from: Look; to: Look; elapsed: number; duration: number; done: () => void };
 
+function partition<T>(items: T[], keep: (item: T) => boolean): [T[], T[]] {
+  return [items.filter(keep), items.filter((item) => !keep(item))];
+}
+
 export class PaintEngine {
   readonly canvas: HTMLCanvasElement;
   readonly ready: Promise<void>;
@@ -89,8 +93,11 @@ export class PaintEngine {
     const kept = (layer: PaintLayer) => keep.includes(layer);
     for (const layer of this.layers) if (!kept(layer)) this.renderer.release(layer);
     this.layers = this.layers.filter(kept);
-    this.jobs = this.jobs.filter((running) => kept(running.job.layer));
-    this.tweens = this.tweens.filter((tween) => kept(tween.layer));
+    const [jobs, droppedJobs] = partition(this.jobs, (running) => kept(running.job.layer));
+    const [tweens, droppedTweens] = partition(this.tweens, (tween) => kept(tween.layer));
+    this.jobs = jobs;
+    this.tweens = tweens;
+    for (const dropped of [...droppedJobs, ...droppedTweens]) dropped.done();
     this.wake();
   }
 
@@ -112,7 +119,9 @@ export class PaintEngine {
   }
 
   fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
-    this.tweens = this.tweens.filter((tween) => tween.layer !== layer);
+    const [tweens, replaced] = partition(this.tweens, (tween) => tween.layer !== layer);
+    this.tweens = tweens;
+    for (const tween of replaced) tween.done();
     this.wake();
     if (durationMs <= 0) {
       layer.opacity = opacity;

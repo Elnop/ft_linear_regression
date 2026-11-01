@@ -16,8 +16,8 @@ après l'entraînement :
     children: (
       <>
         <p>
-          Les km vont de 22 899 à 240 000. Le gradient de <code>θ1</code>, multiplié par <code>x</code>, est alors des
-          milliards de fois plus grand que celui de <code>θ0</code> : aucun α ne convient aux deux.
+          Les km vont de 22 899 à 240 000. Le coût est alors des milliards de fois plus courbé selon <code>θ1</code>
+          que selon <code>θ0</code> (la moyenne de <code>x²</code> vaut 1,3 × 10¹⁰) : aucun α ne convient aux deux.
         </p>
         <p>
           On ramène donc les km dans <code>[0, 1]</code> pour l'entraînement, puis on convertit les θ appris vers les km

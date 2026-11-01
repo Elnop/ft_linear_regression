@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import wallUrl from '@/assets/wall-night.jpg';
 import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import { publishEngine } from '@/features/graffiti/shared/engineStore.ts';
+import { publishEngine, reportEngineFailure } from '@/features/graffiti/shared/engineStore.ts';
 import '@/features/graffiti/features/canvas/canvas.css';
 
 export function PaintWallContainer() {
@@ -12,13 +12,19 @@ export function PaintWallContainer() {
     let engine: PaintEngine;
     try {
       engine = new PaintEngine(element, wallUrl);
-    } catch {
+    } catch (error) {
+      reportEngineFailure(error);
       return;
     }
     let alive = true;
-    void engine.ready.then(() => {
-      if (alive) publishEngine(engine);
-    });
+    engine.ready.then(
+      () => {
+        if (alive) publishEngine(engine);
+      },
+      (error: unknown) => {
+        if (alive) reportEngineFailure(error);
+      },
+    );
     return () => {
       alive = false;
       publishEngine(null);

@@ -19,10 +19,10 @@ function sparkline(history: CostPoint[]): string {
   const lowest = Math.min(...logCosts);
   const highest = Math.max(...logCosts);
   const span = highest - lowest || 1;
-  const count = positivePoints.length;
+  const logLastIteration = Math.log1p(positivePoints[positivePoints.length - 1].iteration);
   return logCosts
     .map((logCost, i) => {
-      const x = count === 1 ? WIDTH / 2 : (i / (count - 1)) * WIDTH;
+      const x = logLastIteration === 0 ? WIDTH / 2 : (Math.log1p(positivePoints[i].iteration) / logLastIteration) * WIDTH;
       const y = PADDING + (1 - (logCost - lowest) / span) * (HEIGHT - 2 * PADDING);
       return `${x.toFixed(1)},${y.toFixed(1)}`;
     })
@@ -38,12 +38,12 @@ export function CostPanel({ history, diverged }: CostPanelProps) {
     <figure className="panel glass dashboard-hit">
       <div className="tape cost-tape" aria-hidden="true" />
       <figcaption className="cost-header">
-        <span className="label">Coût J(θ) · log</span>
+        <span className="label">Coût J(θ) · log-log</span>
         <span className="cost-value" style={{ color }}>
           {last ? formatNumber(last.cost) : '—'}
         </span>
       </figcaption>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} passages`} className="cost-chart">
+      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} itérations`} className="cost-chart">
         <line x1="0" y1={HEIGHT} x2={WIDTH} y2={HEIGHT} stroke="rgba(239,236,230,0.2)" strokeWidth="1" strokeDasharray="3 5" />
         {points && (
           <>
@@ -54,7 +54,7 @@ export function CostPanel({ history, diverged }: CostPanelProps) {
       </svg>
       <div className="cost-footer">
         <span>0</span>
-        <span>{formatNumber(lastIteration)} passages</span>
+        <span>{formatNumber(lastIteration)} itérations</span>
       </div>
     </figure>
   );

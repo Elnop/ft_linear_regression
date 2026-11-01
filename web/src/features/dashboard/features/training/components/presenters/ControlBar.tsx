@@ -38,7 +38,7 @@ export function ControlBar({ trainingActive, disabled, onTrain, onReset, learnin
           id={learningRateId}
           type="range"
           min={0.01}
-          max={2.5}
+          max={3}
           step={0.01}
           value={learningRate}
           disabled={disabled}

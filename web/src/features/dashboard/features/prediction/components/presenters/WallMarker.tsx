@@ -9,18 +9,19 @@ type WallMarkerProps = {
   price: number | null;
   axisY: number;
   width: number;
+  height: number;
 };
 
 const STICKER_WIDTH = 206;
 const STICKER_HEIGHT = 112;
 
-export function WallMarker({ at, price, axisY, width }: WallMarkerProps) {
-  const visible = at !== null && price !== null && Number.isFinite(at.x) && Number.isFinite(at.y);
+export function WallMarker({ at, price, axisY, width, height }: WallMarkerProps) {
+  const visible = at !== null && price !== null && at.x >= 0 && at.x <= width && at.y >= 0 && at.y <= height;
   const scale = width < SMALL ? 0.72 : 1;
   const stickerWidth = STICKER_WIDTH * scale;
   const flip = visible && at.x + 26 + stickerWidth > width - 8;
   const left = visible ? Math.max(8, Math.min(width - stickerWidth - 8, flip ? at.x - 26 - stickerWidth : at.x + 26)) : 0;
-  const top = visible ? Math.max(8, at.y - STICKER_HEIGHT * scale - 10) : 0;
+  const top = visible ? Math.max(8, Math.min(height - STICKER_HEIGHT * scale - 8, at.y - STICKER_HEIGHT * scale - 10)) : 0;
   return (
     <div className="wall-marker" aria-hidden="true">
       {visible && (

@@ -16,6 +16,8 @@ import { TIMING } from '@/features/graffiti/features/animation-director/configs/
 import { isFinalPass, runTraining, stepAt } from './training.ts';
 import { lineKindAt } from './lineKindAt.ts';
 
+const MINOR_INTRO_RESIZE = 0.15;
+
 export class AnimationDirector {
   private timeline = new Timeline();
   private engine: PaintEngine;
@@ -27,19 +29,24 @@ export class AnimationDirector {
   private title: PaintLayer | null = null;
   private unsubscribeResize: () => void;
   private resizeTimer = 0;
+  private paintedWidth: number;
+  private paintedHeight: number;
 
   constructor(engine: PaintEngine, store: StoreApi<AnimationPlaybackState>) {
     this.engine = engine;
     this.store = store;
     this.order = shuffled(DATA.length);
     this.painter = new WallPainter(engine, DATA, this.timeline);
+    this.paintedWidth = engine.width;
+    this.paintedHeight = engine.height;
     this.unsubscribeResize = engine.onResize(() => {
       clearTimeout(this.resizeTimer);
-      this.resizeTimer = window.setTimeout(() => this.repaint(), 300);
+      this.resizeTimer = window.setTimeout(() => this.onResized(), 300);
     });
   }
 
   start(): void {
+    this.refit();
     const run = this.timeline.restart();
     this.painter.clear(this.title ? [this.title] : []);
     void this.timeline.play(() => this.playIntro(run));
@@ -90,6 +97,7 @@ export class AnimationDirector {
     this.set({ phase: 'descent' });
     await this.playPasses(run, plan);
     this.set({ phase: 'interactive' });
+    if (this.sizeChanged()) this.repaint();
   }
 
   private async paintBackdrop(run: Run): Promise<void> {
@@ -127,9 +135,31 @@ export class AnimationDirector {
     return this.painter.sprayLine(plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
   }
 
-  private repaint(): void {
+  private onResized(): void {
+    const { phase } = this.state;
+    const intro = phase === 'title' || phase === 'descent';
+    if (intro && this.isMinorResize()) return;
+    this.repaint();
+  }
+
+  private isMinorResize(): boolean {
+    return this.engine.width === this.paintedWidth && Math.abs(this.engine.height - this.paintedHeight) < this.paintedHeight * MINOR_INTRO_RESIZE;
+  }
+
+  private sizeChanged(): boolean {
+    return this.engine.width !== this.paintedWidth || this.engine.height !== this.paintedHeight;
+  }
+
+  private refit(): void {
+    if (!this.sizeChanged()) return;
+    this.paintedWidth = this.engine.width;
+    this.paintedHeight = this.engine.height;
     this.title = null;
     this.painter.fit();
+  }
+
+  private repaint(): void {
+    this.refit();
     this.paintFinal();
   }
 

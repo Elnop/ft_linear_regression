@@ -7,10 +7,11 @@ type PredictPanelProps = {
   value: string;
   onChange: (value: string) => void;
   invalid: boolean;
+  outOfRange: boolean;
   price: number | null;
 };
 
-export function PredictPanel({ value, onChange, invalid, price }: PredictPanelProps) {
+export function PredictPanel({ value, onChange, invalid, outOfRange, price }: PredictPanelProps) {
   const id = useId();
   return (
     <div className="panel glass dashboard-hit">
@@ -43,6 +44,11 @@ export function PredictPanel({ value, onChange, invalid, price }: PredictPanelPr
       {invalid && (
         <span id={`${id}-error`} className="error" role="alert">
           kilométrage invalide : un nombre positif, sans signe ni exposant
+        </span>
+      )}
+      {outOfRange && (
+        <span className="error" role="status">
+          prix hors de l'échelle affichable pour ce kilométrage
         </span>
       )}
     </div>

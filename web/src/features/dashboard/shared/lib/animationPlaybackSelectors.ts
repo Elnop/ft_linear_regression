@@ -4,4 +4,4 @@ export const selectIntro = (state: AnimationPlaybackState) => state.phase !== 'i
 
 export const selectInterfaceVisible = (state: AnimationPlaybackState) => state.phase !== 'idle';
 
-export const selectCanSkip = (state: AnimationPlaybackState) => selectIntro(state) && selectInterfaceVisible(state);
+export const selectCanSkip = (state: AnimationPlaybackState) => selectInterfaceVisible(state) && (selectIntro(state) || state.trainingActive);
