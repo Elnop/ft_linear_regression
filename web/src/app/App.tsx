@@ -1,11 +1,11 @@
 import { DashboardLayout } from '@/features/dashboard/components/DashboardLayout.tsx';
 import { DocumentationPage } from '@/features/docs/components/DocumentationPage.tsx';
-import { WallLayout } from '@/features/wall/WallLayout.tsx';
+import { GraffitiLayout } from '@/features/graffiti/GraffitiLayout.tsx';
 
 export function App() {
   return (
     <>
-      <WallLayout />
+      <GraffitiLayout />
       <DashboardLayout documentation={<DocumentationPage />} />
     </>
   );
