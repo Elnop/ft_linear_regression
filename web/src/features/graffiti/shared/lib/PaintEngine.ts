@@ -1,6 +1,6 @@
-import { smoothstep } from './smoothstep.ts';
 import { stepFlow } from './stepFlow.ts';
 import { PaintLayer } from './PaintLayer.ts';
+import { Scheduler } from './Scheduler.ts';
 
 import { createGLRenderer } from './createGLRenderer.ts';
 import type { Renderer } from '@/features/graffiti/shared/types/RendererTypes.ts';
@@ -14,24 +14,15 @@ const FLOW_STEP = 1 / 120;
 const MAX_DELTA_SECONDS = 1 / 10;
 const SETTLE_BUDGET_MS = 120;
 
-type Running = { job: Job; done: () => void };
-type Look = { opacity: number; gray: number };
-type Tween = { layer: PaintLayer; from: Look; to: Look; elapsed: number; duration: number; done: () => void };
-
-function partition<T>(items: T[], keep: (item: T) => boolean): [T[], T[]] {
-  return [items.filter(keep), items.filter((item) => !keep(item))];
-}
-
 export class PaintEngine {
-  private readonly canvas: HTMLCanvasElement;
   readonly ready: Promise<void>;
   width = 0;
   height = 0;
 
+  private readonly canvas: HTMLCanvasElement;
   private renderer: Renderer;
   private layers: PaintLayer[] = [];
-  private jobs: Running[] = [];
-  private tweens: Tween[] = [];
+  private scheduler = new Scheduler();
   private resizeListeners = new Set<() => void>();
   private roughness: Roughness | null = null;
   private wall: HTMLImageElement | null = null;
@@ -43,7 +34,6 @@ export class PaintEngine {
 
   constructor(container: HTMLElement, wallUrl: string) {
     this.canvas = document.createElement('canvas');
-    this.canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
     this.renderer = createGLRenderer(this.canvas);
     container.appendChild(this.canvas);
     this.measure();
@@ -53,7 +43,6 @@ export class PaintEngine {
       image.onload = () => {
         this.wall = image;
         this.renderer.setWall(image);
-        this.fitRoughness(image);
         this.wake();
         resolve();
       };
@@ -63,10 +52,8 @@ export class PaintEngine {
 
     this.observer = new ResizeObserver(() => {
       if (!this.measure()) return;
-      if (this.wall) {
-        this.fitRoughness(this.wall);
-        this.renderer.render(this.layers);
-      }
+      this.roughness = null;
+      if (this.wall) this.renderer.render(this.layers);
       this.wake();
       for (const listener of this.resizeListeners) listener();
     });
@@ -74,7 +61,8 @@ export class PaintEngine {
   }
 
   createLayer(options: LayerOptions): PaintLayer {
-    if (!this.roughness) throw new Error('PaintEngine used before ready');
+    if (!this.wall) throw new Error('PaintEngine used before ready');
+    this.roughness ??= computeRoughness(this.wall, this.width, this.height, FILM_SCALE);
     const bounds = options.bounds ?? { x: 0, y: 0, width: this.width, height: this.height };
     const layer = new PaintLayer({ ...options, bounds }, this.roughness);
     const at = this.layers.findIndex((other) => other.z > layer.z);
@@ -93,11 +81,7 @@ export class PaintEngine {
     const kept = (layer: PaintLayer) => keep.includes(layer);
     for (const layer of this.layers) if (!kept(layer)) this.renderer.release(layer);
     this.layers = this.layers.filter(kept);
-    const [jobs, droppedJobs] = partition(this.jobs, (running) => kept(running.job.layer));
-    const [tweens, droppedTweens] = partition(this.tweens, (tween) => kept(tween.layer));
-    this.jobs = jobs;
-    this.tweens = tweens;
-    for (const dropped of [...droppedJobs, ...droppedTweens]) dropped.done();
+    this.scheduler.keepOnly(kept);
     this.wake();
   }
 
@@ -107,31 +91,23 @@ export class PaintEngine {
       this.wake();
       return Promise.resolve();
     }
-    return new Promise((done) => {
-      this.jobs.push({ job, done });
-      this.wake();
-    });
+    const running = this.scheduler.run(job);
+    this.wake();
+    return running;
   }
 
   nozzle(): Nozzle | null {
-    const running = this.jobs.at(-1);
-    return running ? { x: running.job.position.x, y: running.job.position.y, color: running.job.layer.hex, active: this.jobs.length } : null;
+    const job = this.scheduler.currentJob;
+    return job ? { x: job.position.x, y: job.position.y, color: job.layer.hex, active: this.scheduler.jobCount } : null;
   }
 
   fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
-    const [tweens, replaced] = partition(this.tweens, (tween) => tween.layer !== layer);
-    this.tweens = tweens;
-    for (const tween of replaced) tween.done();
     this.wake();
-    if (durationMs <= 0) {
-      layer.opacity = opacity;
-      layer.gray = gray;
-      return Promise.resolve();
-    }
-    const from = { opacity: layer.opacity, gray: layer.gray };
-    return new Promise((done) => {
-      this.tweens.push({ layer, from, to: { opacity, gray }, elapsed: 0, duration: durationMs / 1000, done });
-    });
+    if (durationMs > 0) return this.scheduler.fade(layer, { opacity, gray }, durationMs / 1000);
+    this.scheduler.cancelFade(layer);
+    layer.opacity = opacity;
+    layer.gray = gray;
+    return Promise.resolve();
   }
 
   settle(): void {
@@ -171,10 +147,6 @@ export class PaintEngine {
     return true;
   }
 
-  private fitRoughness(wall: HTMLImageElement): void {
-    this.roughness = computeRoughness(wall, this.width, this.height, FILM_SCALE);
-  }
-
   private flow(layer: PaintLayer, deltaSeconds: number): void {
     const stepCount = Math.max(2, Math.ceil(deltaSeconds / FLOW_STEP));
     for (let step = 0; step < stepCount; step++) stepFlow(layer, deltaSeconds / stepCount);
@@ -193,26 +165,15 @@ export class PaintEngine {
     const deltaSeconds = Math.min(MAX_DELTA_SECONDS, Math.max(0, (now - this.lastTime) / 1000));
     this.lastTime = now;
 
-    this.advanceJobs(deltaSeconds);
+    this.scheduler.advanceJobs(deltaSeconds);
     const wet = this.flowWetLayers(deltaSeconds);
-    this.advanceTweens(deltaSeconds);
+    if (this.scheduler.advanceTweens(deltaSeconds)) this.needsDraw = true;
 
     if (this.needsDraw && this.wall) this.renderer.render(this.layers);
     this.needsDraw = false;
 
-    if (this.jobs.length > 0 || wet || this.tweens.length > 0) {
-      this.frame = requestAnimationFrame(this.tick);
-    }
+    if (this.scheduler.busy || wet) this.frame = requestAnimationFrame(this.tick);
   };
-
-  private advanceJobs(deltaSeconds: number): void {
-    const jobs = this.jobs;
-    this.jobs = [];
-    for (const running of jobs) {
-      if (running.job.update(deltaSeconds)) running.done();
-      else this.jobs.push(running);
-    }
-  }
 
   private flowWetLayers(deltaSeconds: number): boolean {
     let wet = false;
@@ -223,21 +184,5 @@ export class PaintEngine {
       this.needsDraw = true;
     }
     return wet;
-  }
-
-  private advanceTweens(deltaSeconds: number): void {
-    const finished: Tween[] = [];
-    this.tweens = this.tweens.filter((tween) => {
-      const { layer, from, to } = tween;
-      tween.elapsed = Math.min(tween.duration, tween.elapsed + deltaSeconds);
-      const eased = smoothstep(tween.elapsed / tween.duration);
-      layer.opacity = from.opacity + (to.opacity - from.opacity) * eased;
-      layer.gray = from.gray + (to.gray - from.gray) * eased;
-      this.needsDraw = true;
-      if (tween.elapsed < tween.duration) return true;
-      finished.push(tween);
-      return false;
-    });
-    for (const tween of finished) tween.done();
   }
 }
