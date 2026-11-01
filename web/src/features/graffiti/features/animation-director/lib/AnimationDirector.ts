@@ -33,7 +33,7 @@ export class AnimationDirector implements Director {
   constructor(engine: PaintEngine, dependencies: DirectorDependencies) {
     this.engine = engine;
     this.dependencies = dependencies;
-    this.painter = new WallPainter(engine, dependencies.samples, this.timeline);
+    this.painter = new WallPainter(engine, dependencies.samples);
     this.paintedWidth = engine.width;
     this.paintedHeight = engine.height;
     this.unsubscribeResize = engine.onResize(() => {
@@ -101,12 +101,12 @@ export class AnimationDirector implements Director {
 
   private async paintBackdrop(run: Run): Promise<void> {
     this.set({ visiblePoints: this.dependencies.samples.length });
-    await run.wait(this.painter.stampPoints(this.order, TIMING.pointsIn));
-    if (!this.title) this.title = await run.wait(paintTitle(this.engine, this.timeline));
+    await run.wait(this.painter.stampPoints(run, this.order, TIMING.pointsIn));
+    if (!this.title) this.title = await run.wait(paintTitle(this.engine, run));
   }
 
   private async playTraining(run: Run, plan: Training): Promise<void> {
-    this.painter.wipeFan();
+    this.painter.wipeFan(run);
     await run.sleep(TIMING.fanOut);
 
     await this.playPasses(run, plan);
@@ -117,22 +117,22 @@ export class AnimationDirector implements Director {
     const { regression, samples } = this.dependencies;
     for (let pass = 0; pass < plan.steps.length; pass++) {
       regression.show(stepAt(samples, plan, pass));
-      const painting = this.sprayPass(plan, pass);
-      this.painter.fadeFan();
+      const painting = this.sprayPass(run, plan, pass);
+      this.painter.fadeFan(run);
       await run.wait(painting);
       await run.sleep(TIMING.afterPass);
     }
     regression.finish(plan.diverged);
 
     for (const i of this.order) {
-      await run.wait(this.painter.sprayPoint(i, TIMING.redot));
+      await run.wait(this.painter.sprayPoint(run, i, TIMING.redot));
       await run.sleep(TIMING.redotGap);
     }
   }
 
-  private sprayPass(plan: Training, pass: number): Promise<void> {
+  private sprayPass(run: Run, plan: Training, pass: number): Promise<void> {
     const duration = isFinalPass(plan, pass) ? TIMING.finalPass : TIMING.pass;
-    return this.painter.sprayLine(plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
+    return this.painter.sprayLine(run, plan.steps[pass], lineKindAt(plan, pass), duration, pass % 2 === 1);
   }
 
   private onResized(): void {

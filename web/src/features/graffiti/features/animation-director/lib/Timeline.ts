@@ -3,16 +3,15 @@ import type { Run } from '@/features/graffiti/features/animation-director/types/
 class Cancelled extends Error {}
 
 export class Timeline {
-  instant = false;
   private current = 0;
 
   restart(instant = false): Run {
-    this.instant = instant;
     const id = ++this.current;
     const check = () => {
       if (id !== this.current) throw new Cancelled();
     };
     return {
+      instant,
       wait: async (promise) => {
         const value = await promise;
         check();

@@ -6,12 +6,12 @@ import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed } from '@/features/graffiti/shared/lib/random.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import { titleLetters } from '@/shared/lib/titleLetters.ts';
-import type { Clock } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type { Run } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
 import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/configs/NozzleConfig.ts';
 import { STROKE } from '@/shared/configs/TitleConfig.ts';
 
-export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<PaintLayer> {
+export async function paintTitle(engine: PaintEngine, run: Run): Promise<PaintLayer> {
   const layout = sceneFor(engine.width, engine.height).title;
   const random = mulberry32(randomSeed());
   const { rectangle, em } = layout;
@@ -24,7 +24,7 @@ export async function paintTitle(engine: PaintEngine, clock: Clock): Promise<Pai
   const pace = Math.min(900, Math.max(300, em * 16));
   const speed = Math.min(1100, Math.max(400, em * 14));
   const lead = 1.5 * em;
-  const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed), clock.instant);
+  const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed), run.instant);
 
   for (const line of letterLines(titleLetters(layout, random))) {
     const at = (x: number): Vec2 => ({ x, y: line.y(x) });

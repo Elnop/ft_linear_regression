@@ -7,28 +7,27 @@ import { dotJob, pathJob } from './nozzle.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { fadeGray, fadeOpacity } from './fade.ts';
-import type { Timeline } from './Timeline.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
-import type { LineKind } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type { LineKind, Run } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 import { STYLE, COLORS } from '@/features/graffiti/features/animation-director/configs/StyleConfig.ts';
 import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/configs/NozzleConfig.ts';
 
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
+const fadeTime = (run: Run, duration: number) => (run.instant ? 0 : duration);
+
 export class WallPainter {
   private chart: ChartMapping;
 
   private engine: PaintEngine;
   private samples: Sample[];
-  private timeline: Timeline;
   private topPoints: PaintLayer[] = [];
   private fan: PaintLayer[] = [];
 
-  constructor(engine: PaintEngine, samples: Sample[], timeline: Timeline) {
+  constructor(engine: PaintEngine, samples: Sample[]) {
     this.engine = engine;
     this.samples = samples;
-    this.timeline = timeline;
     this.chart = sceneFor(engine.width, engine.height).chart;
   }
 
@@ -42,23 +41,23 @@ export class WallPainter {
     this.chart = sceneFor(this.engine.width, this.engine.height).chart;
   }
 
-  sprayPoint(index: number, duration: number): Promise<void> {
+  sprayPoint(run: Run, index: number, duration: number): Promise<void> {
     const { layer, center, options } = this.pointLayer(index, 2);
     this.topPoints.push(layer);
-    return this.engine.spray(dotJob(layer, center, { ...options, duration }), this.timeline.instant);
+    return this.engine.spray(dotJob(layer, center, { ...options, duration }), run.instant);
   }
 
-  stampPoints(order: number[], fade: number): Promise<void[]> {
+  stampPoints(run: Run, order: number[], fadeDuration: number): Promise<void[]> {
     return Promise.all(
       order.map((i) => {
         const { layer, center, options } = this.pointLayer(i, 0, 0);
         void this.engine.spray(dotJob(layer, center, { ...options, duration: TIMING.dot }), true);
-        return this.engine.fadeLayer(layer, 1, this.fadeTime(fade));
+        return this.engine.fadeLayer(layer, 1, fadeTime(run, fadeDuration));
       }),
     );
   }
 
-  sprayLine(thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
+  sprayLine(run: Run, thetas: Thetas, kind: LineKind, duration: number, reverse = false): Promise<void> {
     const segment = lineSegment(thetas, this.chart, this.clipRectangle(kind));
     if (!segment) return Promise.resolve();
 
@@ -73,7 +72,7 @@ export class WallPainter {
     const layer = this.engine.createLayer({ color, z: 1, bounds: { x: x0, y: y0, width: x1 - x0, height: y1 - y0 } });
     this.fan.push(layer);
 
-    const { instant } = this.timeline;
+    const { instant } = run;
     const seconds = Math.max(0.05, duration / 1000);
     const speed = instant ? NOMINAL_SPEED : (Math.hypot(end.x - start.x, end.y - start.y) / seconds) * 1.2;
     const job = pathJob(layer, reverse ? [end, start] : [start, end], {
@@ -87,23 +86,19 @@ export class WallPainter {
     return this.engine.spray(job, instant);
   }
 
-  fadeFan(): void {
+  fadeFan(run: Run): void {
     this.fan.forEach((layer, i) => {
       const age = this.fan.length - 1 - i;
-      void this.engine.fadeLayer(layer, fadeOpacity(age), this.fadeTime(TIMING.fade), fadeGray(age));
+      void this.engine.fadeLayer(layer, fadeOpacity(age), fadeTime(run, TIMING.fade), fadeGray(age));
     });
   }
 
-  wipeFan(): void {
+  wipeFan(run: Run): void {
     for (const layer of [...this.fan, ...this.topPoints]) {
-      void this.engine.fadeLayer(layer, 0, this.fadeTime(TIMING.fanOut)).then(() => this.engine.removeLayer(layer));
+      void this.engine.fadeLayer(layer, 0, fadeTime(run, TIMING.fanOut)).then(() => this.engine.removeLayer(layer));
     }
     this.fan = [];
     this.topPoints = [];
-  }
-
-  private fadeTime(duration: number): number {
-    return this.timeline.instant ? 0 : duration;
   }
 
   private pointLayer(index: number, z: number, opacity = 1) {

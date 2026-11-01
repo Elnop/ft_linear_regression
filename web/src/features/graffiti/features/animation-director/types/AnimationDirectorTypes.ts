@@ -4,6 +4,7 @@ import type { AnimationPlayback } from '@/states/animation-playback/AnimationPla
 import type { RegressionActions } from '@/states/regression/RegressionTypes.ts';
 
 export type Run = {
+  readonly instant: boolean;
   sleep: (duration: number) => Promise<void>;
   wait: <T>(promise: Promise<T>) => Promise<T>;
 };
@@ -15,8 +16,6 @@ export type Training = {
   history: CostPoint[];
   diverged: boolean;
 };
-
-export type Clock = { readonly instant: boolean };
 
 export type DirectorDependencies = {
   playback: StoreApi<AnimationPlayback>;
