@@ -2,3 +2,4 @@ en.subject.pdf
 node_modules/
 dist/
 model.json
+*.tsbuildinfo
