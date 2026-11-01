@@ -1,4 +1,4 @@
-import type { RegressionState } from '@/states/regression/types/RegressionTypes.ts';
+import type { RegressionState } from '@/states/regression/RegressionTypes.ts';
 
 export const IDLE_REGRESSION: Omit<RegressionState, 'samples'> = {
   thetas: null,

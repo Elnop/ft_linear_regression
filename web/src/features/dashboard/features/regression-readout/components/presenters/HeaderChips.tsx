@@ -1,5 +1,5 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import '@/features/dashboard/features/regression-readout/styles/regression-readout.css';
+import '@/features/dashboard/features/regression-readout/regression-readout.css';
 
 type HeaderChipsProps = {
   theta0: number | null;

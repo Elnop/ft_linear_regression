@@ -1,6 +1,6 @@
 import { WallAxes } from '@/features/dashboard/features/views/components/presenters/WallAxes.tsx';
 import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts';
-import { useScene } from '@/shared/hooks/useScene.ts';
+import { useScene } from '@/shared/useScene.ts';
 
 export function WallAxesContainer() {
   const { width, height, chart } = useScene();

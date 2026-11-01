@@ -1,4 +1,4 @@
-import { useProgress } from '@/features/dashboard/features/regression-readout/hooks/useProgress.ts';
+import { useProgress } from '@/features/dashboard/features/regression-readout/useProgress.ts';
 import { HeaderChips } from '@/features/dashboard/features/regression-readout/components/presenters/HeaderChips.tsx';
 import { useRegression } from '@/states/regression/hooks/useRegression.ts';
 

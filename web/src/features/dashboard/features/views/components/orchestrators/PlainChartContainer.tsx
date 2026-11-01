@@ -6,8 +6,8 @@ import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.t
 import { lineSegment } from '@/shared/lib/lineSegment.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useRegression } from '@/states/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
-import { useScene } from '@/shared/hooks/useScene.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
+import { useScene } from '@/shared/useScene.ts';
 
 export function PlainChartContainer() {
   const { width, chart } = useScene();

@@ -1,4 +1,4 @@
-import type { Token } from '@/features/docs/types/DocsTypes.ts';
+import type { Token } from '@/features/docs/DocsTypes.ts';
 
 export function pick(source: string, name: string): string {
   const lines = source.split('\n');

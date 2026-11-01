@@ -5,9 +5,9 @@ import { useKm } from '@/features/dashboard/shared/stores/predictionStore.ts';
 import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useRegression } from '@/states/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { useScene } from '@/shared/hooks/useScene.ts';
+import { useScene } from '@/shared/useScene.ts';
 
 type Prediction = { invalid: boolean; mileage: number | null; price: number | null; at: Vec2 | null };
 

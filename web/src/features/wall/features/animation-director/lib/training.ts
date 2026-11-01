@@ -3,7 +3,7 @@ import { hasFiniteThetas } from '@core/hasFiniteThetas.ts';
 import { trainSteps } from '@core/trainSteps.ts';
 import type { CostPoint, Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 import type { Training } from '@/features/wall/features/animation-director/types/AnimationDirectorTypes.ts';
-import type { RegressionSnapshot } from '@/states/regression/types/RegressionTypes.ts';
+import type { RegressionSnapshot } from '@/states/regression/RegressionTypes.ts';
 
 const DENSE_HISTORY_UNTIL = 64;
 const nextHistorySample = (iteration: number) => Math.ceil(iteration * 1.05);

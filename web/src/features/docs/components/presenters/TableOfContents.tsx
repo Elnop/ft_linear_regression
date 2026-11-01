@@ -1,6 +1,6 @@
 import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
 import '@/features/docs/styles/table-of-contents.css';
-import type { TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
+import type { TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
 type Props = {
   sections: TableOfContentsSection[];

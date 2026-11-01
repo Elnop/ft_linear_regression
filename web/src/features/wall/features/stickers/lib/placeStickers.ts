@@ -1,5 +1,5 @@
-import type { Cluster, Damage, PlacedSticker } from '@/features/wall/features/stickers/types/StickersTypes.ts';
-import { car, descent, formula, logo42, norminette, piscine, react, typescript } from '@/features/wall/features/stickers/configs/ArtsConfig.tsx';
+import type { Cluster, Damage, PlacedSticker } from '@/features/wall/features/stickers/StickersTypes.ts';
+import { car, descent, formula, logo42, norminette, piscine, react, typescript } from '@/features/wall/features/stickers/ArtsConfig.tsx';
 import type { Scene } from '@/shared/types/SceneTypes.ts';
 
 const CLUSTERS: Cluster[] = [

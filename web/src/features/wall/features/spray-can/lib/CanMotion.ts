@@ -1,6 +1,6 @@
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import type { Nozzle } from '@/features/wall/shared/types/SprayTypes.ts';
-import type { CanPose } from '@/features/wall/features/spray-can/types/SprayCanTypes.ts';
+import type { CanPose } from '@/features/wall/features/spray-can/SprayCanTypes.ts';
 
 const BASE_TILT = -14;
 const PARK_AFTER = 2.5;

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { TableOfContents } from './TableOfContents.tsx';
 import { StepList } from './StepList.tsx';
 
-import type { DocStep, TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
+import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
 type Props = {
   steps: DocStep[];

@@ -1,6 +1,6 @@
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
-import type { View } from '@/features/dashboard/shared/types/DashboardTypes.ts';
+import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
 
 const viewStore = createStore<{ view: View }>()(() => ({ view: 'wall' }));
 

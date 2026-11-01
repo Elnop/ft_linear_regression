@@ -1,4 +1,4 @@
-import type { DocStep, TableOfContentsSection } from '@/features/docs/types/DocsTypes.ts';
+import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
 export const stepId = (prefix: string, index: number) => `documentation-${prefix}-${index + 1}`;
 

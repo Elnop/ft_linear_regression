@@ -1,7 +1,7 @@
 import { createStore } from 'zustand/vanilla';
 import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
 import { IDLE_REGRESSION } from '@/states/regression/configs/RegressionStateConfig.ts';
-import type { RegressionSnapshot, RegressionState } from '@/states/regression/types/RegressionTypes.ts';
+import type { RegressionSnapshot, RegressionState } from '@/states/regression/RegressionTypes.ts';
 
 export const regressionStore = createStore<RegressionState>()(() => ({ samples: DATA, ...IDLE_REGRESSION }));
 

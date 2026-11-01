@@ -1,7 +1,7 @@
 import { ControlBar } from '@/features/dashboard/features/training/components/presenters/ControlBar.tsx';
-import { useWarn } from '@/features/dashboard/features/training/hooks/useWarn.ts';
+import { useWarn } from '@/features/dashboard/features/training/useWarn.ts';
 import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
-import { useAnimationPlayback } from '@/states/animation-playback/hooks/useAnimationPlayback.ts';
+import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
 import { useTrainingOptions } from '@/states/regression/hooks/useTrainingOptions.ts';
 
 export function ControlBarContainer() {

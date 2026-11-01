@@ -5,7 +5,7 @@ import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts'
 import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useRegression } from '@/states/regression/hooks/useRegression.ts';
-import { useScene } from '@/shared/hooks/useScene.ts';
+import { useScene } from '@/shared/useScene.ts';
 
 export function DatasetPanelContainer() {
   const { width, chart } = useScene();

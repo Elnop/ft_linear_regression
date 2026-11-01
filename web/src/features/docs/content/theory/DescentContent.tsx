@@ -1,6 +1,6 @@
 import { DescentFigure } from '@/features/docs/components/presenters/DescentFigure.tsx';
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
-import type { DocStep } from '@/features/docs/types/DocsTypes.ts';
+import type { DocStep } from '@/features/docs/DocsTypes.ts';
 
 export const DESCENT: DocStep[] = [
   {

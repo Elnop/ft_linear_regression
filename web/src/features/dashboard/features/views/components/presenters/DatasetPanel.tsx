@@ -1,6 +1,6 @@
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import '@/features/dashboard/features/views/styles/dataset-panel.css';
-import type { DatasetRow } from '@/features/dashboard/features/views/types/DatasetPanelTypes.ts';
+import type { DatasetRow } from '@/features/dashboard/features/views/DatasetPanelTypes.ts';
 
 type DatasetPanelProps = {
   rows: DatasetRow[];

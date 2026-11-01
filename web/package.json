@@ -9,7 +9,8 @@
     "typecheck": "tsc -p .",
     "lint": "oxlint --type-aware src",
     "deps": "depcruise src",
-    "check": "npm run typecheck && npm run lint && npm run deps"
+    "folders": "node scripts/checkFolders.mjs",
+    "check": "npm run typecheck && npm run lint && npm run deps && npm run folders"
   },
   "dependencies": {
     "motion": "^14.7.1",
