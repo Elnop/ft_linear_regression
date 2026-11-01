@@ -2,7 +2,7 @@ import type { TrainOptions } from '@core/types/CoreTypes.ts';
 import type { StoreApi } from 'zustand/vanilla';
 import type { AnimationPlayback } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
 import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
-import { DEFAULT_TRAIN } from '@/states/regression/configs/TrainingConfig.ts';
+import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import { regressionActions } from '@/states/regression/stores/regressionStore.ts';
 import { runTraining, stepAt } from './training.ts';
 

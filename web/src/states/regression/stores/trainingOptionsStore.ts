@@ -1,5 +1,5 @@
 import { createStore } from 'zustand/vanilla';
-import { DEFAULT_TRAIN } from '@/states/regression/configs/TrainingConfig.ts';
+import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import { willDiverge } from '@/states/regression/willDiverge.ts';
 import type { TrainingOptionsState } from '@/states/regression/RegressionTypes.ts';
 

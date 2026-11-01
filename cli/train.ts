@@ -1,3 +1,4 @@
+import { DEFAULT_TRAIN } from '../core/configs/TrainingConfig.ts';
 import { hasDiverged } from '../core/hasDiverged.ts';
 import { trainSteps } from '../core/trainSteps.ts';
 import type { TrainStep } from '../core/types/CoreTypes.ts';
@@ -9,8 +10,8 @@ import { errorMessage, fail } from './process.ts';
 const USAGE = `Usage: npm run train -- [dataset.csv] [--lr <rate>] [--iterations <n>]
 
   dataset.csv       km,price CSV file (default: data.csv)
-  --lr <rate>       learning rate, > 0 (default: 0.5)
-  --iterations <n>  number of gradient descent steps (default: 10000)
+  --lr <rate>       learning rate, > 0 (default: ${DEFAULT_TRAIN.learningRate})
+  --iterations <n>  number of gradient descent steps (default: ${DEFAULT_TRAIN.iterations})
   -h, --help        show this help`;
 
 function parseLearningRate(text: string): number {
@@ -29,8 +30,8 @@ function parseIterations(text: string): number {
 }
 
 const { values, datasetPath } = parseCli(USAGE, {
-  lr: { type: 'string', default: '0.5' },
-  iterations: { type: 'string', default: '10000' },
+  lr: { type: 'string', default: String(DEFAULT_TRAIN.learningRate) },
+  iterations: { type: 'string', default: String(DEFAULT_TRAIN.iterations) },
 });
 const learningRate = parseLearningRate(values.lr);
 const iterations = parseIterations(values.iterations);

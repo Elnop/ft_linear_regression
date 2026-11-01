@@ -7,7 +7,7 @@ import type { StoreApi } from 'zustand/vanilla';
 import type { Run, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
 import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
-import { DEFAULT_TRAIN } from '@/states/regression/configs/TrainingConfig.ts';
+import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import { regressionActions } from '@/states/regression/stores/regressionStore.ts';
 import { WallPainter } from './WallPainter.ts';
 import { IDLE_PLAYBACK } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
