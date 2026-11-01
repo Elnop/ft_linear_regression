@@ -3,6 +3,8 @@ import { CanMotion } from '@/features/graffiti/features/spray-can/lib/CanMotion.
 import { drawMist } from '@/features/graffiti/features/spray-can/lib/drawMist.ts';
 import { HOLE, VIEW_WIDTH } from '@/features/graffiti/features/spray-can/ShapeConfig.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
+import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
+import { sceneStore } from '@/shared/sceneStore.ts';
 
 export function useSprayCan(engine: PaintEngine | null) {
   const box = useRef<HTMLDivElement>(null);
@@ -14,31 +16,32 @@ export function useSprayCan(engine: PaintEngine | null) {
     const canvas = mist.current!;
     const context = canvas.getContext('2d')!;
 
-    const motion = new CanMotion(window.innerWidth + 200, window.innerHeight * 0.3);
+    const start = sceneStore.getState();
+    const motion = new CanMotion(start.width + 200, start.height * 0.3);
     let color = '';
     let misty = false;
     let last = performance.now();
     let frame = 0;
 
-    const resize = () => {
-      const pixelRatio = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = window.innerWidth * pixelRatio;
-      canvas.height = window.innerHeight * pixelRatio;
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    const resize = ({ width, height }: { width: number; height: number }) => {
+      const ratio = pixelRatio();
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
-    resize();
-    window.addEventListener('resize', resize);
+    resize(start);
+    const unsubscribe = sceneStore.subscribe(resize);
 
     const tick = (now: number) => {
       frame = requestAnimationFrame(tick);
       const deltaSeconds = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const width = window.innerWidth;
+      const { width, height } = sceneStore.getState();
       const canWidth = Math.max(64, Math.min(110, width * 0.075));
       const scale = canWidth / VIEW_WIDTH;
 
       const nozzle = engine.nozzle();
-      const pose = motion.step(deltaSeconds, nozzle, canWidth);
+      const pose = motion.step(deltaSeconds, nozzle, canWidth, height);
       if (pose.color !== color) {
         color = pose.color;
         element.style.setProperty('--paint', color);
@@ -52,7 +55,7 @@ export function useSprayCan(engine: PaintEngine | null) {
       element.classList.toggle('pressed', pose.spraying);
       element.classList.toggle('gone', !!nozzle && nozzle.active > 2);
 
-      if (misty) context.clearRect(0, 0, width, window.innerHeight);
+      if (misty) context.clearRect(0, 0, width, height);
       misty = pose.spraying;
       if (pose.spraying && nozzle) drawMist(context, pose, nozzle, color, canWidth);
     };
@@ -60,7 +63,7 @@ export function useSprayCan(engine: PaintEngine | null) {
 
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener('resize', resize);
+      unsubscribe();
     };
   }, [engine]);
 

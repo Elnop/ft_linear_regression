@@ -1,6 +1,7 @@
 import { stepFlow } from './stepFlow.ts';
 import { PaintLayer } from './PaintLayer.ts';
 import { Scheduler } from './Scheduler.ts';
+import { pixelRatio } from './pixelRatio.ts';
 
 import { createGLRenderer } from './createGLRenderer.ts';
 import type { Renderer } from '@/features/graffiti/shared/types/RendererTypes.ts';
@@ -31,6 +32,7 @@ export class PaintEngine {
   private needsDraw = true;
   private pixelRatio = 0;
   private observer: ResizeObserver;
+  private unwatchPixelRatio = () => {};
 
   constructor(container: HTMLElement, wallUrl: string) {
     this.canvas = document.createElement('canvas');
@@ -50,14 +52,9 @@ export class PaintEngine {
       image.src = wallUrl;
     });
 
-    this.observer = new ResizeObserver(() => {
-      if (!this.measure()) return;
-      this.roughness = null;
-      if (this.wall) this.renderer.render(this.layers);
-      this.wake();
-      for (const listener of this.resizeListeners) listener();
-    });
+    this.observer = new ResizeObserver(() => this.onViewportChange());
     this.observer.observe(container);
+    this.watchPixelRatio();
   }
 
   createLayer(options: LayerOptions): PaintLayer {
@@ -127,21 +124,40 @@ export class PaintEngine {
     cancelAnimationFrame(this.frame);
     this.frame = -1;
     this.observer.disconnect();
+    this.unwatchPixelRatio();
     this.renderer.destroy();
     this.canvas.remove();
+  }
+
+  private onViewportChange(): void {
+    if (!this.measure()) return;
+    this.roughness = null;
+    if (this.wall) this.renderer.render(this.layers);
+    this.wake();
+    for (const listener of this.resizeListeners) listener();
+  }
+
+  private watchPixelRatio(): void {
+    const query = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+    const onChange = () => {
+      this.onViewportChange();
+      this.watchPixelRatio();
+    };
+    query.addEventListener('change', onChange, { once: true });
+    this.unwatchPixelRatio = () => query.removeEventListener('change', onChange);
   }
 
   private measure(): boolean {
     const box = this.canvas.getBoundingClientRect();
     const width = Math.max(1, Math.round(box.width));
     const height = Math.max(1, Math.round(box.height));
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    if (width === this.width && height === this.height && pixelRatio === this.pixelRatio) return false;
+    const ratio = pixelRatio();
+    if (width === this.width && height === this.height && ratio === this.pixelRatio) return false;
     this.width = width;
     this.height = height;
-    this.pixelRatio = pixelRatio;
-    this.canvas.width = Math.round(width * pixelRatio);
-    this.canvas.height = Math.round(height * pixelRatio);
+    this.pixelRatio = ratio;
+    this.canvas.width = Math.round(width * ratio);
+    this.canvas.height = Math.round(height * ratio);
     this.renderer.resize(width, height);
     this.needsDraw = true;
     return true;

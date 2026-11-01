@@ -23,7 +23,7 @@ export class CanMotion {
     this.aim = { x, y, velocityX: 0, velocityY: 0 };
   }
 
-  step(deltaSeconds: number, nozzle: Nozzle | null, canWidth: number): CanPose {
+  step(deltaSeconds: number, nozzle: Nozzle | null, canWidth: number, floor: number): CanPose {
     const { position, velocity, aim } = this;
     const spraying = !!nozzle && nozzle.active <= 2;
     if (spraying) {
@@ -61,7 +61,7 @@ export class CanMotion {
     this.shake = Math.max(0, this.shake - deltaSeconds);
     const rattle = this.shake > 0 ? Math.sin(this.shake * 30) * (this.shake / SHAKE) : 0;
     if (this.fall) {
-      if (position.y < window.innerHeight + canWidth * 3) {
+      if (position.y < floor + canWidth * 3) {
         this.fall.velocityY += GRAVITY * deltaSeconds;
         position.x += this.fall.velocityX * deltaSeconds;
         position.y += this.fall.velocityY * deltaSeconds;
