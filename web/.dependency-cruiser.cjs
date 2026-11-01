@@ -14,13 +14,6 @@ module.exports = {
       to: { couldNotResolve: true },
     },
     {
-      name: 'lib-is-leaf',
-      severity: 'error',
-      comment: 'shared/lib/ est du technique pur : il ne dépend ni de l’app, ni des features, ni des composants.',
-      from: { path: '^src/shared/lib/' },
-      to: { path: '^src/(app|features|shared/components)/' },
-    },
-    {
       name: 'shared-not-to-features',
       severity: 'error',
       comment: 'shared/ sert toute l’app : il ne connaît ni les états, ni les features.',

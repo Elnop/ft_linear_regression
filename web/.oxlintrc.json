@@ -58,5 +58,15 @@
     "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-add-event-listener": "off",
     "typescript/consistent-return": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "tests/**/*.test.ts"
+      ],
+      "rules": {
+        "typescript/no-floating-promises": "off"
+      }
+    }
+  ]
 }

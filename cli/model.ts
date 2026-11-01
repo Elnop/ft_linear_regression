@@ -6,8 +6,8 @@ import { errorCode, fail } from './process.ts';
 const MODEL_PATH = new URL('../model.json', import.meta.url);
 
 function isThetas(value: unknown): value is Thetas {
-  if (typeof value !== 'object' || value === null) return false;
-  const { theta0, theta1 } = value as Record<string, unknown>;
+  if (typeof value !== 'object' || value === null || !('theta0' in value) || !('theta1' in value)) return false;
+  const { theta0, theta1 } = value;
   return typeof theta0 === 'number' && typeof theta1 === 'number' && hasFiniteThetas({ theta0, theta1 });
 }
 
@@ -16,7 +16,7 @@ export function readModel(): Thetas | null {
   try {
     text = readFileSync(MODEL_PATH, 'utf8');
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null;
+    if (errorCode(error) === 'ENOENT') return null;
     fail(`cannot read model.json: ${errorCode(error)}`);
   }
   let parsed: unknown;

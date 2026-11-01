@@ -12,7 +12,7 @@ export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, 
     fail(`${errorMessage(error)}\n\n${usage}`);
   }
   const { values, positionals } = parsed;
-  if ((values as { help: boolean }).help) {
+  if ('help' in values && values.help === true) {
     console.log(usage);
     process.exit(0);
   }

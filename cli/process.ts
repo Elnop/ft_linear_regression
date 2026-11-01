@@ -4,9 +4,10 @@ export function fail(message: string): never {
 }
 
 export function errorMessage(error: unknown): string {
-  return (error as Error).message;
+  return error instanceof Error ? error.message : String(error);
 }
 
 export function errorCode(error: unknown): string {
-  return (error as NodeJS.ErrnoException).code ?? errorMessage(error);
+  if (error instanceof Error && 'code' in error && typeof error.code === 'string') return error.code;
+  return errorMessage(error);
 }

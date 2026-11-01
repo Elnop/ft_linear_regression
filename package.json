@@ -10,8 +10,10 @@
     "precision": "node cli/precision.ts",
     "web": "npm run dev -w web",
     "build": "npm run build -w web",
-    "typecheck": "tsc -p . && tsc -p web",
-    "check": "npm run check -w web"
+    "typecheck": "tsc -p . && npm run typecheck -w web",
+    "lint": "oxlint --type-aware core cli tests",
+    "test": "node --test 'tests/**/*.test.ts' && npm test -w web",
+    "check": "npm run lint && npm run check -w web"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

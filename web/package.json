@@ -6,11 +6,12 @@
     "dev": "vite",
     "build": "tsc -p . && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -p .",
-    "lint": "oxlint --type-aware src",
+    "typecheck": "tsc -p . && tsc -p tests",
+    "lint": "oxlint --type-aware src tests",
     "deps": "depcruise src",
     "folders": "node scripts/checkFolders.mjs",
-    "check": "npm run typecheck && npm run lint && npm run deps && npm run folders"
+    "check": "npm run typecheck && npm run lint && npm run deps && npm run folders",
+    "test": "node --import ./tests/aliases.ts --test 'tests/**/*.test.ts'"
   },
   "dependencies": {
     "motion": "^14.7.1",
