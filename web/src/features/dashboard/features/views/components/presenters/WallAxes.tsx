@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 import { formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
-import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
@@ -10,12 +10,13 @@ type WallAxesProps = {
   chart: ChartMapping;
   width: number;
   height: number;
+  rem: number;
   visible: boolean;
 };
 
-export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
+export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) {
   const { area, domain } = chart;
-  const small = width < COMPACT_BELOW;
+  const small = width < COMPACT_BELOW_REM * rem;
   const fontSize = small ? 12 : 15;
   const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 12);
   return (

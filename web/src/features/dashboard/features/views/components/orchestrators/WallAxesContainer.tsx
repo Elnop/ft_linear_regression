@@ -3,7 +3,7 @@ import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts'
 import { useScene } from '@/shared/useScene.ts';
 
 export function WallAxesContainer() {
-  const { width, height, chart } = useScene();
+  const { width, height, rem, chart } = useScene();
   const visible = useViewShown('wall');
-  return <WallAxes chart={chart} width={width} height={height} visible={visible} />;
+  return <WallAxes chart={chart} width={width} height={height} rem={rem} visible={visible} />;
 }

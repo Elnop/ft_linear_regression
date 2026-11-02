@@ -19,7 +19,7 @@
   letter-spacing: 0.14em;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .head-button {
     padding: 0 var(--space-12);
   }

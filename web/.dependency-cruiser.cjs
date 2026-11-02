@@ -73,7 +73,7 @@ module.exports = {
       name: 'presenters-are-pure',
       severity: 'error',
       comment: 'Un presenter ne lit aucun store : son orchestrateur lui passe tout par props. Tout composant qui ne finit pas par Container, Layout ou Page est un presenter.',
-      from: { path: '^src/(features|shared)/.+\\.tsx$', pathNot: '(Container|Layout|Page|Content|Config)\\.tsx$' },
+      from: { path: '^src/(features|shared)/.+\\.tsx$', pathNot: ['(Container|Layout|Page|Content|Config)\\.tsx$', '\\.test\\.tsx$'] },
       to: { path: '(Store\\.ts$|node_modules/zustand/|^src/states/[^/]+/(hooks/)?use[^/]+\\.ts$)' },
     },
     {

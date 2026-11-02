@@ -15,7 +15,7 @@ import { PredictPanelContainer } from '@/features/dashboard/features/prediction/
 import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
 import { useScene } from '@/shared/useScene.ts';
-import { ASIDE_WIDTH } from '@/shared/configs/SceneConfig.ts';
+import { ASIDE_WIDTH_REM } from '@/shared/configs/SceneConfig.ts';
 import '@/features/dashboard/dashboard.css';
 
 export function DashboardLayout({ documentation }: { documentation: ReactNode }) {
@@ -24,7 +24,7 @@ export function DashboardLayout({ documentation }: { documentation: ReactNode })
   const geometry: CSSProperties & Record<`--${string}`, string> = {
     '--dashboard-top': `${dashboardTop}px`,
     '--dashboard-padding': `${padding}px`,
-    '--aside-width': `${ASIDE_WIDTH}px`,
+    '--aside-width': `${ASIDE_WIDTH_REM}rem`,
   };
 
   return (

@@ -4,6 +4,7 @@ import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { dotJob, moveJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed, seedFrom } from '@/features/graffiti/shared/lib/random.ts';
+import { readRem } from '@/shared/lib/readRem.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import { titleLetters } from '@/shared/lib/titleLetters.ts';
 import type { Run } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
@@ -13,7 +14,7 @@ import { STROKE } from '@/shared/configs/TitleConfig.ts';
 import { TITLE_PAINT } from '@/features/graffiti/features/animation-director/configs/TitlePaintConfig.ts';
 
 export async function paintTitle(engine: Surface, run: Run): Promise<PaintLayer> {
-  const layout = sceneFor(engine.width, engine.height).title;
+  const layout = sceneFor(engine.width, engine.height, readRem()).title;
   const random = mulberry32(randomSeed());
   const { rectangle, em } = layout;
   const layer = engine.createLayer({

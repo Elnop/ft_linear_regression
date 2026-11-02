@@ -1,5 +1,6 @@
 import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
 
+import { readRem } from '@/shared/lib/readRem.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
@@ -30,7 +31,7 @@ export class WallPainter {
   constructor(engine: Surface, samples: Sample[]) {
     this.engine = engine;
     this.samples = samples;
-    this.chart = sceneFor(engine.width, engine.height).chart;
+    this.chart = sceneFor(engine.width, engine.height, readRem()).chart;
   }
 
   clear(keep: PaintLayer[] = []): void {
@@ -40,7 +41,7 @@ export class WallPainter {
   }
 
   fit(): void {
-    this.chart = sceneFor(this.engine.width, this.engine.height).chart;
+    this.chart = sceneFor(this.engine.width, this.engine.height, readRem()).chart;
   }
 
   get fanLayers(): FanLayers {

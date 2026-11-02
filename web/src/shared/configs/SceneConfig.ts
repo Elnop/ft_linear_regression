@@ -1,3 +1,3 @@
-export const WIDE = 1024;
+export const WIDE_EM = 64;
 
-export const ASIDE_WIDTH = 340;
+export const ASIDE_WIDTH_REM = 21.25;

@@ -4,6 +4,7 @@ import type { TitleLayout } from '@/shared/types/TitleTypes.ts';
 export type Scene = {
   width: number;
   height: number;
+  rem: number;
   wide: boolean;
   padding: number;
   chart: ChartMapping;

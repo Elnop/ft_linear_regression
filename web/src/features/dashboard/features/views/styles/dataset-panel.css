@@ -55,7 +55,7 @@
   background: color-mix(in srgb, var(--ink) 4%, transparent);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .dataset {
     padding: 0 var(--space-12) var(--space-8);
   }

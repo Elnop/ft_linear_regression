@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 import { chartMapping } from '@/shared/lib/chartMapping.ts';
 
-const chart = chartMapping(1000, 800);
+const chart = chartMapping(1000, 800, 16);
 const layout = axisLayout(chart, 15, 12);
 
 test('one grid line and one label per tick', () => {

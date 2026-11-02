@@ -97,7 +97,7 @@
   letter-spacing: 0.14em;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .dashboard-bar {
     gap: 0.875rem 1.125rem;
   }

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/prediction/styles/wall-marker.css';
 
 type WallMarkerProps = {
@@ -10,14 +10,15 @@ type WallMarkerProps = {
   axisY: number;
   width: number;
   height: number;
+  rem: number;
 };
 
 const STICKER_WIDTH = 206;
 const STICKER_HEIGHT = 112;
 
-export function WallMarker({ at, price, axisY, width, height }: WallMarkerProps) {
+export function WallMarker({ at, price, axisY, width, height, rem }: WallMarkerProps) {
   const visible = at !== null && price !== null && at.x >= 0 && at.x <= width && at.y >= 0 && at.y <= height;
-  const scale = width < COMPACT_BELOW ? 0.72 : 1;
+  const scale = width < COMPACT_BELOW_REM * rem ? 0.72 : 1;
   const stickerWidth = STICKER_WIDTH * scale;
   const flip = visible && at.x + 26 + stickerWidth > width - 8;
   const left = visible ? Math.max(8, Math.min(width - stickerWidth - 8, flip ? at.x - 26 - stickerWidth : at.x + 26)) : 0;

@@ -10,7 +10,7 @@ import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPl
 import { useScene } from '@/shared/useScene.ts';
 
 export function PlainChartContainer() {
-  const { width, chart } = useScene();
+  const { width, rem, chart } = useScene();
   const visible = useViewShown('chart');
   const visiblePoints = useAnimationPlayback((state) => state.visiblePoints);
   const samples = useRegression((state) => state.samples);
@@ -23,6 +23,7 @@ export function PlainChartContainer() {
       <PlainChart
         chart={chart}
         width={width}
+        rem={rem}
         rectangle={rectangle}
         samples={samples.slice(0, visiblePoints)}
         line={thetas ? lineSegment(thetas, chart, chart.area) : null}

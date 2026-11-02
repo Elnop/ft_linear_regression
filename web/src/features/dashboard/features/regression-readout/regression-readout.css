@@ -88,7 +88,7 @@
   font-size: var(--text-md);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .dashboard-chips-list {
     flex-wrap: nowrap;
     gap: var(--space-6);

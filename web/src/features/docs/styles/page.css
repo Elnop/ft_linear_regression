@@ -73,7 +73,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .documentation,
   .documentation-panel {
     gap: 1.75rem;

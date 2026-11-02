@@ -1,1 +1,1 @@
-export const COMPACT_BELOW = 600;
+export const COMPACT_BELOW_REM = 37.5;

@@ -32,7 +32,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 63.99em) {
   .documentation-tabs {
     margin-bottom: calc(var(--space-8) * -1);
   }
