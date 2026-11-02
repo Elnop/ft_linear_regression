@@ -73,7 +73,13 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
       const { clientWidth, clientHeight } = document.documentElement;
       return box.left >= -1 && box.top >= -1 && box.right <= clientWidth + 1 && box.bottom <= clientHeight + 1;
     });
-    if (!fits) out.push(await control.evaluate((element) => `${element.tagName.toLowerCase()}${element.className ? `.${String(element.className).trim().replace(/\s+/g, '.')}` : ''}: ${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}`));
+    if (!fits)
+      out.push(
+        await control.evaluate(
+          (element) =>
+            `${element.tagName.toLowerCase()}${element.className ? `.${String(element.className).trim().replace(/\s+/g, '.')}` : ''}: ${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}`,
+        ),
+      );
   }
   return out;
 }
