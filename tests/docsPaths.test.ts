@@ -5,7 +5,12 @@ import { test } from 'node:test';
 const ROOT = new URL('../', import.meta.url);
 const BASES = ['', 'web/', 'web/src/', 'web/src/features/'];
 const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|shared|states|tests|web)\//;
-const DOCUMENTS = ['README.md', ...readdirSync(new URL('docs/', ROOT)).filter((name) => name.endsWith('.md')).map((name) => `docs/${name}`)];
+const DOCUMENTS = [
+  'README.md',
+  ...readdirSync(new URL('docs/', ROOT), { recursive: true, encoding: 'utf8' })
+    .filter((name) => name.endsWith('.md'))
+    .map((name) => `docs/${name}`),
+];
 
 function citedPaths(markdown: string): string[] {
   const prose = markdown.replace(/^```[\s\S]*?^```/gm, '');
