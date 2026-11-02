@@ -3,27 +3,28 @@ import type { Run } from '@/features/graffiti/features/animation-director/types/
 class Cancelled extends Error {}
 
 export class Timeline {
-  private current = 0;
+  private controller = new AbortController();
 
   restart(instant = false): Run {
-    const id = ++this.current;
-    const check = () => {
-      if (id !== this.current) throw new Cancelled();
-    };
+    this.controller.abort(new Cancelled());
+    this.controller = new AbortController();
+    const { signal } = this.controller;
     return {
       instant,
+      signal,
       wait: async (promise) => {
         const value = await promise;
-        check();
+        signal.throwIfAborted();
         return value;
       },
       sleep: async (duration) => {
-        if (instant) return check();
+        signal.throwIfAborted();
+        if (instant) return;
         let left = duration;
         while (left > 0) {
           const startedAt = performance.now();
           await new Promise((resolve) => setTimeout(resolve, Math.min(left, 50)));
-          check();
+          signal.throwIfAborted();
           left -= performance.now() - startedAt;
         }
       },

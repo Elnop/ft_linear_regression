@@ -40,7 +40,8 @@ Le champ accepte ce qu'on tape sur un clavier français : `100 000` et `100,5` s
 
 - Sans WebGL2, ou si la photo du mur ne charge pas, rien n'est peint. L'erreur part dans la console et l'interface affiche directement le modèle entraîné, avec la prédiction, le coût et la précision (`PaintlessDirector`). Comme le mur reste vide, le dashboard affiche le graphe à la place de la vue « mur » : GRAPHE est actif dès le départ, et désactiver DATA ramène au graphe.
 - Avec le réglage système « réduire les animations », l'intro et chaque entraînement peignent directement leur état final, comme *Passer*. Voir [accessibilite.md](accessibilite.md).
-- Un redimensionnement pendant l'intro qui ne change que la hauteur de moins de 15 % (la barre d'adresse sur mobile) est ignoré. Tout autre redimensionnement repeint l'état final 300 ms après le dernier événement.
+- Pendant un redimensionnement, la peinture déjà posée suit le graphe et le titre comme une image étirée, sans recalcul. 300 ms après le dernier événement, une version nette est calculée en tâche de fond et la remplace avec un fondu. Pendant l'intro, un changement de hauteur de moins de 15 % (la barre d'adresse sur mobile) ne déclenche pas ce recalcul.
+- *Passer* affiche un état final calculé en tâche de fond depuis le début de l'animation. Avant, il était peint d'un bloc au clic : la page gelait 0,8 à 1,2 s (mesuré entre 617 et 1526 px de large), et plus de 6 s dans Chromium headless avec WebGL logiciel. Si on clique très tôt, il reste un court délai pendant lequel le mur est figé, mais la page ne gèle plus.
 
 ## Moteur de peinture
 

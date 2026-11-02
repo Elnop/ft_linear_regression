@@ -153,7 +153,7 @@ export function createGLRenderer(canvas: HTMLCanvasElement) {
           gl.activeTexture(gl.TEXTURE0 + unit);
           gl.bindTexture(gl.TEXTURE_2D, texture);
         });
-        gl.uniform4f(paintUniform('uRect'), layer.bounds.x, layer.bounds.y, layer.bounds.width, layer.bounds.height);
+        gl.uniform4f(paintUniform('uRect'), layer.shown.x, layer.shown.y, layer.shown.width, layer.shown.height);
         gl.uniform3f(paintUniform('uColor'), ...layer.shownColor());
         gl.uniform1f(paintUniform('uOpacity'), layer.opacity);
         gl.uniform1f(paintUniform('uGloss'), layer.gloss);

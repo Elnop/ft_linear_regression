@@ -12,6 +12,7 @@ const SOFTWARE_WEBGL = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'
 
 declare global {
   interface Window {
+    longTasks: number[];
     axe: { run(context: Document): Promise<{ violations: { id: string; nodes: { target: string[] }[] }[] }> };
   }
 }
@@ -115,6 +116,27 @@ void test('with reduced motion the final state is painted at once, with no skip 
   await page.waitForFunction(() => !document.querySelector('.button-train')?.hasAttribute('disabled'), null, { timeout: 10_000 });
   assert.equal(await page.getByRole('button', { name: /PASSER/ }).count(), 0);
   assert.equal(await page.getByRole('button', { name: /GRAPHE/ }).getAttribute('aria-pressed'), 'false');
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+void test('skipping the intro never blocks the page for long', async () => {
+  const page = await painting.newPage({ viewport: VIEWPORT, reducedMotion: 'no-preference' });
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.addInitScript(() => {
+    window.longTasks = [];
+    new PerformanceObserver((list) => list.getEntries().forEach((entry) => window.longTasks.push(entry.duration))).observe({ type: 'longtask' });
+  });
+  await page.goto(url);
+  const skip = page.getByRole('button', { name: /PASSER/ });
+  await skip.waitFor({ timeout: 30_000 });
+  await page.waitForTimeout(3000);
+  await page.evaluate(() => window.longTasks.splice(0));
+  await skip.click();
+  await page.waitForFunction(() => !document.querySelector('.button-train')?.hasAttribute('disabled'), null, { timeout: 60_000 });
+  const longest = Math.max(0, ...(await page.evaluate(() => window.longTasks)));
+  assert.ok(longest < 1000, `a task blocked the page for ${Math.round(longest)} ms`);
   assert.deepEqual(errors, []);
   await page.close();
 });

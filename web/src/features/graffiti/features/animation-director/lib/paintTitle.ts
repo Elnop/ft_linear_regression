@@ -1,5 +1,5 @@
 import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
+import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { dotJob, moveJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
@@ -12,13 +12,14 @@ import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/c
 import { STROKE } from '@/shared/configs/TitleConfig.ts';
 import { TITLE_PAINT } from '@/features/graffiti/features/animation-director/configs/TitlePaintConfig.ts';
 
-export async function paintTitle(engine: PaintEngine, run: Run): Promise<PaintLayer> {
+export async function paintTitle(engine: Surface, run: Run): Promise<PaintLayer> {
   const layout = sceneFor(engine.width, engine.height).title;
   const random = mulberry32(randomSeed());
   const { rectangle, em } = layout;
   const layer = engine.createLayer({
     color: PALETTE.magenta,
     bounds: { x: rectangle.x - em, y: Math.max(0, rectangle.y - em), width: rectangle.width + 2 * em, height: rectangle.height + 5 * em },
+    anchor: { region: 'title', from: rectangle },
   });
 
   const width = Math.max(TITLE_PAINT.width.minimum, TITLE_PAINT.width.strokeRatio * STROKE * em);
@@ -43,7 +44,7 @@ export async function paintTitle(engine: PaintEngine, run: Run): Promise<PaintLa
 
 const STAMP_SPEED = 1e5;
 
-function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
+function stamp(engine: Surface, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
   if (stroke.dot) {
     void engine.spray(dotJob(layer, stroke.points[0], { width: width * TITLE_PAINT.dot.widthRatio, duration: TITLE_PAINT.dot.duration, load: stroke.thickness, seed: seedFrom(random) }), true);
     return;

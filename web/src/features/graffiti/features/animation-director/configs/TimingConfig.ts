@@ -13,4 +13,5 @@ export const TIMING = {
   finalPass: 2600,
 
   resizeSettle: 300,
+  crossfade: 250,
 } as const;

@@ -17,7 +17,7 @@ web/src/
 ├── features/
 │   ├── graffiti/                       le mur peint
 │   │   ├── GraffitiLayout.tsx          assemble les sous-features et lance l'animation
-│   │   ├── shared/                     moteur de peinture (PaintEngine, Scheduler, PaintLayer), engineStore, aléatoire
+│   │   ├── shared/                     moteur de peinture (PaintEngine, OffscreenWall, Scheduler, PaintLayer), engineStore, aléatoire
 │   │   └── features/
 │   │       ├── canvas/                 PaintWallContainer : crée le moteur et le publie
 │   │       ├── animation-director/     enchaîne titre, points et droites, sans interface
@@ -62,13 +62,17 @@ Les deux vues du graphe (les axes posés sur le mur et le graphe sur fond uni du
 
 `useAnimationDirector` choisit un director et ne fait rien d'autre : `AnimationDirector` quand le moteur est publié, `PaintlessDirector` quand il a échoué, aucun avant. Le director reçoit ses dépendances (`playback`, `regression`, `samples`, `reducedMotion`), publie ses actions (`skip`, `train`, `replay`) dans `animationPlaybackStore` à sa création et remet les deux stores à zéro dans `destroy()`. C'est le seul code qui écrit dans ces deux états.
 
-`AnimationDirector` déroule l'animation avec une `Timeline`. Chaque `restart()` renvoie un `Run` qui sait attendre (`sleep`, `wait`), qui est annulé dès que le run suivant démarre, et qui porte son mode : animé, ou instantané quand on passe directement à l'état final (*Passer*, redimensionnement, ou mouvement réduit). `WallPainter` et `paintTitle` reçoivent ce run pour savoir comment peindre.
+`AnimationDirector` déroule l'animation avec une `Timeline`. Chaque `restart()` renvoie un `Run` qui sait attendre (`sleep`, `wait`), qui est annulé dès que le run suivant démarre (son `signal` est alors abandonné), et qui porte son mode : animé ou instantané. `WallPainter` et `paintTitle` reçoivent ce run pour savoir comment peindre.
 
-Pendant l'intro, un changement de hauteur de moins de 15 % à largeur égale (la barre d'adresse sur mobile) est ignoré. Le mur est recalé à la fin de l'intro. Tout autre resize repeint l'état final 300 ms après le dernier événement.
+L'état final coûte environ une seconde de simulation goutte par goutte (0,8 à 1,2 s mesurées en navigateur, plus de 3 s dans Chromium headless). Le director ne le calcule donc jamais d'un bloc. Au début de l'intro et de chaque entraînement, il lance un run instantané sur une deuxième `Timeline`, qui peint l'état final dans un `OffscreenWall` : des couches hors écran que le moteur ne dessine pas. `paintFinalWall` y peint les points, le titre si besoin, les passages et les points repeints, puis fait sécher les couches 1,5 s (temps simulé). Le travail est découpé par un `Slicer` : 6 ms, puis il rend la main au navigateur. Quand l'animation va jusqu'au bout, ce calcul est abandonné.
+
+*Passer* met la peinture affichée en pause (`hold()`), passe les tranches à 40 ms et attend la fin du calcul, puis `adopt()` remplace toutes les couches d'un coup. Si le calcul est déjà fini, c'est immédiat. En mouvement réduit, le director ne joue pas l'animation : il attend directement l'état final calculé de cette façon.
+
+Un resize ne recalcule rien tout de suite. Chaque couche est ancrée à une région de la scène (`anchor` : le graphe ou le titre), et `reanchor()` la redessine à sa nouvelle place à chaque événement, comme une image : les droites et le titre sont étirés avec leur région, les points sont seulement déplacés pour rester ronds. 300 ms après le dernier événement, l'état final est recalculé en tâche de fond à la nouvelle taille, puis il remplace la version étirée avec un fondu de 250 ms. Pendant l'intro, un changement de hauteur de moins de 15 % à largeur égale (la barre d'adresse sur mobile) ne déclenche pas ce recalcul, le mur est recalé à la fin de l'intro.
 
 ## Le moteur
 
-`PaintEngine` garde le canvas WebGL, le renderer, les couches et la boucle d'animation, et suit la taille du canvas et la densité de l'écran. `Scheduler` fait avancer les jobs de la buse et les fondus des couches, et règle leurs promesses, y compris celles du travail abandonné par un `clear()`. Il n'a pas de DOM, ce qui permet de le tester. La rugosité du mur n'est recalculée qu'à la première couche créée après un resize.
+`PaintEngine` garde le canvas WebGL, le renderer, les couches et la boucle d'animation, et suit la taille du canvas et la densité de l'écran. Il implémente `Surface`, comme `OffscreenWall`, donc le même code peint à l'écran ou hors écran. `Scheduler` fait avancer les jobs de la buse et les fondus des couches, et règle leurs promesses, y compris celles du travail abandonné par un `clear()`. Il n'a pas de DOM, ce qui permet de le tester. La rugosité du mur n'est recalculée qu'à la première couche créée après un resize.
 
 La bombe s'abonne à `onActivity` : sa boucle s'arrête quand elle est tombée et qu'aucun job ne tourne, et repart au job suivant.
 

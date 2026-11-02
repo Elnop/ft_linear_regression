@@ -1,7 +1,8 @@
 import { hexToRgb } from '@/features/graffiti/shared/lib/hexToRgb.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
-import type { LayerOptions, CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.ts';
+import type { Anchor, CellRectangle, LayerOptions, Regions } from '@/features/graffiti/shared/types/LayerTypes.ts';
+import { anchoredRectangle } from '@/features/graffiti/shared/lib/anchoredRectangle.ts';
 
 import { mulberry32, noise2D } from '@/features/graffiti/shared/lib/random.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
@@ -43,6 +44,8 @@ export class PaintLayer {
   readonly hex: string;
   readonly color: Rgb;
   readonly z: number;
+  readonly anchor: Anchor | undefined;
+  shown: Rectangle;
   opacity: number;
   gray = 0;
 
@@ -68,7 +71,7 @@ export class PaintLayer {
   readonly mistDirty = new DirtyRectangle();
   gloss = 1;
 
-  constructor({ bounds, color, opacity = 1, z = 0 }: LayerOptions & { bounds: Rectangle }, roughness: Roughness) {
+  constructor({ bounds, color, opacity = 1, z = 0, anchor }: LayerOptions & { bounds: Rectangle }, roughness: Roughness) {
     const x = Math.floor(bounds.x / CELL) * CELL;
     const y = Math.floor(bounds.y / CELL) * CELL;
     this.filmWidth = Math.max(2, Math.ceil((bounds.x + bounds.width - x) / CELL));
@@ -77,6 +80,8 @@ export class PaintLayer {
     this.hex = color;
     this.color = hexToRgb(color);
     this.z = z;
+    this.anchor = anchor;
+    this.shown = this.bounds;
     this.opacity = opacity;
 
     const cellCount = this.filmWidth * this.filmHeight;
@@ -184,6 +189,10 @@ export class PaintLayer {
   private add(index: number, mass: number): void {
     this.film[index] += mass;
     this.wetMass[index] += mass;
+  }
+
+  follow(regions: Regions): void {
+    this.shown = this.anchor ? anchoredRectangle(this.bounds, this.anchor, regions[this.anchor.region]) : this.bounds;
   }
 
   shownColor(): Rgb {
