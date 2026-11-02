@@ -74,12 +74,6 @@
   margin-top: calc(100vh + 40px);
   margin-top: calc(100dvh + 40px);
 }
-html:has(.documentation-page) {
-  scrollbar-width: none;
-}
-html:has(.documentation-page)::-webkit-scrollbar {
-  display: none;
-}
 
 @media (max-width: 1023px) {
   .dashboard-root {

@@ -133,7 +133,7 @@ Les types de résultat partagés avec la CLI (`Metrics`, `CostPoint`) sont dans 
 
 ### La scène
 
-La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height)` (`shared/lib/sceneFor.ts`) renvoie la scène : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. `shared/sceneStore.ts` est le seul code qui lit la taille de la fenêtre : la largeur sans la scrollbar (`clientWidth`, comme le canvas fixe), la hauteur avec `innerHeight` (qui suit la barre d'adresse sur mobile), au plus une fois par frame. Les composants la lisent avec `useScene()`, la brume de la bombe s'y abonne, et le director, qui n'est pas un composant, appelle `sceneFor` avec la taille du moteur.
+La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height)` (`shared/lib/sceneFor.ts`) renvoie la scène : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. `shared/sceneStore.ts` est le seul code qui lit la taille de la fenêtre : la largeur sans la scrollbar (`clientWidth`, comme le canvas fixe), la hauteur avec `innerHeight` (qui suit la barre d'adresse sur mobile), au plus une fois par frame, et seulement quand la taille change vraiment. `<html>` garde une piste de scrollbar en permanence (`overflow-y: scroll`, fine et sombre) : sans elle, la scrollbar classique de Windows ou Linux apparaîtrait quand la documentation rend la page défilable, rétrécirait le canvas en pleine intro et ferait sauter l'animation à la fin. Les composants la lisent avec `useScene()`, la brume de la bombe s'y abonne, et le director, qui n'est pas un composant, appelle `sceneFor` avec la taille du moteur.
 
 ### Le director
 

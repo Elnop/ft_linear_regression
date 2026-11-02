@@ -7,10 +7,14 @@ const read = (): Scene => sceneFor(document.documentElement.clientWidth, window.
 export const sceneStore = createStore<Scene>()(read);
 
 let frame = 0;
-window.addEventListener('resize', () => {
+const refresh = () => {
   if (frame !== 0) return;
   frame = requestAnimationFrame(() => {
     frame = 0;
-    sceneStore.setState(read(), true);
+    const next = read();
+    const current = sceneStore.getState();
+    if (next.width !== current.width || next.height !== current.height) sceneStore.setState(next, true);
   });
-});
+};
+window.addEventListener('resize', refresh);
+new ResizeObserver(refresh).observe(document.documentElement);
