@@ -65,7 +65,7 @@ Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotati
 
 ## Tests et vérifications
 
-Les tests tournent avec `node --test`, sans dépendance en plus. `tests/` couvre `core/` (parsing, normalisation, métriques, convergence sur `data.csv`, divergence, borne de stabilité). `web/tests/` couvre les fonctions pures du web (plan d'entraînement animé, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Les alias `@/` et `@core/` y sont résolus par `web/tests/aliases.ts`, un hook `registerHooks` de Node.
+Les tests tournent avec `node --test`, sans dépendance en plus. `tests/` couvre `core/` (parsing, normalisation, métriques, convergence sur `data.csv`, divergence, borne de stabilité). Il vérifie aussi que chaque chemin cité dans `docs/` et le README existe encore (`tests/docsPaths.test.ts`). `web/tests/` couvre le web sans navigateur (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Les alias `@/` et `@core/` y sont résolus par `web/tests/aliases.ts`, un hook `registerHooks` de Node.
 
 ```
 npm test            # tests de core/ puis du web

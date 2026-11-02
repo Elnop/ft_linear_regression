@@ -1,6 +1,6 @@
 # Application web (bonus)
 
-> État : intégrée. Le moteur de peinture, la séquence d'intro, le titre tagué et l'interface sont en place. Reste à valider le rendu et la fluidité dans un vrai navigateur : les tests automatisés tournent sans carte graphique.
+> État : intégrée. Le moteur de peinture, la séquence d'intro, le titre tagué et l'interface sont en place. Le parcours complet a été testé dans Chromium headless, avec et sans WebGL. Reste à valider la fluidité sur mobile.
 
 ## Objectif
 
@@ -20,7 +20,7 @@ Le mur est une photo de béton banché assombrie (Poly Haven, CC0). La droite, l
 
 Une bombe de peinture en SVG (logo 42, aux couleurs du site) suit la buse du moteur. Elle prend la couleur de la peinture en cours, secoue quand la couleur change et enfonce le diffuseur pendant le spray. Quand plus rien n'est peint, elle tombe en tournant jusqu'en bas de l'écran. Elle est masquée pendant *Passer* et si l'utilisateur a demandé moins d'animations.
 
-Les autocollants sont dessinés en SVG dans `web/src/features/wall/features/stickers/configs/ArtsConfig.tsx` : logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient. Ils font environ 8 cm à l'échelle du mur et sont regroupés. Certains sont grattés jusqu'au papier blanc, d'autres ont un coin décollé ou un bord déchiré. L'usure vient de filtres SVG, avec une graine aléatoire fixe par autocollant.
+Les autocollants sont dessinés en SVG dans `web/src/features/graffiti/features/stickers/ArtsConfig.tsx` : logo 42, Piscine survivor, Norminette, TypeScript, React, formule `θ₀ + θ₁·km`, voiture km → €, descente de gradient. Ils font environ 8 cm à l'échelle du mur et sont regroupés. Certains sont grattés jusqu'au papier blanc, d'autres ont un coin décollé ou un bord déchiré. L'usure vient de filtres SVG, avec une graine aléatoire fixe par autocollant.
 
 Les panneaux de l'interface (θ0, θ1, coût, précision, champ kilométrage, réglages) sont en verre dépoli.
 
@@ -37,9 +37,11 @@ L'animation montre ce que fait le programme du sujet : une descente de gradient 
 5. Les anciennes droites s'atténuent : dès qu'une nouvelle droite est peinte, la précédente vire entièrement au gris, et plus une droite est ancienne, plus elle est pâle (opacité `0.22 + 0.78 × 0.8^âge`, jamais sous 22 %). Seule la dernière garde sa couleur : c'est la régression finale. L'éventail gris montre le chemin parcouru par la droite.
    - Chaque droite couvre toute la largeur du graphe. Chaque passage de bombe part du début de l'axe des abscisses (0 km).
    - Les passages intermédiaires sont peints vite et avec peu de peinture, donc peu de coulures. Le dernier est lent et chargé.
-   - Bouton *Passer* pour aller directement à l'état final.
+   - Bouton *Passer* pour aller directement à l'état final, pendant l'intro comme pendant un entraînement relancé.
    - Les droites passent par-dessus les points. Une fois la descente finie, les points sont repeints par-dessus la droite finale pour rester lisibles.
-6. L'interface devient interactive : prédiction d'un prix à partir d'un kilométrage, et bouton *Entraîner* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76 : les passages, en jaune, sortent du graphe).
+6. L'interface devient interactive : prédiction d'un prix à partir d'un kilométrage (`100 000` et `100,5` sont acceptés), et bouton *Taguer* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76 : les passages, en jaune, sortent du graphe).
+
+Si WebGL2 manque ou si la photo du mur ne charge pas, rien n'est peint : l'erreur part dans la console et l'interface affiche directement le modèle entraîné, avec la prédiction, le coût et la précision. Les points et la droite restent visibles avec le bouton GRAPHE.
 
 ## Documentation intégrée
 
@@ -48,7 +50,7 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 - Théorie : ce qu'est le machine learning et l'apprentissage supervisé (régression ou classification), les notions mathématiques utiles (notations θ, α, Σ…, fonction affine, symbole Σ, dérivée, dérivées partielles et gradient, fonctions composées), les 4 étapes de l'apprentissage supervisé (dataset, modèle, fonction coût, minimisation), puis la descente de gradient (intuition, formule, learning rate, calcul des dérivées), et enfin ce qui est propre au projet (normalisation, vérification).
 - Code : les fonctions de `core/` dans le même ordre (`parseDataset`, `estimatePrice`, `cost` / `r2`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`), puis la CLI et l'organisation du projet.
 
-Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/features/docs/lib/source.ts`). La documentation montre donc toujours le code qui tourne.
+Le code affiché n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et chaque fonction en est extraite (`web/src/features/docs/lib/pick.ts`). La documentation montre donc toujours le code qui tourne.
 
 ## Conformité au bonus
 
@@ -79,58 +81,82 @@ Au rendu, le relief est calculé à partir de l'épaisseur pour donner un reflet
 
 Le dataset est importé au build avec `import raw from '@dataset?raw'`. Il est intégré au bundle, sans requête réseau.
 
+## Vocabulaire
+
+- *graffiti* : la feature qui peint, c'est-à-dire le moteur, l'animation, la bombe et les autocollants.
+- *mur* (`wall` dans le code) : la surface peinte, la photo et le canvas. La vue `wall` du dashboard est celle qui pose ses calques (axes, marqueur du prix) directement sur le mur, par opposition aux vues GRAPHE et DATA.
+- *itération* : une étape de descente de gradient. *Passage* : une itération qui est peinte (0, 1, 2, 4, 8… et la dernière).
+
 ## Organisation du code
 
 ```
 web/src/
 ├── main.tsx
-├── app/                              App : place WallLayout et DashboardLayout
+├── app/                                App : place GraffitiLayout et DashboardLayout
 ├── features/
-│   ├── wall/                         le mur peint
-│   │   ├── components/               WallLayout : assemble les sous-features du mur
-│   │   ├── shared/                   moteur de peinture, aléatoire
+│   ├── graffiti/                       le mur peint
+│   │   ├── GraffitiLayout.tsx          assemble les sous-features et lance l'animation
+│   │   ├── shared/                     moteur de peinture (PaintEngine, Scheduler, PaintLayer), engineStore, aléatoire
 │   │   └── features/
-│   │       ├── canvas/               PaintWall : crée le moteur et le publie
-│   │       ├── animation-director/   enchaîne titre, points et droites, sans interface
-│   │       ├── spray-can/            la bombe qui suit la buse
-│   │       └── stickers/             les autocollants
-│   ├── dashboard/                    l'interface posée sur le mur
-│   │   ├── components/               DashboardLayout, HeadBar, Reveal
-│   │   ├── shared/                   kilométrage et prédiction, vue affichée, style des panneaux, formatage
+│   │       ├── canvas/                 PaintWallContainer : crée le moteur et le publie
+│   │       ├── animation-director/     enchaîne titre, points et droites, sans interface
+│   │       ├── spray-can/              la bombe qui suit la buse
+│   │       └── stickers/               les autocollants
+│   ├── dashboard/                      l'interface posée sur le mur
+│   │   ├── components/                 DashboardLayout, HeadBar, Reveal
+│   │   ├── shared/                     kilométrage et prédiction, vue affichée, style des panneaux, formatage
 │   │   └── features/
-│   │       ├── training/             lancer l'entraînement, effacer, learning rate, Passer
-│   │       ├── views/                boutons GRAPHE et DATA, et les vues qu'ils affichent (axes du mur, graphe, dataset)
-│   │       ├── prediction/           champ kilométrage et marqueur du prix sur le mur
-│   │       └── regression-readout/   θ et progression, coût, précision (lecture seule)
-│   └── docs/                         documentation intégrée (contenu, onglets)
-├── states/                           l'état métier que plusieurs features lisent ou écrivent
-│   ├── regression/                   dataset, θ, métriques, historique du coût, divergence, learning rate
-│   └── animation-playback/           où en est l'animation : phase, points visibles, entraînement en cours, actions
-└── shared/                           code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
+│   │       ├── training/               Taguer, effacer, learning rate, Passer
+│   │       ├── views/                  boutons GRAPHE et DATA, et les vues qu'ils affichent (axes du mur, graphe, dataset)
+│   │       ├── prediction/             champ kilométrage et marqueur du prix sur le mur
+│   │       └── regression-readout/     θ et itération, coût, précision (lecture seule)
+│   └── docs/                           documentation intégrée (contenu, onglets)
+├── states/                             l'état métier que plusieurs features lisent ou écrivent
+│   ├── regression/                     dataset, θ, métriques, historique du coût, divergence, learning rate
+│   └── animation-playback/             où en est l'animation : phase, points visibles, entraînement en cours, actions
+└── shared/                             code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
 ```
 
 Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `app/` → `features/` → `states/` → `shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
 
 - Une feature range ses sous-features dans son propre dossier `features/`, à côté de son `shared/` et de ses dossiers techniques, comme `src/` le fait pour les features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
-- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `states/` : le wall écrit `states/regression` et `states/animation-playback` pendant l'animation, et le dashboard les lit.
-- Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par l'`AnimationDirector` du wall.
+- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `states/` : graffiti écrit `states/regression` et `states/animation-playback` pendant l'animation, et le dashboard les lit.
+- Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par le director de graffiti.
 - `src/shared/` ne contient aucun état métier, seulement du code transverse.
 
-La racine d'une feature peut assembler ses sous-features, et `App.tsx` n'utilise que ces assemblages :
+La racine d'une feature assemble ses sous-features, et `App.tsx` n'utilise que ces assemblages :
 
-- `wall/components/orchestrators/WallLayout.tsx` place le canvas, les stickers et la bombe, et lance l'animation (`useAnimationDirector`) ;
-- `dashboard/components/orchestrators/DashboardLayout.tsx` place tous les panneaux du dashboard et reçoit la documentation en prop (`documentation={<DocumentationPage />}`), ce qui lui évite d'importer la feature docs.
+- `features/graffiti/GraffitiLayout.tsx` place le canvas, les autocollants et la bombe, et lance l'animation (`useAnimationDirector`) ;
+- `features/dashboard/components/DashboardLayout.tsx` place tous les panneaux du dashboard et reçoit la documentation en prop (`documentation={<DocumentationPage />}`), ce qui lui évite d'importer la feature docs.
 
 Les types de résultat partagés avec la CLI (`Metrics`, `CostPoint`) sont dans `core/types/CoreTypes.ts`.
 
-La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height)` (`src/shared/lib/sceneFor.ts`) renvoie la scène : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. Le store `sceneStore` la garde à jour, les composants la lisent avec `useScene()` (`src/shared/hooks/`), et l'`AnimationDirector`, qui n'est pas un composant, appelle `sceneFor` avec la taille du moteur.
+### La scène
+
+La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height)` (`shared/lib/sceneFor.ts`) renvoie la scène : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. `shared/sceneStore.ts` est le seul code qui lit la taille de la fenêtre : la largeur sans la scrollbar (`clientWidth`, comme le canvas fixe), la hauteur avec `innerHeight` (qui suit la barre d'adresse sur mobile), au plus une fois par frame. Les composants la lisent avec `useScene()`, la brume de la bombe s'y abonne, et le director, qui n'est pas un composant, appelle `sceneFor` avec la taille du moteur.
+
+### Le director
+
+`useAnimationDirector` choisit un director et ne fait rien d'autre : `AnimationDirector` quand le moteur est publié, `PaintlessDirector` quand il a échoué, aucun avant. Le director reçoit ses dépendances (`playback`, `regression`, `samples`), publie ses actions (`skip`, `train`, `replay`) dans `animationPlaybackStore` à sa création et remet les deux stores à zéro dans `destroy()`. C'est le seul code qui écrit dans ces deux états.
+
+`AnimationDirector` déroule l'animation avec une `Timeline`. Chaque `restart()` renvoie un `Run` qui sait attendre (`sleep`, `wait`), qui est annulé dès que le run suivant démarre, et qui porte son mode : animé, ou instantané quand on passe directement à l'état final. `WallPainter` et `paintTitle` reçoivent ce run pour savoir comment peindre.
+
+Pendant l'intro, un changement de hauteur de moins de 15 % à largeur égale (la barre d'adresse sur mobile) est ignoré. Le mur est recalé à la fin de l'intro. Tout autre resize repeint l'état final 300 ms après le dernier événement.
+
+### Le moteur
+
+`PaintEngine` garde le canvas WebGL, le renderer, les couches et la boucle d'animation, et suit la taille du canvas et la densité de l'écran. `Scheduler` fait avancer les jobs de la buse et les fondus des couches, et règle leurs promesses, y compris celles du travail abandonné par un `clear()`. Il n'a pas de DOM, ce qui permet de le tester. La rugosité du mur n'est recalculée qu'à la première couche créée après un resize.
+
+La bombe s'abonne à `onActivity` : sa boucle s'arrête quand elle est tombée et qu'aucun job ne tourne, et repart au job suivant.
+
+### Fichiers et nommage
 
 Chaque niveau range ses fichiers dans les mêmes dossiers :
 
 | Dossier | Contenu |
 |---|---|
-| `components/orchestrators/` | composants qui lisent les stores |
-| `components/presenters/` | composants qui affichent ce qu'on leur passe par props |
+| `components/orchestrators/` | composants qui lisent les stores (`XContainer`, `XLayout`, `XPage`) |
+| `components/presenters/` | composants qui affichent ce qu'on leur passe par props (`XProps`) |
 | `hooks/` | hooks React (`useX.ts`) |
 | `lib/` | fonctions et classes, sans types ni constantes exportées |
 | `stores/` | stores Zustand (`xStore.ts`) |
@@ -139,34 +165,42 @@ Chaque niveau range ses fichiers dans les mêmes dossiers :
 | `styles/` | CSS |
 | `content/` | textes de la documentation, un `XContent.ts` par sujet (seulement dans `docs/`) |
 
-Un fichier qui n'exporte qu'une fonction ou une classe porte son nom (`hexToRgb.ts`, `PaintEngine.ts`). Un orchestrateur qui branche un presenter du même nom prend le suffixe `Container` (`CostPanelContainer` affiche `CostPanel`).
+Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier remonte d'un niveau (`scripts/checkFolders.mjs` le vérifie).
 
-L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul propriétaire qui écrit dedans :
+- Un fichier qui n'exporte qu'une chose porte son nom (`hexToRgb.ts`, `PaintEngine.ts`, `pick.ts`).
+- Une famille de fonctions du même métier partage un fichier en minuscules nommé par ce métier (`random.ts`, `nozzle.ts`, `training.ts`, `animationPlaybackSelectors.ts`). Deux métiers différents vont dans deux fichiers.
+- Un store suit la même forme partout : `xStore.ts` exporte le store et ses actions (`xActions`), et un hook `useX.ts` le lit.
+
+Tous les imports passent par un alias, même entre voisins : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`. Oxlint refuse `./` et `../`.
+
+### Stores
+
+L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seul écrivain :
 
 | Store | Contenu | Écrit par |
 |---|---|---|
-| `features/wall/shared/stores/engineStore.ts` | le moteur de peinture | `PaintWall` |
-| `shared/stores/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` |
-| `states/animation-playback/stores/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, actions | le director actif : `AnimationDirector`, ou `PaintlessDirector` quand WebGL manque. Il publie ses actions à sa création et remet le store à zéro dans `destroy()` |
+| `features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
+| `shared/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` |
+| `states/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, actions | le director actif |
 | `states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
 | `states/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
-| `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`setKm`) |
-| `features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`toggleView`) |
+| `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
+| `features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
 
-Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions` (dans le `hooks/` de chaque état). Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `dashboard/shared/lib/`.
+Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `features/dashboard/shared/lib/`.
+
+L'avertissement de divergence du slider ne repose pas sur un seuil écrit à la main : `willDiverge` compare le learning rate à `maxStableLearningRate(DATA)` (`core/`), la borne 2/λmax calculée sur les km normalisés, soit 1.7599 pour `data.csv`.
+
+### Vérifications
 
 dependency-cruiser vérifie le sens des dépendances :
 
 - une couche n'importe que les couches en dessous d'elle : `src/shared/` ne connaît ni `states/` ni les features, `states/` ne connaît ni les features ni `app/`, et une feature ne remonte jamais vers `app/` ;
 - une feature n'importe jamais une autre feature (`no-cross-feature`), et un état n'importe pas un autre état (`no-cross-state`) ;
 - une sous-feature (`features/<x>/features/<y>/`) n'importe ni ses voisines ni la racine de sa feature, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
-- un presenter n'importe aucun store ni aucun hook d'état, et les stores restent dans un dossier `stores/`.
+- un presenter n'importe aucun store ni aucun hook d'état, et un store vit à la racine ou dans le `stores/` de son niveau.
 
-Imports par alias : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`.
-
-`npm run check` (dans `web/`) lance le typecheck, Oxlint, dependency-cruiser et la vérification des dossiers. `npm test` (dans `web/`) lance les tests de `web/tests/`.
-
-L'avertissement de divergence du slider ne repose pas sur un seuil écrit à la main : `willDiverge` compare le learning rate à `maxStableLearningRate(DATA)` (`core/`), la borne 2/λmax calculée sur les km normalisés, soit 1.7599 pour `data.csv`.
+`npm run check` (dans `web/`) lance le typecheck, Oxlint, dependency-cruiser et la vérification des dossiers. `npm test` (dans `web/`) lance les tests de `web/tests/` : plan d'entraînement, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc. À la racine, `tests/docsPaths.test.ts` vérifie que les chemins cités dans `docs/` et le README existent.
 
 ## Lancer en local
 
