@@ -3,7 +3,9 @@
 :root {
   --background: #0d0c10;
   --ink: #efece6;
-  --ink-dimmed: rgba(239, 236, 230, 0.78);
+  --ink-dimmed: color-mix(in srgb, var(--ink) 78%, transparent);
+  --on-accent: #111013;
+  --panel: #111014;
   --danger: #ff5c5c;
   --glass: rgba(20, 19, 23, 0.62);
   --glass-line: rgba(255, 255, 255, 0.16);

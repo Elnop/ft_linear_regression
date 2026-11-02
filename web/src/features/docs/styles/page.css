@@ -49,11 +49,11 @@
   gap: 12px;
   max-width: 900px;
 }
-.documentation-title {
+.documentation .documentation-title {
   font-family: var(--marker);
   font-size: clamp(30px, 4vw, 48px);
   line-height: 1.1;
-  color: var(--magenta) !important;
+  color: var(--magenta);
   text-shadow: 0 0 24px rgba(255, 43, 214, 0.35);
   transform: rotate(-1deg);
   transform-origin: left;

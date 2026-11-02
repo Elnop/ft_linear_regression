@@ -38,6 +38,9 @@
   height: auto;
   overflow: visible;
 }
+.cost-baseline {
+  stroke: color-mix(in srgb, var(--ink) 20%, transparent);
+}
 .cost-glow {
   opacity: 0.18;
   filter: blur(4px);

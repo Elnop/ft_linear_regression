@@ -12,8 +12,8 @@
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 18px 28px;
 }
-.table-of-contents-title {
-  margin-bottom: 6px !important;
+.table-of-contents .table-of-contents-title {
+  margin-bottom: 6px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--glass-line);
   font-family: var(--anton);

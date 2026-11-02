@@ -13,7 +13,6 @@ type WallAxesProps = {
   visible: boolean;
 };
 
-const CHALK = 'rgba(239,236,230,0.62)';
 export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
   const { area, domain } = chart;
   const small = width < COMPACT_BELOW;
@@ -31,12 +30,12 @@ export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.8 }}
     >
-      <g stroke="rgba(239,236,230,0.09)" strokeWidth="1" strokeDasharray="2 7">
+      <g className="wall-axes-grid" strokeWidth="1" strokeDasharray="2 7">
         {[...priceGrid.slice(1), ...kmGrid.slice(1)].map(({ key, ...segment }) => (
           <line key={`${segment.x1}-${segment.y1}-${key}`} {...segment} />
         ))}
       </g>
-      <g stroke={CHALK} strokeWidth="2.5" strokeLinecap="round" fill="none">
+      <g className="wall-axes-chalk" strokeWidth="2.5" strokeLinecap="round" fill="none">
         <path d={`M${area.x} ${area.y - 10} L${area.x} ${bottom} L${right + 10} ${bottom}`} strokeDasharray="18 5 4 5" />
         {kmGrid.map(({ key, x1 }) => (
           <line key={key} x1={x1} x2={x1} y1={bottom} y2={bottom + 7} />

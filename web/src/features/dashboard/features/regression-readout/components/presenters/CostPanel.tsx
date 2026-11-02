@@ -44,7 +44,7 @@ export function CostPanel({ history, diverged }: CostPanelProps) {
         </span>
       </figcaption>
       <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} itérations`} className="cost-chart">
-        <line x1="0" y1={HEIGHT} x2={WIDTH} y2={HEIGHT} stroke="rgba(239,236,230,0.2)" strokeWidth="1" strokeDasharray="3 5" />
+        <line className="cost-baseline" x1="0" y1={HEIGHT} x2={WIDTH} y2={HEIGHT} strokeWidth="1" strokeDasharray="3 5" />
         {points && (
           <>
             <polyline points={points} fill="none" stroke={color} strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" className="cost-glow" />

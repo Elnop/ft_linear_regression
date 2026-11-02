@@ -3,7 +3,7 @@
   z-index: 5;
   pointer-events: none;
   border-radius: 14px;
-  background: #111014;
+  background: var(--panel);
   border: 1px solid var(--glass-line);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;

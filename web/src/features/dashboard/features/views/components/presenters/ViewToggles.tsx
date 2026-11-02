@@ -1,5 +1,6 @@
 import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
 import '@/features/dashboard/features/views/styles/view-toggles.css';
+import '@/features/dashboard/shared/shared.css';
 
 type ViewTogglesProps = {
   view: View;
@@ -16,7 +17,7 @@ export function ViewToggles({ view, onToggle }: ViewTogglesProps) {
     <button
       key={toggle.view}
       type="button"
-      className="view-toggle glass dashboard-hit"
+      className="head-button view-toggle glass dashboard-hit"
       aria-pressed={view === toggle.view}
       onClick={() => onToggle(toggle.view)}
       title={toggle.title}

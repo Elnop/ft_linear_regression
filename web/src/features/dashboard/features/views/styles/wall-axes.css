@@ -4,6 +4,12 @@
   pointer-events: none;
   z-index: 3;
 }
+.wall-axes-grid {
+  stroke: color-mix(in srgb, var(--ink) 9%, transparent);
+}
+.wall-axes-chalk {
+  stroke: color-mix(in srgb, var(--ink) 62%, transparent);
+}
 .axis-text {
   font-family: var(--marker);
   fill: var(--ink);

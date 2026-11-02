@@ -4,7 +4,7 @@
   padding: 0 20px 12px;
   pointer-events: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(239, 236, 230, 0.2) transparent;
+  scrollbar-color: color-mix(in srgb, var(--ink) 20%, transparent) transparent;
 }
 .dataset:focus-visible {
   outline: 3px solid var(--acid);
@@ -24,7 +24,7 @@
   position: sticky;
   top: 0;
   padding: 6px 8px;
-  background: #111014;
+  background: var(--panel);
   border-bottom: 1px solid var(--glass-line);
   color: var(--ink-dimmed);
   font-size: 10px;
@@ -35,7 +35,7 @@
 }
 .dataset td {
   padding: 2px 8px;
-  border-bottom: 1px solid rgba(239, 236, 230, 0.06);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
   color: var(--ink);
   text-align: right;
   white-space: nowrap;
@@ -45,17 +45,18 @@
   text-align: left;
   color: var(--ink-dimmed);
 }
-.dataset-km {
-  color: var(--cyan) !important;
+.dataset .dataset-km {
+  color: var(--cyan);
 }
-.dataset-estimate {
-  color: var(--magenta) !important;
+.dataset .dataset-estimate {
+  color: var(--magenta);
 }
 .dataset tbody tr:hover td {
-  background: rgba(239, 236, 230, 0.04);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
 }
 
-@media (max-width: 1023px) {  .dataset {
+@media (max-width: 1023px) {
+  .dataset {
     padding: 0 12px 8px;
   }
   .dataset table {
