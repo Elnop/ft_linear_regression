@@ -9,7 +9,7 @@
 }
 .table-of-contents-sections {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13.125rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(13.125rem, 100%), 1fr));
   gap: 1.125rem 1.75rem;
 }
 .table-of-contents .table-of-contents-title {

@@ -8,6 +8,9 @@ import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/plain-chart.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
+// Upper bound of a bold digit's advance, to size the prediction label before it is drawn.
+const CHARACTER_WIDTH_EM = 0.6;
+
 type PlainChartProps = {
   chart: ChartMapping;
   width: number;
@@ -22,7 +25,8 @@ export function PlainChart({ chart, width, rem, rectangle, samples, line, predic
   const { area } = chart;
   const fontSize = textSize('xs', width, rem);
   const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 0.625 * rem);
-  const label = prediction && predictionLabel(prediction.at, rectangle, fontSize);
+  const text = prediction ? `${formatNumber(prediction.km)} km → ${formatNumber(prediction.price)} €` : '';
+  const label = prediction && predictionLabel(prediction.at, area, fontSize, text.length * fontSize * CHARACTER_WIDTH_EM);
 
   return (
     <svg
@@ -68,7 +72,7 @@ export function PlainChart({ chart, width, rem, rectangle, samples, line, predic
           <line x1={prediction.at.x} y1={prediction.at.y} x2={prediction.at.x} y2={bottom} />
           <circle cx={prediction.at.x} cy={prediction.at.y} r={6} />
           <text x={label.x} y={label.y} textAnchor={label.anchor}>
-            {formatNumber(prediction.km)} km → {formatNumber(prediction.price)} €
+            {text}
           </text>
         </g>
       )}

@@ -77,6 +77,23 @@ test.describe('with a 20px default font', () => {
 
   declareCases();
 
+  for (const width of [320, 375]) {
+    test(`a ${width}px phone has no horizontal scroll and the chart keeps its prediction inside`, { tag: '@paintless' }, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await openApp(page);
+      await settled(page);
+      await page.getByRole('textbox', { name: /kilométrage/ }).fill('120000');
+      await expect(page.locator('.plain-prediction text')).toBeVisible();
+
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+      await expectNoOverflow(page, '.dashboard-bar, .readout-chip, .table-of-contents');
+      const chart = (await page.locator('svg:has(.plain-prediction)').boundingBox())!;
+      const label = (await page.locator('.plain-prediction text').boundingBox())!;
+      expect(label.x).toBeGreaterThanOrEqual(chart.x);
+      expect(label.x + label.width).toBeLessThanOrEqual(chart.x + chart.width);
+    });
+  }
+
   test('the interface is narrow at 1200×800: the aside sits under the wall', { tag: '@paintless' }, async ({ page }) => {
     await page.setViewportSize({ width: 1200, height: 800 });
     await openApp(page);
