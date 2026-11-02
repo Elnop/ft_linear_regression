@@ -1,4 +1,5 @@
 import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
+import { scrollToElement } from '@/shared/lib/scrollToElement.ts';
 import '@/features/docs/styles/table-of-contents.css';
 import type { TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
@@ -22,7 +23,7 @@ export function TableOfContents({ sections, prefix }: TableOfContentsProps) {
                     href={`#${stepId(prefix, index)}`}
                     onClick={(event) => {
                       event.preventDefault();
-                      document.getElementById(stepId(prefix, index))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      scrollToElement(stepId(prefix, index));
                     }}
                   >
                     <span>{stepNumber(index)}</span>

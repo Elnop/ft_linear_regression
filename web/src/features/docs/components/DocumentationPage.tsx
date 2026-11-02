@@ -18,7 +18,7 @@ export function DocumentationPage() {
   const { tab, setTab, tabRefs, onTabKeyDown } = useDocumentationTabs();
 
   return (
-    <section id="documentation" className="documentation glass dashboard-hit" aria-labelledby="documentation-title">
+    <section id="documentation" className="documentation glass dashboard-hit" aria-labelledby="documentation-title" tabIndex={-1}>
       <span className="tape documentation-tape-left" />
       <span className="tape documentation-tape-right" />
       <DocumentationHeader />

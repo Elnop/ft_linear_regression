@@ -11,7 +11,7 @@ export function StepList({ steps, prefix }: StepListProps) {
   return (
     <div className="documentation-steps">
       {steps.map((step, i) => (
-        <article key={step.title} id={stepId(prefix, i)} className="documentation-step">
+        <article key={step.title} id={stepId(prefix, i)} className="documentation-step" tabIndex={-1}>
           <div className="documentation-text">
             <p className="documentation-step-label">
               <span>{stepNumber(i)}</span>

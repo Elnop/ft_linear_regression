@@ -82,3 +82,7 @@
     padding-top: 36px;
   }
 }
+.documentation:focus,
+.documentation-step:focus {
+  outline: none;
+}
