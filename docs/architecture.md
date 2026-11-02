@@ -56,7 +56,7 @@ Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.)
 
 ## TypeScript sans build
 
-Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
+Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
 
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).

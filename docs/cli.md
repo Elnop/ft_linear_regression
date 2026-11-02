@@ -1,6 +1,6 @@
 # Programmes en ligne de commande
 
-Les deux programmes de la partie obligatoire (`train`, `predict`) et le programme de précision du bonus (`precision`). Ils nécessitent Node ≥ 22.18 et aucune dépendance npm.
+Les deux programmes de la partie obligatoire (`train`, `predict`) et le programme de précision du bonus (`precision`). Ils nécessitent Node ≥ 26 et aucune dépendance npm.
 
 ## `train`
 

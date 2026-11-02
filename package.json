@@ -6,7 +6,7 @@
     "web"
   ],
   "engines": {
-    "node": ">=22.18"
+    "node": ">=26"
   },
   "scripts": {
     "train": "node cli/train.ts",
@@ -22,8 +22,11 @@
     "check": "prettier --check . && npm run lint && tsc -p . && npm run check -w web"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^26.6.6",
     "prettier": "^3.9.10",
     "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "@swc/core": false
   }
 }

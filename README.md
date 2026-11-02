@@ -14,7 +14,7 @@ Le tout est écrit en TypeScript. Le cœur de l'algorithme (`core/`) est partag�
 
 ## Prérequis
 
-- Node.js ≥ 22.18, qui exécute le TypeScript directement, sans compilation.
+- Node.js ≥ 26, qui exécute le TypeScript directement, sans compilation. Avec nvm, `nvm use` lit la version dans `.nvmrc`.
 - npm pour lancer les scripts. La CLI n'a aucune dépendance : `npm install` n'est utile que pour l'app web et la vérification des types. Sans npm, `node cli/train.ts` et `node cli/predict.ts` fonctionnent aussi.
 
 ## Utilisation
