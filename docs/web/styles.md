@@ -46,11 +46,47 @@ Aucune règle n'utilise `!important`. Quand une règle générique l'emporte, on
 
 `<html>` garde une piste de scrollbar en permanence (`overflow-y: scroll`), fine et sombre (`scrollbar-width: thin`, `scrollbar-color`). Sans cette piste, la scrollbar classique de Windows ou Linux apparaîtrait au moment où la documentation rend la page défilable, c'est-à-dire au début de l'intro : le canvas perdrait sa largeur et l'animation sauterait à la fin. `scrollbar-gutter: stable` a été essayé et ne réservait pas la place avant que la page déborde.
 
+## Tailles
+
+Le texte et les espacements sont en `rem`, jamais en `px`, pour suivre la taille de police choisie par l'utilisateur dans son navigateur. Le texte est aussi fluide : chaque niveau grandit avec la largeur de la fenêtre, entre 320 et 1920 px.
+
+Les niveaux sont définis une fois, en TypeScript, dans `shared/configs/TypeScaleConfig.ts` (tailles en px pour une racine de 16 px, `min` à 320 px de large, `max` à 1920 px) :
+
+| Variable | min → max | Usage |
+|---|---|---|
+| `--text-xs` | 12 → 13 px | étiquettes (`.label`), pied de page, graduations des figures |
+| `--text-sm` | 13 → 15 px | formules, unités, messages d'erreur, code |
+| `--text-base` | 14 → 16 px | texte courant |
+| `--text-md` | 16 → 20 px | valeurs des chips, boutons, textes d'aide |
+| `--text-lg` | 20 → 26 px | titres de panneau |
+| `--text-xl` | 26 → 34 px | prix prédit |
+| `--text-2xl` | 32 → 48 px | chiffre du sticker du prix |
+| `--text-display` | 30 → 48 px | titre de la documentation |
+
+Comme pour la palette, `applyTypeScale` (`shared/lib/applyTypeScale.ts`) pose les variables `--text-*` sur `:root` et `main.tsx` l'appelle après `applyPalette`, avant le premier rendu. `globals.css` ne les déclare donc pas. Chaque variable vaut un `clamp(min rem, pente vw + base rem, max rem)` calculé par `fluidClamp` (`shared/lib/typeScale.ts`). Le code qui a besoin de la même taille en nombre, comme les étiquettes d'un graphe SVG, appelle `textSize(step, largeur, rem)` : c'est la même formule, donc le CSS et le TS ne peuvent pas diverger.
+
+Les espacements sont l'échelle `--space-*` de `globals.css`, nommée d'après la valeur en px à 16 px : `--space-2` (0,125 rem), `-4`, `-6`, `-8`, `-10`, `-12`, `-16`, `-20`, `-24`, `-32` et `--space-48` (3 rem). Les marges, paddings, gaps et rayons les utilisent.
+
+Restent en `px`, parce qu'ils doivent garder la même épaisseur quel que soit le texte :
+
+- les bordures et les traits SVG (`stroke-width`) ;
+- le contour de focus (3 px) ;
+- les ombres et les flous (`box-shadow`, `blur`, `backdrop-filter`) ;
+- le scotch (`.tape`) et la technique `.sr-only` (1 px).
+
+On ne pose jamais `font-size` sur `<html>`. Les media queries résolvent leurs `em` avec la taille de police initiale du navigateur, et `readRem()` lit la taille de la racine : les deux ne sont égaux que si rien ne touche à `html`. Le commentaire de `SceneConfig.ts` le rappelle.
+
+Deux tests dans `web/src/shared/configs/TypeScaleConfig.test.ts` gardent la règle :
+
+- aucune feuille de style ne donne une taille de texte en `px` ou en `vw` nu ;
+- aucun composant de `features/dashboard` ou `features/docs` n'écrit une taille de police en dur (`fontSize={12}`, `fontSize="12"`).
+
 ## Valeurs partagées entre TS et CSS
 
 Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 
-- `ASIDE_WIDTH` (`shared/configs/SceneConfig.ts`) arrive en variable `--aside-width`, posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
-- `STICKER_WIDTH` est la largeur en style du sticker du prix, dans `WallMarker.tsx`.
+- `ASIDE_WIDTH_REM` (`shared/configs/SceneConfig.ts`, 21,25) arrive en variable `--aside-width` (en `rem`), posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
+- `STICKER_WIDTH_REM` est la largeur en style du sticker du prix, dans `WallMarker.tsx`. Le sticker n'est plus réduit à 0,72 en mode compact : cette échelle faisait passer son texte sous 12 px ;
+- `COMPACT_BELOW_REM` (`features/dashboard/shared/DashboardLayoutConfig.ts`) est la largeur du graphe, en `rem`, sous laquelle il passe en version compacte.
 
-Le passage en mode large, `WIDE = 1024`, ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 1023px)`, et `web/src/shared/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE`.
+Le passage en mode large, `WIDE_EM = 64` (`shared/configs/SceneConfig.ts`), ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 63.99em)`, et `web/src/shared/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE_EM`. En `em`, le seuil suit la taille de police du navigateur : avec une police de 20 px, le mode large commence à 1280 px.

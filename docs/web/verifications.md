@@ -71,6 +71,7 @@ Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournen
 | `web/e2e/accessibility.spec.ts` | `paintless` | axe et clavier |
 | `web/e2e/fallbacks.spec.ts` | les deux | sans WebGL, mouvement réduit |
 | `web/e2e/performance.spec.ts` | `painting` | clic sur *Passer* |
+| `web/e2e/zoom.spec.ts` | les deux | zoom à 200 %, écrans étroits, police par défaut de 20 px |
 | `web/e2e/build.spec.ts` | `paintless` | fond flouté du build |
 
 - axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc.
