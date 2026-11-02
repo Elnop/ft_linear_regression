@@ -46,14 +46,11 @@ Aucune règle n'utilise `!important`. Quand une règle générique l'emporte, on
 
 `<html>` garde une piste de scrollbar en permanence (`overflow-y: scroll`), fine et sombre (`scrollbar-width: thin`, `scrollbar-color`). Sans cette piste, la scrollbar classique de Windows ou Linux apparaîtrait au moment où la documentation rend la page défilable, c'est-à-dire au début de l'intro : le canvas perdrait sa largeur et l'animation sauterait à la fin. `scrollbar-gutter: stable` a été essayé et ne réservait pas la place avant que la page déborde.
 
-## Valeurs dupliquées entre TS et CSS
+## Valeurs partagées entre TS et CSS
 
-Trois valeurs existent des deux côtés, parce qu'une media query ne lit pas de variable CSS ou parce que le choix a été fait de les laisser :
+Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 
-| Valeur | TS | CSS |
-|---|---|---|
-| passage en mode large | `WIDE = 1024` (`shared/configs/SceneConfig.ts`) | `@media (max-width: 1023px)` |
-| largeur de la colonne de droite | `ASIDE_WIDTH = 340` | `.dashboard-aside { width: 340px }` |
-| largeur du sticker du prix | `STICKER_WIDTH = 206` (`WallMarker.tsx`) | `.price-sticker { width: 206px }` |
+- `ASIDE_WIDTH` (`shared/configs/SceneConfig.ts`) arrive en variable `--aside-width`, posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
+- `STICKER_WIDTH` est la largeur en style du sticker du prix, dans `WallMarker.tsx`.
 
-Si l'une change, il faut changer l'autre.
+Le passage en mode large, `WIDE = 1024`, ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 1023px)`, et `web/tests/breakpoints.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE`.

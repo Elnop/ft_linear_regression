@@ -46,7 +46,7 @@
   position: absolute;
   top: calc(var(--dashboard-top) + 92px);
   right: var(--dashboard-padding);
-  width: 340px;
+  width: var(--aside-width);
   display: flex;
   flex-direction: column;
   gap: 20px;

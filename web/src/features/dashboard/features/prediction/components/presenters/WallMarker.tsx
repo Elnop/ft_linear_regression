@@ -44,7 +44,7 @@ export function WallMarker({ at, price, axisY, width, height }: WallMarkerProps)
             animate={{ opacity: 1, scale, rotate: flip ? 4 : -5, left, top }}
             exit={{ opacity: 0, scale: 0.9 * scale }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-            style={{ left, top, transformOrigin: 'top left' }}
+            style={{ left, top, width: STICKER_WIDTH, transformOrigin: 'top left' }}
           >
             <div className="price-sticker-top">
               <b>HELLO</b>
