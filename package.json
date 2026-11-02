@@ -2,8 +2,12 @@
   "name": "ft_linear_regression",
   "private": true,
   "type": "module",
-  "workspaces": ["web"],
-  "engines": { "node": ">=22.18" },
+  "workspaces": [
+    "web"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "train": "node cli/train.ts",
     "predict": "node cli/predict.ts",
@@ -14,10 +18,12 @@
     "typecheck": "tsc -p . && npm run typecheck -w web",
     "lint": "oxlint --type-aware core cli tests",
     "test": "node --test 'tests/**/*.test.ts' && npm test -w web",
+    "format": "prettier --write .",
     "check": "npm run lint && tsc -p . && npm run check -w web"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "prettier": "^3.9.10",
     "typescript": "^7.0.2"
   }
 }
