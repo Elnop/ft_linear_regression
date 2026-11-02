@@ -49,15 +49,22 @@
   cursor: default;
   opacity: 0.45;
 }
+/* The slider and its value move under the label when both no longer fit on one line. */
 .learning-rate {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-12);
-  flex: 1 1 13.75rem;
-  min-width: 0;
+  gap: var(--space-6) var(--space-12);
+  flex: 1 1 auto;
 }
 .learning-rate .label {
   white-space: nowrap;
+}
+.learning-rate-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  flex: 1 1 10rem;
 }
 .learning-rate input {
   flex: 1 1 auto;

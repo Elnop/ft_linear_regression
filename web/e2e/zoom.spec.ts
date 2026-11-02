@@ -15,9 +15,9 @@ function declareCases(): void {
     { width: 960, height: 540 },
   ]) {
     for (const view of [
-      { tag: '@paintless', containers: '.dashboard-panel, .readout-chip', sticker: false },
+      { tag: '@paintless', containers: '.dashboard-panel, .dashboard-bar, .readout-chip', sticker: false },
       // The sticker belongs to the painted wall, which needs WebGL.
-      { tag: '@painting', containers: '.dashboard-panel, .readout-chip, .price-sticker', sticker: true },
+      { tag: '@painting', containers: '.dashboard-panel, .dashboard-bar, .readout-chip, .price-sticker', sticker: true },
     ]) {
       test(`no horizontal scroll and every control reachable (${viewport.width}×${viewport.height}, ${view.tag})`, { tag: view.tag }, async ({ page }) => {
         await page.setViewportSize(viewport);

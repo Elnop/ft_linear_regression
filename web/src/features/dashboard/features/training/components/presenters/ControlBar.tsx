@@ -30,8 +30,19 @@ export function ControlBar({ disabled, training, learningRate }: ControlBarProps
         <label htmlFor={learningRateId} className="label">
           Learning rate
         </label>
-        <input id={learningRateId} type="range" min={0.01} max={3} step={0.01} value={learningRate.value} disabled={disabled} onChange={(event) => learningRate.onChange(Number(event.target.value))} />
-        <output htmlFor={learningRateId}>{learningRate.value.toFixed(2)}</output>
+        <div className="learning-rate-slider">
+          <input
+            id={learningRateId}
+            type="range"
+            min={0.01}
+            max={3}
+            step={0.01}
+            value={learningRate.value}
+            disabled={disabled}
+            onChange={(event) => learningRate.onChange(Number(event.target.value))}
+          />
+          <output htmlFor={learningRateId}>{learningRate.value.toFixed(2)}</output>
+        </div>
       </div>
 
       <span className="training-hint" role="status" style={{ visibility: learningRate.warn ? 'visible' : 'hidden' }}>
