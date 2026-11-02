@@ -29,7 +29,8 @@ L'animation montre ce que fait le programme du sujet : une descente de gradient 
    - Les passages intermédiaires sont peints vite et avec peu de peinture, donc peu de coulures. Le dernier est lent et chargé.
    - Bouton *Passer* pour aller directement à l'état final, pendant l'intro comme pendant un entraînement relancé.
    - Les droites passent par-dessus les points. Une fois la descente finie, les points sont repeints par-dessus la droite finale pour rester lisibles.
-6. L'interface devient interactive : prédiction d'un prix à partir d'un kilométrage, et bouton *Taguer* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76 : les passages, en jaune, sortent du graphe).
+6. L'interface devient interactive : prédiction d'un prix à partir d'un kilométrage, et bouton *Taguer* qui rejoue la même descente de gradient avec un autre learning rate (démonstration de la divergence au-delà de 1.76).
+   - Les passages d'une descente qui diverge sont peints en jaune, mais θ explose dès les premières itérations et la droite quitte l'écran presque tout de suite. À 1440 × 900, on voit 3 passages jaunes à α = 1.77, 1 seul à 1.8 et 1.9, et aucun à partir de 2. La divergence se lit alors dans la courbe du coût, les chips θ0, θ1 et la précision, et l'avertissement du slider.
 
 ### Saisie du kilométrage
 
