@@ -140,3 +140,10 @@ void test('skipping the intro never blocks the page for long', async () => {
   assert.deepEqual(errors, []);
   await page.close();
 });
+
+void test('the built page keeps the frosted glass behind the documentation', async () => {
+  const { page } = await open(paintless);
+  const filter = await page.locator('#documentation').evaluate((element) => getComputedStyle(element).backdropFilter);
+  assert.match(filter, /blur\(18px\)/);
+  await page.close();
+});

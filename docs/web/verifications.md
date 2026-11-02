@@ -49,6 +49,7 @@ Les tests tournent avec `node --test`, sans bibliothèque de test. Le web import
 - Sans WebGL, la vue GRAPHE est active dès le départ.
 - En mouvement réduit, TAGUER est actif en moins de 10 s et le bouton *Passer* n'apparaît jamais.
 - Un clic sur *Passer* pendant l'intro ne bloque jamais la page plus d'une seconde (tâches longues relevées avec `PerformanceObserver`). Avant le calcul en tâche de fond, ce clic gelait la page plus de 6 s sur ce Chromium.
+- Le fond flouté de la doc (`backdrop-filter`) est bien présent dans le CSS du build. La minification de Vite 8 (lightningcss) ne garde que la dernière des deux déclarations `backdrop-filter` et `-webkit-backdrop-filter`. Quand le préfixe était en dernier, la version standard disparaissait en prod et Chrome n'affichait plus de flou. Le flou restait visible en dev, où le CSS n'est pas minifié.
 
 En local, il faut installer Chromium une fois : `npx playwright-core install --only-shell chromium` dans `web/`.
 
