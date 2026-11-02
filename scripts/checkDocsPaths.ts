@@ -1,11 +1,9 @@
-import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { test } from 'node:test';
 
 const ROOT = new URL('../', import.meta.url);
 const BASES = ['', 'web/', 'web/src/', 'web/src/features/'];
-const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|shared|states|tests|web)\//;
+const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|scripts|shared|states|web)\//;
 // git lists the documents, so whatever .gitignore leaves out is never checked. -z keeps accented names unquoted.
 const DOCUMENTS = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', 'README.md', 'docs'], { cwd: ROOT, encoding: 'utf8' })
   .split('\0')
@@ -27,15 +25,18 @@ function linkedPaths(markdown: string, document: string): URL[] {
 
 const exists = (path: string) => BASES.some((base) => existsSync(new URL(base + path, ROOT)));
 
-for (const document of DOCUMENTS) {
-  test(`every path cited in ${document} exists`, () => {
-    const markdown = readFileSync(new URL(document, ROOT), 'utf8');
-    const missing = [
-      ...citedPaths(markdown).filter((path) => !exists(path)),
-      ...linkedPaths(markdown, document)
-        .filter((url) => !existsSync(url))
-        .map((url) => url.pathname),
-    ];
-    assert.deepEqual(missing, []);
-  });
+const violations = DOCUMENTS.flatMap((document) => {
+  const markdown = readFileSync(new URL(document, ROOT), 'utf8');
+  const missing = [
+    ...citedPaths(markdown).filter((path) => !exists(path)),
+    ...linkedPaths(markdown, document)
+      .filter((url) => !existsSync(url))
+      .map((url) => url.pathname),
+  ];
+  return missing.map((path) => `${document}: ${path} does not exist`);
+});
+
+if (violations.length > 0) {
+  console.error(violations.join('\n'));
+  process.exit(1);
 }

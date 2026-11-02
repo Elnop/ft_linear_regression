@@ -23,13 +23,5 @@
     "no-shadow": "off",
     "unicorn/consistent-function-scoping": "off",
     "typescript/consistent-return": "off"
-  },
-  "overrides": [
-    {
-      "files": ["tests/**/*.test.ts"],
-      "rules": {
-        "typescript/no-floating-promises": "off"
-      }
-    }
-  ]
+  }
 }
