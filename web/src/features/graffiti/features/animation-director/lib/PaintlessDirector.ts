@@ -21,7 +21,7 @@ export class PaintlessDirector implements Director {
 
   start(): void {
     this.show(DEFAULT_TRAIN);
-    this.dependencies.playback.setState({ phase: 'interactive', visiblePoints: this.dependencies.samples.length, trainingActive: false });
+    this.dependencies.playback.setState({ phase: 'interactive', visiblePoints: this.dependencies.samples.length, trainingActive: false, painted: false });
   }
 
   destroy(): void {

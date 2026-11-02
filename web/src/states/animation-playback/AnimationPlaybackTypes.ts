@@ -6,6 +6,7 @@ export type AnimationPlaybackState = {
   phase: Phase;
   visiblePoints: number;
   trainingActive: boolean;
+  painted: boolean;
 };
 
 export type AnimationPlaybackActions = {

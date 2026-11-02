@@ -35,7 +35,7 @@ Le champ accepte ce qu'on tape sur un clavier français : `100 000` et `100,5` s
 
 ### Cas particuliers
 
-- Sans WebGL2, ou si la photo du mur ne charge pas, rien n'est peint. L'erreur part dans la console et l'interface affiche directement le modèle entraîné, avec la prédiction, le coût et la précision (`PaintlessDirector`). Les points et la droite restent visibles avec le bouton GRAPHE.
+- Sans WebGL2, ou si la photo du mur ne charge pas, rien n'est peint. L'erreur part dans la console et l'interface affiche directement le modèle entraîné, avec la prédiction, le coût et la précision (`PaintlessDirector`). Comme le mur reste vide, le dashboard affiche le graphe à la place de la vue « mur » : GRAPHE est actif dès le départ, et désactiver DATA ramène au graphe.
 - Avec le réglage système « réduire les animations », l'intro et chaque entraînement peignent directement leur état final, comme *Passer*. Voir [accessibilite.md](accessibilite.md).
 - Un redimensionnement pendant l'intro qui ne change que la hauteur de moins de 15 % (la barre d'adresse sur mobile) est ignoré. Tout autre redimensionnement repeint l'état final 300 ms après le dernier événement.
 

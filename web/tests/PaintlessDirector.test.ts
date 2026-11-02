@@ -30,6 +30,7 @@ test('starts directly on the trained model, every point visible', () => {
   director.start();
   assert.equal(playback.getState().phase, 'interactive');
   assert.equal(playback.getState().visiblePoints, samples.length);
+  assert.equal(playback.getState().painted, false);
   assert.equal(shown.at(-1)?.iteration, 10000);
   assert.deepEqual(finished, [false]);
 });

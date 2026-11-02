@@ -104,7 +104,7 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 |---|---|---|
 | `features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
 | `shared/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
-| `states/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, actions | le director actif |
+| `states/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
 | `states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
 | `states/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
 | `features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
@@ -112,6 +112,6 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 
 Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `features/dashboard/shared/lib/`.
 
-Le dashboard lit `selectCanSkip` pour afficher *Passer* pendant l'intro et pendant un entraînement relancé.
+Le dashboard lit `selectCanSkip` pour afficher *Passer* pendant l'intro et pendant un entraînement relancé. `useView` ne renvoie pas toujours la vue choisie : quand le director annonce qu'il ne peint pas (`painted: false`, posé par `PaintlessDirector`), la vue « mur » est remplacée par le graphe (`shownView`).
 
 L'avertissement de divergence du slider ne repose pas sur un seuil écrit à la main : `willDiverge` compare le learning rate à `maxStableLearningRate(DATA)` (`core/`), la borne 2/λmax calculée sur les km normalisés, soit 1.7599 pour `data.csv`.
