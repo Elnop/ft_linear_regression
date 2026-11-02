@@ -1,9 +1,6 @@
 import type { Token } from '@/features/docs/DocsTypes.ts';
 
-const KEYWORDS = new Set([
-  'export', 'function', 'const', 'let', 'return', 'for', 'of', 'if', 'throw', 'new', 'yield',
-  'type', 'import', 'from', 'continue', 'true', 'false',
-]);
+const KEYWORDS = new Set(['export', 'function', 'const', 'let', 'return', 'for', 'of', 'if', 'throw', 'new', 'yield', 'type', 'import', 'from', 'continue', 'true', 'false']);
 
 const TOKEN = /('[^']*'|`[^`]*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/g;
 

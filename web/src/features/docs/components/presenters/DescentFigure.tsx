@@ -16,8 +16,12 @@ export function DescentFigure() {
       <svg viewBox="0 0 400 230" role="img" aria-label="Courbe du coût J en forme de bol, avec des pas successifs qui descendent vers le minimum">
         <line x1="20" y1="210" x2="390" y2="210" className="figure-axis" />
         <line x1="20" y1="10" x2="20" y2="210" className="figure-axis" />
-        <text x="384" y="226" className="figure-label" textAnchor="end">θ</text>
-        <text x="28" y="22" className="figure-label">J(θ)</text>
+        <text x="384" y="226" className="figure-label" textAnchor="end">
+          θ
+        </text>
+        <text x="28" y="22" className="figure-label">
+          J(θ)
+        </text>
         <path d={path} className="figure-curve" />
         {strides.map(({ from, to }) => (
           <line key={to} x1={from} y1={curve(from)} x2={to} y2={curve(to)} className="figure-step" />
@@ -25,9 +29,13 @@ export function DescentFigure() {
         {steps.map((x, i) => (
           <circle key={x} cx={x} cy={curve(x)} r={i ? 4 : 6} className="figure-dot" />
         ))}
-        <text x={start + 10} y={curve(start) + 4} className="figure-label">départ</text>
+        <text x={start + 10} y={curve(start) + 4} className="figure-label">
+          départ
+        </text>
         <line x1="200" y1="182" x2="200" y2="210" className="figure-minimum" />
-        <text x="200" y="174" className="figure-label" textAnchor="middle">minimum</text>
+        <text x="200" y="174" className="figure-label" textAnchor="middle">
+          minimum
+        </text>
       </svg>
       <figcaption>Chaque pas suit la pente. Les pas raccourcissent à mesure que la pente s'aplatit.</figcaption>
     </figure>

@@ -24,8 +24,7 @@ après l'entraînement :
           que selon <code>θ0</code> (la moyenne de <code>x²</code> vaut {scientific(FIGURES.meanSquaredKm)}) : aucun α ne convient aux deux.
         </p>
         <p>
-          On ramène donc les km dans <code>[0, 1]</code> pour l'entraînement, puis on convertit les θ appris vers les km
-          bruts. La prédiction applique ensuite la formule du sujet telle quelle.
+          On ramène donc les km dans <code>[0, 1]</code> pour l'entraînement, puis on convertit les θ appris vers les km bruts. La prédiction applique ensuite la formule du sujet telle quelle.
         </p>
       </>
     ),
@@ -47,10 +46,7 @@ R² = ${FIGURES.r2.toFixed(3)}`}</Formula>
           La solution exacte des moindres carrés n'est pas utilisée par le programme, mais elle sert de témoin : après
           {FIGURES.iterations.toLocaleString('fr-FR')} itérations à <code>α = {FIGURES.learningRate}</code>, la descente tombe dessus.
         </p>
-        <p>
-          Le R² indique que la droite explique 73 % de la variance des prix. Le reste dépend de ce que le modèle ignore :
-          âge, marque, état.
-        </p>
+        <p>Le R² indique que la droite explique 73 % de la variance des prix. Le reste dépend de ce que le modèle ignore : âge, marque, état.</p>
       </>
     ),
   },

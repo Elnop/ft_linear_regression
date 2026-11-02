@@ -19,11 +19,21 @@ test('refuses a scale it cannot divide by', () => {
 
 test('maps mileages into [0, 1] and keeps prices', () => {
   const scale = { min: 10, max: 30 };
-  assert.deepEqual(normalizeSamples([{ km: 10, price: 1 }, { km: 20, price: 2 }, { km: 30, price: 3 }], scale), [
-    { km: 0, price: 1 },
-    { km: 0.5, price: 2 },
-    { km: 1, price: 3 },
-  ]);
+  assert.deepEqual(
+    normalizeSamples(
+      [
+        { km: 10, price: 1 },
+        { km: 20, price: 2 },
+        { km: 30, price: 3 },
+      ],
+      scale,
+    ),
+    [
+      { km: 0, price: 1 },
+      { km: 0.5, price: 2 },
+      { km: 1, price: 3 },
+    ],
+  );
 });
 
 test('denormalized thetas predict on raw km what normalized thetas predict on normalized km', () => {

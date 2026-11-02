@@ -1,12 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "import",
-    "oxc",
-    "unicorn",
-    "node"
-  ],
+  "plugins": ["typescript", "import", "oxc", "unicorn", "node"],
   "categories": {
     "correctness": "error",
     "suspicious": "error"
@@ -15,9 +9,7 @@
     "node": true,
     "es2024": true
   },
-  "ignorePatterns": [
-    "web"
-  ],
+  "ignorePatterns": ["web"],
   "rules": {
     "import/no-cycle": "error",
     "import/no-self-import": "error",
@@ -34,9 +26,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "tests/**/*.test.ts"
-      ],
+      "files": ["tests/**/*.test.ts"],
       "rules": {
         "typescript/no-floating-promises": "off"
       }

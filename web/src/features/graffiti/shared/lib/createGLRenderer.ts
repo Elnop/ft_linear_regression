@@ -6,7 +6,10 @@ import type { CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
   const program = gl.createProgram();
   const shaders: WebGLShader[] = [];
-  for (const [type, source] of [[gl.VERTEX_SHADER, vertexSource], [gl.FRAGMENT_SHADER, fragmentSource]] as const) {
+  for (const [type, source] of [
+    [gl.VERTEX_SHADER, vertexSource],
+    [gl.FRAGMENT_SHADER, fragmentSource],
+  ] as const) {
     const shader = gl.createShader(type)!;
     shaders.push(shader);
     gl.shaderSource(shader, source);

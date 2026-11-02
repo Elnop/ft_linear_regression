@@ -4,7 +4,6 @@ import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
 
 const PAPER = '#ebe5d6';
 
-
 export const logo42: Art = {
   viewWidth: 120,
   viewHeight: 120,

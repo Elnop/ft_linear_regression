@@ -29,7 +29,9 @@ export function titleLayout(width: number, height: number, padding: number, char
 
 function measure(texts: string[]): Rectangle {
   const lines = texts.map((text, k) => ({ text, x: 0, baseline: k * LINE_HEIGHT }));
-  const points = titleLetters({ em: 1, lines }, () => 0.5).flat(2).flatMap((stroke) => stroke.points);
+  const points = titleLetters({ em: 1, lines }, () => 0.5)
+    .flat(2)
+    .flatMap((stroke) => stroke.points);
   const xs = points.map((point) => point.x);
   const ys = points.map((point) => point.y);
   const margin = STROKE / 2 + 0.08;

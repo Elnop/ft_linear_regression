@@ -8,9 +8,7 @@ export function useProgress(): { label: string; value: string } {
   const total = useRegression((state) => state.samples.length);
   return useAnimationPlayback(
     useShallow((state) =>
-      state.phase === 'descent' || state.phase === 'interactive'
-        ? { label: 'ITÉRATION', value: formatNumber(iteration) }
-        : { label: 'POINTS', value: `${state.visiblePoints} / ${total}` },
+      state.phase === 'descent' || state.phase === 'interactive' ? { label: 'ITÉRATION', value: formatNumber(iteration) } : { label: 'POINTS', value: `${state.visiblePoints} / ${total}` },
     ),
   );
 }

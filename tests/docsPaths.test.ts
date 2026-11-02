@@ -33,7 +33,9 @@ for (const document of DOCUMENTS) {
     const markdown = readFileSync(new URL(document, ROOT), 'utf8');
     const missing = [
       ...citedPaths(markdown).filter((path) => !exists(path)),
-      ...linkedPaths(markdown, document).filter((url) => !existsSync(url)).map((url) => url.pathname),
+      ...linkedPaths(markdown, document)
+        .filter((url) => !existsSync(url))
+        .map((url) => url.pathname),
     ];
     assert.deepEqual(missing, []);
   });

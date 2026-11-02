@@ -27,5 +27,10 @@ test('every core function shown in the documentation is found whole', () => {
 test('tokenizing keeps every character', () => {
   const source = readFileSync(new URL('../../core/trainSteps.ts', import.meta.url), 'utf8');
   const code = pick(source, 'trainSteps');
-  assert.equal(tokenize(code).map((token) => token.text).join(''), code);
+  assert.equal(
+    tokenize(code)
+      .map((token) => token.text)
+      .join(''),
+    code,
+  );
 });

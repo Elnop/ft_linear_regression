@@ -18,8 +18,7 @@ export const CODE: DocStep[] = [
     children: (
       <>
         <p>
-          Reçoit le texte du CSV, pas un chemin : <code>core/</code> n'utilise aucune API Node. La CLI lit le fichier,
-          le web l'importe au build.
+          Reçoit le texte du CSV, pas un chemin : <code>core/</code> n'utilise aucune API Node. La CLI lit le fichier, le web l'importe au build.
         </p>
         <p>Toute ligne invalide lève une erreur avec son numéro. La CLI l'affiche sur la sortie d'erreur et quitte avec le code 1.</p>
       </>
@@ -36,8 +35,7 @@ export const CODE: DocStep[] = [
           La droite <code>θ0 + θ1 × km</code>, telle que le sujet l'écrit.
         </p>
         <p>
-          C'est la seule fonction qu'appelle <code>npm run predict</code>. Sur le mur, elle place aussi le marqueur de
-          prix.
+          C'est la seule fonction qu'appelle <code>npm run predict</code>. Sur le mur, elle place aussi le marqueur de prix.
         </p>
       </>
     ),
@@ -50,13 +48,9 @@ export const CODE: DocStep[] = [
     children: (
       <>
         <p>
-          Le coût <code>J</code> est l'erreur quadratique moyenne divisée par 2 : c'est ce que la descente minimise, et la
-          courbe du panneau COÛT.
+          Le coût <code>J</code> est l'erreur quadratique moyenne divisée par 2 : c'est ce que la descente minimise, et la courbe du panneau COÛT.
         </p>
-        <p>
-          Le R² mesure la part de la variance des prix expliquée par la droite : {FIGURES.r2.toFixed(3)} sur ce dataset.
-          RMSE et MAE donnent l'erreur typique en euros.
-        </p>
+        <p>Le R² mesure la part de la variance des prix expliquée par la droite : {FIGURES.r2.toFixed(3)} sur ce dataset. RMSE et MAE donnent l'erreur typique en euros.</p>
       </>
     ),
   },
@@ -68,12 +62,10 @@ export const CODE: DocStep[] = [
     children: (
       <>
         <p>
-          Les formules imposées par le sujet. Une seule boucle accumule les deux sommes d'erreurs, puis{' '}
-          <code>tmpθ0</code> et <code>tmpθ1</code> sont calculés.
+          Les formules imposées par le sujet. Une seule boucle accumule les deux sommes d'erreurs, puis <code>tmpθ0</code> et <code>tmpθ1</code> sont calculés.
         </p>
         <p>
-          <strong>Mise à jour simultanée</strong> : les deux sommes utilisent les mêmes θ, ceux d'avant l'itération. La
-          fonction renvoie un nouvel objet, l'ancien n'est jamais modifié.
+          <strong>Mise à jour simultanée</strong> : les deux sommes utilisent les mêmes θ, ceux d'avant l'itération. La fonction renvoie un nouvel objet, l'ancien n'est jamais modifié.
         </p>
       </>
     ),
@@ -85,9 +77,7 @@ export const CODE: DocStep[] = [
     aside: <Code code={`${pick(normalizeSource, 'normalizeSamples')}\n\n${pick(normalizeSource, 'denormalizeThetas')}`} />,
     children: (
       <>
-        <p>
-          Min-max sur les km pour l'entraînement, puis conversion des θ appris vers le kilométrage brut.
-        </p>
+        <p>Min-max sur les km pour l'entraînement, puis conversion des θ appris vers le kilométrage brut.</p>
         <p>
           Les θ sauvegardés s'utilisent donc tels quels dans <code>estimatePrice</code>.
         </p>
@@ -102,13 +92,12 @@ export const CODE: DocStep[] = [
     children: (
       <>
         <p>
-          Un générateur : il produit l'état après chaque itération (θ sur km brut et coût). L'itération 0 est l'état
-          initial, <code>θ0 = θ1 = 0</code>. Il s'arrête dès qu'un θ ou le coût devient infini : c'est la divergence.
+          Un générateur : il produit l'état après chaque itération (θ sur km brut et coût). L'itération 0 est l'état initial, <code>θ0 = θ1 = 0</code>. Il s'arrête dès qu'un θ ou le coût devient
+          infini : c'est la divergence.
         </p>
         <p>
-          La CLI le parcourt jusqu'au bout et écrit <code>model.json</code>. Cette page consomme le{' '}
-          <strong>même générateur</strong> et peint un passage aux itérations 0, 1, 2, 4, 8… : la droite finale est
-          exactement celle de la CLI.
+          La CLI le parcourt jusqu'au bout et écrit <code>model.json</code>. Cette page consomme le <strong>même générateur</strong> et peint un passage aux itérations 0, 1, 2, 4, 8… : la droite
+          finale est exactement celle de la CLI.
         </p>
       </>
     ),

@@ -14,7 +14,10 @@
   font: 700 12px var(--monospace);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s,
+    border-color 0.2s;
 }
 .documentation-tab:hover {
   color: var(--ink);

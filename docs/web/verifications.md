@@ -7,7 +7,8 @@ Tout ce qui suit tourne en local et dans la CI. Seul `npm run e2e` demande un na
 | Commande (à la racine) | Ce qu'elle lance |
 |---|---|
 | `npm run typecheck` | `tsc` sur `core/`, `cli/`, `tests/`, puis sur `web/` et `web/tests/` |
-| `npm run check` | Oxlint sur `core/`, `cli/` et `tests/`, `tsc` sur ces trois dossiers, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
+| `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `tests/`, `tsc` sur ces trois dossiers, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
+| `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes) |
 | `npm test` | les tests de `tests/`, puis ceux de `web/tests/` |
 | `npm run e2e` | build du web, puis `web/tests/browser.e2e.ts` dans Chromium headless contre `vite preview` |
 

@@ -7,8 +7,14 @@ const chart = chartMapping(1000, 800);
 const layout = axisLayout(chart, 15, 12);
 
 test('one grid line and one label per tick', () => {
-  assert.deepEqual(layout.kmGrid.map((line) => line.key), [0, 50_000, 100_000, 150_000, 200_000, 250_000]);
-  assert.deepEqual(layout.priceLabels.map((label) => label.text), ['3k', '4k', '5k', '6k', '7k', '8k', '9k']);
+  assert.deepEqual(
+    layout.kmGrid.map((line) => line.key),
+    [0, 50_000, 100_000, 150_000, 200_000, 250_000],
+  );
+  assert.deepEqual(
+    layout.priceLabels.map((label) => label.text),
+    ['3k', '4k', '5k', '6k', '7k', '8k', '9k'],
+  );
 });
 
 test('grid lines span the chart area', () => {

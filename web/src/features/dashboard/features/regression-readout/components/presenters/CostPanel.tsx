@@ -13,9 +13,7 @@ const HEIGHT = 76;
 const PADDING = 6;
 
 function sparkline(history: CostPoint[]): string {
-  const points = history
-    .filter((point) => Number.isFinite(point.cost) && point.cost > 0)
-    .map((point) => ({ logIteration: Math.log1p(point.iteration), logCost: Math.log10(point.cost) }));
+  const points = history.filter((point) => Number.isFinite(point.cost) && point.cost > 0).map((point) => ({ logIteration: Math.log1p(point.iteration), logCost: Math.log10(point.cost) }));
   const last = points.at(-1);
   if (!last) return '';
   const logCosts = points.map((point) => point.logCost);

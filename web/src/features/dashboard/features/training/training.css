@@ -25,7 +25,9 @@
   font-family: var(--anton);
   font-size: 20px;
   letter-spacing: 0.06em;
-  box-shadow: 0 0 22px rgba(255, 43, 214, 0.25), 3px 4px 0 rgba(0, 0, 0, 0.55);
+  box-shadow:
+    0 0 22px rgba(255, 43, 214, 0.25),
+    3px 4px 0 rgba(0, 0, 0, 0.55);
 }
 .button-train:disabled {
   cursor: default;

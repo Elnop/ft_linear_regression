@@ -6,7 +6,9 @@ export function Code({ code }: { code: string }) {
     <pre className="documentation-code">
       <code>
         {tokenize(code).map((token, i) =>
-          token.kind === 'text' ? token.text : (
+          token.kind === 'text' ? (
+            token.text
+          ) : (
             <span key={i} className={`token-${token.kind}`}>
               {token.text}
             </span>

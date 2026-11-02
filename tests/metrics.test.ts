@@ -28,7 +28,10 @@ test('predicting the mean price explains nothing', () => {
 });
 
 test('r2 on constant prices', () => {
-  const flat = [{ km: 0, price: 5 }, { km: 1, price: 5 }];
+  const flat = [
+    { km: 0, price: 5 },
+    { km: 1, price: 5 },
+  ];
   assert.equal(r2(flat, { theta0: 5, theta1: 0 }), 1);
   assert.equal(r2(flat, { theta0: 6, theta1: 0 }), 0);
 });

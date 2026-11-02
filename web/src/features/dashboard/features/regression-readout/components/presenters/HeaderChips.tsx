@@ -23,9 +23,7 @@ function Chip({ label, value, plain }: { label: string; value: string; plain?: b
   return (
     <div className="readout-chip glass dashboard-hit">
       <dt className="label">{label}</dt>
-      <dd className={plain ? 'readout-chip-value readout-chip-value-plain' : 'readout-chip-value'}>
-        {value}
-      </dd>
+      <dd className={plain ? 'readout-chip-value readout-chip-value-plain' : 'readout-chip-value'}>{value}</dd>
     </div>
   );
 }

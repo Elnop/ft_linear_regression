@@ -28,12 +28,10 @@ J   la fonction coût`}</Formula>
     children: (
       <>
         <p>
-          Les mathématiques utilisent des lettres grecques pour nommer certaines quantités. Ce ne sont que des noms de
-          variables, comme <code>lr</code> ou <code>theta0</code> dans le code.
+          Les mathématiques utilisent des lettres grecques pour nommer certaines quantités. Ce ne sont que des noms de variables, comme <code>lr</code> ou <code>theta0</code> dans le code.
         </p>
         <p>
-          Ces notations sont celles de la vidéo et du sujet. <code>θ</code> désigne ce que la machine apprend,{' '}
-          <code>α</code> un réglage choisi à la main avant l'entraînement.
+          Ces notations sont celles de la vidéo et du sujet. <code>θ</code> désigne ce que la machine apprend, <code>α</code> un réglage choisi à la main avant l'entraînement.
         </p>
       </>
     ),
@@ -54,12 +52,10 @@ f(${FIGURES.exampleMileage.toLocaleString('fr-FR')}) ≈ ${INTERCEPT.toLocaleStr
     children: (
       <>
         <p>
-          Une droite s'écrit <code>a · x + b</code>. <code>b</code> est sa hauteur en <code>x = 0</code>,{' '}
-          <code>a</code> son inclinaison : positive elle monte, négative elle descend.
+          Une droite s'écrit <code>a · x + b</code>. <code>b</code> est sa hauteur en <code>x = 0</code>, <code>a</code> son inclinaison : positive elle monte, négative elle descend.
         </p>
         <p>
-          Deux nombres suffisent à décrire n'importe quelle droite. Apprendre le modèle revient donc à trouver ces deux
-          nombres, notés <code>θ0</code> et <code>θ1</code>.
+          Deux nombres suffisent à décrire n'importe quelle droite. Apprendre le modèle revient donc à trouver ces deux nombres, notés <code>θ0</code> et <code>θ1</code>.
         </p>
       </>
     ),
@@ -79,12 +75,10 @@ for (let i = 1; i <= m; i++) s += u[i];`}</Formula>
     children: (
       <>
         <p>
-          La lettre grecque <strong>sigma</strong> veut dire « la somme de ». On fait varier l'indice <code>i</code> du
-          premier au dernier exemple et on additionne tous les termes.
+          La lettre grecque <strong>sigma</strong> veut dire « la somme de ». On fait varier l'indice <code>i</code> du premier au dernier exemple et on additionne tous les termes.
         </p>
         <p>
-          En code, c'est une simple boucle <code>for</code> qui accumule. Diviser par <code>m</code> une somme donne
-          une moyenne.
+          En code, c'est une simple boucle <code>for</code> qui accumule. Diviser par <code>m</code> une somme donne une moyenne.
         </p>
       </>
     ),
@@ -107,12 +101,10 @@ f' = 0   un creux (ou un sommet)`}</Formula>
     children: (
       <>
         <p>
-          La dérivée <code>f'(x)</code> mesure la pente de la courbe au point <code>x</code> : de combien{' '}
-          <code>f</code> varie si on bouge <code>x</code> d'un tout petit peu.
+          La dérivée <code>f'(x)</code> mesure la pente de la courbe au point <code>x</code> : de combien <code>f</code> varie si on bouge <code>x</code> d'un tout petit peu.
         </p>
         <p>
-          Son signe dit dans quel sens la courbe va, et elle vaut zéro au fond d'un creux. Une
-          fonction <strong>convexe</strong>, en forme de bol, n'a qu'un seul creux : son minimum.
+          Son signe dit dans quel sens la courbe va, et elle vaut zéro au fond d'un creux. Une fonction <strong>convexe</strong>, en forme de bol, n'a qu'un seul creux : son minimum.
         </p>
       </>
     ),
@@ -132,12 +124,10 @@ gradient   ∇g = ( ∂g/∂θ0 , ∂g/∂θ1 )`}</Formula>
     children: (
       <>
         <p>
-          Quand une fonction dépend de plusieurs variables, on la dérive par rapport à une seule en figeant les autres :
-          c'est une dérivée partielle, notée <code>∂</code>.
+          Quand une fonction dépend de plusieurs variables, on la dérive par rapport à une seule en figeant les autres : c'est une dérivée partielle, notée <code>∂</code>.
         </p>
         <p>
-          Le vecteur de toutes les dérivées partielles est le <strong>gradient</strong>. Il pointe vers la montée la
-          plus raide. La descente de gradient va dans le sens opposé.
+          Le vecteur de toutes les dérivées partielles est le <strong>gradient</strong>. Il pointe vers la montée la plus raide. La descente de gradient va dans le sens opposé.
         </p>
       </>
     ),
@@ -158,13 +148,12 @@ u = θ0 + θ1 · x − y
     children: (
       <>
         <p>
-          Une fonction composée applique une fonction au résultat d'une autre, comme le carré d'une erreur. Sa dérivée
-          est la dérivée de l'extérieur multipliée par celle de l'intérieur : la{' '}
+          Une fonction composée applique une fonction au résultat d'une autre, comme le carré d'une erreur. Sa dérivée est la dérivée de l'extérieur multipliée par celle de l'intérieur : la{' '}
           <strong>règle de la chaîne</strong>.
         </p>
         <p>
-          C'est elle qui donne les formules du sujet : l'erreur au carré se dérive en <code>2 × erreur</code>, multiplié
-          par <code>1</code> pour <code>θ0</code> et par <code>x</code> pour <code>θ1</code>.
+          C'est elle qui donne les formules du sujet : l'erreur au carré se dérive en <code>2 × erreur</code>, multiplié par <code>1</code> pour <code>θ0</code> et par <code>x</code> pour{' '}
+          <code>θ1</code>.
         </p>
       </>
     ),

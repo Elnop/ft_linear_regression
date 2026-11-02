@@ -1,12 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "react",
-    "import",
-    "oxc",
-    "unicorn"
-  ],
+  "plugins": ["typescript", "react", "import", "oxc", "unicorn"],
   "categories": {
     "correctness": "error",
     "suspicious": "error"
@@ -15,9 +9,7 @@
     "browser": true,
     "es2024": true
   },
-  "ignorePatterns": [
-    "dist"
-  ],
+  "ignorePatterns": ["dist"],
   "rules": {
     "no-restricted-imports": [
       "error",
@@ -48,9 +40,7 @@
     "import/no-unassigned-import": [
       "error",
       {
-        "allow": [
-          "**/*.css"
-        ]
+        "allow": ["**/*.css"]
       }
     ],
     "no-shadow": "off",
@@ -61,9 +51,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "tests/**/*.test.ts"
-      ],
+      "files": ["tests/**/*.test.ts"],
       "rules": {
         "typescript/no-floating-promises": "off"
       }

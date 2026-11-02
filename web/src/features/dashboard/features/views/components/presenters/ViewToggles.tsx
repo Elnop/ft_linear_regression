@@ -14,14 +14,7 @@ const TOGGLES = [
 
 export function ViewToggles({ view, onToggle }: ViewTogglesProps) {
   return TOGGLES.map((toggle) => (
-    <button
-      key={toggle.view}
-      type="button"
-      className="head-button view-toggle glass dashboard-hit"
-      aria-pressed={view === toggle.view}
-      onClick={() => onToggle(toggle.view)}
-      title={toggle.title}
-    >
+    <button key={toggle.view} type="button" className="head-button view-toggle glass dashboard-hit" aria-pressed={view === toggle.view} onClick={() => onToggle(toggle.view)} title={toggle.title}>
       {toggle.label}
       <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
         <path d={toggle.icon} />

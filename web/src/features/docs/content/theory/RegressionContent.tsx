@@ -17,10 +17,7 @@ export const REGRESSION: DocStep[] = [
     ),
     children: (
       <>
-        <p>
-          Tout problème d'apprentissage supervisé se résout avec les quatre mêmes briques. La vidéo conseille de
-          les écrire sur papier avant de coder, avec les dimensions du dataset.
-        </p>
+        <p>Tout problème d'apprentissage supervisé se résout avec les quatre mêmes briques. La vidéo conseille de les écrire sur papier avant de coder, avec les dimensions du dataset.</p>
         <p>Ici : le prix d'une voiture à partir de son kilométrage. La suite les prend dans l'ordre.</p>
       </>
     ),
@@ -40,12 +37,10 @@ x[2] = ${SECOND.km.toLocaleString('fr-FR')} km   y[2] = ${SECOND.price.toLocaleS
     children: (
       <>
         <p>
-          <code>data.csv</code> contient {FIGURES.sampleCount} voitures. Chaque ligne est un exemple : une feature <code>x</code>{' '}
-          (le kilométrage) et une target <code>y</code> (le prix).
+          <code>data.csv</code> contient {FIGURES.sampleCount} voitures. Chaque ligne est un exemple : une feature <code>x</code> (le kilométrage) et une target <code>y</code> (le prix).
         </p>
         <p>
-          On note <code>m</code> le nombre d'exemples, <code>n</code> le nombre de features, et <code>x[i]</code>,{' '}
-          <code>y[i]</code> le i-ème exemple.
+          On note <code>m</code> le nombre d'exemples, <code>n</code> le nombre de features, et <code>x[i]</code>, <code>y[i]</code> le i-ème exemple.
         </p>
       </>
     ),
@@ -58,12 +53,10 @@ x[2] = ${SECOND.km.toLocaleString('fr-FR')} km   y[2] = ${SECOND.price.toLocaleS
     children: (
       <>
         <p>
-          On impose à la machine la forme du modèle : une droite. <code>θ0</code> est le prix à 0 km, <code>θ1</code> la
-          variation du prix par km.
+          On impose à la machine la forme du modèle : une droite. <code>θ0</code> est le prix à 0 km, <code>θ1</code> la variation du prix par km.
         </p>
         <p>
-          La machine ne connaît pas ces paramètres : c'est à elle de les trouver. Elle part de <code>θ0 = θ1 = 0</code>,
-          une droite plate à 0 €, très loin des points.
+          La machine ne connaît pas ces paramètres : c'est à elle de les trouver. Elle part de <code>θ0 = θ1 = 0</code>, une droite plate à 0 €, très loin des points.
         </p>
       </>
     ),
@@ -83,8 +76,7 @@ au carré               → 1 000 000 dans les deux cas`}</Formula>
     children: (
       <>
         <p>
-          Pour chaque voiture, l'erreur est l'écart entre le prix prédit et le prix réel. Elle peut être négative : on
-          la met <strong>au carré</strong> pour que seule sa taille compte.
+          Pour chaque voiture, l'erreur est l'écart entre le prix prédit et le prix réel. Elle peut être négative : on la met <strong>au carré</strong> pour que seule sa taille compte.
         </p>
         <p>Le carré pénalise aussi davantage les grosses erreurs que les petites.</p>
       </>
@@ -98,12 +90,11 @@ au carré               → 1 000 000 dans les deux cas`}</Formula>
     children: (
       <>
         <p>
-          On résume toutes ces erreurs en un seul nombre : la moyenne des erreurs au carré,
-          l'<strong>erreur quadratique moyenne</strong> (MSE). Le <code>½</code> sert seulement à simplifier la dérivée.
+          On résume toutes ces erreurs en un seul nombre : la moyenne des erreurs au carré, l'<strong>erreur quadratique moyenne</strong> (MSE). Le <code>½</code> sert seulement à simplifier la
+          dérivée.
         </p>
         <p>
-          <code>J</code> ne dépend que de <code>θ0</code> et <code>θ1</code> : le dataset, lui, ne change pas. Trouver la
-          meilleure droite revient à trouver les θ qui rendent <code>J</code> minimal.
+          <code>J</code> ne dépend que de <code>θ0</code> et <code>θ1</code> : le dataset, lui, ne change pas. Trouver la meilleure droite revient à trouver les θ qui rendent <code>J</code> minimal.
         </p>
       </>
     ),
@@ -119,13 +110,11 @@ descente de gradient   petits pas, répétés`}</Formula>
     children: (
       <>
         <p>
-          <code>J</code> est une somme de carrés : sa courbe est un bol (une fonction convexe), avec un
-          seul minimum.
+          <code>J</code> est une somme de carrés : sa courbe est un bol (une fonction convexe), avec un seul minimum.
         </p>
         <p>
-          On peut le trouver directement avec les moindres carrés (là où la dérivée s'annule), mais ça
-          demande d'inverser une matrice, beaucoup trop coûteux avec des millions d'exemples. En machine learning on
-          utilise la descente de gradient, et le sujet l'impose.
+          On peut le trouver directement avec les moindres carrés (là où la dérivée s'annule), mais ça demande d'inverser une matrice, beaucoup trop coûteux avec des millions d'exemples. En machine
+          learning on utilise la descente de gradient, et le sujet l'impose.
         </p>
       </>
     ),

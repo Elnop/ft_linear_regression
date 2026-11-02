@@ -12,13 +12,11 @@ export const DESCENT: DocStep[] = [
     children: (
       <>
         <p>
-          Vous êtes perdu en montagne, sans carte, et le refuge est au point le plus bas de la vallée. Le plus simple :
-          regarder où la pente descend le plus fort, marcher un peu dans cette direction, puis
-          recommencer.
+          Vous êtes perdu en montagne, sans carte, et le refuge est au point le plus bas de la vallée. Le plus simple : regarder où la pente descend le plus fort, marcher un peu dans cette direction,
+          puis recommencer.
         </p>
         <p>
-          La vallée, c'est <code>J</code>. On part de θ au hasard (ici 0), on calcule la pente (la dérivée), on fait un
-          petit pas vers le bas, et on répète jusqu'au fond.
+          La vallée, c'est <code>J</code>. On part de θ au hasard (ici 0), on calcule la pente (la dérivée), on fait un petit pas vers le bas, et on répète jusqu'au fond.
         </p>
       </>
     ),
@@ -36,13 +34,9 @@ pente > 0  →  θ − (positif)  →  θ diminue`}</Formula>
     children: (
       <>
         <p>
-          À chaque itération, on retire à chaque paramètre la pente multipliée par <code>α</code>, le{' '}
-          <strong>learning rate</strong> (toujours positif).
+          À chaque itération, on retire à chaque paramètre la pente multipliée par <code>α</code>, le <strong>learning rate</strong> (toujours positif).
         </p>
-        <p>
-          Quel que soit le côté de la vallée où l'on démarre, le signe de la dérivée pousse θ vers le minimum.
-          L'algorithme ne fait que répéter cette ligne.
-        </p>
+        <p>Quel que soit le côté de la vallée où l'on démarre, le signe de la dérivée pousse θ vers le minimum. L'algorithme ne fait que répéter cette ligne.</p>
       </>
     ),
   },
@@ -61,8 +55,7 @@ sur ce dataset (km normalisés) :
     children: (
       <>
         <p>
-          <code>α</code> règle la taille du pas. Trop grand, on rebondit d'un flanc de la vallée à l'autre, de plus en
-          plus haut. Trop petit, il faut un nombre d'itérations énorme.
+          <code>α</code> règle la taille du pas. Trop grand, on rebondit d'un flanc de la vallée à l'autre, de plus en plus haut. Trop petit, il faut un nombre d'itérations énorme.
         </p>
         <p>On ne peut pas le calculer à l'avance, on essaie plusieurs valeurs. Le curseur du mur sert à ça.</p>
       </>
@@ -82,13 +75,11 @@ tmpθ1 = α · ∂J/∂θ1     θ1 = θ1 − tmpθ1`}</Formula>
     children: (
       <>
         <p>
-          Il reste à calculer les dérivées. <code>J</code> est une fonction composée : le carré descend et s'annule avec
-          le <code>½</code>, puis on multiplie par la dérivée de l'intérieur, <code>1</code> pour <code>θ0</code> et{' '}
-          <code>x[i]</code> pour <code>θ1</code>.
+          Il reste à calculer les dérivées. <code>J</code> est une fonction composée : le carré descend et s'annule avec le <code>½</code>, puis on multiplie par la dérivée de l'intérieur,{' '}
+          <code>1</code> pour <code>θ0</code> et <code>x[i]</code> pour <code>θ1</code>.
         </p>
         <p>
-          On retrouve exactement les formules du sujet. Les deux sont calculées avec les mêmes θ, ceux d'avant
-          l'itération : c'est la <strong>mise à jour simultanée</strong>.
+          On retrouve exactement les formules du sujet. Les deux sont calculées avec les mêmes θ, ceux d'avant l'itération : c'est la <strong>mise à jour simultanée</strong>.
         </p>
       </>
     ),
