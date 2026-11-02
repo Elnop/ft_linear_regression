@@ -1,5 +1,6 @@
 import type { Sample } from '@core/types/CoreTypes.ts';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
+import { predictionLabel } from '@/features/dashboard/features/views/lib/predictionLabel.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
@@ -20,6 +21,7 @@ export function PlainChart({ chart, width, rectangle, samples, line, prediction 
   const { area } = chart;
   const fontSize = width < COMPACT_BELOW ? 11 : 13;
   const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 10);
+  const label = prediction && predictionLabel(prediction.at, rectangle, fontSize);
 
   return (
     <svg
@@ -60,15 +62,11 @@ export function PlainChart({ chart, width, rectangle, samples, line, prediction 
           <circle key={index} cx={chart.x(sample.km)} cy={chart.y(sample.price)} r={4.5} />
         ))}
       </g>
-      {prediction && (
+      {prediction && label && (
         <g className="plain-prediction">
           <line x1={prediction.at.x} y1={prediction.at.y} x2={prediction.at.x} y2={bottom} />
           <circle cx={prediction.at.x} cy={prediction.at.y} r={6} />
-          <text
-            x={prediction.at.x + (prediction.at.x > right - 140 ? -12 : 12)}
-            y={prediction.at.y - 12}
-            textAnchor={prediction.at.x > right - 140 ? 'end' : 'start'}
-          >
+          <text x={label.x} y={label.y} textAnchor={label.anchor}>
             {formatNumber(prediction.km)} km → {formatNumber(prediction.price)} €
           </text>
         </g>
