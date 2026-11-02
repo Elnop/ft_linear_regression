@@ -12,7 +12,7 @@ const SOFTWARE_WEBGL = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'
 
 declare global {
   interface Window {
-    axe: { run(context: Document): Promise<{ violations: { id: string; nodes: unknown[] }[] }> };
+    axe: { run(context: Document): Promise<{ violations: { id: string; nodes: { target: string[] }[] }[] }> };
   }
 }
 
@@ -44,11 +44,17 @@ async function open(browser: Browser, options: { reducedMotion?: 'reduce' | 'no-
   return { page, errors };
 }
 
+async function settled(page: Page): Promise<void> {
+  await page.waitForFunction(() => !document.querySelector('.button-train')?.hasAttribute('disabled'));
+  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== 'running'));
+}
+
 async function axeViolations(page: Page): Promise<string[]> {
+  await settled(page);
   await page.addScriptTag({ content: AXE_SOURCE });
   return page.evaluate(async () => {
     const { violations } = await window.axe.run(document);
-    return violations.map((violation) => `${violation.id} (${violation.nodes.length})`);
+    return violations.map((violation) => `${violation.id}: ${violation.nodes.map((node) => node.target.join(' ')).join(', ')}`);
   });
 }
 
