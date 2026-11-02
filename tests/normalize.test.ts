@@ -7,6 +7,11 @@ test('computes the min and max of the values', () => {
   assert.deepEqual(computeScale([30, 10, 20]), { min: 10, max: 30 });
 });
 
+test('handles datasets far larger than the call stack allows to spread', () => {
+  const values = Array.from({ length: 200_000 }, (_, i) => i * 2);
+  assert.deepEqual(computeScale(values), { min: 0, max: 399_998 });
+});
+
 test('refuses a scale it cannot divide by', () => {
   assert.throws(() => computeScale([]), /empty set/);
   assert.throws(() => computeScale([5, 5]), /all mileages are identical/);

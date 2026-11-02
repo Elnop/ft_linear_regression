@@ -2,8 +2,12 @@ import type { Sample, Thetas, Scale } from './types/CoreTypes.ts';
 
 export function computeScale(values: number[]): Scale {
   if (values.length === 0) throw new Error('cannot compute a scale on an empty set');
-  const min = Math.min(...values);
-  const max = Math.max(...values);
+  let min = Infinity;
+  let max = -Infinity;
+  for (const value of values) {
+    if (value < min) min = value;
+    if (value > max) max = value;
+  }
   if (min === max) throw new Error('cannot normalize: all mileages are identical');
   return { min, max };
 }
