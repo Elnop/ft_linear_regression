@@ -29,7 +29,7 @@ L'app entraîne elle-même le modèle dans le navigateur avec les fonctions de `
 | [architecture.md](architecture.md) | couches, features, scène, director, moteur, stores, règles de nommage |
 | [styles.md](styles.md) | palette, tokens CSS, organisation des feuilles de style, valeurs dupliquées entre TS et CSS |
 | [accessibilite.md](accessibilite.md) | structure, clavier, focus, mouvement réduit, contrastes, et comment c'est vérifié |
-| [verifications.md](verifications.md) | lint, sens des dépendances, tests, CI |
+| [verifications.md](verifications.md) | lint, sens des dépendances, quel type de test écrire, tests, CI |
 
 ## Stack
 

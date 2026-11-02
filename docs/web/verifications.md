@@ -32,6 +32,21 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 
 `web/scripts/checkFolders.mjs` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source.
 
+## Quel type de test écrire
+
+| Type | Ce qu'il teste | Outil | Emplacement et nommage | Commande (dans `web/`) |
+|---|---|---|---|---|
+| Unitaire | une fonction ou une classe pure (`lib/`, configs) | Vitest, dans Node | `Timeline.test.ts` à côté de `Timeline.ts` | `npm run test:unit` |
+| Composant | un presenter seul, par ses props et ses interactions | Vitest browser mode et `vitest-browser-react`, dans Chromium | `SkipButton.test.tsx` à côté de `SkipButton.tsx` | `npm run test:component` |
+| E2e | un parcours dans le site buildé, servi par `vite preview` | `@playwright/test`, dans Chromium | `web/e2e/<sujet>.spec.ts` | `npm run e2e` |
+
+- Un test reste à côté de sa source, sans dossier dédié. L'extension choisit le type : `.test.ts` tourne dans Node, `.test.tsx` dans le navigateur.
+- On cherche un élément par son rôle et son nom accessible (`getByRole('button', { name: /PASSER/ })`), jamais par une classe CSS.
+- On attend avec une assertion qui réessaie (`expect.element(...)` en composant, les locators en e2e), jamais avec un `setTimeout`.
+- On ne teste en composant que les presenters, qui reçoivent tout par props. Les containers et les layouts lisent des stores : l'e2e les couvre.
+- Un test e2e porte le tag de son navigateur (`@paintless` ou `@painting`). Ce qui sert à plusieurs fichiers va dans `web/e2e/fixtures.ts`.
+- Un test doit pouvoir échouer : avant de le garder, on casse le code qu'il protège et on vérifie qu'il passe au rouge.
+
 ## Tests
 
 Les tests de `core/` tournent avec `node --test`, sans bibliothèque de test. Ceux du web tournent avec Vitest (`web/vitest.config.ts`), qui reprend `web/vite.config.ts` et donc ses alias `@/`, `@core/` et `@dataset`. Un test lit `data.csv` ou une source de `core/` par un import `?raw`, comme le code de prod.
