@@ -53,4 +53,6 @@ Le 2 novembre 2026, sur Chromium headless :
 
 Ces contrôles sont dans le repo : `npm run e2e` les relance, en local et dans la CI (voir [verifications.md](verifications.md)). En les automatisant, on a trouvé que le bouton *Passer* apparaissait quand même en mouvement réduit, pendant 400 ms, une fois l'état final peint. Il est maintenant masqué dans ce mode.
 
-Pas encore testé : un vrai lecteur d'écran (NVDA, VoiceOver) et un zoom à 200 %.
+Zoom à 200 % : une fenêtre de 1280 × 720 zoomée à 200 % a un viewport de 640 × 360, une de 1920 × 1080 en a un de 960 × 540. Aux deux tailles, sans défilement horizontal, tous les boutons et champs sont dans l'écran et les panneaux passent sous le mur. À 640 × 360 le mur ne fait que la hauteur de l'écran, donc le titre peint est petit. Les chips θ0, θ1 et ITÉRATION tiennent aussi à 320, 375, 414 et 768 px de large, à l'état final comme après une divergence.
+
+Pas encore testé : un vrai lecteur d'écran (NVDA, TalkBack, VoiceOver).
