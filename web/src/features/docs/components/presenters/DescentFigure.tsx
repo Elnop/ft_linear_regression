@@ -8,7 +8,7 @@ const VIEWBOX_WIDTH = 400;
 
 export function DescentFigure() {
   const { ref, width } = useRenderedWidth<SVGSVGElement>();
-  const labelSize = width > 0 ? (textSize('xs', document.documentElement.clientWidth, readRem()) * VIEWBOX_WIDTH) / width : 0;
+  const labelSize = width > 0 ? (textSize('xs', document.documentElement.clientWidth, readRem()) * VIEWBOX_WIDTH) / width : undefined;
   const curve = (x: number) => 195 - 0.0052 * (x - 200) ** 2;
   const path = Array.from({ length: 41 }, (_, i) => {
     const x = 20 + i * 9;
