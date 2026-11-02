@@ -5,13 +5,14 @@ import { HOLE, VIEW_WIDTH } from '@/features/graffiti/features/spray-can/ShapeCo
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
 import { sceneStore } from '@/shared/sceneStore.ts';
+import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
 
 export function useSprayCan(engine: PaintEngine | null) {
   const box = useRef<HTMLDivElement>(null);
   const mist = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    if (!engine || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!engine || prefersReducedMotion()) return;
     const element = box.current!;
     const canvas = mist.current!;
     const context = canvas.getContext('2d')!;

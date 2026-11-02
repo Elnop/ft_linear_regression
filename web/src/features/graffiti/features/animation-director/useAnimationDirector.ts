@@ -7,12 +7,17 @@ import type { Director, DirectorDependencies } from '@/features/graffiti/feature
 import { animationPlaybackStore } from '@/states/animation-playback/animationPlaybackStore.ts';
 import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
 import { regressionActions } from '@/states/regression/stores/regressionStore.ts';
-
-const DEPENDENCIES: DirectorDependencies = { playback: animationPlaybackStore, regression: regressionActions, samples: DATA };
+import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
 
 function createDirector(engine: PaintEngine | null, engineFailed: boolean): Director | null {
-  if (engine) return new AnimationDirector(engine, DEPENDENCIES);
-  if (engineFailed) return new PaintlessDirector(DEPENDENCIES);
+  const dependencies: DirectorDependencies = {
+    playback: animationPlaybackStore,
+    regression: regressionActions,
+    samples: DATA,
+    reducedMotion: prefersReducedMotion(),
+  };
+  if (engine) return new AnimationDirector(engine, dependencies);
+  if (engineFailed) return new PaintlessDirector(dependencies);
   return null;
 }
 

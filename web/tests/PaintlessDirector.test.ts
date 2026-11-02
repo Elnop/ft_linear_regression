@@ -21,7 +21,7 @@ function setup() {
     show: (snapshot: RegressionSnapshot) => shown.push(snapshot),
     finish: (diverged: boolean) => finished.push(diverged),
   };
-  const director = new PaintlessDirector({ playback, regression, samples });
+  const director = new PaintlessDirector({ playback, regression, samples, reducedMotion: false });
   return { playback, calls, shown, finished, director };
 }
 

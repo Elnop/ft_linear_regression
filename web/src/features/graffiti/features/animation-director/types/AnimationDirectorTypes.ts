@@ -21,6 +21,7 @@ export type DirectorDependencies = {
   playback: StoreApi<AnimationPlayback>;
   regression: RegressionActions;
   samples: Sample[];
+  reducedMotion: boolean;
 };
 
 export type Director = {

@@ -45,7 +45,7 @@ export class AnimationDirector implements Director {
 
   start(): void {
     this.refit();
-    const run = this.timeline.restart();
+    const run = this.timeline.restart(this.dependencies.reducedMotion);
     this.painter.clear(this.title ? [this.title] : []);
     void this.timeline.play(() => this.playIntro(run));
   }
@@ -67,7 +67,7 @@ export class AnimationDirector implements Director {
     if (this.state.phase !== 'interactive') return;
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };
     const plan = runTraining(this.dependencies.samples, options);
-    const run = this.timeline.restart();
+    const run = this.timeline.restart(this.dependencies.reducedMotion);
     this.training = plan;
     this.set({ trainingActive: true });
     this.dependencies.regression.restart();
@@ -95,6 +95,7 @@ export class AnimationDirector implements Director {
 
     this.set({ phase: 'descent' });
     await this.playPasses(run, plan);
+    if (run.instant) this.engine.settle();
     this.set({ phase: 'interactive' });
     if (this.sizeChanged()) this.repaint();
   }
@@ -110,6 +111,7 @@ export class AnimationDirector implements Director {
     await run.sleep(TIMING.fanOut);
 
     await this.playPasses(run, plan);
+    if (run.instant) this.engine.settle();
     this.set({ trainingActive: false });
   }
 
