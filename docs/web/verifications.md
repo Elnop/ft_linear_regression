@@ -7,10 +7,10 @@ Tout ce qui suit tourne en local et dans la CI. Rien ne demande de navigateur, s
 | Commande (à la racine) | Ce qu'elle lance |
 |---|---|
 | `npm run typecheck` | `tsc` sur `core/`, `cli/`, `tests/`, puis sur `web/` et `web/tests/` |
-| `npm run check` | Oxlint sur `core/`, `cli/` et `tests/`, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
+| `npm run check` | Oxlint sur `core/`, `cli/` et `tests/`, `tsc` sur ces trois dossiers, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
 | `npm test` | les tests de `tests/`, puis ceux de `web/tests/` |
 
-Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) lance ces trois commandes avant le build. Un échec bloque le déploiement.
+`npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) lance donc `npm run check`, `npm test`, puis le build, et chaque vérification ne tourne qu'une fois. Un échec bloque le déploiement. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 22.
 
 ## Lint
 

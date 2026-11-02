@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p . && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p . && tsc -p tests",
     "lint": "oxlint --type-aware src tests",

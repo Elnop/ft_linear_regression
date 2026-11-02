@@ -70,10 +70,10 @@ Les tests tournent avec `node --test`, sans dépendance en plus. `tests/` couvre
 ```
 npm test            # tests de core/ puis du web
 npm run typecheck   # types de core/, cli/, tests/ et web/
-npm run check       # Oxlint sur core/, cli/ et tests/, puis le check du web
+npm run check       # Oxlint et tsc sur core/, cli/ et tests/, puis le check du web
 ```
 
-Le workflow de déploiement lance ces trois commandes avant le build.
+Le workflow de déploiement lance `npm run check` et `npm test` avant le build (`check` contient déjà le typecheck).
 
 ## Flux de données
 
