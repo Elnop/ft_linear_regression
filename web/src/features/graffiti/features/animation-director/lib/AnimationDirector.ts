@@ -6,7 +6,7 @@ import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { OffscreenWall } from '@/features/graffiti/shared/lib/OffscreenWall.ts';
 import { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
 import { shuffled } from '@/features/graffiti/shared/lib/random.ts';
-import type { Build, Director, DirectorDependencies, Run, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type { Build, Director, DirectorDependencies, Run, SceneSource, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
 import { WallPainter } from '@/features/graffiti/features/animation-director/lib/WallPainter.ts';
 import { IDLE_PLAYBACK } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
@@ -31,21 +31,25 @@ export class AnimationDirector implements Director {
   private training: Training | null = null;
   private build: Build | null = null;
   private title: PaintLayer | null = null;
+  private scene: SceneSource;
   private unsubscribeResize: () => void;
+  private unsubscribeScene: () => void;
   private resizeTimer = 0;
   private paintedWidth: number;
   private paintedHeight: number;
+  private paintedRem: number;
 
-  constructor(engine: PaintEngine, dependencies: DirectorDependencies) {
+  constructor(engine: PaintEngine, dependencies: DirectorDependencies, scene: SceneSource) {
     this.engine = engine;
     this.dependencies = dependencies;
     this.painter = new WallPainter(engine, dependencies.samples);
     this.paintedWidth = engine.width;
     this.paintedHeight = engine.height;
-    this.unsubscribeResize = engine.onResize(() => {
-      engine.reanchor(wallRegions(engine.width, engine.height));
-      clearTimeout(this.resizeTimer);
-      this.resizeTimer = window.setTimeout(() => this.onResized(), TIMING.resizeSettle);
+    this.scene = scene;
+    this.paintedRem = scene.getState().rem;
+    this.unsubscribeResize = engine.onResize(this.onResize);
+    this.unsubscribeScene = scene.subscribe((next, previous) => {
+      if (next.rem !== previous.rem) this.onResize();
     });
     dependencies.playback.setState({ skip: this.skip, train: this.train, replay: () => this.start() });
   }
@@ -72,7 +76,18 @@ export class AnimationDirector implements Director {
     this.dropBuild();
     clearTimeout(this.resizeTimer);
     this.unsubscribeResize();
+    this.unsubscribeScene();
     resetStores(this.dependencies);
+  }
+
+  private onResize = (): void => {
+    this.engine.reanchor(wallRegions(this.engine.width, this.engine.height));
+    clearTimeout(this.resizeTimer);
+    this.resizeTimer = window.setTimeout(() => this.onResized(), TIMING.resizeSettle);
+  };
+
+  private get rem(): number {
+    return this.scene.getState().rem;
   }
 
   private skip = (): void => {
@@ -150,7 +165,7 @@ export class AnimationDirector implements Director {
       if (run.signal.aborted) return null;
       throw error;
     });
-    return { plan, slicer, width: wall.width, height: wall.height, wall: painted };
+    return { plan, slicer, width: wall.width, height: wall.height, rem: this.rem, wall: painted };
   }
 
   private dropBuild(): void {
@@ -172,6 +187,7 @@ export class AnimationDirector implements Director {
     this.painter.takeOver(wall.fanLayers);
     this.paintedWidth = build.width;
     this.paintedHeight = build.height;
+    this.paintedRem = build.rem;
 
     const { regression, samples } = this.dependencies;
     regression.show(stepAt(samples, build.plan, build.plan.steps.length - 1));
@@ -181,8 +197,8 @@ export class AnimationDirector implements Director {
   }
 
   private onResized(): void {
-    const target = this.build ?? { width: this.paintedWidth, height: this.paintedHeight };
-    if (this.engine.width === target.width && this.engine.height === target.height) return;
+    const target = this.build ?? { width: this.paintedWidth, height: this.paintedHeight, rem: this.paintedRem };
+    if (this.engine.width === target.width && this.engine.height === target.height && this.rem === target.rem) return;
     const { phase } = this.state;
     const intro = phase === 'title' || phase === 'descent';
     if (intro && this.isMinorResize()) return;
@@ -190,17 +206,18 @@ export class AnimationDirector implements Director {
   }
 
   private isMinorResize(): boolean {
-    return this.engine.width === this.paintedWidth && Math.abs(this.engine.height - this.paintedHeight) < this.paintedHeight * MINOR_INTRO_RESIZE;
+    return this.engine.width === this.paintedWidth && this.rem === this.paintedRem && Math.abs(this.engine.height - this.paintedHeight) < this.paintedHeight * MINOR_INTRO_RESIZE;
   }
 
   private sizeChanged(): boolean {
-    return this.engine.width !== this.paintedWidth || this.engine.height !== this.paintedHeight;
+    return this.engine.width !== this.paintedWidth || this.engine.height !== this.paintedHeight || this.rem !== this.paintedRem;
   }
 
   private refit(): void {
     if (!this.sizeChanged()) return;
     this.paintedWidth = this.engine.width;
     this.paintedHeight = this.engine.height;
+    this.paintedRem = this.rem;
     this.title = null;
     this.painter.fit();
   }

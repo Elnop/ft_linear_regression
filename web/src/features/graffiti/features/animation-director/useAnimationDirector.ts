@@ -8,6 +8,7 @@ import { animationPlaybackStore } from '@/states/animation-playback/animationPla
 import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
 import { regressionActions } from '@/states/regression/stores/regressionStore.ts';
 import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
+import { sceneStore } from '@/shared/sceneStore.ts';
 
 function createDirector(engine: PaintEngine | null, engineFailed: boolean): Director | null {
   const dependencies: DirectorDependencies = {
@@ -16,7 +17,7 @@ function createDirector(engine: PaintEngine | null, engineFailed: boolean): Dire
     samples: DATA,
     reducedMotion: prefersReducedMotion(),
   };
-  if (engine) return new AnimationDirector(engine, dependencies);
+  if (engine) return new AnimationDirector(engine, dependencies, sceneStore);
   if (engineFailed) return new PaintlessDirector(dependencies);
   return null;
 }

@@ -4,6 +4,7 @@ import type { AnimationPlayback } from '@/states/animation-playback/AnimationPla
 import type { RegressionActions } from '@/states/regression/RegressionTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import type { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
+import type { Scene } from '@/shared/types/SceneTypes.ts';
 
 export type Run = {
   readonly instant: boolean;
@@ -26,6 +27,8 @@ export type DirectorDependencies = {
   samples: Sample[];
   reducedMotion: boolean;
 };
+
+export type SceneSource = Pick<StoreApi<Scene>, 'getState' | 'subscribe'>;
 
 export type Director = {
   start: () => void;
@@ -52,5 +55,6 @@ export type Build = {
   slicer: Slicer;
   width: number;
   height: number;
+  rem: number;
   wall: Promise<FinalWall | null>;
 };
