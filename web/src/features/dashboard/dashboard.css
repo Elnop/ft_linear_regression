@@ -63,7 +63,7 @@
   bottom: calc(var(--dashboard-padding) * 0.2 + 86px);
 }
 .dashboard-root button:focus-visible,
-.dashboard-root input:focus-visible {
+.dashboard-root input[type='range']:focus-visible {
   outline: 3px solid var(--acid);
   outline-offset: 2px;
 }
