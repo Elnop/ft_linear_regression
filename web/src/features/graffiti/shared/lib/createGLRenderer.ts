@@ -5,8 +5,10 @@ import type { CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.
 
 function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
   const program = gl.createProgram();
+  const shaders: WebGLShader[] = [];
   for (const [type, source] of [[gl.VERTEX_SHADER, vertexSource], [gl.FRAGMENT_SHADER, fragmentSource]] as const) {
     const shader = gl.createShader(type)!;
+    shaders.push(shader);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) ?? 'shader error');
@@ -14,6 +16,10 @@ function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSourc
   }
   gl.bindAttribLocation(program, 0, 'aPos');
   gl.linkProgram(program);
+  for (const shader of shaders) {
+    gl.detachShader(program, shader);
+    gl.deleteShader(shader);
+  }
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) ?? 'link error');
   return program;
 }
@@ -110,6 +116,7 @@ export function createGLRenderer(canvas: HTMLCanvasElement) {
       view = { width: cssWidth, height: cssHeight };
     },
     setWall(image: HTMLImageElement) {
+      if (wallTexture) gl.deleteTexture(wallTexture);
       wallTexture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, wallTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
@@ -159,6 +166,10 @@ export function createGLRenderer(canvas: HTMLCanvasElement) {
     destroy() {
       for (const textures of gpu.values()) free(textures);
       gpu.clear();
+      if (wallTexture) gl.deleteTexture(wallTexture);
+      gl.deleteProgram(paintProgram);
+      gl.deleteBuffer(buffer);
+      gl.deleteVertexArray(vertexArray);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     },
   };
