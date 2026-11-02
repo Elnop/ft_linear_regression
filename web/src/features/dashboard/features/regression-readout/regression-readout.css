@@ -89,13 +89,16 @@
 }
 
 @media (max-width: 63.99em) {
+  /* A chip that no longer fits goes to the next line rather than cut its value. */
   .dashboard-chips-list {
-    flex-wrap: nowrap;
     gap: var(--space-6);
   }
   .readout-chip {
     flex: 1 1 auto;
     min-width: 0;
     padding: var(--space-8);
+  }
+  .readout-chip-value {
+    font-size: var(--text-sm);
   }
 }

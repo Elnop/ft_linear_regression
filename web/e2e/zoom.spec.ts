@@ -36,16 +36,27 @@ function declareCases(): void {
   }
 
   for (const width of [320, 375, 414, 768]) {
-    test(`the header chips fit at ${width}px, settled and diverged`, { tag: '@paintless' }, async ({ page }) => {
+    test(`the header chips and buttons fit at ${width}px, settled and diverged`, { tag: '@paintless' }, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await openApp(page);
       await settled(page);
 
       const check = async () => {
         await expectNoOverflow(page, '.readout-chip');
-        const rights = await page.locator('.readout-chip').evaluateAll((chips) => chips.map((chip) => chip.getBoundingClientRect().right));
+        const boxes = await page.locator('.readout-chip, .dashboard-head button').evaluateAll((items) =>
+          items.map((item) => {
+            const { left, right } = item.getBoundingClientRect();
+            return { left, right };
+          }),
+        );
         const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-        for (const right of rights) expect(right).toBeLessThanOrEqual(clientWidth);
+        for (const box of boxes) {
+          expect(box.left).toBeGreaterThanOrEqual(0);
+          expect(box.right).toBeLessThanOrEqual(clientWidth);
+        }
+        // An ellipsis would keep the box in place and cut the value.
+        const cut = await page.locator('.readout-chip dt, .readout-chip dd').evaluateAll((texts) => texts.filter((text) => text.scrollWidth > text.clientWidth).map((text) => text.textContent));
+        expect(cut).toEqual([]);
       };
       await check();
       await diverge(page);

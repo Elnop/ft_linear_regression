@@ -102,9 +102,11 @@
   }
   .dashboard-root .dashboard-head-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-10);
   }
   .dashboard-root .dashboard-head-actions > button {
+    flex: 1 1 auto;
     min-height: var(--space-48);
     padding: 0 var(--space-12);
     border-radius: var(--space-12);
@@ -112,6 +114,7 @@
   }
   .dashboard-root .dashboard-chips {
     flex: 1 1 auto;
+    min-width: 0;
   }
   .dashboard-root .dashboard-chips-list {
     justify-content: flex-start;
