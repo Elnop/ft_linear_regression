@@ -2,12 +2,12 @@ import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
 import '@/features/docs/styles/table-of-contents.css';
 import type { TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
-type Props = {
+type TableOfContentsProps = {
   sections: TableOfContentsSection[];
   prefix: string;
 };
 
-export function TableOfContents({ sections, prefix }: Props) {
+export function TableOfContents({ sections, prefix }: TableOfContentsProps) {
   return (
     <nav className="table-of-contents" aria-label="Sommaire">
       <p className="label">Sommaire</p>

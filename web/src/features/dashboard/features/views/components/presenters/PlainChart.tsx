@@ -2,7 +2,7 @@ import type { Sample } from '@core/types/CoreTypes.ts';
 import { chartTicks, formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { SMALL } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/plain-chart.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
@@ -20,7 +20,7 @@ export function PlainChart({ chart, width, rectangle, samples, line, prediction 
   const { area, domain } = chart;
   const bottom = area.y + area.height;
   const right = area.x + area.width;
-  const fontSize = width < SMALL ? 11 : 13;
+  const fontSize = width < COMPACT_BELOW ? 11 : 13;
   const { kmTicks, priceTicks } = chartTicks(domain);
 
   return (

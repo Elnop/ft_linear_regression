@@ -2,12 +2,12 @@ import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
 import '@/features/docs/styles/steps.css';
 
-type Props = {
+type StepListProps = {
   steps: DocStep[];
   prefix: string;
 };
 
-export function StepList({ steps, prefix }: Props) {
+export function StepList({ steps, prefix }: StepListProps) {
   return (
     <div className="documentation-steps">
       {steps.map((step, i) => (

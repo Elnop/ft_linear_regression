@@ -4,14 +4,14 @@ import { StepList } from './StepList.tsx';
 
 import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 
-type Props = {
+type StepsPanelProps = {
   steps: DocStep[];
   sections: TableOfContentsSection[];
   prefix: string;
   footer: ReactNode;
 };
 
-export function StepsPanel({ steps, sections, prefix, footer }: Props) {
+export function StepsPanel({ steps, sections, prefix, footer }: StepsPanelProps) {
   return (
     <>
       <TableOfContents sections={sections} prefix={prefix} />

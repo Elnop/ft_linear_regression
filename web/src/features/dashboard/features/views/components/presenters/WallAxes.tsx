@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { chartTicks, formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
-import { SMALL } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
 
@@ -17,7 +17,7 @@ export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
   const { area, domain } = chart;
   const bottom = area.y + area.height;
   const right = area.x + area.width;
-  const small = width < SMALL;
+  const small = width < COMPACT_BELOW;
   const fontSize = small ? 12 : 15;
   const { kmTicks, priceTicks } = chartTicks(domain);
   return (

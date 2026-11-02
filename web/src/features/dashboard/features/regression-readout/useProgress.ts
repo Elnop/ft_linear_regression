@@ -9,7 +9,7 @@ export function useProgress(): { label: string; value: string } {
   return useAnimationPlayback(
     useShallow((state) =>
       state.phase === 'descent' || state.phase === 'interactive'
-        ? { label: 'PASSAGE', value: formatNumber(iteration) }
+        ? { label: 'ITÉRATION', value: formatNumber(iteration) }
         : { label: 'POINTS', value: `${state.visiblePoints} / ${total}` },
     ),
   );

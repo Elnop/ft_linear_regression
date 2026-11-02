@@ -3,14 +3,14 @@ import { TABS } from '@/features/docs/TabsConfig.ts';
 import '@/features/docs/styles/tabs.css';
 import type { TabId } from '@/features/docs/DocsTypes.ts';
 
-type Props = {
+type DocumentationTabsProps = {
   tab: TabId;
   tabRefs: RefObject<(HTMLButtonElement | null)[]>;
   onSelect: (tab: TabId) => void;
   onKeyDown: (event: KeyboardEvent, i: number) => void;
 };
 
-export function DocumentationTabs({ tab, tabRefs, onSelect, onKeyDown }: Props) {
+export function DocumentationTabs({ tab, tabRefs, onSelect, onKeyDown }: DocumentationTabsProps) {
   return (
     <div className="documentation-tabs" role="tablist" aria-label="Sections de la documentation">
       {TABS.map((tabItem, i) => (

@@ -1,9 +1,9 @@
 import type { PlacedSticker } from '@/features/graffiti/features/stickers/StickersTypes.ts';
 import { peelGeometry, tornEdge } from '@/features/graffiti/features/stickers/lib/damage.ts';
 
-type Props = PlacedSticker & { id: string };
+type StickerProps = PlacedSticker & { id: string };
 
-export function Sticker({ id, art, damage, width, x, y, rotation }: Props) {
+export function Sticker({ id, art, damage, width, x, y, rotation }: StickerProps) {
   const { viewWidth, viewHeight } = art;
   const peel = damage.peel && peelGeometry(viewWidth, viewHeight, damage.peel);
   const tearX = damage.tear !== undefined ? damage.tear * viewWidth : undefined;
