@@ -7,6 +7,7 @@ import { CODE } from '@/features/docs/content/CodeContent.tsx';
 import { THEORY } from '@/features/docs/content/TheoryContent.ts';
 import { useDocumentationTabs } from '@/features/docs/useDocumentationTabs.ts';
 import { groupSections } from '@/features/docs/lib/sections.ts';
+import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
 import '@/features/docs/styles/page.css';
 
 const PANELS = {
@@ -15,14 +16,14 @@ const PANELS = {
 };
 
 export function DocumentationPage() {
-  const { tab, setTab, tabRefs, onTabKeyDown } = useDocumentationTabs();
+  const { tab, selectTab, tabRefs, onTabKeyDown } = useDocumentationTabs();
 
   return (
-    <section id="documentation" className="documentation glass dashboard-hit" aria-labelledby="documentation-title" tabIndex={-1}>
+    <section id={DOCUMENTATION_ID} className="documentation glass" aria-labelledby="documentation-title" tabIndex={-1}>
       <span className="tape documentation-tape-left" />
       <span className="tape documentation-tape-right" />
       <DocumentationHeader />
-      <DocumentationTabs tab={tab} tabRefs={tabRefs} onSelect={setTab} onKeyDown={onTabKeyDown} />
+      <DocumentationTabs tab={tab} tabRefs={tabRefs} onSelect={selectTab} onKeyDown={onTabKeyDown} />
       <div role="tabpanel" id={`documentation-panel-${tab}`} aria-labelledby={`documentation-tab-${tab}`} className="documentation-panel">
         <StepsPanel {...PANELS[tab]} prefix={tab} />
       </div>

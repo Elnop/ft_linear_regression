@@ -5,7 +5,9 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 - Théorie : ce qu'est le machine learning et l'apprentissage supervisé (régression ou classification), les notions mathématiques utiles (notations θ, α, Σ…, fonction affine, symbole Σ, dérivée, dérivées partielles et gradient, fonctions composées), les 4 étapes de l'apprentissage supervisé (dataset, modèle, fonction coût, minimisation), puis la descente de gradient (intuition, formule, learning rate, calcul des dérivées), et enfin ce qui est propre au projet (normalisation, vérification).
 - Code : les fonctions de `core/` dans le même ordre (`parseDataset`, `estimatePrice`, `cost` / `r2`, `gradientStep`, `normalizeSamples` / `denormalizeThetas`, `trainSteps`), puis la CLI et l'organisation du projet.
 
-Chaque onglet commence par un sommaire. Un lien du sommaire fait défiler jusqu'à l'étape, y place le focus et met à jour l'adresse (`#documentation-theory-4`), voir [accessibilite.md](accessibilite.md).
+Chaque onglet commence par un sommaire. Un lien du sommaire fait défiler jusqu'à l'étape, y place le focus et met à jour l'adresse (`#documentation-theory-4`), voir [accessibilite.md](accessibilite.md). Ouvrir une adresse qui contient une ancre d'étape ouvre le bon onglet et y fait défiler la page (`tabFromHash`). Changer d'onglet remet l'ancre sur `#documentation`, pour qu'elle ne désigne pas une étape qui n'est plus affichée.
+
+L'id de la section (`documentation`) est défini une seule fois, dans `shared/configs/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`shared/lib/scrollToDocumentation.ts`) sans connaître la chaîne.
 
 ## Le code affiché est le vrai code
 

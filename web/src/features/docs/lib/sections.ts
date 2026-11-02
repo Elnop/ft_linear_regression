@@ -1,6 +1,7 @@
 import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
+import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
 
-export const stepId = (prefix: string, index: number) => `documentation-${prefix}-${index + 1}`;
+export const stepId = (prefix: string, index: number) => `${DOCUMENTATION_ID}-${prefix}-${index + 1}`;
 
 export const stepNumber = (index: number) => String(index + 1).padStart(2, '0');
 
