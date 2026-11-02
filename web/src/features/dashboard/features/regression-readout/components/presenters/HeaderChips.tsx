@@ -21,9 +21,9 @@ export function HeaderChips({ theta0, theta1, progress }: HeaderChipsProps) {
 
 function Chip({ label, value, plain }: { label: string; value: string; plain?: boolean }) {
   return (
-    <div className="chip glass dashboard-hit">
+    <div className="readout-chip glass dashboard-hit">
       <dt className="label">{label}</dt>
-      <dd className={plain ? 'chip-value chip-value-plain' : 'chip-value'}>
+      <dd className={plain ? 'readout-chip-value readout-chip-value-plain' : 'readout-chip-value'}>
         {value}
       </dd>
     </div>

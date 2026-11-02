@@ -1,4 +1,6 @@
 .documentation-code {
+  --syntax-number: #ffb86b;
+  --syntax-call: #8fd0ff;
   margin: 0;
   padding: 18px 20px;
   border-radius: 12px;
@@ -17,7 +19,7 @@
   color: var(--acid);
 }
 .token-number {
-  color: #ffb86b;
+  color: var(--syntax-number);
 }
 .token-keyword {
   color: var(--magenta);
@@ -26,7 +28,7 @@
   color: var(--cyan);
 }
 .token-call {
-  color: #8fd0ff;
+  color: var(--syntax-call);
 }
 .documentation-math {
   color: var(--cyan);

@@ -47,7 +47,7 @@
   color: var(--acid);
   white-space: nowrap;
 }
-.error {
+.predict-error {
   font-size: 12px;
-  color: #ff9a9a;
+  color: var(--danger-text);
 }

@@ -27,7 +27,7 @@
   background: var(--acid);
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.55);
 }
-.hello {
+.price-sticker {
   position: absolute;
   width: 206px;
   border-radius: 14px;
@@ -36,7 +36,7 @@
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
   clip-path: polygon(0 0, 100% 0, 100% 80%, 88% 100%, 0 100%);
 }
-.hello-top {
+.price-sticker-top {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,24 +44,24 @@
   background: var(--magenta);
   color: #fff;
 }
-.hello-top b {
+.price-sticker-top b {
   font: 400 26px/1 var(--anton);
   letter-spacing: 0.06em;
 }
-.hello-top span {
+.price-sticker-top span {
   color: var(--on-accent);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.2em;
 }
-.hello-price {
+.price-sticker-price {
   display: flex;
   justify-content: center;
   padding: 6px 12px 14px;
   font: 40px/1.1 var(--marker);
   color: #141316;
 }
-.hello-price span {
+.price-sticker-price span {
   transform: rotate(-3deg);
   white-space: nowrap;
 }

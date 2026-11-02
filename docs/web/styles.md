@@ -21,11 +21,14 @@ Les autres couleurs et les polices sont des variables de `app/globals.css` :
 | `--background` | fond de la page |
 | `--ink` | texte |
 | `--ink-dimmed` | texte secondaire |
-| `--danger` | divergence, erreurs |
+| `--danger` | divergence |
+| `--danger-text` | texte d'erreur, plus clair que `--danger` pour rester lisible sur fond sombre |
 | `--glass`, `--glass-line` | fond et bord des panneaux de verre |
 | `--panel` | fond opaque sombre (graphe, dataset) |
 | `--on-accent` | texte posé sur une couleur vive (boutons, sticker du prix) |
 | `--monospace`, `--marker`, `--anton` | polices |
+
+La coloration du code de la documentation a ses propres variables, déclarées sur `.documentation-code` dans `code.css` (`--syntax-number`, `--syntax-call`), à côté des couleurs de la palette qu'elle réutilise.
 
 Les nuances de `--ink` ne sont pas recopiées en `rgba` : elles passent par `color-mix(in srgb, var(--ink) X%, transparent)`. C'est le cas des grilles et des traits à la craie des axes, et de la ligne de base du coût. Ces traits sont dessinés en SVG, mais leur couleur vient d'une classe CSS (`wall-axes-grid`, `wall-axes-chalk`, `cost-baseline`), pas d'un attribut écrit dans le TSX.
 
@@ -33,7 +36,9 @@ Les nuances de `--ink` ne sont pas recopiées en `rgba` : elles passent par `col
 
 - `app/globals.css` : tokens, reset, scrollbar, classes utilitaires (`.sr-only`, `.glass`, `.label`).
 - Une feuille par composant ou par sous-feature, importée par le composant qui l'utilise.
-- `features/dashboard/shared/shared.css` : ce que plusieurs sous-features du dashboard partagent, comme `.panel` et `.head-button` (les boutons GRAPHE, DATA et DOC).
+- `features/dashboard/shared/shared.css` : ce que plusieurs sous-features du dashboard partagent, comme `.dashboard-panel` et `.head-button` (les boutons GRAPHE, DATA et DOC).
+
+Les classes propres à une feature portent son préfixe (`.predict-error`, `.training-hint`, `.readout-chip`, `.readout-metric`, `.price-sticker`, `.dashboard-panel`), pour que deux features ne se marchent pas dessus avec un nom générique. Seules les utilitaires de `globals.css` gardent un nom court (`.label`, `.glass`, `.tape`, `.sr-only`).
 
 Aucune règle n'utilise `!important`. Quand une règle générique l'emporte, on écrit un sélecteur plus précis (`.dataset .dataset-km` face à `.dataset td`, `.documentation .documentation-title` face à `.documentation h2`).
 
@@ -49,6 +54,6 @@ Trois valeurs existent des deux côtés, parce qu'une media query ne lit pas de 
 |---|---|---|
 | passage en mode large | `WIDE = 1024` (`shared/configs/SceneConfig.ts`) | `@media (max-width: 1023px)` |
 | largeur de la colonne de droite | `ASIDE_WIDTH = 340` | `.dashboard-aside { width: 340px }` |
-| largeur du sticker du prix | `STICKER_WIDTH = 206` (`WallMarker.tsx`) | `.hello { width: 206px }` |
+| largeur du sticker du prix | `STICKER_WIDTH = 206` (`WallMarker.tsx`) | `.price-sticker { width: 206px }` |
 
 Si l'une change, il faut changer l'autre.

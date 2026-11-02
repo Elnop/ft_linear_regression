@@ -69,7 +69,7 @@
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
-.hint {
+.training-hint {
   position: absolute;
   right: 22px;
   top: -30px;
@@ -99,7 +99,7 @@
   .dashboard-bar {
     gap: 14px 18px;
   }
-  .hint {
+  .training-hint {
     position: static;
   }
 }

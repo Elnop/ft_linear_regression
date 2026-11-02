@@ -5,7 +5,7 @@
   justify-content: flex-end;
   gap: 10px;
 }
-.chip {
+.readout-chip {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -13,7 +13,7 @@
   padding: 10px 16px;
   border-radius: 12px;
 }
-.chip-value {
+.readout-chip-value {
   margin: 0;
   font-size: 18px;
   font-weight: 700;
@@ -23,7 +23,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.chip-value-plain {
+.readout-chip-value-plain {
   color: var(--ink);
 }
 .cost-tape {
@@ -63,19 +63,19 @@
   font-size: 11px;
   color: var(--ink-dimmed);
 }
-.metrics {
+.readout-metrics {
   margin: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
-.metric {
+.readout-metric {
   display: flex;
   flex-direction: column;
   gap: 4px;
   margin: 0;
 }
-.metric dd {
+.readout-metric dd {
   margin: 0;
   font-family: var(--marker);
   font-size: 26px;
@@ -90,12 +90,12 @@
     flex-wrap: nowrap;
     gap: 6px;
   }
-  .chip {
+  .readout-chip {
     flex: 1 1 auto;
     min-width: 0;
     padding: 8px;
   }
-  .chip-value {
+  .readout-chip-value {
     font-size: clamp(11px, 3.3vw, 15px);
   }
 }

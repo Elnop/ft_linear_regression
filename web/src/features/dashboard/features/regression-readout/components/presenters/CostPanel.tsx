@@ -35,7 +35,7 @@ export function CostPanel({ history, diverged }: CostPanelProps) {
   const color = diverged ? 'var(--danger)' : 'var(--cyan)';
   const lastIteration = last?.iteration ?? 0;
   return (
-    <figure className="panel glass dashboard-hit">
+    <figure className="dashboard-panel glass dashboard-hit">
       <div className="tape cost-tape" aria-hidden="true" />
       <figcaption className="cost-header">
         <span className="label">Coût J(θ) · log-log</span>

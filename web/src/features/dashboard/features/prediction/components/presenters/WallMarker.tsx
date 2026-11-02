@@ -39,18 +39,18 @@ export function WallMarker({ at, price, axisY, width, height }: WallMarkerProps)
         {visible && (
           <motion.div
             key="hello"
-            className="hello"
+            className="price-sticker"
             initial={{ opacity: 0, scale: 0.8 * scale, rotate: flip ? 8 : -12 }}
             animate={{ opacity: 1, scale, rotate: flip ? 4 : -5, left, top }}
             exit={{ opacity: 0, scale: 0.9 * scale }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
             style={{ left, top, transformOrigin: 'top left' }}
           >
-            <div className="hello-top">
+            <div className="price-sticker-top">
               <b>HELLO</b>
               <span>MON PRIX EST</span>
             </div>
-            <div className="hello-price">
+            <div className="price-sticker-price">
               <span>{formatNumber(price)}</span>
             </div>
           </motion.div>

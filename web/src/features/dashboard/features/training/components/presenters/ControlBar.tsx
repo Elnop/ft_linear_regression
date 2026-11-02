@@ -43,7 +43,7 @@ export function ControlBar({ disabled, training, learningRate }: ControlBarProps
         <output htmlFor={learningRateId}>{learningRate.value.toFixed(2)}</output>
       </div>
 
-      <span className="hint" role="status" style={{ visibility: learningRate.warn ? 'visible' : 'hidden' }}>
+      <span className="training-hint" role="status" style={{ visibility: learningRate.warn ? 'visible' : 'hidden' }}>
         {learningRate.warn ? 'ça va couler partout…' : ''}
       </span>
     </div>
