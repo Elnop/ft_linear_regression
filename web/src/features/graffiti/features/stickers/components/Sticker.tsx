@@ -1,9 +1,11 @@
+import { useId } from 'react';
 import type { PlacedSticker } from '@/features/graffiti/features/stickers/StickersTypes.ts';
 import { peelGeometry, tornEdge } from '@/features/graffiti/features/stickers/lib/damage.ts';
 
-type StickerProps = PlacedSticker & { id: string };
+type StickerProps = PlacedSticker;
 
-export function Sticker({ id, art, damage, width, x, y, rotation }: StickerProps) {
+export function Sticker({ art, damage, width, x, y, rotation }: StickerProps) {
+  const id = useId();
   const { viewWidth, viewHeight } = art;
   const peel = damage.peel && peelGeometry(viewWidth, viewHeight, damage.peel);
   const tearX = damage.tear !== undefined ? damage.tear * viewWidth : undefined;

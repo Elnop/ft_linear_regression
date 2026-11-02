@@ -10,7 +10,7 @@ export function StickersContainer() {
   return (
     <div className="wall-stickers" aria-hidden="true">
       {stickers.map((sticker, i) => (
-        <Sticker key={i} id={`sticker-${i}`} {...sticker} />
+        <Sticker key={i} {...sticker} />
       ))}
     </div>
   );
