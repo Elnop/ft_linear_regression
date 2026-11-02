@@ -74,7 +74,7 @@ export class WallPainter {
 
     const { instant } = run;
     const seconds = Math.max(0.05, duration / 1000);
-    const speed = instant ? NOMINAL_SPEED : (Math.hypot(end.x - start.x, end.y - start.y) / seconds) * 1.2;
+    const speed = instant ? NOMINAL_SPEED : (Math.hypot(end.x - start.x, end.y - start.y) / seconds) * STYLE.speedMargin;
     const job = pathJob(layer, reverse ? [end, start] : [start, end], {
       speed,
       width: style.width,
@@ -108,7 +108,7 @@ export class WallPainter {
       color: COLORS.point,
       opacity,
       z,
-      bounds: { x: center.x - 30, y: center.y - 30, width: 60, height: 60 + DRIP_ROOM.dot },
+      bounds: { x: center.x - STYLE.pointBox / 2, y: center.y - STYLE.pointBox / 2, width: STYLE.pointBox, height: STYLE.pointBox + DRIP_ROOM.dot },
     });
     const [minimumLoad, maximumLoad] = STYLE.dot.load;
     return { layer, center, options: { width: STYLE.dot.width, load: minimumLoad + Math.random() * (maximumLoad - minimumLoad) } };

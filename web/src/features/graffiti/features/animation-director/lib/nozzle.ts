@@ -5,7 +5,7 @@ import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
 import type { SprayDotOptions, SprayPathOptions } from '@/features/graffiti/features/animation-director/types/NozzleTypes.ts';
 import type { RandomGenerator } from '@/features/graffiti/shared/types/RandomTypes.ts';
-import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/configs/NozzleConfig.ts';
+import { DOT_DEFAULTS, NOMINAL_SPEED, PATH_DEFAULTS } from '@/features/graffiti/features/animation-director/configs/NozzleConfig.ts';
 
 const DROPLET = 0.05;
 const SPRAY_SIGMA = 3.6;
@@ -81,9 +81,9 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
   const path = samplePath(points);
   const length = path.length;
   const speed = options.speed ?? NOMINAL_SPEED;
-  const width = options.width ?? 16;
-  const load = options.load ?? 1.2;
-  const dwell = (options.dwell ?? 70) / 1000;
+  const width = options.width ?? PATH_DEFAULTS.width;
+  const load = options.load ?? PATH_DEFAULTS.load;
+  const dwell = (options.dwell ?? PATH_DEFAULTS.dwell) / 1000;
   const taper = options.end ? options.end === 'taper' : random() < 0.5;
   const sigma0 = width / SPRAY_SIGMA;
   const rate = load * NOMINAL_SPEED * Math.sqrt(2 * Math.PI) * sigma0;
@@ -172,9 +172,9 @@ export function moveJob(layer: PaintLayer, points: Vec2[], speed: number): Job {
 
 export function dotJob(layer: PaintLayer, center: Vec2, options: SprayDotOptions): Job {
   const random = mulberry32(options.seed ?? randomSeed());
-  const duration = (options.duration ?? 180) / 1000;
-  const sigma = (options.width ?? 14) / 4.2;
-  const load = options.load ?? 2.4;
+  const duration = (options.duration ?? DOT_DEFAULTS.duration) / 1000;
+  const sigma = (options.width ?? DOT_DEFAULTS.width) / DOT_DEFAULTS.sigmaDivisor;
+  const load = options.load ?? DOT_DEFAULTS.load;
   const rate = (load * 2 * Math.PI * sigma * sigma) / duration;
   const jitterX = noise1D(random);
   const jitterY = noise1D(random);

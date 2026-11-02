@@ -10,6 +10,7 @@ import type { Run } from '@/features/graffiti/features/animation-director/types/
 import type { Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
 import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/configs/NozzleConfig.ts';
 import { STROKE } from '@/shared/configs/TitleConfig.ts';
+import { TITLE_PAINT } from '@/features/graffiti/features/animation-director/configs/TitlePaintConfig.ts';
 
 export async function paintTitle(engine: PaintEngine, run: Run): Promise<PaintLayer> {
   const layout = sceneFor(engine.width, engine.height).title;
@@ -20,10 +21,10 @@ export async function paintTitle(engine: PaintEngine, run: Run): Promise<PaintLa
     bounds: { x: rectangle.x - em, y: Math.max(0, rectangle.y - em), width: rectangle.width + 2 * em, height: rectangle.height + 5 * em },
   });
 
-  const width = Math.max(3.5, 0.6 * STROKE * em);
-  const pace = Math.min(900, Math.max(300, em * 16));
-  const speed = Math.min(1100, Math.max(400, em * 14));
-  const lead = 1.5 * em;
+  const width = Math.max(TITLE_PAINT.width.minimum, TITLE_PAINT.width.strokeRatio * STROKE * em);
+  const pace = Math.min(TITLE_PAINT.pace.maximum, Math.max(TITLE_PAINT.pace.minimum, em * TITLE_PAINT.pace.perEm));
+  const speed = Math.min(TITLE_PAINT.sweep.maximum, Math.max(TITLE_PAINT.sweep.minimum, em * TITLE_PAINT.sweep.perEm));
+  const lead = TITLE_PAINT.leadEm * em;
   const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed), run.instant);
 
   for (const line of letterLines(titleLetters(layout, random))) {
@@ -44,15 +45,15 @@ const STAMP_SPEED = 1e5;
 
 function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
   if (stroke.dot) {
-    void engine.spray(dotJob(layer, stroke.points[0], { width: width * 1.25, duration: 120, load: stroke.thickness, seed: seedFrom(random) }), true);
+    void engine.spray(dotJob(layer, stroke.points[0], { width: width * TITLE_PAINT.dot.widthRatio, duration: TITLE_PAINT.dot.duration, load: stroke.thickness, seed: seedFrom(random) }), true);
     return;
   }
-  const heavy = stroke.thickness > 1.1;
+  const heavy = stroke.thickness > TITLE_PAINT.heavyThickness;
   const options = {
     speed: STAMP_SPEED,
     width,
     load: (stroke.thickness * STAMP_SPEED) / NOMINAL_SPEED,
-    dwell: ((heavy ? 70 : 12) * pace) / STAMP_SPEED,
+    dwell: ((heavy ? TITLE_PAINT.dwell.heavy : TITLE_PAINT.dwell.light) * pace) / STAMP_SPEED,
     hesitations: 0,
     end: heavy ? 'blob' : 'taper',
     seed: seedFrom(random),

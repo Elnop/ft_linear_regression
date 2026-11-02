@@ -7,6 +7,8 @@ export const STYLE = {
   diverge: { width: 11, thickness: 1.1, hesitations: 0, dwell: 40 },
   fadeBase: 0.8,
   fadeFloor: 0.22,
+  pointBox: 60,
+  speedMargin: 1.2,
 } as const;
 
 export const COLORS = { point: PALETTE.cyan, line: PALETTE.magenta, diverge: PALETTE.acid } as const;
