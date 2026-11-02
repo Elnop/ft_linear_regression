@@ -24,7 +24,9 @@ function Metric({ label, value, color }: { label: string; value: string; color?:
   return (
     <div className="readout-metric">
       <dt className="label">{label}</dt>
-      <dd style={{ color, fontSize: value.length > 5 ? 19 : undefined }}>{value}</dd>
+      <dd className={value.length > 5 ? 'readout-metric-long' : undefined} style={{ color }}>
+        {value}
+      </dd>
     </div>
   );
 }

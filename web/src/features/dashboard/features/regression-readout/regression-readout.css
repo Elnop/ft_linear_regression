@@ -84,6 +84,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.readout-metric dd.readout-metric-long {
+  font-size: 19px;
+}
 
 @media (max-width: 1023px) {
   .dashboard-chips-list {
@@ -97,5 +100,8 @@
   }
   .readout-chip-value {
     font-size: clamp(11px, 3.3vw, 15px);
+  }
+  .readout-metric dd.readout-metric-long {
+    font-size: clamp(15px, 5vw, 19px);
   }
 }
