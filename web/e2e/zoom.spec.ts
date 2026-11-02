@@ -15,9 +15,17 @@ function declareCases(): void {
     { width: 960, height: 540 },
   ]) {
     for (const view of [
-      { tag: '@paintless', containers: '.dashboard-panel, .dashboard-bar, .readout-chip', sticker: false },
+      {
+        tag: '@paintless',
+        containers: '.dashboard-panel, .dashboard-bar, .readout-chip',
+        sticker: false,
+      },
       // The sticker belongs to the painted wall, which needs WebGL.
-      { tag: '@painting', containers: '.dashboard-panel, .dashboard-bar, .readout-chip, .price-sticker', sticker: true },
+      {
+        tag: '@painting',
+        containers: '.dashboard-panel, .dashboard-bar, .readout-chip, .price-sticker',
+        sticker: true,
+      },
     ]) {
       test(`no horizontal scroll and every control reachable (${viewport.width}×${viewport.height}, ${view.tag})`, { tag: view.tag }, async ({ page }) => {
         await page.setViewportSize(viewport);
@@ -94,14 +102,15 @@ test.describe('with a 20px default font', () => {
     });
   }
 
-  test('the interface is narrow at 1200×800: the aside sits under the wall', { tag: '@paintless' }, async ({ page }) => {
+  test('the interface is narrow at 1200×800: the aside sits under the chart', { tag: '@paintless' }, async ({ page }) => {
     await page.setViewportSize({ width: 1200, height: 800 });
     await openApp(page);
     await settled(page);
 
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe('20px');
     const aside = await page.locator('.dashboard-aside').boundingBox();
-    const chart = await page.locator('.wall-axes').boundingBox();
+    // Without WebGL the wall shows the plain chart; `.wall-axes` would be the whole screen, not the chart.
+    const chart = await page.locator('svg:has(.plain-axis)').boundingBox();
     expect(aside).not.toBeNull();
     expect(chart).not.toBeNull();
     expect(aside!.y).toBeGreaterThanOrEqual(chart!.y + chart!.height - 1);
