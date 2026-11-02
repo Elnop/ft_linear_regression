@@ -1,4 +1,4 @@
-import { smoothstep } from './smoothstep.ts';
+import { smoothstep } from '@/features/graffiti/shared/lib/smoothstep.ts';
 import type { RandomGenerator } from '@/features/graffiti/shared/types/RandomTypes.ts';
 
 export function mulberry32(seed: number): RandomGenerator {

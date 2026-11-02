@@ -1,5 +1,5 @@
-import { smoothstep } from './smoothstep.ts';
-import type { PaintLayer } from './PaintLayer.ts';
+import { smoothstep } from '@/features/graffiti/shared/lib/smoothstep.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
 
 type Running = { job: Job; done: () => void };

@@ -1,5 +1,5 @@
-import type { PaintLayer } from './PaintLayer.ts';
-import { coverRectangle } from './coverRectangle.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
 import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from '@/features/graffiti/shared/configs/ShadersConfig.ts';
 import type { CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.ts';
 

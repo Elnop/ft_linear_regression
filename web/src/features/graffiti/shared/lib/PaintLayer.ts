@@ -1,9 +1,9 @@
-import { hexToRgb } from './hexToRgb.ts';
+import { hexToRgb } from '@/features/graffiti/shared/lib/hexToRgb.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
 import type { LayerOptions, CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.ts';
 
-import { mulberry32, noise2D } from './random.ts';
+import { mulberry32, noise2D } from '@/features/graffiti/shared/lib/random.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
 import { FILM_SCALE } from '@/features/graffiti/shared/configs/LayerConfig.ts';
 

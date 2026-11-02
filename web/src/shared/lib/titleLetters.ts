@@ -1,5 +1,5 @@
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { smoothStroke } from './smoothStroke.ts';
+import { smoothStroke } from '@/shared/lib/smoothStroke.ts';
 import type { TitleLayout, Stroke, TitleLine } from '@/shared/types/TitleTypes.ts';
 import { GLYPHS } from '@/shared/configs/GlyphsConfig.ts';
 

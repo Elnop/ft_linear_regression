@@ -1,4 +1,4 @@
-import { isFinalPass } from './training.ts';
+import { isFinalPass } from '@/features/graffiti/features/animation-director/lib/training.ts';
 import type { LineKind, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 
 export function lineKindAt(plan: Training, pass: number): LineKind {

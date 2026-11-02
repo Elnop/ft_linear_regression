@@ -1,5 +1,5 @@
-import { mulberry32 } from './random.ts';
-import { coverRectangle } from './coverRectangle.ts';
+import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
+import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
 
 function boxBlur(source: Float32Array, width: number, height: number, radius: number): Float32Array {

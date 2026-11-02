@@ -1,5 +1,5 @@
-import { chartMapping } from './chartMapping.ts';
-import { titleLayout } from './titleLayout.ts';
+import { chartMapping } from '@/shared/lib/chartMapping.ts';
+import { titleLayout } from '@/shared/lib/titleLayout.ts';
 import type { Scene } from '@/shared/types/SceneTypes.ts';
 import { WIDE, ASIDE_WIDTH } from '@/shared/configs/SceneConfig.ts';
 

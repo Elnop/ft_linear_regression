@@ -1,18 +1,18 @@
 import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
-import { paintTitle } from './paintTitle.ts';
+import { paintTitle } from '@/features/graffiti/features/animation-director/lib/paintTitle.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { shuffled } from '@/features/graffiti/shared/lib/random.ts';
 import type { Director, DirectorDependencies, Run, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
-import { WallPainter } from './WallPainter.ts';
+import { WallPainter } from '@/features/graffiti/features/animation-director/lib/WallPainter.ts';
 import { IDLE_PLAYBACK } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
-import { Timeline } from './Timeline.ts';
+import { Timeline } from '@/features/graffiti/features/animation-director/lib/Timeline.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
-import { isFinalPass, runTraining, stepAt } from './training.ts';
-import { lineKindAt } from './lineKindAt.ts';
-import { resetStores } from './resetStores.ts';
+import { isFinalPass, runTraining, stepAt } from '@/features/graffiti/features/animation-director/lib/training.ts';
+import { lineKindAt } from '@/features/graffiti/features/animation-director/lib/lineKindAt.ts';
+import { resetStores } from '@/features/graffiti/features/animation-director/lib/resetStores.ts';
 
 const MINOR_INTRO_RESIZE = 0.15;
 

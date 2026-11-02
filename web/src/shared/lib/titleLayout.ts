@@ -1,5 +1,5 @@
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
-import { titleLetters } from './titleLetters.ts';
+import { titleLetters } from '@/shared/lib/titleLetters.ts';
 import type { TitleLayout } from '@/shared/types/TitleTypes.ts';
 import { WIDE } from '@/shared/configs/SceneConfig.ts';
 import { STROKE } from '@/shared/configs/TitleConfig.ts';

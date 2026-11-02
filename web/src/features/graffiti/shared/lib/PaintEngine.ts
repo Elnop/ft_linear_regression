@@ -1,11 +1,11 @@
-import { stepFlow } from './stepFlow.ts';
-import { PaintLayer } from './PaintLayer.ts';
-import { Scheduler } from './Scheduler.ts';
-import { pixelRatio } from './pixelRatio.ts';
+import { stepFlow } from '@/features/graffiti/shared/lib/stepFlow.ts';
+import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
+import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
 
-import { createGLRenderer } from './createGLRenderer.ts';
+import { createGLRenderer } from '@/features/graffiti/shared/lib/createGLRenderer.ts';
 import type { Renderer } from '@/features/graffiti/shared/types/RendererTypes.ts';
-import { computeRoughness } from './computeRoughness.ts';
+import { computeRoughness } from '@/features/graffiti/shared/lib/computeRoughness.ts';
 import type { LayerOptions } from '@/features/graffiti/shared/types/LayerTypes.ts';
 import type { Nozzle, Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';

@@ -1,4 +1,4 @@
-import { PALETTE } from './PaletteConfig.ts';
+import { PALETTE } from '@/features/graffiti/features/animation-director/configs/PaletteConfig.ts';
 
 export const STYLE = {
   dot: { width: 15, load: [1.8, 2.7] },

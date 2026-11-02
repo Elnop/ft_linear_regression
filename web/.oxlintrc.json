@@ -24,8 +24,8 @@
       {
         "patterns": [
           {
-            "regex": "^\\.\\./",
-            "message": "Utilise l'alias @/ (ou @core/) au lieu d'un import parent."
+            "regex": "^\\.\\.?/",
+            "message": "Utilise l'alias @/ (ou @core/) au lieu d'un import relatif."
           }
         ]
       }

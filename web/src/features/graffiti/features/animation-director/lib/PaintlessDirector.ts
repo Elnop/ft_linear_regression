@@ -1,8 +1,8 @@
 import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
 import type { Director, DirectorDependencies } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import { resetStores } from './resetStores.ts';
-import { runTraining, stepAt } from './training.ts';
+import { resetStores } from '@/features/graffiti/features/animation-director/lib/resetStores.ts';
+import { runTraining, stepAt } from '@/features/graffiti/features/animation-director/lib/training.ts';
 
 export class PaintlessDirector implements Director {
   private dependencies: DirectorDependencies;

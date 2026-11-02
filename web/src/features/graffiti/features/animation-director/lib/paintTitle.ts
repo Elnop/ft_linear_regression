@@ -1,7 +1,7 @@
 import { PALETTE } from '@/features/graffiti/features/animation-director/configs/PaletteConfig.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { dotJob, moveJob, pathJob } from './nozzle.ts';
+import { dotJob, moveJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed } from '@/features/graffiti/shared/lib/random.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
