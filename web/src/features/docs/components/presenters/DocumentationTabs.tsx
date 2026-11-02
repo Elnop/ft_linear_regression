@@ -24,7 +24,7 @@ export function DocumentationTabs({ tab, tabRefs, onSelect, onKeyDown }: Documen
           id={`documentation-tab-${tabItem.id}`}
           className="documentation-tab"
           aria-selected={tab === tabItem.id}
-          aria-controls={`documentation-panel-${tabItem.id}`}
+          aria-controls={tab === tabItem.id ? `documentation-panel-${tabItem.id}` : undefined}
           tabIndex={tab === tabItem.id ? 0 : -1}
           onClick={() => onSelect(tabItem.id)}
           onKeyDown={(event) => onKeyDown(event, i)}

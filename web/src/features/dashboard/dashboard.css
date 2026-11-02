@@ -118,7 +118,9 @@ html:has(.documentation-page)::-webkit-scrollbar {
     gap: 8px;
   }
   .dashboard-root .dashboard-chips {
-    justify-content: flex-start;
     flex: 1 1 auto;
+  }
+  .dashboard-root .dashboard-chips-list {
+    justify-content: flex-start;
   }
 }

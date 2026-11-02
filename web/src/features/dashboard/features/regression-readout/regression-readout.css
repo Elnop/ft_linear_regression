@@ -1,4 +1,4 @@
-.dashboard-chips {
+.dashboard-chips-list {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
@@ -64,6 +64,7 @@
   color: var(--ink-dimmed);
 }
 .metrics {
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
@@ -85,7 +86,7 @@
 }
 
 @media (max-width: 1023px) {
-  .dashboard-chips {
+  .dashboard-chips-list {
     flex-wrap: nowrap;
     gap: 6px;
   }

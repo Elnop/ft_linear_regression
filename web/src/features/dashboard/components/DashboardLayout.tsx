@@ -28,7 +28,7 @@ export function DashboardLayout({ documentation }: { documentation: ReactNode })
       <WallMarkerContainer />
       <PlainChartContainer />
       <DatasetPanelContainer />
-      <div className="dashboard-root" style={geometry}>
+      <main className="dashboard-root" style={geometry}>
         <h1 className="sr-only">ft_linear_regression</h1>
         <Reveal visible={visible} from={{ y: -12 }} className="dashboard-head-slot">
           <HeadBar chips={<HeaderChipsContainer />} toggles={<ViewTogglesContainer />} />
@@ -42,7 +42,7 @@ export function DashboardLayout({ documentation }: { documentation: ReactNode })
           <ControlBarContainer />
         </Reveal>
         <SkipButtonContainer />
-      </div>
+      </main>
       {visible && (
         <div className="documentation-page" style={{ padding: `0 ${padding}px ${padding}px` }}>
           {documentation}
