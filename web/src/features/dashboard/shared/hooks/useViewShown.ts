@@ -1,5 +1,5 @@
 import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
-import { useView } from '@/features/dashboard/shared/stores/viewStore.ts';
+import { useView } from '@/features/dashboard/shared/hooks/useView.ts';
 import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
 

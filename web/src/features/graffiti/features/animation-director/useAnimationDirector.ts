@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useEngine, useEngineFailed } from '@/features/graffiti/shared/engineStore.ts';
+import { useEngine } from '@/features/graffiti/shared/useEngine.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import { AnimationDirector } from '@/features/graffiti/features/animation-director/lib/AnimationDirector.ts';
 import { PaintlessDirector } from '@/features/graffiti/features/animation-director/lib/PaintlessDirector.ts';
@@ -17,8 +17,8 @@ function createDirector(engine: PaintEngine | null, engineFailed: boolean): Dire
 }
 
 export function useAnimationDirector(): void {
-  const engine = useEngine();
-  const engineFailed = useEngineFailed();
+  const engine = useEngine((state) => state.engine);
+  const engineFailed = useEngine((state) => state.failed);
   useEffect(() => {
     const director = createDirector(engine, engineFailed);
     if (!director) return;

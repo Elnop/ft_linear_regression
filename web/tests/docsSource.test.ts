@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { pick, tokenize } from '@/features/docs/lib/source.ts';
+import { pick } from '@/features/docs/lib/pick.ts';
+import { tokenize } from '@/features/docs/lib/tokenize.ts';
 
 const PICKED: Record<string, string[]> = {
   'parseDataset.ts': ['parseDataset'],

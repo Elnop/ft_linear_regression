@@ -2,7 +2,7 @@ import { parseMileage } from '@core/parseMileage.ts';
 import { useMemo } from 'react';
 import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { normalizeMileage } from '@/features/dashboard/shared/lib/normalizeMileage.ts';
-import { useKm } from '@/features/dashboard/shared/stores/predictionStore.ts';
+import { useKm } from '@/features/dashboard/shared/hooks/useKm.ts';
 import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useRegression } from '@/states/regression/hooks/useRegression.ts';

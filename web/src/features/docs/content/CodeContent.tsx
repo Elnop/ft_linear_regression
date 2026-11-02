@@ -5,7 +5,7 @@ import metricsSource from '@core/metrics.ts?raw';
 import normalizeSource from '@core/normalize.ts?raw';
 import trainSource from '@core/trainSteps.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
-import { pick } from '@/features/docs/lib/source.ts';
+import { pick } from '@/features/docs/lib/pick.ts';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
 
 export const CODE: DocStep[] = [
