@@ -1,16 +1,15 @@
 import assert from 'node:assert/strict';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 const ROOT = new URL('../', import.meta.url);
 const BASES = ['', 'web/', 'web/src/', 'web/src/features/'];
 const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|shared|states|tests|web)\//;
-const DOCUMENTS = [
-  'README.md',
-  ...readdirSync(new URL('docs/', ROOT), { recursive: true, encoding: 'utf8' })
-    .filter((name) => name.endsWith('.md'))
-    .map((name) => `docs/${name}`),
-];
+// git lists the documents, so whatever .gitignore leaves out is never checked.
+const DOCUMENTS = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '--', 'README.md', 'docs'], { cwd: ROOT, encoding: 'utf8' })
+  .split('\n')
+  .filter((name) => name.endsWith('.md') && existsSync(new URL(name, ROOT)));
 
 function citedPaths(markdown: string): string[] {
   const prose = markdown.replace(/^```[\s\S]*?^```/gm, '');
