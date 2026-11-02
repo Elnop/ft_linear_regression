@@ -10,6 +10,7 @@
     "precision": "node cli/precision.ts",
     "web": "npm run dev -w web",
     "build": "npm run build -w web",
+    "e2e": "npm run e2e -w web",
     "typecheck": "tsc -p . && npm run typecheck -w web",
     "lint": "oxlint --type-aware core cli tests",
     "test": "node --test 'tests/**/*.test.ts' && npm test -w web",

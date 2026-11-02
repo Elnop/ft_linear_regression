@@ -47,10 +47,10 @@ Pour tester sans changer son système : dans Chrome, DevTools → menu ⋮ → M
 
 Le 2 novembre 2026, sur Chromium headless :
 
-- axe-core 4.10 sur le dashboard et sur les deux onglets de la documentation : aucune violation. Avant ce travail, il en signalait deux (contraste du sticker du prix, titre et chips hors de tout landmark).
+- axe-core sur le dashboard et sur les deux onglets de la documentation : aucune violation. Avant ce travail, il en signalait deux (contraste du sticker du prix, titre et chips hors de tout landmark).
 - Un parcours clavier scripté : DOC puis Entrée place le focus sur la documentation, un lien du sommaire le place sur l'étape, et les flèches, Home et End changent d'onglet.
 - En mouvement réduit, l'état final est atteint sans intro et sans bouton *Passer*. Un entraînement à α = 3 affiche directement son résultat divergé.
 
-Ces scripts ne font pas partie du repo, pour ne pas ajouter de dépendances au projet. On les reproduit avec l'extension axe DevTools ou l'audit Accessibilité de Lighthouse, et au clavier.
+Ces contrôles sont dans le repo : `npm run e2e` les relance, en local et dans la CI (voir [verifications.md](verifications.md)). En les automatisant, on a trouvé que le bouton *Passer* apparaissait quand même en mouvement réduit, pendant 400 ms, une fois l'état final peint. Il est maintenant masqué dans ce mode.
 
 Pas encore testé : un vrai lecteur d'écran (NVDA, VoiceOver) et un zoom à 200 %.
