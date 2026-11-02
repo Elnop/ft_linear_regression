@@ -14,25 +14,25 @@
   display: flex;
   justify-content: flex-end;
   align-items: stretch;
-  gap: 10px;
+  gap: var(--space-10);
 }
 .dashboard-head-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: var(--space-6);
 }
 .dashboard-head-actions > button {
   justify-content: center;
   height: auto;
   min-height: 0;
-  padding: 0 10px;
-  border-radius: 10px;
-  font-size: 10px;
-  gap: 6px;
+  padding: 0 var(--space-10);
+  border-radius: var(--space-10);
+  font-size: var(--text-xs);
+  gap: var(--space-6);
 }
 .dashboard-head-actions > button svg {
-  width: 12px;
-  height: 12px;
+  width: var(--space-12);
+  height: var(--space-12);
 }
 .dashboard-head-actions > .documentation-jump {
   grid-column: 1 / -1;
@@ -44,12 +44,12 @@
 }
 .dashboard-aside {
   position: absolute;
-  top: calc(var(--dashboard-top) + 92px);
+  top: calc(var(--dashboard-top) + 5.75rem);
   right: var(--dashboard-padding);
   width: var(--aside-width);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-20);
 }
 .dashboard-footer {
   position: absolute;
@@ -60,7 +60,7 @@
 .dashboard-root .button-skip {
   position: fixed;
   right: var(--dashboard-padding);
-  bottom: calc(var(--dashboard-padding) * 0.2 + 86px);
+  bottom: calc(var(--dashboard-padding) * 0.2 + 5.375rem);
 }
 .dashboard-root button:focus-visible,
 .dashboard-root input[type='range']:focus-visible {
@@ -71,8 +71,8 @@
 .documentation-page {
   position: relative;
   z-index: 7;
-  margin-top: calc(100vh + 40px);
-  margin-top: calc(100dvh + 40px);
+  margin-top: calc(100vh + 2.5rem);
+  margin-top: calc(100dvh + 2.5rem);
 }
 
 @media (max-width: 1023px) {
@@ -80,7 +80,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 1.125rem;
     padding: var(--dashboard-top) var(--dashboard-padding) 0;
     overflow-x: clip;
   }
@@ -95,21 +95,20 @@
     bottom: var(--dashboard-padding);
   }
   .documentation-page {
-    margin-top: 18px;
+    margin-top: 1.125rem;
   }
   .dashboard-root .dashboard-head {
     flex-wrap: wrap;
   }
   .dashboard-root .dashboard-head-actions {
     display: flex;
-    gap: 10px;
+    gap: var(--space-10);
   }
   .dashboard-root .dashboard-head-actions > button {
-    min-height: 48px;
-    padding: 0 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    gap: 8px;
+    min-height: var(--space-48);
+    padding: 0 var(--space-12);
+    border-radius: var(--space-12);
+    gap: var(--space-8);
   }
   .dashboard-root .dashboard-chips {
     flex: 1 1 auto;

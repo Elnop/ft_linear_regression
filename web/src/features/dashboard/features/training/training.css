@@ -3,27 +3,27 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 14px 26px;
-  padding: 12px 18px;
-  border-radius: 18px;
+  gap: 0.875rem 1.625rem;
+  padding: var(--space-12) 1.125rem;
+  border-radius: 1.125rem;
 }
 .bar-buttons {
   display: flex;
-  gap: 10px;
+  gap: var(--space-10);
 }
 .button-train {
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 48px;
-  padding: 0 22px;
-  border-radius: 12px;
+  gap: var(--space-10);
+  height: var(--space-48);
+  padding: 0 1.375rem;
+  border-radius: var(--space-12);
   border: 0;
   cursor: pointer;
   background: var(--magenta);
   color: var(--on-accent);
   font-family: var(--anton);
-  font-size: 20px;
+  font-size: var(--text-lg);
   letter-spacing: 0.06em;
   box-shadow:
     0 0 22px rgba(255, 43, 214, 0.25),
@@ -37,9 +37,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: var(--space-48);
+  height: var(--space-48);
+  border-radius: var(--space-12);
   cursor: pointer;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -52,8 +52,8 @@
 .learning-rate {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: 1 1 220px;
+  gap: var(--space-12);
+  flex: 1 1 13.75rem;
   min-width: 0;
 }
 .learning-rate .label {
@@ -61,22 +61,22 @@
 }
 .learning-rate input {
   flex: 1 1 auto;
-  min-width: 80px;
+  min-width: 5rem;
   accent-color: var(--magenta);
 }
 .learning-rate output {
-  font-size: 15px;
+  font-size: var(--text-base);
   font-weight: 700;
-  min-width: 44px;
+  min-width: 2.75rem;
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
 .training-hint {
   position: absolute;
-  right: 22px;
-  top: -30px;
+  right: 1.375rem;
+  top: -1.875rem;
   font-family: var(--marker);
-  font-size: 19px;
+  font-size: var(--text-md);
   color: var(--danger);
   transform: rotate(-3deg);
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
@@ -87,19 +87,19 @@
   position: absolute;
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 12px;
+  gap: var(--space-8);
+  height: 2.75rem;
+  padding: 0 1.125rem;
+  border-radius: var(--space-12);
   cursor: pointer;
   color: var(--ink);
-  font: 700 13px var(--monospace);
+  font: 700 var(--text-sm) var(--monospace);
   letter-spacing: 0.14em;
 }
 
 @media (max-width: 1023px) {
   .dashboard-bar {
-    gap: 14px 18px;
+    gap: 0.875rem 1.125rem;
   }
   .training-hint {
     position: static;

@@ -2,25 +2,25 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px 20px 16px;
+  gap: var(--space-10);
+  padding: var(--space-20) var(--space-20) var(--space-16);
 }
 .head-button {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
   height: 100%;
-  min-height: 48px;
-  padding: 0 16px;
-  border-radius: 12px;
+  min-height: var(--space-48);
+  padding: 0 var(--space-16);
+  border-radius: var(--space-12);
   cursor: pointer;
   color: var(--ink);
-  font: 700 12px var(--monospace);
+  font: 700 var(--text-sm) var(--monospace);
   letter-spacing: 0.14em;
 }
 
 @media (max-width: 1023px) {
   .head-button {
-    padding: 0 12px;
+    padding: 0 var(--space-12);
   }
 }

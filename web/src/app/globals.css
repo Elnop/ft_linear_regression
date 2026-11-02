@@ -54,7 +54,7 @@ body {
 
 .glass {
   position: relative;
-  border-radius: 16px;
+  border-radius: var(--space-16);
   background: var(--glass);
   border: 1px solid var(--glass-line);
   -webkit-backdrop-filter: blur(18px) saturate(130%);
@@ -76,7 +76,7 @@ body {
 }
 
 .label {
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.16em;
   color: var(--ink-dimmed);
   text-transform: uppercase;
