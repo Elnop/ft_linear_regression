@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
 import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
@@ -30,11 +29,11 @@ test('a job advances once per tick and settles when it ends', async () => {
   const running = job(layer(), 0.25);
   const promise = scheduler.run(running);
   scheduler.advanceJobs(0.1);
-  assert.equal(running.elapsed, 0.1);
-  assert.equal(await settled(promise), false);
+  expect(running.elapsed).toBe(0.1);
+  expect(await settled(promise)).toBe(false);
   scheduler.advanceJobs(0.2);
-  assert.equal(await settled(promise), true);
-  assert.equal(scheduler.busy, false);
+  expect(await settled(promise)).toBe(true);
+  expect(scheduler.busy).toBe(false);
 });
 
 test('the current job is the last one started', () => {
@@ -43,8 +42,8 @@ test('the current job is the last one started', () => {
   const second = job(layer(), 1);
   void scheduler.run(first);
   void scheduler.run(second);
-  assert.equal(scheduler.currentJob, second);
-  assert.equal(scheduler.jobCount, 2);
+  expect(scheduler.currentJob).toBe(second);
+  expect(scheduler.jobCount).toBe(2);
 });
 
 test('a tween eases to its target and settles', async () => {
@@ -52,13 +51,13 @@ test('a tween eases to its target and settles', async () => {
   const target = layer();
   target.opacity = 0;
   const promise = scheduler.fade(target, { opacity: 1, gray: 0.5 }, 0.4);
-  assert.equal(scheduler.advanceTweens(0.2), true);
-  assert.ok(target.opacity > 0 && target.opacity < 1);
+  expect(scheduler.advanceTweens(0.2)).toBe(true);
+  expect(target.opacity > 0 && target.opacity < 1).toBeTruthy();
   scheduler.advanceTweens(0.3);
-  assert.equal(target.opacity, 1);
-  assert.equal(target.gray, 0.5);
-  assert.equal(await settled(promise), true);
-  assert.equal(scheduler.advanceTweens(0.1), false);
+  expect(target.opacity).toBe(1);
+  expect(target.gray).toBe(0.5);
+  expect(await settled(promise)).toBe(true);
+  expect(scheduler.advanceTweens(0.1)).toBe(false);
 });
 
 test('a new fade on the same layer settles the previous one', async () => {
@@ -66,9 +65,9 @@ test('a new fade on the same layer settles the previous one', async () => {
   const target = layer();
   const first = scheduler.fade(target, { opacity: 0, gray: 0 }, 1);
   void scheduler.fade(target, { opacity: 1, gray: 0 }, 1);
-  assert.equal(await settled(first), true);
+  expect(await settled(first)).toBe(true);
   scheduler.cancelFade(target);
-  assert.equal(scheduler.busy, false);
+  expect(scheduler.busy).toBe(false);
 });
 
 test('keepOnly drops the work of the other layers and settles it', async () => {
@@ -79,8 +78,8 @@ test('keepOnly drops the work of the other layers and settles it', async () => {
   const droppedJob = scheduler.run(job(dropped, 1));
   const droppedTween = scheduler.fade(dropped, { opacity: 0, gray: 0 }, 1);
   scheduler.keepOnly((owner) => owner === kept);
-  assert.equal(await settled(droppedJob), true);
-  assert.equal(await settled(droppedTween), true);
-  assert.equal(await settled(keptJob), false);
-  assert.equal(scheduler.jobCount, 1);
+  expect(await settled(droppedJob)).toBe(true);
+  expect(await settled(droppedTween)).toBe(true);
+  expect(await settled(keptJob)).toBe(false);
+  expect(scheduler.jobCount).toBe(1);
 });

@@ -53,4 +53,4 @@ Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 - `ASIDE_WIDTH` (`shared/configs/SceneConfig.ts`) arrive en variable `--aside-width`, posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
 - `STICKER_WIDTH` est la largeur en style du sticker du prix, dans `WallMarker.tsx`.
 
-Le passage en mode large, `WIDE = 1024`, ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 1023px)`, et `web/tests/breakpoints.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE`.
+Le passage en mode large, `WIDE = 1024`, ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 1023px)`, et `web/src/shared/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE`.

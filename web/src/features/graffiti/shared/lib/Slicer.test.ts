@@ -1,19 +1,18 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
 
 test('a slice runs until its budget is spent, then gives the thread back', async () => {
   const slicer = new Slicer(30, new AbortController().signal);
   await slicer.pause();
-  assert.equal(slicer.due, false);
+  expect(slicer.due).toBe(false);
   let otherTaskRan = false;
   setTimeout(() => (otherTaskRan = true), 0);
   const until = performance.now() + 40;
   while (performance.now() < until);
-  assert.equal(slicer.due, true);
+  expect(slicer.due).toBe(true);
   await slicer.pause();
   await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.equal(otherTaskRan, true);
+  expect(otherTaskRan).toBe(true);
 });
 
 test('an aborted slicer stops at the next pause', async () => {
@@ -21,8 +20,8 @@ test('an aborted slicer stops at the next pause', async () => {
   const slicer = new Slicer(1000, controller.signal);
   await slicer.pause();
   controller.abort(new Error('dropped'));
-  assert.equal(slicer.stopped, true);
-  await assert.rejects(slicer.pause(), /dropped/);
+  expect(slicer.stopped).toBe(true);
+  await expect(slicer.pause()).rejects.toThrow(/dropped/);
 });
 
 test('hurrying only ever widens the slice', async () => {
@@ -31,5 +30,5 @@ test('hurrying only ever widens the slice', async () => {
   await slicer.pause();
   const until = performance.now() + 10;
   while (performance.now() < until);
-  assert.equal(slicer.due, false);
+  expect(slicer.due).toBe(false);
 });

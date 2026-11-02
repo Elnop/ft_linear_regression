@@ -13,7 +13,7 @@ L'id de la section (`documentation`) est défini une seule fois, dans `shared/co
 
 Le code n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et `pick` (`web/src/features/docs/lib/pick.ts`) en extrait chaque fonction. `tokenize` (`web/src/features/docs/lib/tokenize.ts`) le découpe ensuite pour la coloration. La documentation montre donc toujours le code qui tourne.
 
-Si une fonction de `core/` est renommée, `pick` lève une erreur au chargement. Le test `web/tests/docsSource.test.ts` le détecte avant : il vérifie que chaque fonction citée par la doc est trouvée en entier.
+Si une fonction de `core/` est renommée, `pick` lève une erreur au chargement. Le test `web/src/features/docs/lib/pick.test.ts` le détecte avant : il vérifie que chaque fonction citée par la doc est trouvée en entier.
 
 ## Les chiffres sont calculés
 
@@ -27,7 +27,7 @@ Aucun chiffre lié au dataset ou à l'entraînement n'est écrit à la main. `do
 
 Les pages de théorie, la page de code, l'en-tête et la transcription de la CLI lisent ces valeurs. La transcription est donc identique à ce qu'affiche vraiment `npm run train`, `predict` et `precision`. `scientific` écrit les grands nombres à la française (`1,3 × 10¹⁰`).
 
-Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `web/tests/docFigures.test.ts` fige les valeurs actuelles et vérifie que la descente retombe sur la solution des moindres carrés.
+Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `web/src/features/docs/lib/docFigures.test.ts` fige les valeurs actuelles et vérifie que la descente retombe sur la solution des moindres carrés.
 
 ## Fichiers
 

@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { CanMotion } from '@/features/graffiti/features/spray-can/lib/CanMotion.ts';
 
 const CAN_WIDTH = 100;
@@ -14,33 +13,33 @@ function steps(motion: CanMotion, seconds: number, active: typeof nozzle | null)
 
 test('the can follows the nozzle while it sprays', () => {
   const pose = steps(new CanMotion(1200, 240), 1, nozzle);
-  assert.equal(pose.spraying, true);
-  assert.equal(pose.color, nozzle.color);
-  assert.ok(Math.abs(pose.x - (nozzle.x + CAN_WIDTH * 0.36)) < 2);
-  assert.ok(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2);
+  expect(pose.spraying).toBe(true);
+  expect(pose.color).toBe(nozzle.color);
+  expect(Math.abs(pose.x - (nozzle.x + CAN_WIDTH * 0.36)) < 2).toBeTruthy();
+  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBeTruthy();
 });
 
 test('an idle can falls below the floor and stops there', () => {
   const motion = new CanMotion(1200, 240);
   steps(motion, 1, nozzle);
   const resting = steps(motion, 2, null);
-  assert.ok(resting.y < FLOOR);
-  assert.equal(resting.resting, false);
+  expect(resting.y < FLOOR).toBeTruthy();
+  expect(resting.resting).toBe(false);
   const fallen = steps(motion, 5, null);
-  assert.equal(fallen.spraying, false);
-  assert.equal(fallen.resting, true);
-  assert.ok(fallen.y >= FLOOR + CAN_WIDTH * 3);
-  assert.ok(fallen.y < FLOOR + CAN_WIDTH * 3 + 200);
+  expect(fallen.spraying).toBe(false);
+  expect(fallen.resting).toBe(true);
+  expect(fallen.y >= FLOOR + CAN_WIDTH * 3).toBeTruthy();
+  expect(fallen.y < FLOOR + CAN_WIDTH * 3 + 200).toBeTruthy();
 });
 
 test('a fallen can comes back when the nozzle sprays again', () => {
   const motion = new CanMotion(1200, 240);
   steps(motion, 6, null);
   const pose = steps(motion, 1, nozzle);
-  assert.ok(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2);
+  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBeTruthy();
 });
 
 test('a crowd of jobs is not followed', () => {
   const pose = steps(new CanMotion(1200, 240), 0.5, { ...nozzle, followable: false });
-  assert.equal(pose.spraying, false);
+  expect(pose.spraying).toBe(false);
 });

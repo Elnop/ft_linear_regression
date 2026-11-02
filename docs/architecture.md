@@ -65,7 +65,7 @@ Node ≥ 22.18 exécute les fichiers `.ts` directement, en retirant les annotati
 
 ## Tests et vérifications
 
-Les tests tournent avec `node --test`, sans dépendance en plus. `tests/` couvre `core/` (parsing, normalisation, métriques, convergence sur `data.csv`, divergence, borne de stabilité). Il vérifie aussi que chaque chemin cité dans `docs/` et le README existe encore (`tests/docsPaths.test.ts`). `web/tests/` couvre le web sans navigateur (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Les alias `@/` et `@core/` y sont résolus par `web/tests/aliases.ts`, un hook `registerHooks` de Node.
+Les tests de `core/` tournent avec `node --test`, sans dépendance en plus. `tests/` couvre `core/` (parsing, normalisation, métriques, convergence sur `data.csv`, divergence, borne de stabilité). Il vérifie aussi que chaque chemin cité dans `docs/` et le README existe encore (`tests/docsPaths.test.ts`). Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
 npm test            # tests de core/ puis du web

@@ -6,10 +6,10 @@ Tout ce qui suit tourne en local et dans la CI. Seul `npm run e2e` demande un na
 
 | Commande (à la racine) | Ce qu'elle lance |
 |---|---|
-| `npm run typecheck` | `tsc` sur `core/`, `cli/`, `tests/`, puis sur `web/` et `web/tests/` |
+| `npm run typecheck` | `tsc` sur `core/`, `cli/`, `tests/`, puis sur le code de prod du web (`web/tsconfig.app.json`), sur ses tests (`web/tsconfig.test.json`) et sur `web/tests/` |
 | `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `tests/`, `tsc` sur ces trois dossiers, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
 | `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes) |
-| `npm test` | les tests de `tests/`, puis ceux de `web/tests/` |
+| `npm test` | les tests de `tests/` (`node --test`), puis ceux du web (Vitest) |
 | `npm run e2e` | build du web, puis `web/tests/browser.e2e.ts` dans Chromium headless contre `vite preview` |
 
 `npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` lance `npm run check`, `npm test` puis le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 22.
@@ -28,21 +28,25 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 - un presenter n'importe aucun store ni aucun hook d'état, et un store vit à la racine ou dans le `stores/` de son niveau ;
 - aucun cycle d'imports.
 
-`web/scripts/checkFolders.mjs` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier.
+- le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`).
+
+`web/scripts/checkFolders.mjs` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source.
 
 ## Tests
 
-Les tests tournent avec `node --test`, sans bibliothèque de test. Le web importe ses fichiers par alias : `web/tests/aliases.ts` les résout avec un hook `registerHooks` de Node.
+Les tests de `core/` tournent avec `node --test`, sans bibliothèque de test. Ceux du web tournent avec Vitest (`web/vitest.config.ts`), qui reprend `web/vite.config.ts` et donc ses alias `@/`, `@core/` et `@dataset`. Un test lit `data.csv` ou une source de `core/` par un import `?raw`, comme le code de prod.
+
+Chaque test unitaire du web est à côté du fichier qu'il teste : `Timeline.ts` et `Timeline.test.ts` dans le même dossier. Dans le web, `npm run test:unit` ne lance que ces tests, et `npm run test:watch` les relance à chaque modification. `npm run coverage` mesure la couverture, sans seuil.
 
 | Dossier | Ce qui est testé |
 |---|---|
 | `tests/` | `core/` : parsing du dataset et du kilométrage, normalisation, métriques, convergence vers les θ de `data.csv`, divergence, borne de stabilité du learning rate |
 | `tests/docsPaths.test.ts` | chaque fichier ou lien cité dans le README et dans `docs/` (sous-dossiers compris) existe encore |
-| `web/tests/` | plan d'entraînement animé, `Timeline`, `Scheduler`, `Slicer`, ancrage des couches (`anchoredRectangle`), `PaintlessDirector`, mouvement de la bombe, sélecteurs, formatage des nombres et saisie à la française, géométrie du graphe et `axisLayout`, extraction du code affiché dans la doc, chiffres calculés de la doc, touches des onglets |
+| `web/src/**/*.test.ts` | plan d'entraînement animé, `Timeline`, `Scheduler`, `Slicer`, ancrage des couches (`anchoredRectangle`), `PaintlessDirector`, mouvement de la bombe, sélecteurs, formatage des nombres et saisie à la française, géométrie du graphe et `axisLayout`, extraction du code affiché dans la doc, chiffres calculés de la doc, touches des onglets |
 
 ## Tests dans le navigateur
 
-`web/tests/browser.e2e.ts` utilise `playwright-core` et `axe-core` (devDependencies du web) avec le runner de Node, comme les autres tests. Il sert le build avec `vite preview` et ouvre deux Chromium : un sans WebGL, un avec WebGL logiciel (SwiftShader).
+`web/tests/browser.e2e.ts` utilise `playwright-core` et `axe-core` (devDependencies du web) avec le runner de Node. Il sert le build avec `vite preview` et ouvre deux Chromium : un sans WebGL, un avec WebGL logiciel (SwiftShader).
 
 - axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc.
 - Au clavier, DOC puis Entrée place le focus sur la doc et met `#documentation` dans l'URL, un lien du sommaire le place sur son étape, et les flèches, Home et End changent d'onglet.

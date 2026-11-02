@@ -1,6 +1,13 @@
 module.exports = {
   forbidden: [
     {
+      name: 'no-prod-to-tests',
+      severity: 'error',
+      comment: 'Le code de prod n’importe jamais un test.',
+      from: { pathNot: '\\.test\\.tsx?$' },
+      to: { path: '\\.test\\.tsx?$' },
+    },
+    {
       name: 'no-circular',
       severity: 'error',
       comment: 'Un cycle d’imports rend les modules indissociables : extraire la partie commune.',
@@ -88,7 +95,7 @@ module.exports = {
   ],
   options: {
     doNotFollow: { path: 'node_modules' },
-    tsConfig: { fileName: 'tsconfig.json' },
+    tsConfig: { fileName: 'tsconfig.app.json' },
     parser: 'swc',
     tsPreCompilationDeps: false,
     enhancedResolveOptions: { extensions: ['.ts', '.tsx', '.js'] },

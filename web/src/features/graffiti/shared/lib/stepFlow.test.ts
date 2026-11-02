@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { stepFlow } from '@/features/graffiti/shared/lib/stepFlow.ts';
 
@@ -19,6 +18,6 @@ test('a heavy blob drips down without creating or losing paint', () => {
   const before = totals(layer);
   for (let step = 0; step < 240; step++) stepFlow(layer, 1 / 120);
   const after = totals(layer);
-  assert.ok(Math.abs(after.mass - before.mass) / before.mass < 1e-4, `${before.mass} → ${after.mass}`);
-  assert.ok(after.centerY > before.centerY, `${before.centerY} → ${after.centerY}`);
+  expect(Math.abs(after.mass - before.mass) / before.mass < 1e-4, `${before.mass} → ${after.mass}`).toBeTruthy();
+  expect(after.centerY > before.centerY, `${before.centerY} → ${after.centerY}`).toBeTruthy();
 });
