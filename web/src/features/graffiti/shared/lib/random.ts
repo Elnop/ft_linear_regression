@@ -12,8 +12,12 @@ export function mulberry32(seed: number): RandomGenerator {
   };
 }
 
+export function seedFrom(random: RandomGenerator): number {
+  return (random() * 2 ** 32) >>> 0;
+}
+
 export function randomSeed(): number {
-  return (Math.random() * 2 ** 32) >>> 0;
+  return seedFrom(Math.random);
 }
 
 export function gaussian(random: RandomGenerator): number {

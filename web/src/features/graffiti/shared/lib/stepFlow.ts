@@ -85,9 +85,18 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
       const sum = weightLeft + weightBelow + weightRight;
       if (sum === 0) continue;
       const amount = excess * Math.min(0.45, GRAVITY * mobility * excess * deltaSeconds);
-      if (weightBelow > 0) reach(below, excess), move(i, below, (amount * weightBelow) / sum, mobility, poolShare);
-      if (weightLeft > 0) reach(below - 1, excess), move(i, below - 1, (amount * weightLeft) / sum, mobility, poolShare);
-      if (weightRight > 0) reach(below + 1, excess), move(i, below + 1, (amount * weightRight) / sum, mobility, poolShare);
+      if (weightBelow > 0) {
+        reach(below, excess);
+        move(i, below, (amount * weightBelow) / sum, mobility, poolShare);
+      }
+      if (weightLeft > 0) {
+        reach(below - 1, excess);
+        move(i, below - 1, (amount * weightLeft) / sum, mobility, poolShare);
+      }
+      if (weightRight > 0) {
+        reach(below + 1, excess);
+        move(i, below + 1, (amount * weightRight) / sum, mobility, poolShare);
+      }
     }
   }
 

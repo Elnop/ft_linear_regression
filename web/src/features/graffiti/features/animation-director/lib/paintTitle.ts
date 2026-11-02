@@ -3,7 +3,7 @@ import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts'
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { dotJob, moveJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { mulberry32, randomSeed } from '@/features/graffiti/shared/lib/random.ts';
+import { mulberry32, randomSeed, seedFrom } from '@/features/graffiti/shared/lib/random.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import { titleLetters } from '@/shared/lib/titleLetters.ts';
 import type { Run } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
@@ -44,7 +44,7 @@ const STAMP_SPEED = 1e5;
 
 function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
   if (stroke.dot) {
-    void engine.spray(dotJob(layer, stroke.points[0], { width: width * 1.25, duration: 120, load: stroke.thickness, seed: random() * 2 ** 32 }), true);
+    void engine.spray(dotJob(layer, stroke.points[0], { width: width * 1.25, duration: 120, load: stroke.thickness, seed: seedFrom(random) }), true);
     return;
   }
   const heavy = stroke.thickness > 1.1;
@@ -55,7 +55,7 @@ function stamp(engine: PaintEngine, layer: PaintLayer, stroke: Stroke, width: nu
     dwell: ((heavy ? 70 : 12) * pace) / STAMP_SPEED,
     hesitations: 0,
     end: heavy ? 'blob' : 'taper',
-    seed: random() * 2 ** 32,
+    seed: seedFrom(random),
   } as const;
   void engine.spray(pathJob(layer, stroke.points, options), true);
 }
