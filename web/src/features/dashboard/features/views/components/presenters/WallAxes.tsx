@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 import { formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
+import { textSize } from '@/shared/lib/typeScale.ts';
 import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
@@ -17,8 +18,9 @@ type WallAxesProps = {
 export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) {
   const { area, domain } = chart;
   const small = width < COMPACT_BELOW_REM * rem;
-  const fontSize = small ? 12 : 15;
-  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 12);
+  const fontSize = textSize('sm', width, rem);
+  const titleSize = textSize('base', width, rem);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 0.75 * rem);
   return (
     <motion.svg
       className="wall-axes"
@@ -56,10 +58,10 @@ export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) 
             {text}
           </text>
         ))}
-        <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fontSize + 2}>
+        <text x={area.x + 0.75 * rem} y={bottom - 0.75 * rem} textAnchor="start" fontSize={titleSize}>
           kilométrage (km) →
         </text>
-        <text x={area.x - 12} y={area.y - (small ? 16 : 22)} textAnchor="start" fontSize={fontSize + 2}>
+        <text x={area.x - 0.75 * rem} y={area.y - (small ? 1 : 1.375) * rem} textAnchor="start" fontSize={titleSize}>
           ↑ prix (€)
         </text>
       </g>

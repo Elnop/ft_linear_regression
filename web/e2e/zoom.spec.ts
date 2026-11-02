@@ -1,41 +1,81 @@
 import { controlsOutOfReach, diverge, expect, openApp, overflowingText, settled, test } from '@e2e/fixtures.ts';
+import type { Page } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
 
-test.describe('200% zoom', () => {
-  test.use({ deviceScaleFactor: 2 });
+async function expectNoOverflow(page: Page, containers: string): Promise<void> {
+  // A selector that matches nothing would let the overflow check pass for nothing.
+  for (const selector of containers.split(',')) await expect(page.locator(selector.trim()).first()).toBeVisible();
+  expect(await overflowingText(page, containers)).toEqual([]);
+}
 
+function declareCases(): void {
   for (const viewport of [
     { width: 640, height: 360 },
     { width: 960, height: 540 },
   ]) {
-    test(`no horizontal scroll and every control reachable at 200% zoom (${viewport.width}×${viewport.height})`, { tag: '@paintless' }, async ({ page }) => {
-      await page.setViewportSize(viewport);
+    for (const view of [
+      { tag: '@paintless', containers: '.dashboard-panel, .readout-chip', sticker: false },
+      // The sticker belongs to the painted wall, which needs WebGL.
+      { tag: '@painting', containers: '.dashboard-panel, .readout-chip, .price-sticker', sticker: true },
+    ]) {
+      test(`no horizontal scroll and every control reachable (${viewport.width}×${viewport.height}, ${view.tag})`, { tag: view.tag }, async ({ page }) => {
+        await page.setViewportSize(viewport);
+        await openApp(page);
+        await settled(page);
+        await page.getByRole('textbox', { name: /kilométrage/ }).fill('120000');
+        if (view.sticker) await expect(page.locator('.price-sticker')).toBeVisible();
+        await settled(page);
+
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+        // Reach is checked without WebGL only: software rendering at 2x starves scrollIntoViewIfNeeded of stable frames.
+        if (!view.sticker) expect(await controlsOutOfReach(page)).toEqual([]);
+        await expectNoOverflow(page, view.containers);
+      });
+    }
+  }
+
+  for (const width of [320, 375, 414, 768]) {
+    test(`the header chips fit at ${width}px, settled and diverged`, { tag: '@paintless' }, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
       await openApp(page);
-      await page.getByRole('textbox', { name: /kilométrage/ }).fill('120000');
       await settled(page);
 
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
-      expect(await controlsOutOfReach(page)).toEqual([]);
-      expect(await overflowingText(page, '.dashboard-panel, .readout-chip, .price-sticker')).toEqual([]);
+      const check = async () => {
+        await expectNoOverflow(page, '.readout-chip');
+        const rights = await page.locator('.readout-chip').evaluateAll((chips) => chips.map((chip) => chip.getBoundingClientRect().right));
+        const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+        for (const right of rights) expect(right).toBeLessThanOrEqual(clientWidth);
+      };
+      await check();
+      await diverge(page);
+      await check();
     });
   }
+}
+
+test.describe('200% zoom', () => {
+  test.use({ deviceScaleFactor: 2 });
+  declareCases();
 });
 
-for (const width of [320, 375, 414, 768]) {
-  test(`the header chips fit at ${width}px, settled and diverged`, { tag: '@paintless' }, async ({ page }) => {
-    await page.setViewportSize({ width, height: 800 });
+test.describe('with a 20px default font', () => {
+  test.beforeEach(async ({ page }) => {
+    await (await page.context().newCDPSession(page)).send('Page.setFontSizes', { fontSizes: { standard: 20, fixed: 20 } });
+  });
+
+  declareCases();
+
+  test('the interface is narrow at 1200×800: the aside sits under the wall', { tag: '@paintless' }, async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 800 });
     await openApp(page);
     await settled(page);
 
-    const check = async () => {
-      expect(await overflowingText(page, '.readout-chip')).toEqual([]);
-      const rights = await page.locator('.readout-chip').evaluateAll((chips) => chips.map((chip) => chip.getBoundingClientRect().right));
-      const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-      for (const right of rights) expect(right).toBeLessThanOrEqual(clientWidth);
-    };
-    await check();
-    await diverge(page);
-    await check();
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe('20px');
+    const aside = await page.locator('.dashboard-aside').boundingBox();
+    const chart = await page.locator('.wall-axes').boundingBox();
+    expect(aside).not.toBeNull();
+    expect(chart).not.toBeNull();
+    expect(aside!.y).toBeGreaterThanOrEqual(chart!.y + chart!.height - 1);
   });
-}
+});

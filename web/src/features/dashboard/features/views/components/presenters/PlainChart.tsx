@@ -3,7 +3,7 @@ import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.t
 import { predictionLabel } from '@/features/dashboard/features/views/lib/predictionLabel.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { textSize } from '@/shared/lib/typeScale.ts';
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/plain-chart.css';
 import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
@@ -20,8 +20,8 @@ type PlainChartProps = {
 
 export function PlainChart({ chart, width, rem, rectangle, samples, line, prediction }: PlainChartProps) {
   const { area } = chart;
-  const fontSize = width < COMPACT_BELOW_REM * rem ? 11 : 13;
-  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 10);
+  const fontSize = textSize('xs', width, rem);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 0.625 * rem);
   const label = prediction && predictionLabel(prediction.at, rectangle, fontSize);
 
   return (
@@ -50,10 +50,10 @@ export function PlainChart({ chart, width, rem, rectangle, samples, line, predic
             {text}
           </text>
         ))}
-        <text x={right - 8} y={bottom - 10} textAnchor="end">
+        <text x={right - 0.5 * rem} y={bottom - 0.625 * rem} textAnchor="end">
           kilométrage (km)
         </text>
-        <text x={area.x - 10} y={area.y - 14} textAnchor="start">
+        <text x={area.x - 0.625 * rem} y={area.y - 0.875 * rem} textAnchor="start">
           prix (€)
         </text>
       </g>
