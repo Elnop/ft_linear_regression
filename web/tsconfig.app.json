@@ -18,6 +18,6 @@
       "@dataset": ["../data.csv"]
     }
   },
-  "include": ["src", "vite.config.ts", "../core"],
+  "include": ["src", "../core"],
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
 }

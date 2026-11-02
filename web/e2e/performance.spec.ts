@@ -1,4 +1,4 @@
-import { expect, test } from './fixtures.ts';
+import { expect, test } from '@e2e/fixtures.ts';
 
 declare global {
   interface Window {

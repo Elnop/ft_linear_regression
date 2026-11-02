@@ -1,4 +1,4 @@
-import { expect, openApp, test } from './fixtures.ts';
+import { expect, openApp, test } from '@e2e/fixtures.ts';
 
 const trainEnabled = () => !document.querySelector('.button-train')?.hasAttribute('disabled');
 

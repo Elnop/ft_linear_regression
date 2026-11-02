@@ -1,7 +1,13 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "types": ["vite/client", "node", "@vitest/browser-playwright"]
+    "types": ["vite/client", "node", "@vitest/browser-playwright"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@core/*": ["../core/*"],
+      "@dataset": ["../data.csv"],
+      "@e2e/*": ["./e2e/*"]
+    }
   },
   "include": ["src", "../core", "vite.config.ts", "vitest.config.ts", "e2e", "playwright.config.ts"],
   "exclude": []

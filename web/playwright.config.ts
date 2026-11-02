@@ -4,6 +4,7 @@ const URL = 'http://localhost:4173/ft_linear_regression/';
 
 export default defineConfig({
   testDir: 'e2e',
+  tsconfig: './tsconfig.test.json',
   timeout: 60_000,
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? 'list' : [['list'], ['html', { open: 'never' }]],

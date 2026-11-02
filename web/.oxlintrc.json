@@ -60,9 +60,6 @@
       "files": ["e2e/**"],
       "env": {
         "node": true
-      },
-      "rules": {
-        "no-restricted-imports": "off"
       }
     }
   ]

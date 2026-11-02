@@ -7,3 +7,4 @@ docs/superpowers/
 .vitest/
 test-results/
 playwright-report/
+coverage/

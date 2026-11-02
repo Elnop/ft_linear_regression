@@ -6,9 +6,9 @@ import { test } from 'node:test';
 const ROOT = new URL('../', import.meta.url);
 const BASES = ['', 'web/', 'web/src/', 'web/src/features/'];
 const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|shared|states|tests|web)\//;
-// git lists the documents, so whatever .gitignore leaves out is never checked.
-const DOCUMENTS = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '--', 'README.md', 'docs'], { cwd: ROOT, encoding: 'utf8' })
-  .split('\n')
+// git lists the documents, so whatever .gitignore leaves out is never checked. -z keeps accented names unquoted.
+const DOCUMENTS = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', 'README.md', 'docs'], { cwd: ROOT, encoding: 'utf8' })
+  .split('\0')
   .filter((name) => name.endsWith('.md') && existsSync(new URL(name, ROOT)));
 
 function citedPaths(markdown: string): string[] {

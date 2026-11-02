@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { axeViolations, expect, openApp, test } from './fixtures.ts';
+import { axeViolations, expect, openApp, test } from '@e2e/fixtures.ts';
 
 const focused = (page: Page) =>
   page.evaluate(() => {
