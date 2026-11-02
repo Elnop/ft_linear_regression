@@ -14,13 +14,13 @@ export function ControlBarContainer() {
   const warn = useWarn();
   return (
     <ControlBar
-      trainingActive={trainingActive}
       disabled={intro}
-      onTrain={() => void train({ learningRate }).catch((error: unknown) => console.error(error))}
-      onReset={replay}
-      learningRate={learningRate}
-      onLearningRateChange={setLearningRate}
-      warn={warn}
+      training={{
+        active: trainingActive,
+        onTrain: () => void train({ learningRate }).catch((error: unknown) => console.error(error)),
+        onReset: replay,
+      }}
+      learningRate={{ value: learningRate, onChange: setLearningRate, warn }}
     />
   );
 }
