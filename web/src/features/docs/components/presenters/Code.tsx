@@ -3,7 +3,7 @@ import '@/features/docs/styles/code.css';
 
 export function Code({ code }: { code: string }) {
   return (
-    <pre className="documentation-code">
+    <pre className="documentation-code" tabIndex={0}>
       <code>
         {tokenize(code).map((token, i) =>
           token.kind === 'text' ? (

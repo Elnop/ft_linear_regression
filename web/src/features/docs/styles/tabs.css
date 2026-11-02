@@ -1,17 +1,17 @@
 .documentation-tabs {
   display: flex;
-  gap: 8px;
-  margin-bottom: -16px;
+  gap: var(--space-8);
+  margin-bottom: calc(var(--space-16) * -1);
 }
 .documentation-tab {
-  min-height: 44px;
-  padding: 0 22px;
-  border-radius: 12px;
+  min-height: 2.75rem;
+  padding: 0 1.375rem;
+  border-radius: var(--space-12);
   border: 1px solid var(--glass-line);
   background: rgba(0, 0, 0, 0.28);
   color: var(--ink-dimmed);
   cursor: pointer;
-  font: 700 12px var(--monospace);
+  font: 700 var(--text-sm) var(--monospace);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   transition:
@@ -34,6 +34,6 @@
 
 @media (max-width: 1023px) {
   .documentation-tabs {
-    margin-bottom: -8px;
+    margin-bottom: calc(var(--space-8) * -1);
   }
 }

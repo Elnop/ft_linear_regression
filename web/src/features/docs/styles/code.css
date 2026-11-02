@@ -2,12 +2,12 @@
   --syntax-number: #ffb86b;
   --syntax-call: #8fd0ff;
   margin: 0;
-  padding: 18px 20px;
-  border-radius: 12px;
+  padding: 1.125rem var(--space-20);
+  border-radius: var(--space-12);
   overflow-x: auto;
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  font: 13px/1.6 var(--monospace);
+  font: var(--text-sm)/1.6 var(--monospace);
   color: var(--ink);
   tab-size: 2;
 }
@@ -37,7 +37,6 @@
 
 @media (max-width: 1023px) {
   .documentation-code {
-    font-size: 12px;
-    padding: 14px;
+    padding: 0.875rem;
   }
 }

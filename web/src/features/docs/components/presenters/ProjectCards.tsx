@@ -9,11 +9,11 @@ export function ProjectCards() {
       <article className="documentation-card">
         <h3>La CLI</h3>
         <p>Partie obligatoire, Node ≥ 22.18, sans build ni dépendance à l'exécution.</p>
-        <pre className="documentation-code documentation-shell">{CLI}</pre>
+        <pre className="documentation-code documentation-shell" tabIndex={0}>{CLI}</pre>
       </article>
       <article className="documentation-card">
         <h3>Le projet</h3>
-        <pre className="documentation-code documentation-shell">{TREE}</pre>
+        <pre className="documentation-code documentation-shell" tabIndex={0}>{TREE}</pre>
         <p>
           <code>core/</code> n'utilise aucune API Node et aucune dépendance : il tourne tel quel sous Node et dans le navigateur.
         </p>

@@ -1,16 +1,16 @@
 .documentation-figure {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-10);
 }
 .documentation-figure svg {
   display: block;
   width: 100%;
-  max-width: 520px;
+  max-width: 32.5rem;
   height: auto;
 }
 .documentation-figure figcaption {
-  font: 12px/1.5 var(--monospace);
+  font: var(--text-sm)/1.5 var(--monospace);
   color: var(--ink-dimmed);
 }
 .figure-axis {
@@ -37,5 +37,5 @@
 }
 .figure-label {
   fill: var(--ink-dimmed);
-  font: 12px var(--monospace);
+  font-family: var(--monospace);
 }

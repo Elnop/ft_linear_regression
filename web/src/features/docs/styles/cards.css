@@ -1,20 +1,20 @@
 .documentation-grid {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: 20px;
+  gap: var(--space-20);
 }
 .documentation-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 22px;
-  border-radius: 16px;
+  gap: var(--space-12);
+  padding: 1.375rem;
+  border-radius: var(--space-16);
   background: rgba(0, 0, 0, 0.28);
   border: 1px solid var(--glass-line);
 }
 .documentation .documentation-card h3 {
   font-family: var(--anton);
-  font-size: 26px;
+  font-size: var(--text-lg);
   letter-spacing: 0.03em;
 }
 .documentation .documentation-card p + p {
@@ -27,10 +27,10 @@
 
 .documentation-sources {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 1.125rem;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-6);
 }
 
 @media (max-width: 1023px) {

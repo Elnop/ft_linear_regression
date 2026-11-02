@@ -1,40 +1,40 @@
 .documentation-steps {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 1.75rem;
 }
 .documentation-step {
   display: grid;
   grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-  gap: 28px;
+  gap: 1.75rem;
   align-items: start;
-  padding-top: 28px;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--glass-line);
-  scroll-margin-top: 24px;
+  scroll-margin-top: var(--space-24);
 }
 .documentation .documentation-text h3 {
-  margin: 4px 0 12px;
+  margin: var(--space-4) 0 var(--space-12);
   font-family: var(--anton);
-  font-size: 26px;
+  font-size: var(--text-lg);
   letter-spacing: 0.03em;
 }
 .documentation-step-label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  gap: var(--space-10);
+  font-size: var(--text-sm);
   letter-spacing: 0.08em;
   color: var(--ink-dimmed);
 }
 .documentation-step-label span {
   font-family: var(--marker);
-  font-size: 18px;
+  font-size: var(--text-md);
   color: var(--acid);
 }
 
 @media (max-width: 1023px) {
   .documentation-step {
     grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    gap: var(--space-16);
   }
 }

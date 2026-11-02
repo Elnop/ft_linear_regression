@@ -2,22 +2,22 @@
   z-index: 5;
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding: 48px clamp(18px, 3vw, 48px) 40px;
+  gap: 2.5rem;
+  padding: var(--space-48) clamp(1.125rem, 3vw, 3rem) 2.5rem;
   box-sizing: border-box;
   line-height: 1.6;
-  font-size: 14px;
+  font-size: var(--text-base);
   color: var(--ink-dimmed);
 }
 .documentation * {
   box-sizing: border-box;
 }
 .documentation-tape-left {
-  left: 48px;
+  left: var(--space-48);
   transform: rotate(-4deg);
 }
 .documentation-tape-right {
-  right: 64px;
+  right: 4rem;
   transform: rotate(5deg);
 }
 .documentation h2,
@@ -30,14 +30,14 @@
   margin: 0;
 }
 .documentation p + p {
-  margin-top: 10px;
+  margin-top: var(--space-10);
 }
 .documentation strong {
   color: var(--ink);
 }
 .documentation :not(pre) > code {
-  padding: 1px 6px;
-  border-radius: 6px;
+  padding: 0.0625rem var(--space-6);
+  border-radius: var(--space-6);
   background: rgba(0, 240, 255, 0.1);
   color: var(--cyan);
   font-size: 0.92em;
@@ -46,12 +46,12 @@
 .documentation-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-width: 900px;
+  gap: var(--space-12);
+  max-width: 56.25rem;
 }
 .documentation .documentation-title {
   font-family: var(--marker);
-  font-size: clamp(30px, 4vw, 48px);
+  font-size: var(--text-display);
   line-height: 1.1;
   color: var(--magenta);
   text-shadow: 0 0 24px rgba(255, 43, 214, 0.35);
@@ -59,14 +59,14 @@
   transform-origin: left;
 }
 .documentation-lead {
-  font-size: 15px;
+  font-size: var(--text-base);
   color: var(--ink);
 }
 
 .documentation-panel {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 2.5rem;
 }
 .documentation a:focus-visible {
   outline: 3px solid var(--acid);
@@ -76,10 +76,10 @@
 @media (max-width: 1023px) {
   .documentation,
   .documentation-panel {
-    gap: 28px;
+    gap: 1.75rem;
   }
   .documentation {
-    padding-top: 36px;
+    padding-top: 2.25rem;
   }
 }
 .documentation:focus,
