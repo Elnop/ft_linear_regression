@@ -17,16 +17,18 @@ export function parseDataset(text: string): Sample[] {
   }
 
   const data: Sample[] = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line === '') continue;
+  for (const [index, raw] of lines.entries()) {
+    const line = raw.trim();
+    if (index === 0 || line === '') continue;
+    const number = index + 1;
     const fields = line.split(',');
-    if (fields.length !== 2) {
-      throw new Error(`line ${i + 1}: expected 2 fields, got ${fields.length}`);
+    const [kmField, priceField] = fields;
+    if (fields.length !== 2 || kmField === undefined || priceField === undefined) {
+      throw new Error(`line ${number}: expected 2 fields, got ${fields.length}`);
     }
-    const km = parseField(fields[0], 'km', i + 1);
-    const price = parseField(fields[1], 'price', i + 1);
-    if (km < 0) throw new Error(`line ${i + 1}: km must not be negative`);
+    const km = parseField(kmField, 'km', number);
+    const price = parseField(priceField, 'price', number);
+    if (km < 0) throw new Error(`line ${number}: km must not be negative`);
     data.push({ km, price });
   }
 

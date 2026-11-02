@@ -9,7 +9,7 @@ const figures = docFigures(parseDataset(readFileSync(new URL('../../data.csv', i
 
 test('the figures of data.csv', () => {
   assert.equal(figures.sampleCount, 24);
-  assert.deepEqual(figures.samples[0], { km: 240000, price: 3650 });
+  assert.deepEqual(figures.firstSamples[0], { km: 240000, price: 3650 });
   assert.equal(figures.kmMin, 22899);
   assert.equal(figures.kmMax, 240000);
   assert.equal(figures.divergenceIteration, 392);

@@ -13,16 +13,18 @@ const HEIGHT = 76;
 const PADDING = 6;
 
 function sparkline(history: CostPoint[]): string {
-  const positivePoints = history.filter((point) => Number.isFinite(point.cost) && point.cost > 0);
-  if (positivePoints.length === 0) return '';
-  const logCosts = positivePoints.map((point) => Math.log10(point.cost));
+  const points = history
+    .filter((point) => Number.isFinite(point.cost) && point.cost > 0)
+    .map((point) => ({ logIteration: Math.log1p(point.iteration), logCost: Math.log10(point.cost) }));
+  const last = points.at(-1);
+  if (!last) return '';
+  const logCosts = points.map((point) => point.logCost);
   const lowest = Math.min(...logCosts);
   const highest = Math.max(...logCosts);
   const span = highest - lowest || 1;
-  const logLastIteration = Math.log1p(positivePoints[positivePoints.length - 1].iteration);
-  return logCosts
-    .map((logCost, i) => {
-      const x = logLastIteration === 0 ? WIDTH / 2 : (Math.log1p(positivePoints[i].iteration) / logLastIteration) * WIDTH;
+  return points
+    .map(({ logIteration, logCost }) => {
+      const x = last.logIteration === 0 ? WIDTH / 2 : (logIteration / last.logIteration) * WIDTH;
       const y = PADDING + (1 - (logCost - lowest) / span) * (HEIGHT - 2 * PADDING);
       return `${x.toFixed(1)},${y.toFixed(1)}`;
     })

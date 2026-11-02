@@ -25,11 +25,13 @@ function leastSquares(samples: Sample[]): Thetas {
 }
 
 export function docFigures(samples: Sample[]): DocFigures {
+  const [first, second] = samples;
+  if (!first || !second) throw new Error('the docs need at least two samples');
   const kms = samples.map((sample) => sample.km);
   const descent = lastStep(samples, DEFAULT_TRAIN);
   return {
     sampleCount: samples.length,
-    samples,
+    firstSamples: [first, second],
     kmMin: Math.min(...kms),
     kmMax: Math.max(...kms),
     meanSquaredKm: mean(kms.map((km) => km * km)),

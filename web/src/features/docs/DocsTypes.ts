@@ -18,7 +18,7 @@ export type Token = { kind: 'string' | 'number' | 'keyword' | 'type' | 'call' | 
 
 export type DocFigures = {
   sampleCount: number;
-  samples: Sample[];
+  firstSamples: [Sample, Sample];
   kmMin: number;
   kmMax: number;
   meanSquaredKm: number;

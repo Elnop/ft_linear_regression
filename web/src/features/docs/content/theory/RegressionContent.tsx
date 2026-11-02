@@ -2,7 +2,7 @@ import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
 import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
 
-const [FIRST, SECOND] = FIGURES.samples;
+const [FIRST, SECOND] = FIGURES.firstSamples;
 
 export const REGRESSION: DocStep[] = [
   {

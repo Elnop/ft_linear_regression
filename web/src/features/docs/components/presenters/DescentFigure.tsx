@@ -7,7 +7,9 @@ export function DescentFigure() {
     const x = 20 + i * 9;
     return `${i ? 'L' : 'M'}${x},${curve(x).toFixed(1)}`;
   }).join(' ');
-  const steps = [40, 105, 148, 176, 191];
+  const start = 40;
+  const steps = [start, 105, 148, 176, 191];
+  const strides = steps.slice(1).map((to, i) => ({ from: steps[i] ?? start, to }));
 
   return (
     <figure className="documentation-code documentation-figure">
@@ -17,13 +19,13 @@ export function DescentFigure() {
         <text x="384" y="226" className="figure-label" textAnchor="end">θ</text>
         <text x="28" y="22" className="figure-label">J(θ)</text>
         <path d={path} className="figure-curve" />
-        {steps.slice(1).map((x, i) => (
-          <line key={x} x1={steps[i]} y1={curve(steps[i])} x2={x} y2={curve(x)} className="figure-step" />
+        {strides.map(({ from, to }) => (
+          <line key={to} x1={from} y1={curve(from)} x2={to} y2={curve(to)} className="figure-step" />
         ))}
         {steps.map((x, i) => (
           <circle key={x} cx={x} cy={curve(x)} r={i ? 4 : 6} className="figure-dot" />
         ))}
-        <text x={steps[0] + 10} y={curve(steps[0]) + 4} className="figure-label">départ</text>
+        <text x={start + 10} y={curve(start) + 4} className="figure-label">départ</text>
         <line x1="200" y1="182" x2="200" y2="210" className="figure-minimum" />
         <text x="200" y="174" className="figure-label" textAnchor="middle">minimum</text>
       </svg>

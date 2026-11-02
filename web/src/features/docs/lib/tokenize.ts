@@ -12,7 +12,7 @@ export function tokenize(code: string): Token[] {
   let last = 0;
   for (const match of code.matchAll(TOKEN)) {
     if (match.index > last) tokens.push({ kind: 'text', text: code.slice(last, match.index) });
-    const [text, string, number, word] = match;
+    const [text, string, number, word = ''] = match;
     if (string) tokens.push({ kind: 'string', text });
     else if (number) tokens.push({ kind: 'number', text });
     else if (KEYWORDS.has(word)) tokens.push({ kind: 'keyword', text });

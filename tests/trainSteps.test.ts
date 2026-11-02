@@ -17,6 +17,7 @@ function lastStep(options: TrainOptions): TrainStep {
 
 test('starts from zero thetas', () => {
   const [first] = trainSteps(data, { learningRate: 0.5, iterations: 0 });
+  assert.ok(first);
   assert.equal(first.iteration, 0);
   assert.equal(first.theta0, 0);
   assert.equal(first.theta1, 0);

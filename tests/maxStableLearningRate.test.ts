@@ -20,13 +20,18 @@ test('the stability bound of data.csv is about 1.76', () => {
 
 test('just below the bound the training converges', () => {
   const steps = run(bound * 0.99);
-  const last = steps.at(-1)!;
+  const [first] = steps;
+  const last = steps.at(-1);
+  assert.ok(first && last);
   assert.equal(last.iteration, 10000);
   assert.ok(!hasDiverged(last));
-  assert.ok(last.cost < steps[0].cost);
+  assert.ok(last.cost < first.cost);
 });
 
 test('just above the bound the cost keeps growing', () => {
   const steps = run(bound * 1.01);
-  assert.ok(steps.at(-1)!.cost > steps[0].cost * 1e100);
+  const [first] = steps;
+  const last = steps.at(-1);
+  assert.ok(first && last);
+  assert.ok(last.cost > first.cost * 1e100);
 });

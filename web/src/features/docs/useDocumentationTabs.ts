@@ -22,9 +22,10 @@ export function useDocumentationTabs() {
 
   const onTabKeyDown = (event: KeyboardEvent, i: number) => {
     const next = nextTab(event.key, i, TABS.length);
-    if (next === null) return;
+    const target = next === null ? undefined : TABS[next];
+    if (next === null || !target) return;
     event.preventDefault();
-    selectTab(TABS[next].id);
+    selectTab(target.id);
     tabRefs.current[next]?.focus();
   };
 

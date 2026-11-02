@@ -14,14 +14,14 @@ const DOCUMENTS = [
 
 function citedPaths(markdown: string): string[] {
   const prose = markdown.replace(/^```[\s\S]*?^```/gm, '');
-  const quoted = [...prose.matchAll(/`([^`\s]+)`/g)].map((match) => match[1]);
+  const quoted = [...prose.matchAll(/`([^`\s]+)`/g)].flatMap((match) => match[1] ?? []);
   return quoted.filter((text) => text.includes('/') && !/[<>*?@:=(){}]/.test(text) && (/\.[a-z]+$/.test(text) || ROOT_FOLDERS.test(text)));
 }
 
 function linkedPaths(markdown: string, document: string): URL[] {
   const folder = new URL(document.replace(/[^/]+$/, ''), ROOT);
   return [...markdown.matchAll(/\]\(([^)#\s]+)\)/g)]
-    .map((match) => match[1])
+    .flatMap((match) => match[1] ?? [])
     .filter((target) => !/^[a-z]+:/.test(target))
     .map((target) => new URL(target, folder));
 }
