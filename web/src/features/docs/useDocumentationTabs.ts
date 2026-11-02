@@ -1,5 +1,5 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
-import { TABS } from '@/features/docs/TabsConfig.ts';
+import { TABS } from '@/features/docs/configs/TabsConfig.ts';
 import type { TabId } from '@/features/docs/DocsTypes.ts';
 
 export function useDocumentationTabs() {

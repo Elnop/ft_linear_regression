@@ -1,5 +1,10 @@
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
+import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
+
+const SLOPE = FIGURES.descent.theta1;
+const INTERCEPT = Math.round(FIGURES.descent.theta0 / 100) * 100;
+const DROP = Math.round((-SLOPE * FIGURES.exampleMileage) / 10) * 10;
 
 export const MATHS: DocStep[] = [
   {
@@ -15,7 +20,7 @@ export const MATHS: DocStep[] = [
 
 x   feature  le kilométrage
 y   target   le prix réel
-m   nombre d'exemples (24)
+m   nombre d'exemples (${FIGURES.sampleCount})
 i   numéro de l'exemple, de 1 à m
 f   le modèle, f(x) = prix prédit
 J   la fonction coût`}</Formula>
@@ -43,8 +48,8 @@ J   la fonction coût`}</Formula>
 a   pente : variation de f quand x avance de 1
 b   ordonnée à l'origine : f(0)
 
-ici   a = θ1 ≈ −0.0214 €/km    b = θ0 ≈ 8 500 €
-f(100 000) ≈ 8 500 − 2 140 = 6 360 €`}</Formula>
+ici   a = θ1 ≈ ${SLOPE.toFixed(4).replace('-', '−')} €/km    b = θ0 ≈ ${INTERCEPT.toLocaleString('fr-FR')} €
+f(${FIGURES.exampleMileage.toLocaleString('fr-FR')}) ≈ ${INTERCEPT.toLocaleString('fr-FR')} − ${DROP.toLocaleString('fr-FR')} = ${(INTERCEPT - DROP).toLocaleString('fr-FR')} €`}</Formula>
     ),
     children: (
       <>

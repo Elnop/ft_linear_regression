@@ -1,6 +1,7 @@
 import { DescentFigure } from '@/features/docs/components/presenters/DescentFigure.tsx';
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
+import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
 
 export const DESCENT: DocStep[] = [
   {
@@ -54,8 +55,8 @@ pente > 0  →  θ − (positif)  →  θ diminue`}</Formula>
 α trop petit  →  converge, mais très lentement
 
 sur ce dataset (km normalisés) :
-α = 0.5  →  converge
-α = 3    →  diverge à l'itération 392`}</Formula>
+α = ${String(FIGURES.learningRate).padEnd(5)}→  converge
+α = ${String(FIGURES.divergentLearningRate).padEnd(5)}→  diverge à l'itération ${FIGURES.divergenceIteration}`}</Formula>
     ),
     children: (
       <>

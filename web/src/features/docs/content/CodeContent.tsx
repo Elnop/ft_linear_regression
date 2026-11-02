@@ -7,6 +7,7 @@ import trainSource from '@core/trainSteps.ts?raw';
 import { Code } from '@/features/docs/components/presenters/Code.tsx';
 import { pick } from '@/features/docs/lib/pick.ts';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
+import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
 
 export const CODE: DocStep[] = [
   {
@@ -53,7 +54,7 @@ export const CODE: DocStep[] = [
           courbe du panneau COÛT.
         </p>
         <p>
-          Le R² mesure la part de la variance des prix expliquée par la droite : 0.733 sur ce dataset.
+          Le R² mesure la part de la variance des prix expliquée par la droite : {FIGURES.r2.toFixed(3)} sur ce dataset.
           RMSE et MAE donnent l'erreur typique en euros.
         </p>
       </>

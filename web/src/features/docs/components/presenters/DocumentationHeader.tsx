@@ -1,3 +1,4 @@
+import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
 import '@/features/docs/styles/page.css';
 
 export function DocumentationHeader() {
@@ -9,7 +10,7 @@ export function DocumentationHeader() {
       </h2>
       <p className="documentation-lead">
         Régression linéaire du prix d'une voiture en fonction de son kilométrage, entraînée par descente de gradient
-        sur 24 voitures. La théorie d'abord, puis le code : celui du projet, que la CLI et cette page
+        sur {FIGURES.sampleCount} voitures. La théorie d'abord, puis le code : celui du projet, que la CLI et cette page
         utilisent tel quel.
       </p>
     </header>

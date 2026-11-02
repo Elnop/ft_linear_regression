@@ -1,5 +1,8 @@
 import { Formula } from '@/features/docs/components/presenters/Formula.tsx';
 import type { DocStep } from '@/features/docs/DocsTypes.ts';
+import { FIGURES } from '@/features/docs/configs/DocFiguresConfig.ts';
+
+const [FIRST, SECOND] = FIGURES.samples;
 
 export const REGRESSION: DocStep[] = [
   {
@@ -27,17 +30,17 @@ export const REGRESSION: DocStep[] = [
     section: 'Régression linéaire',
     title: 'Le dataset',
     aside: (
-      <Formula>{`m = 24   exemples (lignes)
+      <Formula>{`m = ${FIGURES.sampleCount}   exemples (lignes)
 n = 1    feature  (le km)
 
-x[1] = 240 000 km   y[1] = 3 650 €
-x[2] = 139 800 km   y[2] = 3 800 €
+x[1] = ${FIRST.km.toLocaleString('fr-FR')} km   y[1] = ${FIRST.price.toLocaleString('fr-FR')} €
+x[2] = ${SECOND.km.toLocaleString('fr-FR')} km   y[2] = ${SECOND.price.toLocaleString('fr-FR')} €
 …`}</Formula>
     ),
     children: (
       <>
         <p>
-          <code>data.csv</code> contient 24 voitures. Chaque ligne est un exemple : une feature <code>x</code>{' '}
+          <code>data.csv</code> contient {FIGURES.sampleCount} voitures. Chaque ligne est un exemple : une feature <code>x</code>{' '}
           (le kilométrage) et une target <code>y</code> (le prix).
         </p>
         <p>
