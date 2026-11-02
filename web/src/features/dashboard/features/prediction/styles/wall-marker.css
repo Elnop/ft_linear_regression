@@ -17,19 +17,19 @@
   transform: translate(-50%, -50%);
 }
 .price-halo {
-  width: 36px;
-  height: 36px;
+  width: 2.25rem;
+  height: 2.25rem;
   background: radial-gradient(circle, rgba(230, 255, 0, 0.5) 0%, transparent 70%);
 }
 .price-dot {
-  width: 16px;
-  height: 16px;
+  width: var(--space-16);
+  height: var(--space-16);
   background: var(--acid);
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.55);
 }
 .price-sticker {
   position: absolute;
-  border-radius: 14px;
+  border-radius: 0.875rem;
   overflow: hidden;
   background: #f3efe4;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
@@ -39,25 +39,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 10px 6px;
+  padding: var(--space-8) var(--space-10) var(--space-6);
   background: var(--magenta);
   color: #fff;
 }
 .price-sticker-top b {
-  font: 400 26px/1 var(--anton);
+  font: 400 var(--text-lg) / 1 var(--anton);
   letter-spacing: 0.06em;
 }
 .price-sticker-top span {
   color: var(--on-accent);
-  font-size: 10px;
+  font-size: var(--text-xs);
   font-weight: 800;
   letter-spacing: 0.2em;
 }
 .price-sticker-price {
   display: flex;
   justify-content: center;
-  padding: 6px 12px 14px;
-  font: 40px/1.1 var(--marker);
+  padding: var(--space-6) var(--space-12) 0.875rem;
+  font: var(--text-2xl) / 1.1 var(--marker);
   color: #141316;
 }
 .price-sticker-price span {

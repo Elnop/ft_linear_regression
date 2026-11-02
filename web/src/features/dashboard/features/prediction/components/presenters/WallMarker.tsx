@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/prediction/styles/wall-marker.css';
 
 type WallMarkerProps = {
@@ -13,16 +12,21 @@ type WallMarkerProps = {
   rem: number;
 };
 
-const STICKER_WIDTH = 206;
-const STICKER_HEIGHT = 112;
+const STICKER_WIDTH_REM = 12.875;
+const STICKER_HEIGHT_REM = 7;
+const OFFSET_X_REM = 1.625;
+const MARGIN_REM = 0.5;
+const OFFSET_Y_REM = 0.625;
 
 export function WallMarker({ at, price, axisY, width, height, rem }: WallMarkerProps) {
   const visible = at !== null && price !== null && at.x >= 0 && at.x <= width && at.y >= 0 && at.y <= height;
-  const scale = width < COMPACT_BELOW_REM * rem ? 0.72 : 1;
-  const stickerWidth = STICKER_WIDTH * scale;
-  const flip = visible && at.x + 26 + stickerWidth > width - 8;
-  const left = visible ? Math.max(8, Math.min(width - stickerWidth - 8, flip ? at.x - 26 - stickerWidth : at.x + 26)) : 0;
-  const top = visible ? Math.max(8, Math.min(height - STICKER_HEIGHT * scale - 8, at.y - STICKER_HEIGHT * scale - 10)) : 0;
+  const stickerWidth = STICKER_WIDTH_REM * rem;
+  const stickerHeight = STICKER_HEIGHT_REM * rem;
+  const offsetX = OFFSET_X_REM * rem;
+  const margin = MARGIN_REM * rem;
+  const flip = visible && at.x + offsetX + stickerWidth > width - margin;
+  const left = visible ? Math.max(margin, Math.min(width - stickerWidth - margin, flip ? at.x - offsetX - stickerWidth : at.x + offsetX)) : 0;
+  const top = visible ? Math.max(margin, Math.min(height - stickerHeight - margin, at.y - stickerHeight - OFFSET_Y_REM * rem)) : 0;
   return (
     <div className="wall-marker" aria-hidden="true">
       {visible && (
@@ -41,11 +45,11 @@ export function WallMarker({ at, price, axisY, width, height, rem }: WallMarkerP
           <motion.div
             key="hello"
             className="price-sticker"
-            initial={{ opacity: 0, scale: 0.8 * scale, rotate: flip ? 8 : -12 }}
-            animate={{ opacity: 1, scale, rotate: flip ? 4 : -5, left, top }}
-            exit={{ opacity: 0, scale: 0.9 * scale }}
+            initial={{ opacity: 0, scale: 0.8, rotate: flip ? 8 : -12 }}
+            animate={{ opacity: 1, scale: 1, rotate: flip ? 4 : -5, left, top }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-            style={{ left, top, width: STICKER_WIDTH, transformOrigin: 'top left' }}
+            style={{ left, top, width: `${STICKER_WIDTH_REM}rem`, transformOrigin: 'top left' }}
           >
             <div className="price-sticker-top">
               <b>HELLO</b>
