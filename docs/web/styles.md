@@ -86,6 +86,7 @@ Deux tests dans `web/src/shared/configs/TypeScaleConfig.test.ts` gardent la règ
 Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 
 - `ASIDE_WIDTH_REM` (`shared/configs/SceneConfig.ts`, 21,25) arrive en variable `--aside-width` (en `rem`), posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
+- `HEAD_WIDTH_REM` (`shared/configs/SceneConfig.ts`, 39,5) arrive en variable `--head-width`, qui borne la largeur de l'en-tête (chips et boutons) en mode large. `titleLayout` réserve cette largeur plus 1,5 rem à droite du titre peint, donc l'en-tête ne couvre jamais le titre. Mesuré dans Chromium entre 1024 et 1920 px, l'en-tête fait au plus 39 rem (police à 16 px, 1920 px) ; avec une police de 20 px le titre est plus petit, 1280 px de large n'en laissant que 384 px ;
 - `STICKER_WIDTH_REM` est la largeur en style du sticker du prix, dans `WallMarker.tsx`. Le sticker n'est plus réduit à 0,72 en mode compact : cette échelle faisait passer son texte sous 12 px ;
 - `COMPACT_BELOW_REM` (`features/dashboard/shared/DashboardLayoutConfig.ts`) est la largeur du graphe, en `rem`, sous laquelle il passe en version compacte.
 

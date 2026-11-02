@@ -1,7 +1,7 @@
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import { titleLetters } from '@/shared/lib/titleLetters.ts';
 import type { TitleLayout } from '@/shared/types/TitleTypes.ts';
-import { WIDE_EM } from '@/shared/configs/SceneConfig.ts';
+import { HEAD_WIDTH_REM, WIDE_EM } from '@/shared/configs/SceneConfig.ts';
 import { STROKE } from '@/shared/configs/TitleConfig.ts';
 
 const TITLE = 'ft_linear_regression';
@@ -11,13 +11,14 @@ const DESCENT = 0.66;
 const LINE_GAP = 0.12;
 
 const TITLE_GAP_BELOW_REM = 3.75;
-const ASIDE_ROOM_REM = 26.25;
+// The header sits top right, level with the title: the title stops this far before it.
+const TITLE_TO_HEAD_GAP_REM = 1.5;
 const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
 
 export function titleLayout(width: number, height: number, padding: number, chartTop: number, rem: number): TitleLayout {
   const top = Math.max(14, Math.min(28, height * 0.025));
   const texts = width < SPLIT_TITLE_BELOW_REM * rem ? ['ft_linear_', 'regression'] : [TITLE];
-  const maxWidth = width >= WIDE_EM * rem ? Math.min(width * 0.6, 920, width - 2 * padding - ASIDE_ROOM_REM * rem) : width - 2 * padding;
+  const maxWidth = width >= WIDE_EM * rem ? Math.min(width * 0.6, 920, width - 2 * padding - (HEAD_WIDTH_REM + TITLE_TO_HEAD_GAP_REM) * rem) : width - 2 * padding;
   const maxHeight = chartTop - top - TITLE_GAP_BELOW_REM * rem;
   const unit = measure(texts);
   const em = Math.max(8, Math.min(52, maxWidth / unit.width, maxHeight / unit.height));

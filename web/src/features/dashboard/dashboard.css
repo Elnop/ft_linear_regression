@@ -41,6 +41,7 @@
   position: absolute;
   top: var(--dashboard-top);
   right: var(--dashboard-padding);
+  max-width: var(--head-width);
 }
 .dashboard-aside {
   position: absolute;
@@ -90,6 +91,7 @@
     position: relative;
     inset: auto;
     width: auto;
+    max-width: none;
   }
   .dashboard-root .button-skip {
     bottom: var(--dashboard-padding);
