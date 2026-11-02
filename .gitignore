@@ -5,3 +5,5 @@ model.json
 *.tsbuildinfo
 docs/superpowers/
 .vitest/
+test-results/
+playwright-report/

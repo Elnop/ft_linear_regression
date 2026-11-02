@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["vite/client", "node", "@vitest/browser-playwright"]
   },
-  "include": ["src", "../core", "vite.config.ts", "vitest.config.ts"],
+  "include": ["src", "../core", "vite.config.ts", "vitest.config.ts", "e2e", "playwright.config.ts"],
   "exclude": []
 }

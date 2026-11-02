@@ -6,8 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -p tsconfig.app.json && tsc -p tests && tsc -p tsconfig.test.json",
-    "lint": "oxlint --type-aware src tests",
+    "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
+    "lint": "oxlint --type-aware src e2e",
     "deps": "depcruise src",
     "folders": "node scripts/checkFolders.mjs",
     "check": "npm run typecheck && npm run lint && npm run deps && npm run folders",
@@ -16,7 +16,7 @@
     "test:component": "vitest run --project component",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "e2e": "vite build && node --test tests/browser.e2e.ts"
+    "e2e": "vite build && playwright test"
   },
   "dependencies": {
     "motion": "^14.7.1",
@@ -25,6 +25,7 @@
     "zustand": "5.0.15"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
     "@swc/core": "^1.16.20",
     "@types/react": "^19.3.0",
@@ -32,11 +33,9 @@
     "@vitejs/plugin-react": "^6.1.2",
     "@vitest/browser-playwright": "^5.1.0",
     "@vitest/coverage-v8": "^5.1.0",
-    "axe-core": "^4.14.0",
     "dependency-cruiser": "^18.7.0",
     "oxlint": "^1.90.0",
     "oxlint-tsgolint": "^7.0.2005",
-    "playwright-core": "^1.64.1",
     "vite": "^8.3.5",
     "vitest": "^5.1.0",
     "vitest-browser-react": "^2.3.0"

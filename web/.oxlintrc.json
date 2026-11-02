@@ -55,6 +55,15 @@
       "rules": {
         "typescript/no-floating-promises": "off"
       }
+    },
+    {
+      "files": ["e2e/**"],
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "no-restricted-imports": "off"
+      }
     }
   ]
 }
