@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node", "@vitest/browser-playwright"]
   },
   "include": ["src", "../core", "vite.config.ts", "vitest.config.ts"],
   "exclude": []

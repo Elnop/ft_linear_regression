@@ -1,6 +1,6 @@
 # Vérifications
 
-Tout ce qui suit tourne en local et dans la CI. Seul `npm run e2e` demande un navigateur (Chromium headless).
+Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm run e2e` demandent un navigateur (Chromium headless).
 
 ## Commandes
 
@@ -9,10 +9,10 @@ Tout ce qui suit tourne en local et dans la CI. Seul `npm run e2e` demande un na
 | `npm run typecheck` | `tsc` sur `core/`, `cli/`, `tests/`, puis sur le code de prod du web (`web/tsconfig.app.json`), sur ses tests (`web/tsconfig.test.json`) et sur `web/tests/` |
 | `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `tests/`, `tsc` sur ces trois dossiers, puis le check du web : typecheck, Oxlint sur `src/` et `tests/`, dependency-cruiser, vérification des dossiers |
 | `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes) |
-| `npm test` | les tests de `tests/` (`node --test`), puis ceux du web (Vitest) |
+| `npm test` | les tests de `tests/` (`node --test`), puis ceux du web (Vitest) : unitaires dans Node, composants dans Chromium |
 | `npm run e2e` | build du web, puis `web/tests/browser.e2e.ts` dans Chromium headless contre `vite preview` |
 
-`npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` lance `npm run check`, `npm test` puis le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 22.
+`npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` installe Chromium headless pour les tests de composant, puis lance `npm run check`, `npm test` et le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 22.
 
 ## Lint
 
@@ -38,10 +38,13 @@ Les tests de `core/` tournent avec `node --test`, sans bibliothèque de test. Ce
 
 Chaque test unitaire du web est à côté du fichier qu'il teste : `Timeline.ts` et `Timeline.test.ts` dans le même dossier. Dans le web, `npm run test:unit` ne lance que ces tests, et `npm run test:watch` les relance à chaque modification. `npm run coverage` mesure la couverture, sans seuil.
 
+Un test de composant (`*.test.tsx`) affiche un presenter seul dans un vrai Chromium, avec Vitest browser mode et `vitest-browser-react`. Il tourne avec `npm run test:component` dans le web. En local, il faut installer Chromium une fois : `npx playwright install --only-shell chromium` dans `web/`.
+
 | Dossier | Ce qui est testé |
 |---|---|
 | `tests/` | `core/` : parsing du dataset et du kilométrage, normalisation, métriques, convergence vers les θ de `data.csv`, divergence, borne de stabilité du learning rate |
 | `tests/docsPaths.test.ts` | chaque fichier ou lien cité dans le README et dans `docs/` (sous-dossiers compris) existe encore |
+| `web/src/**/*.test.tsx` | composants seuls dans Chromium : `SkipButton` (clic, disparition après l'animation de sortie), `ViewToggles` (`aria-pressed`, vue envoyée au clic) |
 | `web/src/**/*.test.ts` | plan d'entraînement animé, `Timeline`, `Scheduler`, `Slicer`, ancrage des couches (`anchoredRectangle`), `PaintlessDirector`, mouvement de la bombe, sélecteurs, formatage des nombres et saisie à la française, géométrie du graphe et `axisLayout`, extraction du code affiché dans la doc, chiffres calculés de la doc, touches des onglets |
 
 ## Tests dans le navigateur

@@ -4,3 +4,4 @@ dist/
 model.json
 *.tsbuildinfo
 docs/superpowers/
+.vitest/
