@@ -71,7 +71,12 @@ export class AnimationDirector implements Director {
     this.training = plan;
     this.set({ trainingActive: true });
     this.dependencies.regression.restart();
-    await this.timeline.play(() => this.playTraining(run, plan));
+    try {
+      await this.timeline.play(() => this.playTraining(run, plan));
+    } catch (error) {
+      this.set({ trainingActive: false });
+      throw error;
+    }
   };
 
   private get state(): AnimationPlaybackState {

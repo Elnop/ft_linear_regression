@@ -16,7 +16,7 @@ export function ControlBarContainer() {
     <ControlBar
       trainingActive={trainingActive}
       disabled={intro}
-      onTrain={() => void train({ learningRate }).catch(() => {})}
+      onTrain={() => void train({ learningRate }).catch((error: unknown) => console.error(error))}
       onReset={replay}
       learningRate={learningRate}
       onLearningRateChange={setLearningRate}
