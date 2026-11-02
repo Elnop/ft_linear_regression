@@ -1,11 +1,6 @@
 import { VIEW_HEIGHT, VIEW_WIDTH } from '@/features/graffiti/features/spray-can/ShapeConfig.ts';
+import { LOGO_42 } from '@/features/graffiti/shared/configs/LogoConfig.ts';
 
-const LOGO_42 = [
-  '76 0 50.68 0 0 50.62 0 71.12 50.68 71.12 50.68 96.6 76 96.6 76 50.62 25.34 50.62',
-  '86.27 25.28 111.6 0 86.27 0',
-  '111.6 25.28 86.27 50.62 86.27 75.9 111.6 75.9 111.6 50.62 136.93 25.28 136.93 0 111.6 0',
-  '136.93 50.62 111.6 75.9 136.93 75.9',
-];
 const BODY = 'M20 108 H120 V306 Q120 316 110 316 H30 Q20 316 20 306 Z';
 const CAP = 'M52 54 V31 Q52 20 63 20 H80 Q90 20 90 31 V54 Z';
 const SHOULDER = 'M20 106 C20 82 42 68 58 63 H82 C98 68 120 82 120 106 Z';

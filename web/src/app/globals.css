@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
 
 :root {
-  --magenta: #ff2bd6;
-  --cyan: #00f0ff;
-  --acid: #e6ff00;
   --background: #0d0c10;
   --ink: #efece6;
   --ink-dimmed: rgba(239, 236, 230, 0.78);

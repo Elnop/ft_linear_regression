@@ -1,4 +1,4 @@
-import { PALETTE } from '@/features/graffiti/features/animation-director/configs/PaletteConfig.ts';
+import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
 
 export const STYLE = {
   dot: { width: 15, load: [1.8, 2.7] },
@@ -9,4 +9,4 @@ export const STYLE = {
   fadeFloor: 0.22,
 } as const;
 
-export const COLORS = { point: PALETTE.cyan, line: PALETTE.magenta, diverge: PALETTE.yellow } as const;
+export const COLORS = { point: PALETTE.cyan, line: PALETTE.magenta, diverge: PALETTE.acid } as const;

@@ -1,15 +1,9 @@
 import type { Art } from '@/features/graffiti/features/stickers/StickersTypes.ts';
+import { LOGO_42 } from '@/features/graffiti/shared/configs/LogoConfig.ts';
+import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
 
 const PAPER = '#ebe5d6';
 
-const LOGO_42 = (
-  <>
-    <polygon points="76,0 50.7,0 0,50.6 0,71.1 50.7,71.1 50.7,96.6 76,96.6 76,50.6 25.4,50.6" />
-    <polygon points="86.6,25.3 112,0 86.6,0" />
-    <polygon points="112,25.3 86.6,50.6 86.6,75.9 112,75.9 112,50.6 137.3,25.3 137.3,0 112,0" />
-    <polygon points="137.3,50.6 112,75.9 137.3,75.9" />
-  </>
-);
 
 export const logo42: Art = {
   viewWidth: 120,
@@ -19,7 +13,9 @@ export const logo42: Art = {
       <rect width="120" height="120" rx="12" fill={PAPER} />
       <rect x="7" y="7" width="106" height="106" rx="6" fill="#111" />
       <g transform="translate(18 32) scale(0.61)" fill="#f4f1ea">
-        {LOGO_42}
+        {LOGO_42.map((points) => (
+          <polygon key={points} points={points} />
+        ))}
       </g>
     </>
   ),
@@ -49,7 +45,7 @@ export const formula: Art = {
   body: (
     <>
       <path d="M0 6 Q0 0 6 0 H206 l6 7 l-5 6 l8 6 l-6 7 l7 6 l-5 7 l6 7 l-7 6 l5 7 l-6 6 l6 7 l-3 8 H6 Q0 84 0 78 Z" fill="#f6f2e8" />
-      <rect x="0" y="0" width="12" height="84" fill="#ff2bd6" />
+      <rect x="0" y="0" width="12" height="84" fill={PALETTE.magenta} />
       <text x="24" y="26" fontFamily="var(--monospace)" fontSize="12.5" fill="#555">
         estimatePrice(km) =
       </text>
@@ -66,11 +62,11 @@ export const car: Art = {
   body: (
     <>
       <circle cx="65" cy="65" r="65" fill={PAPER} />
-      <circle cx="65" cy="65" r="58" fill="#e6ff00" />
+      <circle cx="65" cy="65" r="58" fill={PALETTE.acid} />
       <path d="M22 72 L31 56 Q36 48 46 48 L80 48 Q89 48 96 57 L107 60 Q113 62 113 69 L113 78 L22 78 Z" fill="#111" />
-      <path d="M40 58 L45 52 L62 52 L62 58 Z M66 52 L80 52 Q85 52 89 58 L66 58 Z" fill="#e6ff00" />
-      <circle cx="42" cy="78" r="9" fill="#111" stroke="#e6ff00" strokeWidth="3" />
-      <circle cx="93" cy="78" r="9" fill="#111" stroke="#e6ff00" strokeWidth="3" />
+      <path d="M40 58 L45 52 L62 52 L62 58 Z M66 52 L80 52 Q85 52 89 58 L66 58 Z" fill={PALETTE.acid} />
+      <circle cx="42" cy="78" r="9" fill="#111" stroke={PALETTE.acid} strokeWidth="3" />
+      <circle cx="93" cy="78" r="9" fill="#111" stroke={PALETTE.acid} strokeWidth="3" />
       <text x="65" y="108" textAnchor="middle" fontFamily="var(--anton)" fontSize="19" fill="#111">
         KM → €
       </text>
@@ -138,14 +134,14 @@ export const descent: Art = {
     <>
       <rect width="160" height="120" rx="12" fill={PAPER} />
       <rect x="6" y="6" width="148" height="108" rx="7" fill="#111" />
-      <path d="M22 22 Q80 150 138 22" fill="none" stroke="#ff2bd6" strokeWidth="4" strokeLinecap="round" />
+      <path d="M22 22 Q80 150 138 22" fill="none" stroke={PALETTE.magenta} strokeWidth="4" strokeLinecap="round" />
       {[
         [29, 40],
         [40, 60],
         [53, 74],
         [66, 80],
       ].map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={5 - i * 0.6} fill="#e6ff00" />
+        <circle key={i} cx={x} cy={y} r={5 - i * 0.6} fill={PALETTE.acid} />
       ))}
       <text x="80" y="104" textAnchor="middle" fontFamily="var(--marker)" fontSize="13" fill="#f4f1ea">
         gradient descent
