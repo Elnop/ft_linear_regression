@@ -1,5 +1,5 @@
 import type { Sample } from '@core/types/CoreTypes.ts';
-import { chartTicks, formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
+import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
 import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
@@ -17,11 +17,9 @@ type PlainChartProps = {
 };
 
 export function PlainChart({ chart, width, rectangle, samples, line, prediction }: PlainChartProps) {
-  const { area, domain } = chart;
-  const bottom = area.y + area.height;
-  const right = area.x + area.width;
+  const { area } = chart;
   const fontSize = width < COMPACT_BELOW ? 11 : 13;
-  const { kmTicks, priceTicks } = chartTicks(domain);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 10);
 
   return (
     <svg
@@ -33,23 +31,20 @@ export function PlainChart({ chart, width, rectangle, samples, line, prediction 
       fontSize={fontSize}
     >
       <g className="plain-grid">
-        {priceTicks.map((price) => (
-          <line key={price} x1={area.x} x2={right} y1={chart.y(price)} y2={chart.y(price)} />
-        ))}
-        {kmTicks.map((km) => (
-          <line key={km} x1={chart.x(km)} x2={chart.x(km)} y1={area.y} y2={bottom} />
+        {[...priceGrid, ...kmGrid].map(({ key, ...segment }) => (
+          <line key={`${segment.x1}-${segment.y1}-${key}`} {...segment} />
         ))}
       </g>
       <path className="plain-axis" d={`M${area.x} ${area.y} L${area.x} ${bottom} L${right} ${bottom}`} />
       <g className="plain-text">
-        {kmTicks.map((km) => (
-          <text key={km} x={chart.x(km)} y={bottom + fontSize + 8} textAnchor="middle">
-            {formatTick(km)}
+        {kmLabels.map(({ key, text, x, y }) => (
+          <text key={key} x={x} y={y} textAnchor="middle">
+            {text}
           </text>
         ))}
-        {priceTicks.map((price) => (
-          <text key={price} x={area.x - 10} y={chart.y(price) + fontSize * 0.35} textAnchor="end">
-            {formatTick(price)}
+        {priceLabels.map(({ key, text, x, y }) => (
+          <text key={key} x={x} y={y} textAnchor="end">
+            {text}
           </text>
         ))}
         <text x={right - 8} y={bottom - 10} textAnchor="end">

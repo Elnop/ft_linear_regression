@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
-import { chartTicks, formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
+import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
+import { formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
 import { COMPACT_BELOW } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
@@ -15,11 +16,9 @@ type WallAxesProps = {
 const CHALK = 'rgba(239,236,230,0.62)';
 export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
   const { area, domain } = chart;
-  const bottom = area.y + area.height;
-  const right = area.x + area.width;
   const small = width < COMPACT_BELOW;
   const fontSize = small ? 12 : 15;
-  const { kmTicks, priceTicks } = chartTicks(domain);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 12);
   return (
     <motion.svg
       className="wall-axes"
@@ -33,31 +32,28 @@ export function WallAxes({ chart, width, height, visible }: WallAxesProps) {
       transition={{ duration: 0.8 }}
     >
       <g stroke="rgba(239,236,230,0.09)" strokeWidth="1" strokeDasharray="2 7">
-        {priceTicks.slice(1).map((price) => (
-          <line key={price} x1={area.x} x2={right} y1={chart.y(price)} y2={chart.y(price)} />
-        ))}
-        {kmTicks.slice(1).map((km) => (
-          <line key={km} x1={chart.x(km)} x2={chart.x(km)} y1={area.y} y2={bottom} />
+        {[...priceGrid.slice(1), ...kmGrid.slice(1)].map(({ key, ...segment }) => (
+          <line key={`${segment.x1}-${segment.y1}-${key}`} {...segment} />
         ))}
       </g>
       <g stroke={CHALK} strokeWidth="2.5" strokeLinecap="round" fill="none">
         <path d={`M${area.x} ${area.y - 10} L${area.x} ${bottom} L${right + 10} ${bottom}`} strokeDasharray="18 5 4 5" />
-        {kmTicks.map((km) => (
-          <line key={km} x1={chart.x(km)} x2={chart.x(km)} y1={bottom} y2={bottom + 7} />
+        {kmGrid.map(({ key, x1 }) => (
+          <line key={key} x1={x1} x2={x1} y1={bottom} y2={bottom + 7} />
         ))}
-        {priceTicks.map((price) => (
-          <line key={price} x1={area.x - 7} x2={area.x} y1={chart.y(price)} y2={chart.y(price)} />
+        {priceGrid.map(({ key, y1 }) => (
+          <line key={key} x1={area.x - 7} x2={area.x} y1={y1} y2={y1} />
         ))}
       </g>
       <g className="axis-text" fontSize={fontSize}>
-        {kmTicks.map((km) => (
-          <text key={km} x={chart.x(km)} y={bottom + 12 + fontSize} textAnchor="middle">
-            {formatTick(km)}
+        {kmLabels.map(({ key, text, x, y }) => (
+          <text key={key} x={x} y={y} textAnchor="middle">
+            {text}
           </text>
         ))}
-        {priceTicks.map((price) => (
-          <text key={price} x={area.x - 12} y={chart.y(price) + fontSize * 0.36} textAnchor="end">
-            {formatTick(price)}
+        {priceLabels.map(({ key, text, x, y }) => (
+          <text key={key} x={x} y={y} textAnchor="end">
+            {text}
           </text>
         ))}
         <text x={area.x + 12} y={bottom - 12} textAnchor="start" fontSize={fontSize + 2}>
