@@ -9,7 +9,7 @@
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
     "lint": "oxlint --type-aware src e2e",
     "deps": "depcruise src",
-    "folders": "node scripts/checkFolders.mjs",
+    "folders": "node checks/checkFolders.mjs",
     "check": "npm run typecheck && npm run lint && npm run deps && npm run folders",
     "test": "vitest run",
     "test:unit": "vitest run --project unit",

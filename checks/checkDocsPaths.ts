@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 
 const ROOT = new URL('../', import.meta.url);
 const BASES = ['', 'web/', 'web/src/', 'web/src/features/'];
-const ROOT_FOLDERS = /^(\.github|app|cli|core|docs|features|scripts|shared|states|web)\//;
+const ROOT_FOLDERS = /^(\.github|app|checks|cli|core|docs|features|shared|states|web)\//;
 // git lists the documents, so whatever .gitignore leaves out is never checked. -z keeps accented names unquoted.
 const DOCUMENTS = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', 'README.md', 'docs'], { cwd: ROOT, encoding: 'utf8' })
   .split('\0')

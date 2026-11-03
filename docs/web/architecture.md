@@ -92,7 +92,7 @@ Chaque niveau range ses fichiers dans les mêmes dossiers :
 | `styles/` | CSS |
 | `content/` | textes de la documentation, un `XContent.ts` par sujet (seulement dans `docs/`) |
 
-Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier remonte d'un niveau (`scripts/checkFolders.mjs` le vérifie).
+Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier remonte d'un niveau (`checks/checkFolders.mjs` le vérifie).
 
 - Un fichier qui n'exporte qu'une chose porte son nom (`hexToRgb.ts`, `PaintEngine.ts`, `pick.ts`).
 - Une famille de fonctions du même métier partage un fichier en minuscules nommé par ce métier (`random.ts`, `nozzle.ts`, `training.ts`, `animationPlaybackSelectors.ts`). Deux métiers différents vont dans deux fichiers.

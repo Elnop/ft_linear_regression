@@ -6,8 +6,8 @@ Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm r
 
 | Commande (à la racine) | Ce qu'elle lance |
 |---|---|
-| `npm run typecheck` | `tsc` sur `core/`, `cli/`, `scripts/`, puis sur le code de prod du web (`web/tsconfig.app.json`) et sur ses tests et son e2e (`web/tsconfig.test.json`) |
-| `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `scripts/`, `tsc` sur ces trois dossiers, `scripts/checkDocsPaths.ts` (chaque fichier ou lien cité dans le README et dans `docs/`, sous-dossiers compris, existe encore), puis le check du web : typecheck, Oxlint sur `src/` et `e2e/`, dependency-cruiser, vérification des dossiers |
+| `npm run typecheck` | `tsc` sur `core/`, `cli/`, `checks/`, puis sur le code de prod du web (`web/tsconfig.app.json`) et sur ses tests et son e2e (`web/tsconfig.test.json`) |
+| `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `checks/`, `tsc` sur ces trois dossiers, `checks/checkDocsPaths.ts` (chaque fichier ou lien cité dans le README et dans `docs/`, sous-dossiers compris, existe encore), puis le check du web : typecheck, Oxlint sur `src/` et `e2e/`, dependency-cruiser, vérification des dossiers |
 | `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes) |
 | `npm test` | les tests du web (Vitest) : unitaires dans Node, composants dans Chromium |
 | `npm run e2e` | build du web, puis les tests de `web/e2e/` avec Playwright, dans Chromium headless contre `vite preview` |
@@ -30,7 +30,7 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 
 - le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`).
 
-`web/scripts/checkFolders.mjs` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source.
+`web/checks/checkFolders.mjs` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source.
 
 ## Quel type de test écrire
 

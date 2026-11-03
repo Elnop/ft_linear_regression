@@ -6,7 +6,7 @@
 ft_linear_regression/
 ├── data.csv                  # dataset fourni (km,price)
 ├── package.json              # workspace npm, scripts train / predict / web / build
-├── tsconfig.json             # typecheck de core/, cli/ et scripts/
+├── tsconfig.json             # typecheck de core/, cli/ et checks/
 ├── core/                     # calcul pur, partagé entre CLI et web
 │   ├── types/CoreTypes.ts    # Sample, Thetas, TrainOptions, TrainStep
 │   ├── configs/TrainingConfig.ts # réglages par défaut (lr 0.5, 10 000 itérations), partagés CLI / web
@@ -28,7 +28,7 @@ ft_linear_regression/
 │   ├── train.ts              # programme d'entraînement
 │   ├── predict.ts            # programme de prédiction
 │   └── precision.ts          # programme de précision (bonus)
-├── scripts/                  # checkDocsPaths.ts : les chemins cités dans la doc existent
+├── checks/                   # checkDocsPaths.ts : les chemins cités dans la doc existent
 ├── web/                      # bonus : app React (Vite)
 ├── docs/                     # cette documentation
 ├── .github/workflows/        # déploiement GitHub Pages
@@ -61,16 +61,16 @@ Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).
 
-`npm run typecheck` vérifie les types de `core/`, `cli/`, `scripts/` et `web/`.
+`npm run typecheck` vérifie les types de `core/`, `cli/`, `checks/` et `web/`.
 
 ## Tests et vérifications
 
-`core/` n'a pas de tests. `npm run check` lance `scripts/checkDocsPaths.ts`, qui vérifie que chaque chemin cité dans `docs/` et le README existe encore. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
+`core/` n'a pas de tests. `npm run check` lance `checks/checkDocsPaths.ts`, qui vérifie que chaque chemin cité dans `docs/` et le README existe encore. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
 npm test            # tests du web
-npm run typecheck   # types de core/, cli/, scripts/ et web/
-npm run check       # Oxlint et tsc sur core/, cli/ et scripts/, chemins de la doc, puis le check du web
+npm run typecheck   # types de core/, cli/, checks/ et web/
+npm run check       # Oxlint et tsc sur core/, cli/ et checks/, chemins de la doc, puis le check du web
 ```
 
 Le workflow de déploiement lance `npm run check` et `npm test` avant le build (`check` contient déjà le typecheck).

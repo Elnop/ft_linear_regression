@@ -16,10 +16,10 @@
     "build": "npm run build -w web",
     "e2e": "npm run e2e -w web",
     "typecheck": "tsc -p . && npm run typecheck -w web",
-    "lint": "oxlint --type-aware core cli scripts",
+    "lint": "oxlint --type-aware core cli checks",
     "test": "npm test -w web",
     "format": "prettier --write .",
-    "check": "prettier --check . && npm run lint && tsc -p . && node scripts/checkDocsPaths.ts && npm run check -w web"
+    "check": "prettier --check . && npm run lint && tsc -p . && node checks/checkDocsPaths.ts && npm run check -w web"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
