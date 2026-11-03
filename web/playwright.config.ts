@@ -18,6 +18,6 @@ export default defineConfig({
   webServer: { command: 'npx vite preview --port 4173 --strictPort', url: URL, reuseExistingServer: !process.env.CI },
   projects: [
     { name: 'paintless', grep: /@paintless/, use: { launchOptions: { args: ['--disable-webgl', '--disable-webgl2'] } } },
-    { name: 'painting', grep: /@painting/, use: { launchOptions: { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] } } },
+    { name: 'painting', grep: /@painting/, timeout: 90_000, use: { launchOptions: { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] } } },
   ],
 });

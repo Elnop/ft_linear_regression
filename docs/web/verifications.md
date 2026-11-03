@@ -88,7 +88,7 @@ Un test de composant (`*.test.tsx`) affiche un presenter seul dans un vrai Chrom
 
 ## Tests dans le navigateur
 
-Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournent avec `@playwright/test` (`web/playwright.config.ts`). Playwright lance `vite preview` sur le build et l'arrête à la fin. La config déclare deux projets, deux Chromium : `paintless` sans WebGL, `painting` avec WebGL logiciel (SwiftShader). Chaque test porte le tag de son navigateur (`@paintless` ou `@painting`) et ne tourne que sur lui.
+Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournent avec `@playwright/test` (`web/playwright.config.ts`). Playwright lance `vite preview` sur le build et l'arrête à la fin. La config déclare deux projets, deux Chromium : `paintless` sans WebGL, `painting` avec WebGL logiciel (SwiftShader). Chaque test porte le tag de son navigateur (`@paintless` ou `@painting`) et ne tourne que sur lui. SwiftShader dessine sur le CPU : un mur qui continue de couler sature le navigateur et ralentit le test suivant. Avant la correction du mouvement réduit, un test passait de 4 s seul à plus de 60 s en suite, bloqué à la création de son contexte. `fallbacks.spec.ts` vérifie maintenant qu'en mouvement réduit le mur ne fait plus aucun dessin WebGL une fois affiché, et le projet `painting` a un timeout de 90 s au lieu de 60 s.
 
 `web/e2e/fixtures.ts` regroupe ce qui est commun : ouvrir l'app, attendre qu'elle soit stable, lancer axe avec `@axe-core/playwright`. Une fixture automatique fait échouer tout test pendant lequel la page lève une erreur JavaScript.
 

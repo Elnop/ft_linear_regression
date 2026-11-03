@@ -7,6 +7,7 @@ import { anchoredRectangle } from '@/features/graffiti/shared/lib/anchoredRectan
 import { mulberry32, noise2D } from '@/features/graffiti/shared/lib/random.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
 import { FILM_SCALE } from '@/features/graffiti/shared/configs/LayerConfig.ts';
+import { DRY_GLOSS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
 
 const CELL = 1 / FILM_SCALE;
 
@@ -203,5 +204,11 @@ export class PaintLayer {
 
   get wet(): boolean {
     return !this.active.empty;
+  }
+
+  dry(): void {
+    this.wetMass.fill(0);
+    this.active.reset();
+    this.gloss = DRY_GLOSS;
   }
 }

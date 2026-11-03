@@ -57,7 +57,7 @@ export class OffscreenWall implements Surface {
     this.layers = this.layers.filter((layer) => keep.includes(layer));
   }
 
-  async finish(): Promise<PaintLayer[]> {
+  async finish({ dry }: { dry: boolean }): Promise<PaintLayer[]> {
     while (this.pending.size > 0) await Promise.all(this.pending);
     await this.slicer.pause();
     for (const layer of this.layers) {
@@ -66,6 +66,7 @@ export class OffscreenWall implements Surface {
         if (this.slicer.due) await this.slicer.pause();
       }
     }
+    if (dry) for (const layer of this.layers) layer.dry();
     return this.layers;
   }
 

@@ -30,6 +30,7 @@ L'app est d'abord une animation, mais tout ce qu'elle montre doit rester utilisa
 Le réglage système « réduire les animations » est exposé aux pages par la media query `prefers-reduced-motion`. `prefersReducedMotion()` (`web/src/shared/lib/prefersReducedMotion.ts`) est le seul code qui la lit. Quand elle vaut `reduce` :
 
 - le director ne joue ni l'intro ni les entraînements : il affiche leur état final dès qu'il est calculé, comme *Passer* ;
+- la peinture de cet état final est sèche (`PaintLayer.dry()`) : les coulures s'arrêtent où elles sont au lieu de continuer à couler à l'écran, et le moteur ne redessine plus rien une fois le mur affiché ;
 - la bombe ne démarre pas ;
 - `MotionConfig reducedMotion="user"` retire les déplacements et les ressorts de l'interface (apparition des panneaux, sticker du prix), et ne garde que les fondus ;
 - le défilement vers la documentation et vers une étape n'est pas animé.

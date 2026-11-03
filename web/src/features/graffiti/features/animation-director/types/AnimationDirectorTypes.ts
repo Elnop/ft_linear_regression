@@ -40,6 +40,7 @@ export type FinalWallRecipe = {
   plan: Training;
   order: number[];
   withTitle: boolean;
+  dry: boolean;
 };
 
 export type FanLayers = { fan: PaintLayer[]; topPoints: PaintLayer[] };

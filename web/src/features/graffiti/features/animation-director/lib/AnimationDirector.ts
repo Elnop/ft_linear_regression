@@ -161,7 +161,7 @@ export class AnimationDirector implements Director {
     const run = this.builds.restart(true);
     const slicer = new Slicer(BUILD_SLICE_MS.background, run.signal);
     const wall = new OffscreenWall(this.engine, slicer);
-    const painted = paintFinalWall(wall, run, { samples: this.dependencies.samples, plan, order: this.order, withTitle }).catch((error: unknown) => {
+    const painted = paintFinalWall(wall, run, { samples: this.dependencies.samples, plan, order: this.order, withTitle, dry: this.dependencies.reducedMotion }).catch((error: unknown) => {
       if (run.signal.aborted) return null;
       throw error;
     });

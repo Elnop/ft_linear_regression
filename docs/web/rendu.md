@@ -49,7 +49,7 @@ Le moteur dépose une épaisseur de peinture pixel par pixel, puis la laisse cou
 
 Chaque élément peint (titre, points, chaque droite) a sa propre couche, une grille qui stocke une épaisseur et une couleur par pixel. Les couches sont séparées pour qu'on puisse atténuer une ancienne droite sans toucher au reste.
 
-La buse se déplace le long d'un tracé (droite, lettres du titre) ou reste sur place (points), et pulvérise des gouttelettes. Plus elle va lentement, plus elle dépose de peinture. Là où l'épaisseur dépasse un seuil, la peinture coule vers le bas (simulation de film mince), donc les coulures apparaissent d'elles-mêmes aux endroits où la buse a trop chargé.
+La buse se déplace le long d'un tracé (droite, lettres du titre) ou reste sur place (points), et pulvérise des gouttelettes. Plus elle va lentement, plus elle dépose de peinture. Là où l'épaisseur dépasse un seuil, la peinture coule vers le bas (simulation de film mince), donc les coulures apparaissent d'elles-mêmes aux endroits où la buse a trop chargé. Tant qu'une couche est humide, le moteur la fait couler et redessine tout le mur à chaque image : après *Passer*, les coulures continuent une vingtaine de secondes. En mouvement réduit, le mur final est séché d'un coup avant d'être affiché, donc rien ne bouge et le moteur s'arrête.
 
 Au rendu, le relief est calculé à partir de l'épaisseur pour donner un reflet humide par-dessus le mur. Quand une nouvelle droite arrive, l'opacité de la couche de chaque ancienne droite baisse, coulures comprises.
 
