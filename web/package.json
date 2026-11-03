@@ -7,9 +7,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
-    "lint": "oxlint --type-aware src e2e",
+    "lint": "oxlint --type-aware src e2e oxlint.config.ts",
     "deps": "depcruise src",
-    "tree": "node ../checks/checkTree.ts src",
+    "tree": "check-tree src",
     "check": "npm run typecheck && npm run lint && npm run deps && npm run tree",
     "test": "vitest run",
     "test:unit": "vitest run --project unit",
@@ -38,6 +38,8 @@
     "oxlint-tsgolint": "^7.0.2005",
     "vite": "^8.3.5",
     "vitest": "^5.1.0",
-    "vitest-browser-react": "^2.3.0"
+    "vitest-browser-react": "^2.3.0",
+    "@elnop/oxlint-config": "^0.1.0",
+    "@elnop/check-tree": "^0.1.0"
   }
 }

@@ -7,14 +7,29 @@ Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm r
 | Commande (à la racine) | Ce qu'elle lance |
 |---|---|
 | `npm run typecheck` | `tsc` sur `core/`, `cli/`, `checks/`, puis sur le code de prod du web (`web/tsconfig.app.json`) et sur ses tests et son e2e (`web/tsconfig.test.json`) |
-| `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `checks/`, `tsc` sur ces trois dossiers, alint (chaque chemin, lien et ancre cité dans le README et dans `docs/` existe encore), knip, puis le check du web : typecheck, Oxlint sur `src/` et `e2e/`, dependency-cruiser, `checks/checkTree.ts` sur `web/src/` |
+| `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/`, `cli/` et `checks/`, `tsc` sur ces trois dossiers, alint (chaque chemin, lien et ancre cité dans le README et dans `docs/` existe encore), knip, puis le check du web : typecheck, Oxlint sur `src/` et `e2e/`, dependency-cruiser, `check-tree` sur `web/src/` |
 | `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes) |
-| `npm test` | les tests des vérifications (`checks/**/*.test.ts`, avec `node --test`), puis les tests du web (Vitest) : unitaires dans Node, composants dans Chromium |
+| `npm test` | les tests des paquets de `checks/` (avec `node --test`), puis les tests du web (Vitest) : unitaires dans Node, composants dans Chromium |
 | `npm run e2e` | build du web, puis les tests de `web/e2e/` avec Playwright, dans Chromium headless contre `vite preview` |
 
 `npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` installe Chromium headless pour les tests de composant, puis lance `npm run check`, `npm test` et le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 26.
 
 ## Lint
+
+Les pratiques qui doivent suivre d'un projet à l'autre sont dans des paquets du workspace npm, un par pratique, sous `checks/`. Chacun peut être installé seul :
+
+| Paquet | Contenu |
+|---|---|
+| `@elnop/eslint-plugin-file-named-after-export` | règle `file-named-after-export` |
+| `@elnop/eslint-plugin-store-layout` | règle `store-layout` |
+| `@elnop/eslint-plugin-restricted-syntax` | la règle ESLint `no-restricted-syntax`, rendue chargeable par Oxlint |
+| `@elnop/oxlint-config-export-placement` | config : place des types et des constantes exportés |
+| `@elnop/oxlint-config-component-props` | config : props des composants typées par un `XProps` |
+| `@elnop/check-tree` | binaire `check-tree` |
+| `@elnop/oxlint-config` | réglages communs, étend les deux configs et charge les deux plugins, `eslint-plugin-no-comments` et `eslint-plugin-check-file` |
+| `@elnop/lint-utils` | helpers partagés par les plugins (`exportsOf`, `baseName`, `RuleTester` branché sur `node:test`) |
+
+La racine et le web ont chacun un `oxlint.config.ts` qui étend `@elnop/oxlint-config` et n'ajoute que ce qui leur est propre (plugin `node` ou `react`, environnement, imports par alias dans le web). Chaque paquet résout ses plugins depuis son propre dossier : un projet qui l'installe n'a rien d'autre à déclarer. Les paquets sont privés et leurs fichiers sont en TypeScript. Node refuse de retirer les types d'un fichier situé dans `node_modules`, donc il faudra les compiler en JavaScript avant de les publier.
 
 Oxlint applique les catégories `correctness` et `suspicious`, plus des règles TypeScript typées (promesses non attendues, assertions de type inutiles, imports de types). Dans le web, il refuse aussi tout import relatif : on importe par `@/` ou `@core/`, même entre voisins. Dans `web/e2e/`, l'alias `@e2e/` (déclaré dans `web/tsconfig.test.json`, que Playwright lit) remplace `./`.
 
@@ -22,19 +37,19 @@ Oxlint applique les catégories `correctness` et `suspicious`, plus des règles 
 
 Deux règles natives d'Oxlint complètent : `oxc/no-barrel-file` refuse un fichier qui ré-exporte avec `export *`, et `unicorn/filename-case` impose le camelCase ou le PascalCase aux noms de fichiers TypeScript (un acronyme s'écrit comme un mot : `createGlRenderer.ts`).
 
-`eslint-plugin-no-comments`, chargé par `jsPlugins` dans les deux `.oxlintrc.json`, refuse tout commentaire dans `core/`, `cli/`, `checks/`, `web/src/` et `web/e2e/`, tests compris. Son option `allow` laisse passer les directives (`oxlint-`, `eslint-`, `@ts-expect-error`, `/// <reference`). `npm run lint -- --fix` supprime les commentaires. Le plugin déclare `eslint` en peer dependency : npm installe donc ESLint 10, qui ne tourne jamais ici. ESLint 10.14 dépend de `minimatch` 10, touché par [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) et corrigé seulement en 11.0.1 : le `overrides` du `package.json` racine force `minimatch` 11 sous ce plugin. On pourra le retirer quand ESLint publiera une version avec `minimatch` 11 ([eslint/eslint#21476](https://github.com/eslint/eslint/pull/21476)).
+`eslint-plugin-no-comments`, chargé par la config partagée, refuse tout commentaire dans `core/`, `cli/`, `checks/`, `web/src/` et `web/e2e/`, tests compris. Son option `allow` laisse passer les directives (`oxlint-`, `eslint-`, `@ts-expect-error`, `/// <reference`). `npm run lint -- --fix` supprime les commentaires. Le plugin déclare `eslint` en peer dependency : npm installe donc ESLint 10, qui ne tourne jamais ici. ESLint 10.14 dépend de `minimatch` 10, touché par [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) et corrigé seulement en 11.0.1 : le `overrides` du `package.json` racine force `minimatch` 11 sous ce plugin. On pourra le retirer quand ESLint publiera une version avec `minimatch` 11 ([eslint/eslint#21476](https://github.com/eslint/eslint/pull/21476)).
 
-La place des exports et le typage des props passent par la règle `no-restricted-syntax` d'ESLint et ses sélecteurs ESQuery. Oxlint n'a pas cette règle : `checks/eslintCorePlugin.ts` la reprend de l'API `eslint/use-at-your-own-risk` et la charge par `jsPlugins` (ESLint est en devDependency directe pour ça). Les sélecteurs sont dans `checks/exportConventions.json`, que les deux `.oxlintrc.json` chargent par `extends`. Un override par motif de fichier choisit la liste :
+La place des exports et le typage des props passent par la règle `no-restricted-syntax` d'ESLint et ses sélecteurs ESQuery. Oxlint n'a pas cette règle : `checks/eslint-plugin-restricted-syntax/plugin.ts` la reprend de l'API `eslint/use-at-your-own-risk` (ESLint est une dépendance directe du paquet pour ça). Les deux configs la chargent chacune sous son nom, par un `plugin.ts` qui reprend ses règles, ce qui donne deux règles indépendantes : `export-placement/no-restricted-syntax` et `component-props/no-restricted-syntax`. Avec une seule règle, l'override de l'une remplacerait les sélecteurs de l'autre. Oxlint ne charge qu'une fois un même fichier de plugin, d'où ce fichier par config. Les sélecteurs sont dans `checks/oxlint-config-export-placement/ExportPlacementConfig.ts` et `checks/oxlint-config-component-props/ComponentPropsConfig.ts`. Un override par motif de fichier choisit la liste :
 
-- partout : un type exporté vit dans un `XTypes.ts`, une constante exportée (littéral, tableau, objet sans fonction, enum, résultat d'appel) dans un `XConfig.ts`. Un objet qui contient des fonctions (`engineActions`), une instance (`new X()`), une fonction et une classe restent libres ;
+- partout : un type exporté vit dans un `XTypes.ts`, une constante exportée (littéral, tableau, objet sans fonction, enum, résultat d'appel) dans un `XConfig.ts`. Un objet qui contient des fonctions (`engineActions`), une instance (`new X()`), le résultat d'un `defineX(...)` (`defineRule`, `defineConfig`), une fonction et une classe restent libres ;
 - `*Types.ts` n'exporte que des types, `*Config.ts(x)` et `*Content.ts(x)` que des constantes, `*Store.ts` échappe à la règle des constantes ;
 - dans un `.tsx`, un composant (fonction dont le nom commence par une majuscule) type ses props avec un type nommé qui finit par `Props`. Des props sans type, typées par un objet écrit dans la signature ou par un type comme `Props` ou `Options` sont refusées. Aucun outil ne vérifie que le préfixe est exactement le nom du composant (`CodeProps` pour `Code`) : un sélecteur ne compare pas deux attributs, et ni eslint-plugin-react, ni eslint-react, ni `@typescript-eslint/naming-convention` n'ont cette règle ;
 - les tests et `web/e2e/` échappent à ces règles.
 
-Deux conventions restent dans un plugin Oxlint écrit dans le repo (`checks/conventions/plugin.ts`), parce qu'elles dépendent du nom du fichier, qu'aucun sélecteur ne voit. Chaque règle a ses tests, écrits avec le `RuleTester` d'Oxlint :
+Deux conventions sont des plugins Oxlint écrits dans le repo, parce qu'elles dépendent du nom du fichier, qu'aucun sélecteur ne voit. Les règles suivent le format des règles ESLint : `defineRule` et `definePlugin` de `@oxlint/plugins` pour les types, un bloc `meta` (`type`, `docs`, `schema`) et des messages déclarés dans `meta.messages`, signalés par `messageId`. Chaque règle a ses tests, écrits avec le `RuleTester` d'Oxlint, qui vérifient le `messageId` et ses données plutôt que le texte :
 
-- `conventions/file-named-after-export` : un fichier qui n'exporte qu'une chose porte son nom, sauf les `XTypes`, `XConfig` et `XContent` ;
-- `conventions/store-layout` (web) : `xStore.ts` n'exporte que `xStore` et `xActions`.
+- `file-named-after-export/file-named-after-export` : un fichier qui n'exporte qu'une chose porte son nom, sauf les `XTypes`, `XConfig` et `XContent`. L'option `exemptSuffixes` remplace cette liste de suffixes ;
+- `store-layout/store-layout` : `xStore.ts` n'exporte que `xStore` et `xActions`.
 
 Chaque message d'erreur dit quoi faire, en anglais, pour qu'un agent puisse corriger sans connaître la convention.
 
@@ -50,9 +65,9 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 
 - le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`).
 
-`checks/checkTree.ts` refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source. Il refuse aussi deux CSS dans un dossier qui n'est pas `styles/`, et un CSS à côté d'un dossier `styles/`.
+`check-tree` (`checks/check-tree/checkTree.ts`) refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source. Il refuse aussi deux CSS dans un dossier qui n'est pas `styles/`, et un CSS à côté d'un dossier `styles/`. Un autre projet remplace la liste des dossiers de catégorie avec `--categories app,server,lib`.
 
-knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vitest et Playwright pour trouver les points d'entrée. Il refuse un export que personne n'importe, même si son propre fichier l'utilise, un fichier que rien n'importe, une dépendance inutilisée et un paquet importé sans être déclaré. Un import depuis un test compte. `@swc/core` est ignoré dans `web/` parce que dependency-cruiser le charge par son nom (`parser: 'swc'`), que knip ne voit pas.
+knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vitest et Playwright pour trouver les points d'entrée. Il refuse un export que personne n'importe, même si son propre fichier l'utilise, un fichier que rien n'importe, une dépendance inutilisée et un paquet importé sans être déclaré. Un import depuis un test compte. `@swc/core` est ignoré dans `web/` parce que dependency-cruiser le charge par son nom (`parser: 'swc'`), que knip ne voit pas. Pour la même raison, les quatre plugins chargés par `checks/oxlint-config/` sont ignorés dans ce paquet : la config les résout avec `import.meta.resolve`.
 
 `eslint-plugin-project-structure` a été essayé à la place des règles de placement : il se charge dans Oxlint mais vérifie le nom des types plutôt que l'annotation des props, ne sait pas exprimer « un seul export, même nom que le fichier », et ajoute ESLint et TypeScript 6 aux dépendances.
 

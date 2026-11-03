@@ -9,6 +9,6 @@
       "@e2e/*": ["./e2e/*"]
     }
   },
-  "include": ["src", "../core", "vite.config.ts", "vitest.config.ts", "e2e", "playwright.config.ts"],
+  "include": ["src", "../core", "vite.config.ts", "vitest.config.ts", "oxlint.config.ts", "e2e", "playwright.config.ts"],
   "exclude": []
 }

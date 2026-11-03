@@ -28,7 +28,7 @@ ft_linear_regression/
 │   ├── train.ts              # programme d'entraînement
 │   ├── predict.ts            # programme de prédiction
 │   └── precision.ts          # programme de précision (bonus)
-├── checks/                   # vérifications : plugin Oxlint maison (conventions/), sélecteurs no-restricted-syntax, arborescence (tree/)
+├── checks/                   # paquets de vérification réutilisables, un par pratique (@elnop/...)
 ├── web/                      # bonus : app React (Vite)
 ├── docs/                     # cette documentation
 ├── .github/workflows/        # déploiement GitHub Pages
@@ -65,7 +65,7 @@ Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations
 
 ## Tests et vérifications
 
-`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les vérifications de `checks/` ont leurs propres tests, lancés par `node --test`. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
+`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les paquets de `checks/` ont leurs propres tests, lancés par `node --test`. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
 npm test            # tests de checks/, puis tests du web

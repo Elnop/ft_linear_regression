@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["core", "cli", "checks"]
+  "include": ["core", "cli", "checks", "oxlint.config.ts"]
 }

@@ -32,3 +32,7 @@ test('two loose stylesheets, or one beside a styles/ folder, are reported', () =
   assert.deepEqual(treeViolations(tree(['a.css', 'b.css'])), ['src holds 2 stylesheets: move them into a styles/ folder']);
   assert.deepEqual(treeViolations(tree(['a.css', 'styles/b.css', 'styles/c.css'])), ['src has a styles/ folder: move a.css into it']);
 });
+
+test('the category folders can be replaced', () => {
+  assert.deepEqual(treeViolations(tree(['lib/a.ts', 'server/b.ts']), ['server']), ['src/server holds a single child: move it up one level and delete the folder']);
+});

@@ -1,13 +1,12 @@
-import type { ExportEntry, ProgramNode } from './RuleTypes.ts';
+import type { ESTree } from '@oxlint/plugins';
+import type { ExportEntry } from './ExportTypes.ts';
 
-type ExportNode = Extract<ProgramNode['body'][number], { type: 'ExportNamedDeclaration' }>;
-
-function declaredNames(declaration: NonNullable<ExportNode['declaration']>): string[] {
+function declaredNames(declaration: ESTree.Declaration): string[] {
   if (declaration.type === 'VariableDeclaration') return declaration.declarations.flatMap((declarator) => (declarator.id.type === 'Identifier' ? [declarator.id.name] : []));
   return 'id' in declaration && declaration.id && 'name' in declaration.id ? [declaration.id.name] : [];
 }
 
-export function exportsOf(program: ProgramNode): ExportEntry[] {
+export function exportsOf(program: ESTree.Program): ExportEntry[] {
   return program.body.flatMap((node): ExportEntry[] => {
     if (node.type !== 'ExportNamedDeclaration') return [];
     const names = node.declaration

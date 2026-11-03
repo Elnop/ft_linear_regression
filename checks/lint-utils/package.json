@@ -1,0 +1,21 @@
+{
+  "name": "@elnop/lint-utils",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./baseName": "./baseName.ts",
+    "./exportsOf": "./exportsOf.ts",
+    "./ExportTypes": "./ExportTypes.ts",
+    "./ruleTester": "./ruleTester.ts"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "^1.90.0"
+  },
+  "peerDependencies": {
+    "oxlint": "^1.90.0"
+  },
+  "devDependencies": {
+    "oxlint": "^1.90.0"
+  }
+}

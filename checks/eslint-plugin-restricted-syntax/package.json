@@ -1,0 +1,10 @@
+{
+  "name": "@elnop/eslint-plugin-restricted-syntax",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": "./plugin.ts",
+  "dependencies": {
+    "eslint": "10.14.0"
+  }
+}

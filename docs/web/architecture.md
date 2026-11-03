@@ -92,14 +92,14 @@ Chaque niveau range ses fichiers dans les mêmes dossiers :
 | `styles/` | CSS |
 | `content/` | textes de la documentation, un `XContent.ts` par sujet (seulement dans `docs/`) |
 
-Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier remonte d'un niveau. `checks/checkTree.ts` le vérifie, et refuse aussi deux CSS dans un même dossier sans `styles/`, et un CSS posé à côté d'un dossier `styles/`.
+Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier remonte d'un niveau. `check-tree` le vérifie, et refuse aussi deux CSS dans un même dossier sans `styles/`, et un CSS posé à côté d'un dossier `styles/`.
 
 - Un fichier qui n'exporte qu'une chose porte son nom (`hexToRgb.ts`, `PaintEngine.ts`, `pick.ts`).
 - Une famille de fonctions du même métier partage un fichier en minuscules nommé par ce métier (`random.ts`, `nozzle.ts`, `training.ts`, `animationPlaybackSelectors.ts`). Deux métiers différents vont dans deux fichiers.
 - Un store suit la même forme partout : `xStore.ts` exporte le store et ses actions (`xActions`), et un hook `useX.ts` le lit.
 - Les props d'un composant `X` ont un type nommé `XProps`, jamais un objet écrit dans la signature.
 
-La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `no-restricted-syntax` (`checks/exportConventions.json`), le nom des fichiers et la forme des stores par le plugin Oxlint de `checks/conventions/`, le contenu de `styles/`, `types/` et `configs/` par alint, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
+La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `@elnop/oxlint-config-export-placement` et `@elnop/oxlint-config-component-props`, le nom des fichiers et la forme des stores par `@elnop/eslint-plugin-file-named-after-export` et `@elnop/eslint-plugin-store-layout`, le contenu de `styles/`, `types/` et `configs/` par alint, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
 
 Tous les imports passent par un alias, même entre voisins : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`. Oxlint refuse `./` et `../`.
 
