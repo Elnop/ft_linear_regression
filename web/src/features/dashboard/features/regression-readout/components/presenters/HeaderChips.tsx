@@ -19,7 +19,9 @@ export function HeaderChips({ theta0, theta1, progress }: HeaderChipsProps) {
   );
 }
 
-function Chip({ label, value, plain }: { label: string; value: string; plain?: boolean }) {
+type ChipProps = { label: string; value: string; plain?: boolean };
+
+function Chip({ label, value, plain }: ChipProps) {
   return (
     <div className="readout-chip glass dashboard-hit">
       <dt className="label">{label}</dt>

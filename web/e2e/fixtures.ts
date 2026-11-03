@@ -1,7 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright';
 import { test as base, expect, type Page } from '@playwright/test';
 
-// Every test fails if the page throws, even when the test itself never looks.
 export const test = base.extend<{ pageErrors: string[] }>({
   pageErrors: [
     async ({ page }, use) => {
@@ -32,7 +31,6 @@ export async function axeViolations(page: Page): Promise<string[]> {
   return violations.map((violation) => `${violation.id}: ${violation.nodes.map((node) => node.target.join(' ')).join(', ')}`);
 }
 
-// Text descendants whose box sticks out of their container by more than 1px.
 export async function overflowingText(page: Page, containers: string): Promise<string[]> {
   return page.evaluate((selector) => {
     const found: string[] = [];
@@ -69,7 +67,6 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
     await control.scrollIntoViewIfNeeded();
     const fits = await control.evaluate((element) => {
       const box = element.getBoundingClientRect();
-      // 1px of slack: scrollIntoViewIfNeeded leaves sub-pixel rounding at the viewport edge.
       const { clientWidth, clientHeight } = document.documentElement;
       return box.left >= -1 && box.top >= -1 && box.right <= clientWidth + 1 && box.bottom <= clientHeight + 1;
     });

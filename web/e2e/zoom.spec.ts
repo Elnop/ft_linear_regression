@@ -4,7 +4,6 @@ import type { Page } from '@playwright/test';
 test.use({ reducedMotion: 'reduce' });
 
 async function expectNoOverflow(page: Page, containers: string): Promise<void> {
-  // A selector that matches nothing would let the overflow check pass for nothing.
   for (const selector of containers.split(',')) await expect(page.locator(selector.trim()).first()).toBeVisible();
   expect(await overflowingText(page, containers)).toEqual([]);
 }
@@ -20,7 +19,6 @@ function declareCases(): void {
         containers: '.dashboard-panel, .dashboard-bar, .readout-chip',
         sticker: false,
       },
-      // The sticker belongs to the painted wall, which needs WebGL.
       {
         tag: '@painting',
         containers: '.dashboard-panel, .dashboard-bar, .readout-chip, .price-sticker',
@@ -36,7 +34,6 @@ function declareCases(): void {
         await settled(page);
 
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
-        // Reach is checked without WebGL only: software rendering at 2x starves scrollIntoViewIfNeeded of stable frames.
         if (!view.sticker) expect(await controlsOutOfReach(page)).toEqual([]);
         await expectNoOverflow(page, view.containers);
       });
@@ -62,7 +59,6 @@ function declareCases(): void {
           expect(box.left).toBeGreaterThanOrEqual(0);
           expect(box.right).toBeLessThanOrEqual(clientWidth);
         }
-        // An ellipsis would keep the box in place and cut the value.
         const cut = await page.locator('.readout-chip dt, .readout-chip dd').evaluateAll((texts) => texts.filter((text) => text.scrollWidth > text.clientWidth).map((text) => text.textContent));
         expect(cut).toEqual([]);
       };
@@ -109,7 +105,6 @@ test.describe('with a 20px default font', () => {
 
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe('20px');
     const aside = await page.locator('.dashboard-aside').boundingBox();
-    // Without WebGL the wall shows the plain chart; `.wall-axes` would be the whole screen, not the chart.
     const chart = await page.locator('svg:has(.plain-axis)').boundingBox();
     expect(aside).not.toBeNull();
     expect(chart).not.toBeNull();

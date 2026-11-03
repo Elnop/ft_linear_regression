@@ -18,7 +18,9 @@ import { useScene } from '@/shared/useScene.ts';
 import { ASIDE_WIDTH_REM, HEAD_WIDTH_REM } from '@/shared/configs/SceneConfig.ts';
 import '@/features/dashboard/dashboard.css';
 
-export function DashboardLayout({ documentation }: { documentation: ReactNode }) {
+type DashboardLayoutProps = { documentation: ReactNode };
+
+export function DashboardLayout({ documentation }: DashboardLayoutProps) {
   const { padding, dashboardTop } = useScene();
   const visible = useAnimationPlayback(selectInterfaceVisible);
   const geometry: CSSProperties & Record<`--${string}`, string> = {

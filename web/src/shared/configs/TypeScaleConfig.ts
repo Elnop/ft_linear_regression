@@ -1,7 +1,7 @@
-export const TEXT_STEPS = ['xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', 'display'] as const;
-export type TextStep = (typeof TEXT_STEPS)[number];
+import type { TextStep } from '@/shared/types/TypeScaleTypes.ts';
 
-// Sizes in px for a root of 16px: `min` at FLUID_FROM, `max` at FLUID_TO.
+export const TEXT_STEPS: readonly TextStep[] = ['xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', 'display'];
+
 export const TYPE_SCALE: Record<TextStep, { min: number; max: number }> = {
   xs: { min: 12, max: 13 },
   sm: { min: 13, max: 15 },

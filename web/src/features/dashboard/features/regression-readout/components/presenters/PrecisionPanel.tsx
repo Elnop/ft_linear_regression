@@ -20,7 +20,9 @@ export function PrecisionPanel({ r2, rmse, mae }: PrecisionPanelProps) {
   );
 }
 
-function Metric({ label, value, color }: { label: string; value: string; color?: string }) {
+type MetricProps = { label: string; value: string; color?: string };
+
+function Metric({ label, value, color }: MetricProps) {
   return (
     <div className="readout-metric">
       <dt className="label">{label}</dt>

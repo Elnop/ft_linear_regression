@@ -2,7 +2,9 @@ import type { ReactNode } from 'react';
 import { scrollToDocumentation } from '@/shared/lib/scrollToDocumentation.ts';
 import '@/features/dashboard/shared/shared.css';
 
-export function HeadBar({ chips, toggles }: { chips: ReactNode; toggles: ReactNode }) {
+type HeadBarProps = { chips: ReactNode; toggles: ReactNode };
+
+export function HeadBar({ chips, toggles }: HeadBarProps) {
   return (
     <div className="dashboard-head">
       {chips}

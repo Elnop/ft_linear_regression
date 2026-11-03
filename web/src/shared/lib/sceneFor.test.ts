@@ -21,7 +21,6 @@ test('scene.rem echoes its input', () => {
   expect(sceneFor(1600, 900, 18).rem).toBe(18);
 });
 
-// Widths of the header (chips and buttons) measured in Chromium, settled state.
 const MEASURED_HEAD_PX: [width: number, rem: number, head: number][] = [
   [1280, 16, 607],
   [1280, 20, 723],

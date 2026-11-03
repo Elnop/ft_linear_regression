@@ -1,4 +1,5 @@
-import { FLUID_FROM, FLUID_TO, TYPE_SCALE, type TextStep } from '@/shared/configs/TypeScaleConfig.ts';
+import { FLUID_FROM, FLUID_TO, TYPE_SCALE } from '@/shared/configs/TypeScaleConfig.ts';
+import type { TextStep } from '@/shared/types/TypeScaleTypes.ts';
 
 const REM_PX = 16;
 

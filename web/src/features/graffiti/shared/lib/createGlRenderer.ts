@@ -37,7 +37,7 @@ function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram) {
 
 type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
 
-export function createGLRenderer(canvas: HTMLCanvasElement) {
+export function createGlRenderer(canvas: HTMLCanvasElement) {
   const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true });
   if (!gl) throw new Error('WebGL2 unavailable');
   const paintProgram = compile(gl, QUAD_VERTEX_SHADER, PAINT_FRAGMENT_SHADER);

@@ -1,4 +1,3 @@
-// .tsx so the browser (component) vitest project runs it: the engine needs WebGL and the wall geometry reads the root font size.
 import { afterEach, expect, test, vi } from 'vitest';
 import { createStore } from 'zustand/vanilla';
 import { AnimationDirector } from '@/features/graffiti/features/animation-director/lib/AnimationDirector.ts';

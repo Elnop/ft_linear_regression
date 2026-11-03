@@ -11,7 +11,6 @@ const DESCENT = 0.66;
 const LINE_GAP = 0.12;
 
 const TITLE_GAP_BELOW_REM = 3.75;
-// The header sits top right, level with the title: the title stops this far before it.
 const TITLE_TO_HEAD_GAP_REM = 1.5;
 const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
 

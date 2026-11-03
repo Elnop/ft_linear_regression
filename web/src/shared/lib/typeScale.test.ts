@@ -12,6 +12,10 @@ function evaluate(css: string, viewportWidth: number, rem: number): number {
 }
 
 describe('typeScale', () => {
+  it('TEXT_STEPS lists every step of TYPE_SCALE, in order', () => {
+    expect(TEXT_STEPS).toEqual(Object.keys(TYPE_SCALE));
+  });
+
   it('textSize equals min at 320 and max at 1920 for every step', () => {
     for (const step of steps) {
       expect(textSize(step, 320, 16)).toBeCloseTo(TYPE_SCALE[step].min, 6);
@@ -21,8 +25,7 @@ describe('typeScale', () => {
     expect(textSize('md', 3000, 16)).toBe(20);
   });
 
-  it('textSize scales with the root size', () => {
-    // The vw term does not follow the root size, so the proportion is exact on the clamped bounds.
+  it('textSize scales with the root size on the clamped bounds', () => {
     for (const width of [200, 3000]) {
       expect(textSize('base', width, 20)).toBeCloseTo(textSize('base', width, 16) * 1.25, 9);
     }

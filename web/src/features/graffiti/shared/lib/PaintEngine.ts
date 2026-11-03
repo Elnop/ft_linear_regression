@@ -2,7 +2,7 @@ import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
 import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
 
-import { createGLRenderer } from '@/features/graffiti/shared/lib/createGLRenderer.ts';
+import { createGlRenderer } from '@/features/graffiti/shared/lib/createGlRenderer.ts';
 import type { Renderer } from '@/features/graffiti/shared/types/RendererTypes.ts';
 import { computeRoughness } from '@/features/graffiti/shared/lib/computeRoughness.ts';
 import type { LayerOptions, Regions } from '@/features/graffiti/shared/types/LayerTypes.ts';
@@ -39,7 +39,7 @@ export class PaintEngine implements Surface {
 
   constructor(container: HTMLElement, wallUrl: string) {
     this.canvas = document.createElement('canvas');
-    this.renderer = createGLRenderer(this.canvas);
+    this.renderer = createGlRenderer(this.canvas);
     container.appendChild(this.canvas);
     this.measure();
 

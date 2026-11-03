@@ -1,3 +1,3 @@
-import type { createGLRenderer } from '@/features/graffiti/shared/lib/createGLRenderer.ts';
+import type { createGlRenderer } from '@/features/graffiti/shared/lib/createGlRenderer.ts';
 
-export type Renderer = ReturnType<typeof createGLRenderer>;
+export type Renderer = ReturnType<typeof createGlRenderer>;

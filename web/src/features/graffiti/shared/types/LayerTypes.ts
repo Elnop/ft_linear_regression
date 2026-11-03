@@ -1,6 +1,6 @@
 import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
 
-export type Region = 'chart' | 'title';
+type Region = 'chart' | 'title';
 
 export type Regions = Record<Region, Rectangle>;
 

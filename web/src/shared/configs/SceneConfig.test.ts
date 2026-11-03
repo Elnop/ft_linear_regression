@@ -14,3 +14,9 @@ test('every width media query switches exactly at WIDE_EM', () => {
     expect(value, query).toBe(bound === 'max' ? 63.99 : WIDE_EM);
   }
 });
+
+test('no stylesheet sets font-size on html, so media query em and readRem() stay equal', () => {
+  const rootRules = Object.entries(stylesheets).flatMap(([name, css]) => [...css.matchAll(/(?:^|[}\s,])(?:html|:root)\s*(?:,[^{]*)?\{([^}]*)\}/g)].map((match) => ({ name, body: match[1] ?? '' })));
+  expect(rootRules.length).toBeGreaterThan(0);
+  for (const { name, body } of rootRules) expect(body, name).not.toMatch(/(^|;|\s)font(-size)?\s*:/);
+});

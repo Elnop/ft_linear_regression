@@ -1,7 +1,9 @@
 import { tokenize } from '@/features/docs/lib/tokenize.ts';
 import '@/features/docs/styles/code.css';
 
-export function Code({ code }: { code: string }) {
+type CodeProps = { code: string };
+
+export function Code({ code }: CodeProps) {
   return (
     <pre className="documentation-code" tabIndex={0}>
       <code>

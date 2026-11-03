@@ -1,4 +1,3 @@
-// .tsx so the browser (component) vitest project runs it: the store needs a real document and ResizeObserver.
 import { expect, test } from 'vitest';
 import { sceneStore } from '@/shared/sceneStore.ts';
 
