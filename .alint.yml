@@ -1,0 +1,33 @@
+version: 1
+rules:
+  - id: doc-paths-resolve
+    kind: markdown_paths_resolve
+    paths: ['README.md', 'docs/**/*.md']
+    prefixes: ['web/', 'core/', 'cli/', 'checks/', 'docs/', '.github/']
+    level: error
+  - id: doc-links-resolve
+    kind: markdown_links_resolve
+    paths: ['README.md', 'docs/**/*.md']
+    level: error
+  - id: doc-fragments-resolve
+    kind: markdown_fragments_resolve
+    paths: ['README.md', 'docs/**/*.md']
+    level: error
+  - id: styles-only-css
+    kind: dir_only_contains
+    select: '**/styles'
+    allow: ['*.css']
+    message: 'A styles/ folder only holds stylesheets: move this file next to its code.'
+    level: error
+  - id: types-only-types-files
+    kind: dir_only_contains
+    select: '**/types'
+    allow: ['*Types.ts']
+    message: 'A types/ folder only holds XTypes.ts files: move this file or rename it after its domain.'
+    level: error
+  - id: configs-only-config-files
+    kind: dir_only_contains
+    select: '**/configs'
+    allow: ['*Config.ts', '*Config.tsx', '*Config.test.ts']
+    message: 'A configs/ folder only holds XConfig.ts files and their tests: move this file next to its code.'
+    level: error

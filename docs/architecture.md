@@ -28,7 +28,7 @@ ft_linear_regression/
 │   ├── train.ts              # programme d'entraînement
 │   ├── predict.ts            # programme de prédiction
 │   └── precision.ts          # programme de précision (bonus)
-├── checks/                   # checkDocsPaths.ts : les chemins cités dans la doc existent
+├── checks/                   # vérifications : plugin Oxlint maison (conventions/), sélecteurs no-restricted-syntax, arborescence (tree/)
 ├── web/                      # bonus : app React (Vite)
 ├── docs/                     # cette documentation
 ├── .github/workflows/        # déploiement GitHub Pages
@@ -65,12 +65,12 @@ Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations
 
 ## Tests et vérifications
 
-`core/` n'a pas de tests. `npm run check` lance `checks/checkDocsPaths.ts`, qui vérifie que chaque chemin cité dans `docs/` et le README existe encore. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
+`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les vérifications de `checks/` ont leurs propres tests, lancés par `node --test`. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
-npm test            # tests du web
+npm test            # tests de checks/, puis tests du web
 npm run typecheck   # types de core/, cli/, checks/ et web/
-npm run check       # Oxlint et tsc sur core/, cli/ et checks/, chemins de la doc, puis le check du web
+npm run check       # Oxlint et tsc sur core/, cli/ et checks/, chemins, liens et ancres de la doc, exports inutiles, puis le check du web
 ```
 
 Le workflow de déploiement lance `npm run check` et `npm test` avant le build (`check` contient déjà le typecheck).

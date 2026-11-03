@@ -17,16 +17,29 @@
     "e2e": "npm run e2e -w web",
     "typecheck": "tsc -p . && npm run typecheck -w web",
     "lint": "oxlint --type-aware core cli checks",
-    "test": "npm test -w web",
+    "test": "node --test 'checks/**/*.test.ts' && npm test -w web",
     "format": "prettier --write .",
-    "check": "prettier --check . && npm run lint && tsc -p . && node checks/checkDocsPaths.ts && npm run check -w web"
+    "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web"
   },
   "devDependencies": {
+    "@asamarts/alint": "0.21.0",
     "@types/node": "^26.6.6",
+    "eslint": "10.14.0",
+    "eslint-plugin-check-file": "3.3.2",
+    "eslint-plugin-no-comments": "1.2.1",
+    "knip": "6.42.1",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
     "prettier": "^3.9.10",
     "typescript": "^7.0.2"
   },
   "allowScripts": {
-    "@swc/core": false
+    "@swc/core": false,
+    "@asamarts/alint@0.21.0": true
+  },
+  "overrides": {
+    "eslint-plugin-no-comments": {
+      "minimatch": "^11.0.1"
+    }
   }
 }

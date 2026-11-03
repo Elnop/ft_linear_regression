@@ -1,0 +1,111 @@
+{
+  "jsPlugins": ["./eslintCorePlugin.ts"],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ExportNamedDeclaration > :matches(TSTypeAliasDeclaration, TSInterfaceDeclaration)",
+            "message": "Exported types belong in an XTypes.ts file (types/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > TSEnumDeclaration",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[init.type!=/^(ArrowFunctionExpression|FunctionExpression|NewExpression|ObjectExpression)$/]",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > ObjectExpression.init:not(:has(> Property[method=true], > Property > :matches(ArrowFunctionExpression, FunctionExpression).value))",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.tsx"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ExportNamedDeclaration > :matches(TSTypeAliasDeclaration, TSInterfaceDeclaration)",
+            "message": "Exported types belong in an XTypes.ts file (types/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > TSEnumDeclaration",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator[init.type!=/^(ArrowFunctionExpression|FunctionExpression|NewExpression|ObjectExpression)$/]",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          },
+          {
+            "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > ObjectExpression.init:not(:has(> Property[method=true], > Property > :matches(ArrowFunctionExpression, FunctionExpression).value))",
+            "message": "Exported constants belong in an XConfig.ts file (configs/ folder)."
+          },
+          {
+            "selector": ":matches(FunctionDeclaration[id.name=/^[A-Z]/], VariableDeclarator[id.name=/^[A-Z]/] > :matches(ArrowFunctionExpression, FunctionExpression)) > :matches(ObjectPattern, Identifier).params[typeAnnotation=null]",
+            "message": "A component types its props with a named type called after it: ComponentProps."
+          },
+          {
+            "selector": ":matches(FunctionDeclaration[id.name=/^[A-Z]/], VariableDeclarator[id.name=/^[A-Z]/] > :matches(ArrowFunctionExpression, FunctionExpression)) > :matches(ObjectPattern, Identifier).params > TSTypeAnnotation > TSTypeLiteral",
+            "message": "A component types its props with a named type called after it: ComponentProps."
+          },
+          {
+            "selector": ":matches(FunctionDeclaration[id.name=/^[A-Z]/], VariableDeclarator[id.name=/^[A-Z]/] > :matches(ArrowFunctionExpression, FunctionExpression)) > :matches(ObjectPattern, Identifier).params > TSTypeAnnotation > TSTypeReference > Identifier.typeName[name!=/^[A-Z]\\w*Props$/]",
+            "message": "A component types its props with a named type called after it: ComponentProps."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*Store.ts"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ExportNamedDeclaration > :matches(TSTypeAliasDeclaration, TSInterfaceDeclaration)",
+            "message": "Exported types belong in an XTypes.ts file (types/ folder)."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*Types.ts"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ExportNamedDeclaration[declaration][declaration.type!=/^TS(TypeAlias|Interface)Declaration$/]",
+            "message": "An XTypes.ts file only exports types: move this export out of it."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*Config.ts", "**/*Config.tsx", "**/*Content.ts", "**/*Content.tsx"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ExportNamedDeclaration > :matches(FunctionDeclaration, ClassDeclaration, TSTypeAliasDeclaration, TSInterfaceDeclaration)",
+            "message": "An XConfig.ts or XContent.ts file only exports constants: move this export out of it."
+          },
+          {
+            "selector": "ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > :matches(ArrowFunctionExpression, FunctionExpression).init",
+            "message": "An XConfig.ts or XContent.ts file only exports constants: move this export out of it."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "e2e/**"],
+      "rules": {
+        "eslint-core/no-restricted-syntax": "off"
+      }
+    }
+  ]
+}

@@ -7,7 +7,7 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 
 Chaque onglet commence par un sommaire. Un lien du sommaire fait défiler jusqu'à l'étape, y place le focus et met à jour l'adresse (`#documentation-theory-4`), voir [accessibilite.md](accessibilite.md). Ouvrir une adresse qui contient une ancre d'étape ouvre le bon onglet et y fait défiler la page (`tabFromHash`). Changer d'onglet remet l'ancre sur `#documentation`, pour qu'elle ne désigne pas une étape qui n'est plus affichée.
 
-L'id de la section (`documentation`) est défini une seule fois, dans `shared/configs/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`shared/lib/scrollToDocumentation.ts`) sans connaître la chaîne.
+L'id de la section (`documentation`) est défini une seule fois, dans `web/src/shared/configs/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`web/src/shared/lib/scrollToDocumentation.ts`) sans connaître la chaîne.
 
 ## Le code affiché est le vrai code
 
@@ -33,8 +33,8 @@ Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `
 
 | Fichier | Rôle |
 |---|---|
-| `features/docs/components/DocumentationPage.tsx` | assemble l'en-tête, les onglets et le panneau actif |
-| `features/docs/content/` | textes, un `XContent` par sujet, et `theory/` pour les pages de théorie |
-| `features/docs/configs/TabsConfig.ts` | les deux onglets |
-| `features/docs/useDocumentationTabs.ts` | onglet actif et navigation au clavier (`nextTab`) |
-| `features/docs/lib/sections.ts` | regroupe les étapes par section pour le sommaire |
+| `web/src/features/docs/components/DocumentationPage.tsx` | assemble l'en-tête, les onglets et le panneau actif |
+| `web/src/features/docs/content/` | textes, un `XContent` par sujet, et `theory/` pour les pages de théorie |
+| `web/src/features/docs/configs/TabsConfig.ts` | les deux onglets |
+| `web/src/features/docs/useDocumentationTabs.ts` | onglet actif et navigation au clavier (`nextTab`) |
+| `web/src/features/docs/lib/sections.ts` | regroupe les étapes par section pour le sommaire |

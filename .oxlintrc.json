@@ -1,6 +1,18 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./checks/exportConventions.json"],
   "plugins": ["typescript", "import", "oxc", "unicorn", "node"],
+  "jsPlugins": [
+    "./checks/conventions/plugin.ts",
+    {
+      "name": "no-comments",
+      "specifier": "eslint-plugin-no-comments"
+    },
+    {
+      "name": "check-file",
+      "specifier": "eslint-plugin-check-file"
+    }
+  ],
   "categories": {
     "correctness": "error",
     "suspicious": "error"
@@ -22,6 +34,54 @@
     "typescript/no-explicit-any": "error",
     "no-shadow": "off",
     "unicorn/consistent-function-scoping": "off",
-    "typescript/consistent-return": "off"
-  }
+    "typescript/consistent-return": "off",
+    "oxc/no-barrel-file": [
+      "error",
+      {
+        "threshold": 0
+      }
+    ],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true
+        }
+      }
+    ],
+    "no-comments/disallowComments": [
+      "error",
+      {
+        "allow": ["oxlint-", "eslint-", "@ts-expect-error", "@ts-ignore", "@ts-nocheck", "/ <reference "]
+      }
+    ],
+    "check-file/no-index": [
+      "error",
+      {
+        "errorMessage": "Barrel files ({{ target }}) are not allowed: import each module by its own path"
+      }
+    ],
+    "check-file/filename-blocklist": [
+      "error",
+      {
+        "**/types.ts": "*Types.ts"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["core/**", "cli/**", "checks/**"],
+      "rules": {
+        "conventions/file-named-after-export": "error"
+      }
+    },
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "conventions/file-named-after-export": "off",
+        "typescript/no-floating-promises": "off"
+      }
+    }
+  ]
 }

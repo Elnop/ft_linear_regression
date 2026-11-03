@@ -23,11 +23,11 @@ L'app est d'abord une animation, mais tout ce qu'elle montre doit rester utilisa
 - Tous les contrôles se suivent au clavier, et le focus est visible : contour `--acid` de 3 px sur les boutons, champs et liens, cyan sur les onglets.
 - Le tableau du dataset défile au clavier : sa zone prend le focus (`tabIndex={0}`) et a un nom.
 - Les onglets de la documentation suivent le modèle ARIA des onglets : un seul onglet est dans l'ordre de tabulation, les flèches gauche et droite passent à l'onglet voisin, Home et End vont au premier et au dernier. Seul l'onglet actif pointe vers son panneau (`aria-controls`), puisque l'autre panneau n'est pas rendu.
-- Le bouton DOC et les liens du sommaire passent par `scrollToElement` (`shared/lib/scrollToElement.ts`). Il fait défiler jusqu'à la cible, y déplace le focus sans second défilement, et écrit l'ancre dans l'adresse avec `history.replaceState`. La touche Tab suivante continue donc depuis la section ou l'étape atteinte, et pas depuis le haut de la page. Les cibles ont `tabIndex={-1}` et pas de contour, puisque ce ne sont pas des contrôles.
+- Le bouton DOC et les liens du sommaire passent par `scrollToElement` (`web/src/shared/lib/scrollToElement.ts`). Il fait défiler jusqu'à la cible, y déplace le focus sans second défilement, et écrit l'ancre dans l'adresse avec `history.replaceState`. La touche Tab suivante continue donc depuis la section ou l'étape atteinte, et pas depuis le haut de la page. Les cibles ont `tabIndex={-1}` et pas de contour, puisque ce ne sont pas des contrôles.
 
 ## Mouvement
 
-Le réglage système « réduire les animations » est exposé aux pages par la media query `prefers-reduced-motion`. `prefersReducedMotion()` (`shared/lib/prefersReducedMotion.ts`) est le seul code qui la lit. Quand elle vaut `reduce` :
+Le réglage système « réduire les animations » est exposé aux pages par la media query `prefers-reduced-motion`. `prefersReducedMotion()` (`web/src/shared/lib/prefersReducedMotion.ts`) est le seul code qui la lit. Quand elle vaut `reduce` :
 
 - le director ne joue ni l'intro ni les entraînements : il affiche leur état final dès qu'il est calculé, comme *Passer* ;
 - la bombe ne démarre pas ;

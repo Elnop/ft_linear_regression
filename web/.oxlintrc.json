@@ -1,6 +1,18 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["../checks/exportConventions.json"],
   "plugins": ["typescript", "react", "import", "oxc", "unicorn"],
+  "jsPlugins": [
+    "../checks/conventions/plugin.ts",
+    {
+      "name": "no-comments",
+      "specifier": "eslint-plugin-no-comments"
+    },
+    {
+      "name": "check-file",
+      "specifier": "eslint-plugin-check-file"
+    }
+  ],
   "categories": {
     "correctness": "error",
     "suspicious": "error"
@@ -17,7 +29,7 @@
         "patterns": [
           {
             "regex": "^\\.\\.?/",
-            "message": "Utilise l'alias @/ (ou @core/) au lieu d'un import relatif."
+            "message": "Relative imports are not allowed: import through an alias (@/, @core/, @e2e/)."
           }
         ]
       }
@@ -47,13 +59,54 @@
     "no-unused-expressions": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-add-event-listener": "off",
-    "typescript/consistent-return": "off"
+    "typescript/consistent-return": "off",
+    "oxc/no-barrel-file": [
+      "error",
+      {
+        "threshold": 0
+      }
+    ],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true
+        }
+      }
+    ],
+    "no-comments/disallowComments": [
+      "error",
+      {
+        "allow": ["oxlint-", "eslint-", "@ts-expect-error", "@ts-ignore", "@ts-nocheck", "/ <reference "]
+      }
+    ],
+    "check-file/no-index": [
+      "error",
+      {
+        "errorMessage": "Barrel files ({{ target }}) are not allowed: import each module by its own path"
+      }
+    ],
+    "check-file/filename-blocklist": [
+      "error",
+      {
+        "**/types.ts": "*Types.ts"
+      }
+    ]
   },
   "overrides": [
     {
+      "files": ["src/**"],
+      "rules": {
+        "conventions/file-named-after-export": "error",
+        "conventions/store-layout": "error"
+      }
+    },
+    {
       "files": ["src/**/*.test.ts", "src/**/*.test.tsx"],
       "rules": {
-        "typescript/no-floating-promises": "off"
+        "typescript/no-floating-promises": "off",
+        "conventions/file-named-after-export": "off"
       }
     },
     {
