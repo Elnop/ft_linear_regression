@@ -3,7 +3,7 @@ rules:
   - id: doc-paths-resolve
     kind: markdown_paths_resolve
     paths: ['README.md', 'docs/**/*.md']
-    prefixes: ['web/', 'core/', 'cli/', 'checks/', 'docs/', '.github/']
+    prefixes: ['web/', 'core/', 'cli/', 'docs/', '.github/']
     level: error
   - id: doc-links-resolve
     kind: markdown_links_resolve

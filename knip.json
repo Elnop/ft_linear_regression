@@ -3,9 +3,6 @@
   "workspaces": {
     "web": {
       "ignoreDependencies": ["@swc/core"]
-    },
-    "checks/oxlint-config": {
-      "ignoreDependencies": ["@elnop/eslint-plugin-file-named-after-export", "@elnop/eslint-plugin-store-layout", "eslint-plugin-check-file", "eslint-plugin-no-comments"]
     }
   }
 }
