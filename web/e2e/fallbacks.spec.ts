@@ -6,6 +6,8 @@ declare global {
   }
 }
 
+const PAINTED_WITHIN = 30_000;
+
 function trainEnabled() {
   return !document.querySelector('.button-train')?.hasAttribute('disabled');
 }
@@ -19,9 +21,15 @@ test('without WebGL the chart view is shown from the start', { tag: '@paintless'
 test.describe('with reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
-  test('with reduced motion the final state is painted at once, with no skip button', { tag: '@painting' }, async ({ page }) => {
+  test('with reduced motion TAGUER is ready within 10 s and no skip button appears', { tag: '@paintless' }, async ({ page }) => {
     await openApp(page);
     await page.waitForFunction(trainEnabled, null, { timeout: 10_000 });
+    expect(await page.getByRole('button', { name: /PASSER/u }).count()).toBe(0);
+  });
+
+  test('with reduced motion the final state is painted at once, with no skip button', { tag: '@painting' }, async ({ page }) => {
+    await openApp(page);
+    await page.waitForFunction(trainEnabled, null, { timeout: PAINTED_WITHIN });
     expect(await page.getByRole('button', { name: /PASSER/u }).count()).toBe(0);
     expect(await page.getByRole('button', { name: /GRAPHE/u }).getAttribute('aria-pressed')).toBe('false');
   });
@@ -40,7 +48,7 @@ test.describe('with reduced motion', () => {
       return page.evaluate(() => window.webglDraws);
     }
     await openApp(page);
-    await page.waitForFunction(trainEnabled, null, { timeout: 10_000 });
+    await page.waitForFunction(trainEnabled, null, { timeout: PAINTED_WITHIN });
     await page.waitForTimeout(500);
     const shown = await drawCount();
     expect(shown).toBeGreaterThan(0);

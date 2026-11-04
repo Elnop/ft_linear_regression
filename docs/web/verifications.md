@@ -147,7 +147,7 @@ Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournen
 - axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc.
 - Au clavier, DOC puis Entrée place le focus sur la doc et met `#documentation` dans l'URL, un lien du sommaire le place sur son étape, et les flèches, Home et End changent d'onglet.
 - Sans WebGL, la vue GRAPHE est active dès le départ.
-- En mouvement réduit, TAGUER est actif en moins de 10 s et le bouton *Passer* n'apparaît jamais.
+- En mouvement réduit, sans WebGL, TAGUER est actif en moins de 10 s et le bouton *Passer* n'apparaît jamais. Avec le WebGL logiciel du projet `painting`, l'état final peint d'un coup et le mur sec sont vérifiés avec une attente de 30 s : le rendu sur CPU de la CI varie de 5 s d'un run à l'autre (12,6 à 18 s pour le même test sur un même commit), et une limite de 10 s y échouait sans aucune régression.
 - Un clic sur *Passer* pendant l'intro ne bloque jamais la page plus d'une seconde (tâches longues relevées avec `PerformanceObserver`). Avant le calcul en tâche de fond, ce clic gelait la page plus de 6 s sur ce Chromium.
 - Le fond flouté de la doc (`backdrop-filter`) est bien présent dans le CSS du build. La minification de Vite 8 (lightningcss) ne garde que la dernière des deux déclarations `backdrop-filter` et `-webkit-backdrop-filter`. Quand le préfixe était en dernier, la version standard disparaissait en prod et Chrome n'affichait plus de flou. Le flou restait visible en dev, où le CSS n'est pas minifié.
 
