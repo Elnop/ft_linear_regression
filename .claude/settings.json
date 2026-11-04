@@ -3,7 +3,14 @@
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
-        "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/lintEditedFile.ts\"", "timeout": 60, "statusMessage": "oxlint on the edited file" }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx --no-install elnop-agent-hook --tree web/src",
+            "timeout": 60,
+            "statusMessage": "checks on the edited file"
+          }
+        ]
       }
     ]
   }

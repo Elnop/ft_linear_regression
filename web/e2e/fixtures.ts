@@ -1,20 +1,7 @@
-import { AxeBuilder } from '@axe-core/playwright';
-import { test as base, expect } from '@playwright/test';
+import { axeViolations as listAxeViolations, expect, test } from '@elnop/playwright-fixtures';
 import type { Page } from '@playwright/test';
 
-export const test = base.extend<{ pageErrors: string[] }>({
-  pageErrors: [
-    async ({ page }, use) => {
-      const errors: string[] = [];
-      page.on('pageerror', (error) => errors.push(error.message));
-      await use(errors);
-      expect(errors).toEqual([]);
-    },
-    { auto: true },
-  ],
-});
-
-export { expect };
+export { expect, test };
 
 export async function openApp(page: Page): Promise<void> {
   await page.goto('./');
@@ -28,8 +15,7 @@ export async function settled(page: Page): Promise<void> {
 
 export async function axeViolations(page: Page): Promise<string[]> {
   await settled(page);
-  const { violations } = await new AxeBuilder({ page }).analyze();
-  return violations.map((violation) => `${violation.id}: ${violation.nodes.map((node) => node.target.join(' ')).join(', ')}`);
+  return listAxeViolations(page);
 }
 
 export async function overflowingText(page: Page, containers: string): Promise<string[]> {

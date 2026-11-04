@@ -2,10 +2,10 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {
-      "entry": [".claude/hooks/*.ts"]
+      "ignoreDependencies": ["@elnop/agent-hook", "@elnop/alint-config"]
     },
     "web": {
-      "ignoreDependencies": ["@swc/core"]
+      "ignoreDependencies": ["@swc/core", "@elnop/dependency-cruiser-config"]
     }
   }
 }

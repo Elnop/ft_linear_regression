@@ -26,8 +26,11 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
-    "@elnop/check-tree": "0.2.0",
-    "@elnop/oxlint-config-react-vite": "0.3.0",
+    "@elnop/check-tree": "0.2.1",
+    "@elnop/dependency-cruiser-config": "0.1.0",
+    "@elnop/oxlint-config-react-vite": "0.3.1",
+    "@elnop/playwright-fixtures": "0.1.0",
+    "@elnop/tsconfig": "0.1.0",
     "@playwright/test": "1.64.1",
     "@swc/core": "1.16.21",
     "@types/react": "19.3.0",
