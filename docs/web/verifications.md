@@ -14,9 +14,9 @@ Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm r
 
 `npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` installe Chromium headless pour les tests de composant, puis lance `npm run check`, `npm test` et le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 26.
 
-`tsc` tourne en `strict` avec en plus `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride` et `noPropertyAccessFromIndexSignature` (d'où `process.env['CI']` dans `web/playwright.config.ts`), à la racine comme dans le web.
+`tsc` tourne en `strict` avec en plus `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature` et `exactOptionalPropertyTypes` (d'où `process.env['CI']` dans `web/playwright.config.ts`), à la racine comme dans le web.
 
-Deux hooks font tourner les checks avant la CI. `npm install` pointe git vers `.githooks/`, dont le `pre-commit` lance `npm run check`. Dans Claude Code, `.claude/settings.json` lance `.claude/hooks/lintEditedFile.ts` après chaque écriture d'un `.ts` ou `.tsx` : Oxlint passe sur ce fichier, et ses erreurs reviennent à l'agent tout de suite.
+Deux hooks font tourner les checks avant la CI. `npm install` pointe git vers `.githooks/`, dont le `pre-commit` lance `npm run check`. Dans Claude Code, `.claude/settings.json` lance `.claude/hooks/lintEditedFile.ts` après chaque `Edit` ou `Write`. Oxlint passe sur le fichier s'il est en `.ts` ou `.tsx`. Après un `Write` (un fichier créé ou réécrit) ou une modification d'un `.md`, alint passe sur tout le repo, et `check-tree` sur `web/src/` si le fichier y est : un fichier posé dans le mauvais dossier est signalé tout de suite, sans attendre le pre-commit. Les erreurs reviennent à l'agent (code de sortie 2). Le hook lui-même est lu par Oxlint et `tsc` à la racine.
 
 ## Lint
 
@@ -41,7 +41,7 @@ Deux règles natives d'Oxlint complètent : `oxc/no-barrel-file` refuse un fichi
 La place des exports et le typage des props passent par la règle `no-restricted-syntax` d'ESLint et ses sélecteurs ESQuery, qu'Oxlint charge depuis `oxlint-plugin-eslint`. Un override par motif de fichier choisit la liste :
 
 - partout : un type exporté vit dans un `XTypes.ts`, une constante exportée (littéral, tableau, objet sans fonction, enum, résultat d'appel) dans un `XConfig.ts`. Un objet qui contient des fonctions (`engineActions`), une instance (`new X()`), le résultat d'un `defineX(...)` (`defineRule`, `defineConfig`), une fonction et une classe restent libres ;
-- `*Types.ts` n'exporte que des types, `*Config.ts(x)` et `*Content.ts(x)` que des constantes, `*Store.ts` échappe à la règle des constantes ;
+- `*Types.ts` n'exporte que des types, `*Config.ts` et `*Content.ts(x)` que des constantes, `*Store.ts` échappe à la règle des constantes ;
 - dans un `.tsx`, un composant (fonction dont le nom commence par une majuscule) type ses props avec un type nommé qui finit par `Props`. Des props sans type, typées par un objet écrit dans la signature ou par un type comme `Props` ou `Options` sont refusées. Aucun outil ne vérifie que le préfixe est exactement le nom du composant (`CodeProps` pour `Code`) : un sélecteur ne compare pas deux attributs, et ni eslint-plugin-react, ni eslint-react, ni `@typescript-eslint/naming-convention` n'ont cette règle ;
 - les tests et `web/e2e/` échappent à ces règles.
 
@@ -61,6 +61,20 @@ Les paquets imposent aussi un style commun, essayé ici avant d'être publié :
 - `typescript/switch-exhaustiveness-check` : un `switch` sur une union couvre tous les cas ;
 - `@elnop/oxlint-config-vitest` : `it()` dans un `describe`, `test()` en dehors, mocks typés (`vi.fn<() => void>()`), `toThrow` avec le message attendu.
 
+Une config est de la donnée : `check-file/filename-blocklist` refuse un `XConfig.tsx`, et son JSX va dans un composant (les dessins des autocollants sont des presenters, `ArtsConfig.ts` ne garde que leurs dimensions et le composant à afficher). Un `XContent.tsx` reste accepté, la doc y est écrite en JSX.
+
+Une deuxième série, essayée ici puis publiée (base TypeScript 0.3.0), impose une seule écriture pour chaque chose :
+
+- les fonctions d'un type s'écrivent en propriété (`x: (km: number) => number`), jamais en méthode ;
+- pas de `public` : on écrit `private` et `protected`, le reste est public sans mot-clé ;
+- `for...of` au lieu de `forEach`, `replaceAll` pour une regex globale, `Number.parseFloat` et `Number.NaN` au lieu des globaux, `import type { X }` au lieu de `import { type X }` ;
+- les regex ont le flag `u`, pas de ternaire imbriqué, pas de `!!x` ni de `+x` (on écrit `x !== null`), pas de paramètre réassigné, `console` réservé à `console.error` (coupé dans `cli/`) ;
+- avec `--type-aware` : un membre de classe jamais réassigné est `readonly`, une API dépréciée est refusée, une expression `void` n'est acceptée que comme corps d'une flèche.
+
+La config React (0.2.0) et la config Vitest (0.2.0) ajoutent leur part de cette série. Un type `XProps` nomme ses callbacks `onX`. Un hook vit dans un `useX.ts`, qui n'exporte que des hooks (plugin `hook-naming`). Pas d'accolades autour d'une chaîne en JSX. Côté tests, `toStrictEqual` remplace `toEqual`, `toBe(true)` remplace `toBeTruthy()`, `toBeNull()` remplace `toBe(null)` et `toHaveBeenCalledTimes(1)` remplace `toHaveBeenCalledOnce()`.
+
+Écartées après mesure : `unicorn/prefer-at` (sans `noUncheckedIndexedAccess`, `.at(-1)` ajoute `undefined` là où `[length - 1]` n'en a pas), `vitest/no-conditional-in-test` (elle signale les `&&` dans les `expect` et le code passé à `page.addInitScript`), `react/no-array-index-key` (les cinq listes concernées ne bougent jamais, l'index y est la bonne clé) et `react/jsx-handler-names` (les props passent des actions de store comme `viewActions.toggle`, qu'elle voudrait renommer en `handleX`).
+
 Les règles sur `interface` (base TypeScript) et sur les selectors (`@elnop/oxlint-config-zustand`) passent aussi par `no-restricted-syntax`, chacune sous son propre nom de plugin.
 
 `typescript/no-unnecessary-condition` et `typescript/strict-boolean-expressions` restent coupées : sans `noUncheckedIndexedAccess`, `history[history.length - 1]` est typé non nul et ces règles demanderaient de retirer des gardes utiles.
@@ -75,19 +89,18 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 - une feature n'importe jamais une autre feature (`no-cross-feature`), et un état n'importe pas un autre état (`no-cross-state`) ;
 - une sous-feature (`features/<x>/features/<y>/`) n'importe ni ses voisines ni la racine de sa feature, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
 - un presenter n'importe aucun store ni aucun hook d'état, et un store vit à la racine ou dans le `stores/` de son niveau ;
-- aucun cycle d'imports.
-
-- le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`).
+- aucun cycle d'imports ;
+- le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`) ni une devDependency (`not-to-dev-dep`). Les imports de types ne comptent pas.
 
 `core/` tourne aussi dans le navigateur. Un override du `oxlint.config.ts` racine lui interdit tout paquet, tout module `node:`, le global `process` et tout import de `cli/` ou `web/`.
 
-`check-tree` (paquet `@elnop/check-tree`) refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source. Il refuse aussi deux CSS dans un dossier qui n'est pas `styles/`, et un CSS à côté d'un dossier `styles/`. Un autre projet remplace la liste des dossiers de catégorie avec `--categories app,server,lib`.
+`check-tree` (paquet `@elnop/check-tree`) refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source. Il refuse aussi deux CSS dans un dossier qui n'est pas `styles/`, et un CSS à côté d'un dossier `styles/`. Depuis la 0.2.0, il applique la même règle aux hooks (`useX.ts`), aux types (`xTypes.ts`), aux configs (`xConfig.ts`), aux stores (`xStore.ts`) et aux fichiers de `lib/` (les autres `.ts`, sauf `xContent.ts`) : un seul reste à la racine de son dossier, à partir de deux ils vont dans `hooks/`, `types/`, `configs/`, `stores/` ou `lib/`. Les composants suivent la même règle avec `components/` (un `.tsx` en PascalCase, sauf `XContent`), puis, à l'intérieur de `components/`, avec `orchestrators/` (`XContainer`, `XLayout`, `XPage`) et `presenters/` (les autres). Le nommage est celui de la règle `presenters-are-pure`. C'est pour ça que les deux hooks de la doc sont dans `web/src/features/docs/hooks/`. Un autre projet remplace la liste des dossiers de catégorie avec `--categories app,server,lib`.
 
 knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vitest et Playwright pour trouver les points d'entrée. Il refuse un export que personne n'importe, même si son propre fichier l'utilise, un fichier que rien n'importe, une dépendance inutilisée et un paquet importé sans être déclaré. Un import depuis un test compte. `@swc/core` est ignoré dans `web/` parce que dependency-cruiser le charge par son nom (`parser: 'swc'`), que knip ne voit pas.
 
 `eslint-plugin-project-structure` a été essayé à la place des règles de placement : il se charge dans Oxlint mais vérifie le nom des types plutôt que l'annotation des props, ne sait pas exprimer « un seul export, même nom que le fichier », et ajoute ESLint et TypeScript 6 aux dépendances.
 
-[alint](https://github.com/asamarts/alint) (`.alint.yml`) vérifie la doc avec trois règles. `markdown_paths_resolve` contrôle qu'un chemin écrit entre backticks dans le README ou dans `docs/` existe, s'il commence par `web/`, `core/`, `cli/`, `docs/` ou `.github/`. Il résout depuis la racine du repo : on écrit donc toujours le chemin complet (`web/src/shared/lib/readRem.ts`), et un nom de dossier générique (`shared/`, `features/`) n'est pas vérifié. `markdown_links_resolve` contrôle les liens vers des fichiers, et `markdown_fragments_resolve` les ancres (`verifications.md#lint`). Les blocs de code sont ignorés. Trois règles `dir_only_contains` gardent les dossiers de catégorie propres : `styles/` ne contient que des `.css`, `types/` que des `*Types.ts`, `configs/` que des `*Config.ts(x)` et leurs tests. La version est figée (0.21.0, avant la 1.0) et son `postinstall`, qui télécharge le binaire depuis les releases GitHub et vérifie son SHA-256, est approuvé dans `allowScripts` du `package.json` racine.
+[alint](https://github.com/asamarts/alint) (`.alint.yml`) vérifie la doc avec trois règles. `markdown_paths_resolve` contrôle qu'un chemin écrit entre backticks dans le README ou dans `docs/` existe, s'il commence par `web/`, `core/`, `cli/`, `docs/` ou `.github/`. Il résout depuis la racine du repo : on écrit donc toujours le chemin complet (`web/src/shared/lib/readRem.ts`), et un nom de dossier générique (`shared/`, `features/`) n'est pas vérifié. `markdown_links_resolve` contrôle les liens vers des fichiers, et `markdown_fragments_resolve` les ancres (`verifications.md#lint`). Les blocs de code sont ignorés. Trois règles `dir_only_contains` gardent les dossiers de catégorie propres : `styles/` ne contient que des `.css`, `types/` que des `*Types.ts`, `configs/` que des `*Config.ts` et leurs tests. La version est figée (0.21.0, avant la 1.0) et son `postinstall`, qui télécharge le binaire depuis les releases GitHub et vérifie son SHA-256, est approuvé dans `allowScripts` du `package.json` racine. Une règle `json_path_matches` refuse une version de dépendance qui n'est pas exacte (`^1.2.3`, `~1.2.3`, `latest`) dans les deux `package.json`. `.npmrc` les écrit exactes à chaque `npm install` (`save-exact`) et refuse d'installer avec une version de Node hors de `engines` (`engine-strict`). `oxlint` et `oxlint-tsgolint` sont déclarés à la racine et dans `web/`, parce que chaque workspace lance son propre lint et que knip demande que chacun déclare ce qu'il utilise.
 
 ## Quel type de test écrire
 
