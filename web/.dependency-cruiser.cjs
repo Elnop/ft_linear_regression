@@ -8,6 +8,13 @@ module.exports = {
       to: { path: '\\.test\\.tsx?$' },
     },
     {
+      name: 'not-to-dev-dep',
+      severity: 'error',
+      comment: 'Production code only imports packages from dependencies: devDependencies hold the tooling, which never ships in the bundle.',
+      from: { path: '^src/', pathNot: '\\.test\\.tsx?$' },
+      to: { dependencyTypes: ['npm-dev'] },
+    },
+    {
       name: 'no-circular',
       severity: 'error',
       comment: 'An import cycle welds modules together: extract the shared part into its own module.',

@@ -7,6 +7,7 @@ export default defineConfig({
   env: { node: true, es2024: true },
   ignorePatterns: ['web'],
   overrides: [
+    { files: ['cli/**'], rules: { 'no-console': 'off' } },
     {
       files: ['core/**'],
       env: { node: false },

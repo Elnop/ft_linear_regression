@@ -16,7 +16,7 @@
     "build": "npm run build -w web",
     "e2e": "npm run e2e -w web",
     "typecheck": "tsc -p . && npm run typecheck -w web",
-    "lint": "oxlint --type-aware core cli oxlint.config.ts",
+    "lint": "oxlint --type-aware core cli .claude/hooks oxlint.config.ts",
     "test": "npm test -w web",
     "format": "prettier --write .",
     "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web",
@@ -24,13 +24,13 @@
   },
   "devDependencies": {
     "@asamarts/alint": "0.21.0",
-    "@elnop/oxlint-config-typescript": "^0.2.0",
-    "@types/node": "^26.6.6",
+    "@elnop/oxlint-config-typescript": "0.3.0",
+    "@types/node": "26.6.6",
     "knip": "6.42.1",
-    "oxlint": "^1.91.0",
-    "oxlint-tsgolint": "^7.0.2005",
-    "prettier": "^3.9.10",
-    "typescript": "^7.0.2"
+    "oxlint": "1.91.0",
+    "oxlint-tsgolint": "7.0.2005",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2"
   },
   "allowScripts": {
     "@swc/core": false,

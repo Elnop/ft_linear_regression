@@ -28,6 +28,13 @@ rules:
   - id: configs-only-config-files
     kind: dir_only_contains
     select: '**/configs'
-    allow: ['*Config.ts', '*Config.tsx', '*Config.test.ts']
-    message: 'A configs/ folder only holds XConfig.ts files and their tests: move this file next to its code.'
+    allow: ['*Config.ts', '*Config.test.ts']
+    message: 'A configs/ folder only holds XConfig.ts files and their tests: move this file next to its code, and JSX into a component.'
+    level: error
+  - id: exact-dependency-versions
+    kind: json_path_matches
+    paths: ['package.json', 'web/package.json']
+    path: '$["dependencies","devDependencies"].*'
+    matches: '^\d+\.\d+\.\d+$'
+    message: 'Pin each dependency to an exact version (npm install writes them exact through .npmrc save-exact).'
     level: error
