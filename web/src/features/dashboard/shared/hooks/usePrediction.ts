@@ -5,8 +5,8 @@ import { normalizeMileage } from '@/features/dashboard/shared/lib/normalizeMilea
 import { useKm } from '@/features/dashboard/shared/hooks/useKm.ts';
 import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useRegression } from '@/states/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/states/animation-playback/useAnimationPlayback.ts';
+import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/shared-features/animation-playback/useAnimationPlayback.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { useScene } from '@/shared/useScene.ts';
 

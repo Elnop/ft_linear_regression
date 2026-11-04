@@ -3,7 +3,7 @@ import { hasDiverged } from '@core/hasDiverged.ts';
 import { trainSteps } from '@core/trainSteps.ts';
 import type { CostPoint, Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 import type { Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import type { RegressionSnapshot } from '@/states/regression/RegressionTypes.ts';
+import type { RegressionSnapshot } from '@/shared-features/regression/RegressionTypes.ts';
 
 const DENSE_HISTORY_UNTIL = 64;
 function nextHistorySample(iteration: number) {

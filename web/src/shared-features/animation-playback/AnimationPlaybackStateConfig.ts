@@ -1,4 +1,4 @@
-import type { AnimationPlaybackActions, AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
+import type { AnimationPlaybackActions, AnimationPlaybackState } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
 
 export const IDLE_PLAYBACK: AnimationPlaybackState = {
   phase: 'idle',

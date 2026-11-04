@@ -85,8 +85,8 @@ Les règles sur `interface` (base TypeScript) et sur les selectors (`@elnop/oxli
 
 dependency-cruiser vérifie le sens des dépendances. Les règles viennent de `@elnop/dependency-cruiser-config`, et `web/.dependency-cruiser.cjs` n'ajoute que les options du parser (`swc`, parce que dependency-cruiser 18 ne lit pas TypeScript 7) :
 
-- une couche n'importe que les couches en dessous d'elle : `web/src/shared/` ne connaît ni `web/src/states/` ni les features, `web/src/states/` ne connaît ni les features ni `web/src/app/`, et une feature ne remonte jamais vers `web/src/app/` ;
-- une feature n'importe jamais une autre feature (`no-cross-feature`), et un état n'importe pas un autre état (`no-cross-state`) ;
+- une couche n'importe que les couches en dessous d'elle : `web/src/shared/` ne connaît ni `web/src/shared-features/` ni les features, `web/src/shared-features/` ne connaît ni les features ni `web/src/app/`, et une feature ne remonte jamais vers `web/src/app/` ;
+- une feature n'importe jamais une autre feature (`no-cross-feature`), et une shared feature n'importe pas une autre shared feature (`no-cross-shared-feature`) ;
 - une sous-feature (`features/<x>/features/<y>/`) n'importe ni ses voisines ni la racine de sa feature, seulement le `shared/` de sa feature, et ce `shared/` ne connaît aucune sous-feature ;
 - un presenter n'importe aucun store ni aucun hook d'état, et un store vit à la racine ou dans le `stores/` de son niveau ;
 - aucun cycle d'imports ;

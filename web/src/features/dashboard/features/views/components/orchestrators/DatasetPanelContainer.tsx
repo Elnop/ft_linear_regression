@@ -4,7 +4,7 @@ import { overlayRectangle } from '@/features/dashboard/features/views/lib/overla
 import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts';
 import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useRegression } from '@/states/regression/hooks/useRegression.ts';
+import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
 import { useScene } from '@/shared/useScene.ts';
 
 export function DatasetPanelContainer() {

@@ -1,4 +1,4 @@
-import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
+import type { AnimationPlaybackState } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
 
 export function selectIntro(state: AnimationPlaybackState) {
   return state.phase !== 'interactive';

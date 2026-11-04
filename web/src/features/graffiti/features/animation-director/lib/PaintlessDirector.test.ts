@@ -2,9 +2,9 @@ import raw from '@dataset?raw';
 import { expect, test } from 'vitest';
 import { createStore } from 'zustand/vanilla';
 import { parseDataset } from '@core/parseDataset.ts';
-import type { RegressionSnapshot } from '@/states/regression/RegressionTypes.ts';
-import type { AnimationPlayback } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
-import { IDLE_PLAYBACK, IDLE_PLAYBACK_ACTIONS } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
+import type { RegressionSnapshot } from '@/shared-features/regression/RegressionTypes.ts';
+import type { AnimationPlayback } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
+import { IDLE_PLAYBACK, IDLE_PLAYBACK_ACTIONS } from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
 import { PaintlessDirector } from '@/features/graffiti/features/animation-director/lib/PaintlessDirector.ts';
 
 const samples = parseDataset(raw);

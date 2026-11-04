@@ -1,7 +1,7 @@
 import type { CostPoint, Sample, TrainStep } from '@core/types/CoreTypes.ts';
 import type { StoreApi } from 'zustand/vanilla';
-import type { AnimationPlayback } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
-import type { RegressionActions } from '@/states/regression/RegressionTypes.ts';
+import type { AnimationPlayback } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
+import type { RegressionActions } from '@/shared-features/regression/RegressionTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import type { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
 import type { Scene } from '@/shared/types/SceneTypes.ts';

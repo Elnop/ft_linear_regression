@@ -1,5 +1,5 @@
-import { useRegression } from '@/states/regression/hooks/useRegression.ts';
-import { useTrainingOptions } from '@/states/regression/hooks/useTrainingOptions.ts';
+import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
+import { useTrainingOptions } from '@/shared-features/regression/hooks/useTrainingOptions.ts';
 
 export function useWarn(): boolean {
   const diverged = useRegression((state) => state.diverged);

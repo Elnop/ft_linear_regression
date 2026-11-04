@@ -32,16 +32,16 @@ web/src/
 │   │       ├── prediction/             champ kilométrage et marqueur du prix sur le mur
 │   │       └── regression-readout/     θ et itération, coût, précision (lecture seule)
 │   └── docs/                           documentation intégrée (contenu, onglets)
-├── states/                             l'état métier que plusieurs features lisent ou écrivent
+├── shared-features/                    l'état métier que plusieurs features lisent ou écrivent
 │   ├── regression/                     dataset, θ, métriques, historique du coût, divergence, learning rate
 │   └── animation-playback/             où en est l'animation : phase, points visibles, entraînement en cours, actions
 └── shared/                             code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
 ```
 
-Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `web/src/app/` → `web/src/features/` → `web/src/states/` → `web/src/shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
+Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `web/src/app/` → `web/src/features/` → `web/src/shared-features/` → `web/src/shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
 
 - Une feature range ses sous-features dans son propre dossier `features/`, à côté de son `shared/` et de ses dossiers techniques, comme `web/src/` le fait pour les features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
-- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `web/src/states/` : graffiti écrit `web/src/states/regression` et `web/src/states/animation-playback` pendant l'animation, et le dashboard les lit.
+- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `web/src/shared-features/` : graffiti écrit `web/src/shared-features/regression` et `web/src/shared-features/animation-playback` pendant l'animation, et le dashboard les lit.
 - Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par le director de graffiti.
 - `src/shared/` ne contient aucun état métier, seulement du code transverse.
 
@@ -111,9 +111,9 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 |---|---|---|
 | `web/src/features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
 | `web/src/shared/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
-| `web/src/states/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
-| `web/src/states/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
-| `web/src/states/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
+| `web/src/shared-features/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
+| `web/src/shared-features/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
+| `web/src/shared-features/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
 | `web/src/features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
 | `web/src/features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
 

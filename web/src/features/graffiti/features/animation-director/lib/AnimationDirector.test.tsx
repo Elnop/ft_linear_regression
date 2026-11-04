@@ -3,8 +3,8 @@ import { createStore } from 'zustand/vanilla';
 import { AnimationDirector } from '@/features/graffiti/features/animation-director/lib/AnimationDirector.ts';
 import { wallRegions } from '@/features/graffiti/features/animation-director/lib/wallRegions.ts';
 import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import type { AnimationPlayback } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
-import { IDLE_PLAYBACK, IDLE_PLAYBACK_ACTIONS } from '@/states/animation-playback/AnimationPlaybackStateConfig.ts';
+import type { AnimationPlayback } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
+import { IDLE_PLAYBACK, IDLE_PLAYBACK_ACTIONS } from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import type { Scene } from '@/shared/types/SceneTypes.ts';
 

@@ -1,5 +1,5 @@
 import { maxStableLearningRate } from '@core/maxStableLearningRate.ts';
-import { DATA } from '@/states/regression/configs/DatasetConfig.ts';
+import { DATA } from '@/shared-features/regression/configs/DatasetConfig.ts';
 
 const DIVERGENCE_LEARNING_RATE = maxStableLearningRate(DATA);
 

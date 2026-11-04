@@ -1,6 +1,6 @@
 import { useProgress } from '@/features/dashboard/features/regression-readout/useProgress.ts';
 import { HeaderChips } from '@/features/dashboard/features/regression-readout/components/presenters/HeaderChips.tsx';
-import { useRegression } from '@/states/regression/hooks/useRegression.ts';
+import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
 
 export function HeaderChipsContainer() {
   const theta0 = useRegression((state) => state.thetas?.theta0 ?? null);
