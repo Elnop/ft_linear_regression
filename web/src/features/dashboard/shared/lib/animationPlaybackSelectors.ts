@@ -1,7 +1,13 @@
 import type { AnimationPlaybackState } from '@/states/animation-playback/AnimationPlaybackTypes.ts';
 
-export const selectIntro = (state: AnimationPlaybackState) => state.phase !== 'interactive';
+export function selectIntro(state: AnimationPlaybackState) {
+  return state.phase !== 'interactive';
+}
 
-export const selectInterfaceVisible = (state: AnimationPlaybackState) => state.phase !== 'idle';
+export function selectInterfaceVisible(state: AnimationPlaybackState) {
+  return state.phase !== 'idle';
+}
 
-export const selectCanSkip = (state: AnimationPlaybackState) => selectInterfaceVisible(state) && (selectIntro(state) || state.trainingActive);
+export function selectCanSkip(state: AnimationPlaybackState) {
+  return selectInterfaceVisible(state) && (selectIntro(state) || state.trainingActive);
+}

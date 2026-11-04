@@ -1,1 +1,3 @@
-export const videoUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+export function videoUrl(id: string) {
+  return `https://www.youtube.com/watch?v=${id}`;
+}

@@ -18,11 +18,11 @@ export function titleLetters(layout: Pick<TitleLayout, 'em' | 'lines'>, random: 
       const scale = 0.94 + 0.12 * random();
       const lift = (random() - 0.5) * 0.1;
       const lean = SLANT + (random() - 0.5) * 0.08;
-      const place = (point: Vec2): Vec2 => {
+      function place(point: Vec2): Vec2 {
         const localX = pen + point.x * scale - (point.y * scale + lift) * lean;
         const localY = point.y * scale + lift;
         return { x: line.x + (localX * COS - localY * SIN) * em, y: line.baseline + (localX * SIN + localY * COS) * em };
-      };
+      }
       const strokes = glyph.strokes.map((knots): Stroke => ({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false }));
       if (glyph.dot) strokes.push({ points: [place(glyph.dot)], thickness: 2, dot: true });
       pen += glyph.advance + TRACKING;

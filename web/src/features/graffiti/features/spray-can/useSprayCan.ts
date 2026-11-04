@@ -14,6 +14,7 @@ export function useSprayCan(engine: PaintEngine | null) {
 
   useEffect(() => {
     if (!engine || prefersReducedMotion()) return;
+    const activeEngine = engine;
     const element = box.current!;
     const canvas = mist.current!;
     const context = canvas.getContext('2d')!;
@@ -25,23 +26,23 @@ export function useSprayCan(engine: PaintEngine | null) {
     let last = performance.now();
     let frame = 0;
 
-    const resize = ({ width, height }: { width: number; height: number }) => {
+    function resize({ width, height }: { width: number; height: number }) {
       const ratio = pixelRatio();
       canvas.width = width * ratio;
       canvas.height = height * ratio;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    };
+    }
     resize(start);
     const unsubscribe = sceneStore.subscribe(resize);
 
-    const tick = (now: number) => {
+    function tick(now: number) {
       const deltaSeconds = Math.min(0.05, (now - last) / 1000);
       last = now;
       const { width, height } = sceneStore.getState();
       const canWidth = Math.max(CAN_SIZE.minimum, Math.min(CAN_SIZE.maximum, width * CAN_SIZE.sceneRatio));
       const scale = canWidth / VIEW_WIDTH;
 
-      const nozzle = engine.nozzle();
+      const nozzle = activeEngine.nozzle();
       const pose = motion.step(deltaSeconds, nozzle, canWidth, height);
       if (pose.color !== color) {
         color = pose.color;
@@ -61,14 +62,14 @@ export function useSprayCan(engine: PaintEngine | null) {
       if (pose.spraying && nozzle) drawMist(context, pose, nozzle, color, canWidth);
 
       frame = pose.resting && !nozzle ? 0 : requestAnimationFrame(tick);
-    };
-    const wake = () => {
+    }
+    function wake() {
       if (frame !== 0) return;
       last = performance.now();
       frame = requestAnimationFrame(tick);
-    };
+    }
     wake();
-    const unsubscribeActivity = engine.onActivity(wake);
+    const unsubscribeActivity = activeEngine.onActivity(wake);
 
     return () => {
       cancelAnimationFrame(frame);

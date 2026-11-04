@@ -25,22 +25,22 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
     pooledDelta.fill(0, y * width + x0, y * width + x1 + 1);
   }
 
-  const move = (from: number, to: number, amount: number, mobility: number, poolShare: number) => {
+  function move(from: number, to: number, amount: number, mobility: number, poolShare: number) {
     filmDelta[from] -= amount;
     wetDelta[from] -= amount * mobility;
     pooledDelta[from] -= amount * poolShare;
     filmDelta[to] += amount;
     wetDelta[to] += amount * mobility;
     pooledDelta[to] += amount;
-  };
+  }
 
-  const reach = (index: number, excess: number) => {
+  function reach(index: number, excess: number) {
     if (reached[index] || film[index] > residual[index] * 0.5) return;
     reached[index] = 1;
     residual[index] *= Math.min(0.85, Math.max(0.07, TRAIL_MIN + TRAIL_GAIN * excess)) * (0.75 + 0.5 * roughness[index]);
-  };
+  }
 
-  const level = (from: number, to: number, excess: number, mobility: number, poolShare: number) => {
+  function level(from: number, to: number, excess: number, mobility: number, poolShare: number) {
     const targetExcess = film[to] - residual[to];
     let amount = 0;
     if (film[to] > residual[to] * 0.5) {
@@ -49,18 +49,20 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
       amount = SPREAD * mobility * (excess - pin[to] * 2) * deltaSeconds * 0.25;
     }
     if (amount > 0) move(from, to, Math.min(amount, excess * 0.2), mobility, poolShare);
-  };
+  }
 
-  const accept = (index: number, excess: number) => {
+  function accept(index: number, excess: number) {
     const thickness = film[index];
     const grip = 1.15 - 0.6 * roughness[index];
     if (thickness > residual[index] * 0.5) return (0.3 + thickness) * grip;
     if (excess > pin[index]) return 0.3 * grip * Math.min(1, (excess - pin[index]) * 4);
     const closeness = (excess - 0.6 * pin[index]) / (0.4 * pin[index]);
     return closeness > 0 ? 0.015 * grip * closeness * closeness : 0;
-  };
+  }
 
-  const side = (index: number, excess: number) => (film[index] > residual[index] * 0.5 ? 0.12 * accept(index, excess) : 0);
+  function side(index: number, excess: number) {
+    return film[index] > residual[index] * 0.5 ? 0.12 * accept(index, excess) : 0;
+  }
 
   for (let y = y0; y <= Math.min(y1, height - 2); y++) {
     for (let x = x0; x <= x1; x++) {

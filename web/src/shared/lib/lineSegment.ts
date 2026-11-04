@@ -26,7 +26,9 @@ function clipSegment(start: Vec2, end: Vec2, rectangle: Rectangle): [Vec2, Vec2]
     else exit = Math.min(exit, ratio);
     if (entry > exit) return null;
   }
-  const at = (ratio: number) => ({ x: start.x + dx * ratio, y: start.y + dy * ratio });
+  function at(ratio: number) {
+    return { x: start.x + dx * ratio, y: start.y + dy * ratio };
+  }
   return [at(entry), at(exit)];
 }
 

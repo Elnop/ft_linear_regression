@@ -15,19 +15,19 @@ export function useDocumentationTabs() {
     if (target === DOCUMENTATION_ID || target.startsWith(`${DOCUMENTATION_ID}-`)) scrollToElement(target);
   }, []);
 
-  const selectTab = (next: TabId) => {
+  function selectTab(next: TabId) {
     setTab(next);
     if (location.hash.startsWith(`#${DOCUMENTATION_ID}-`)) history.replaceState(null, '', `#${DOCUMENTATION_ID}`);
-  };
+  }
 
-  const onTabKeyDown = (event: KeyboardEvent, i: number) => {
+  function onTabKeyDown(event: KeyboardEvent, i: number) {
     const next = nextTab(event.key, i, TABS.length);
     const target = next === null ? undefined : TABS[next];
     if (next === null || !target) return;
     event.preventDefault();
     selectTab(target.id);
     tabRefs.current[next]?.focus();
-  };
+  }
 
   return { tab, selectTab, tabRefs, onTabKeyDown };
 }

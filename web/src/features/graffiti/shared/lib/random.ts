@@ -38,11 +38,11 @@ export function noise1D(random: RandomGenerator, knots = 64): (x: number) => num
 }
 
 export function noise2D(seed: number): (x: number, y: number) => number {
-  const hash = (i: number, j: number) => {
+  function hash(i: number, j: number) {
     let mixed = Math.imul(i, 374761393) + Math.imul(j, 668265263) + Math.imul(seed, 982451653);
     mixed = Math.imul(mixed ^ (mixed >>> 13), 1274126177);
     return ((mixed ^ (mixed >>> 16)) >>> 0) / 4294967296;
-  };
+  }
   return (x: number, y: number) => {
     const i = Math.floor(x);
     const j = Math.floor(y);

@@ -9,8 +9,12 @@ export function chartMapping(width: number, height: number, rem: number, domain:
   const bottom = Math.max(5 * rem, height * 0.17);
   const area = { x: left, y: top, width: Math.max(1, width - left - right), height: Math.max(1, height - top - bottom) };
   const { kmMin, kmMax, priceMin, priceMax } = domain;
-  const x = (km: number) => area.x + ((km - kmMin) / (kmMax - kmMin)) * area.width;
-  const y = (price: number) => area.y + (1 - (price - priceMin) / (priceMax - priceMin)) * area.height;
+  function x(km: number) {
+    return area.x + ((km - kmMin) / (kmMax - kmMin)) * area.width;
+  }
+  function y(price: number) {
+    return area.y + (1 - (price - priceMin) / (priceMax - priceMin)) * area.height;
+  }
   return {
     area,
     domain,

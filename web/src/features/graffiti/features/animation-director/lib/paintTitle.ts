@@ -27,10 +27,14 @@ export async function paintTitle(engine: Surface, run: Run): Promise<PaintLayer>
   const pace = Math.min(TITLE_PAINT.pace.maximum, Math.max(TITLE_PAINT.pace.minimum, em * TITLE_PAINT.pace.perEm));
   const speed = Math.min(TITLE_PAINT.sweep.maximum, Math.max(TITLE_PAINT.sweep.minimum, em * TITLE_PAINT.sweep.perEm));
   const lead = TITLE_PAINT.leadEm * em;
-  const sweep = (from: Vec2, to: Vec2) => engine.spray(moveJob(layer, [from, to], speed), run.instant);
+  function sweep(from: Vec2, to: Vec2) {
+    return engine.spray(moveJob(layer, [from, to], speed), run.instant);
+  }
 
   for (const line of letterLines(titleLetters(layout, random))) {
-    const at = (x: number): Vec2 => ({ x, y: line.y(x) });
+    function at(x: number): Vec2 {
+      return { x, y: line.y(x) };
+    }
     let position = at(line.letters[0].x - lead);
     for (const letter of line.letters) {
       const next = at(letter.x);

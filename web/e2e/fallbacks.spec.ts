@@ -6,7 +6,9 @@ declare global {
   }
 }
 
-const trainEnabled = () => !document.querySelector('.button-train')?.hasAttribute('disabled');
+function trainEnabled() {
+  return !document.querySelector('.button-train')?.hasAttribute('disabled');
+}
 
 test('without WebGL the chart view is shown from the start', { tag: '@paintless' }, async ({ page }) => {
   await openApp(page);
@@ -34,7 +36,9 @@ test.describe('with reduced motion', () => {
         Reflect.apply(original, this, args);
       };
     });
-    const drawCount = () => page.evaluate(() => window.webglDraws);
+    function drawCount() {
+      return page.evaluate(() => window.webglDraws);
+    }
     await openApp(page);
     await page.waitForFunction(trainEnabled, null, { timeout: 10_000 });
     await page.waitForTimeout(500);

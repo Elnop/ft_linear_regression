@@ -1,7 +1,9 @@
 import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
 import type { Corner } from '@/features/graffiti/features/stickers/StickersTypes.ts';
 
-const toPoints = (points: number[][]) => points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+function toPoints(points: number[][]) {
+  return points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+}
 
 export function peelGeometry(width: number, height: number, [corner, fraction]: [Corner, number]) {
   const size = fraction * Math.min(width, height);

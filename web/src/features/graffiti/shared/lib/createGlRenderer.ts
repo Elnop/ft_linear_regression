@@ -37,9 +37,14 @@ function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram) {
 
 type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
 
-export function createGlRenderer(canvas: HTMLCanvasElement) {
+function webGl2Context(canvas: HTMLCanvasElement): WebGL2RenderingContext {
   const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true });
   if (!gl) throw new Error('WebGL2 unavailable');
+  return gl;
+}
+
+export function createGlRenderer(canvas: HTMLCanvasElement) {
+  const gl = webGl2Context(canvas);
   const paintProgram = compile(gl, QUAD_VERTEX_SHADER, PAINT_FRAGMENT_SHADER);
   const paintUniform = uniforms(gl, paintProgram);
 
@@ -56,7 +61,7 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
   let view = { width: 1, height: 1 };
   const gpu = new Map<number, GpuLayer>();
 
-  const makeTexture = (internalFormat: number, width: number, height: number) => {
+  function makeTexture(internalFormat: number, width: number, height: number) {
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texStorage2D(gl.TEXTURE_2D, 1, internalFormat, width, height);
@@ -65,23 +70,23 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     return texture;
-  };
+  }
 
-  const upload = (texture: WebGLTexture, stride: number, rectangle: CellRectangle, type: number, data: ArrayBufferView) => {
+  function upload(texture: WebGLTexture, stride: number, rectangle: CellRectangle, type: number, data: ArrayBufferView) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_ROW_LENGTH, stride);
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, rectangle.x0);
     gl.pixelStorei(gl.UNPACK_SKIP_ROWS, rectangle.y0);
     gl.texSubImage2D(gl.TEXTURE_2D, 0, rectangle.x0, rectangle.y0, rectangle.x1 - rectangle.x0 + 1, rectangle.y1 - rectangle.y0 + 1, gl.RED, type, data);
-  };
+  }
 
-  const free = (textures: GpuLayer) => {
+  function free(textures: GpuLayer) {
     gl.deleteTexture(textures.film);
     gl.deleteTexture(textures.pool);
     gl.deleteTexture(textures.mist);
-  };
+  }
 
-  const sync = (layer: PaintLayer) => {
+  function sync(layer: PaintLayer) {
     let textures = gpu.get(layer.id);
     if (!textures) {
       textures = {
@@ -107,12 +112,12 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
     gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
     return textures;
-  };
+  }
 
-  const coverArea = () => {
+  function coverArea() {
     const rectangle = coverRectangle(wallSize.width, wallSize.height, view.width, view.height);
     return [rectangle.x / view.width, rectangle.y / view.height, rectangle.width / view.width, rectangle.height / view.height] as const;
-  };
+  }
 
   return {
     resize(cssWidth: number, cssHeight: number) {

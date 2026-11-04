@@ -29,8 +29,8 @@ test('a restart cancels the previous run, even in the middle of a sleep', async 
   const old = timeline.restart();
   const sleeping = old.sleep(10_000);
   timeline.restart();
-  await expect(sleeping).rejects.toThrow();
-  await expect(old.wait(Promise.resolve())).rejects.toThrow();
+  await expect(sleeping).rejects.toThrow('the timeline restarted');
+  await expect(old.wait(Promise.resolve())).rejects.toThrow('the timeline restarted');
 });
 
 test('play swallows cancellations and rethrows real errors', async () => {

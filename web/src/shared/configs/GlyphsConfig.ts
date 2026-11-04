@@ -1,11 +1,11 @@
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import type { Glyph } from '@/shared/types/TitleTypes.ts';
 
-const points = (...xy: number[]): Vec2[] => {
+function points(...xy: number[]): Vec2[] {
   const out: Vec2[] = [];
   for (let i = 0; i < xy.length; i += 2) out.push({ x: xy[i], y: xy[i + 1] });
   return out;
-};
+}
 
 const BOWL = points(0.7, -0.78, 0.46, -1, 0.14, -0.86, 0, -0.46, 0.12, -0.06, 0.42, 0.02, 0.68, -0.3);
 

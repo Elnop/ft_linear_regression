@@ -13,4 +13,6 @@ export function chartTicks({ kmMin, kmMax, priceMin, priceMax }: ChartDomain): {
   return { kmTicks: range(kmMin, kmMax, KM_STEP), priceTicks: range(priceMin, priceMax, PRICE_STEP) };
 }
 
-export const formatTick = (value: number) => (value === 0 ? '0' : `${Math.round(value / 1000)}k`);
+export function formatTick(value: number) {
+  return value === 0 ? '0' : `${Math.round(value / 1000)}k`;
+}

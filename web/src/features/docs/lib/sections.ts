@@ -1,9 +1,13 @@
 import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
 
-export const stepId = (prefix: string, index: number) => `${DOCUMENTATION_ID}-${prefix}-${index + 1}`;
+export function stepId(prefix: string, index: number) {
+  return `${DOCUMENTATION_ID}-${prefix}-${index + 1}`;
+}
 
-export const stepNumber = (index: number) => String(index + 1).padStart(2, '0');
+export function stepNumber(index: number) {
+  return String(index + 1).padStart(2, '0');
+}
 
 export function groupSections(steps: DocStep[]): TableOfContentsSection[] {
   const sections: TableOfContentsSection[] = [];

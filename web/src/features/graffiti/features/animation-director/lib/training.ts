@@ -6,9 +6,13 @@ import type { Training } from '@/features/graffiti/features/animation-director/t
 import type { RegressionSnapshot } from '@/states/regression/RegressionTypes.ts';
 
 const DENSE_HISTORY_UNTIL = 64;
-const nextHistorySample = (iteration: number) => Math.ceil(iteration * 1.05);
+function nextHistorySample(iteration: number) {
+  return Math.ceil(iteration * 1.05);
+}
 
-const nextPass = (iteration: number) => Math.max(1, iteration * 2);
+function nextPass(iteration: number) {
+  return Math.max(1, iteration * 2);
+}
 
 export function runTraining(data: Sample[], options: TrainOptions): Training {
   const steps: TrainStep[] = [];

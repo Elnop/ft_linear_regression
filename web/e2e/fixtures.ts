@@ -34,13 +34,17 @@ export async function axeViolations(page: Page): Promise<string[]> {
 export async function overflowingText(page: Page, containers: string): Promise<string[]> {
   return page.evaluate((selector) => {
     const found: string[] = [];
-    const visible = (element: Element) => {
+    function visible(element: Element) {
       const box = element.getBoundingClientRect();
       return box.width > 0 && box.height > 0 && getComputedStyle(element).visibility !== 'hidden';
-    };
-    const label = (element: Element) => `${element.tagName.toLowerCase()}${element.classList.length ? `.${[...element.classList].join('.')}` : ''}`;
+    }
+    function label(element: Element) {
+      return `${element.tagName.toLowerCase()}${element.classList.length ? `.${[...element.classList].join('.')}` : ''}`;
+    }
     for (const container of document.querySelectorAll(selector)) {
-      if (!visible(container)) continue;
+      if (!visible(container)) {
+        continue;
+      }
       const outer = container.getBoundingClientRect();
       for (const child of container.querySelectorAll('*')) {
         const text = [...child.childNodes]
@@ -48,7 +52,9 @@ export async function overflowingText(page: Page, containers: string): Promise<s
           .map((node) => node.textContent?.trim() ?? '')
           .join(' ')
           .trim();
-        if (!text || !visible(child)) continue;
+        if (!text || !visible(child)) {
+          continue;
+        }
         const box = child.getBoundingClientRect();
         if (box.left < outer.left - 1 || box.right > outer.right + 1 || box.top < outer.top - 1 || box.bottom > outer.bottom + 1) {
           found.push(`${selector} > ${label(child)}: ${text}`);
@@ -63,20 +69,23 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
   const controls = page.locator('button, input, [role=tab], a');
   const out: string[] = [];
   for (const control of await controls.all()) {
-    if (!(await control.isVisible())) continue;
+    if (!(await control.isVisible())) {
+      continue;
+    }
     await control.scrollIntoViewIfNeeded();
     const fits = await control.evaluate((element) => {
       const box = element.getBoundingClientRect();
       const { clientWidth, clientHeight } = document.documentElement;
       return box.left >= -1 && box.top >= -1 && box.right <= clientWidth + 1 && box.bottom <= clientHeight + 1;
     });
-    if (!fits)
+    if (!fits) {
       out.push(
         await control.evaluate(
           (element) =>
             `${element.tagName.toLowerCase()}${element.className ? `.${String(element.className).trim().replace(/\s+/g, '.')}` : ''}: ${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}`,
         ),
       );
+    }
   }
   return out;
 }

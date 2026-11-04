@@ -1,11 +1,12 @@
 import type { Page } from '@playwright/test';
 import { axeViolations, expect, openApp, test } from '@e2e/fixtures.ts';
 
-const focused = (page: Page) =>
-  page.evaluate(() => {
+function focused(page: Page) {
+  return page.evaluate(() => {
     const element = document.activeElement;
     return { id: element?.id ?? '', role: element?.getAttribute('role') ?? '', text: element?.textContent?.trim() ?? '' };
   });
+}
 
 test('axe finds no violation on the dashboard and both documentation tabs', { tag: '@paintless' }, async ({ page }) => {
   await openApp(page);

@@ -51,11 +51,11 @@ function samplePath(points: Vec2[]): SampledPath {
     cumulativeLengths.push(cumulativeLengths[i - 1] + Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y));
   }
   const length = cumulativeLengths[cumulativeLengths.length - 1];
-  const segmentIndex = (distance: number) => {
+  function segmentIndex(distance: number) {
     let i = 1;
     while (i < cumulativeLengths.length - 1 && cumulativeLengths[i] < distance) i++;
     return i;
-  };
+  }
   return {
     length,
     at(distance) {
@@ -100,20 +100,20 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
     depth: 0.55 + 0.25 * random(),
   }));
 
-  const speedAt = (travelled: number) => {
+  function speedAt(travelled: number) {
     let velocity = speed * (0.42 + 0.58 * smoothstep(travelled / ramp) * smoothstep((length - travelled) / ramp));
     if (taper) velocity = Math.max(velocity, speed * 0.8 * smoothstep((travelled - (length - ramp)) / ramp));
     for (const stop of stops) velocity *= 1 - stop.depth * Math.exp(-(((travelled - stop.at) / stop.spread) ** 2));
     return velocity * (1 + 0.12 * pace(travelled / 110));
-  };
-  const nozzle = (travelled: number) => {
+  }
+  function nozzle(travelled: number) {
     const point = path.at(travelled);
     const normal = path.normal(travelled);
     const offset = 1.6 * wobble[0](travelled / 380) + 0.4 * wobble[1](travelled / 90);
     return { x: point.x + normal.x * offset, y: point.y + normal.y * offset };
-  };
+  }
   const position = { ...points[0] };
-  const emit = (travelled: number, deltaSeconds: number) => {
+  function emit(travelled: number, deltaSeconds: number) {
     const point = nozzle(travelled);
     position.x = point.x;
     position.y = point.y;
@@ -121,7 +121,7 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
     let flow = 1 + 0.12 * pressure[0](travelled / 150) + 0.06 * pressure[1](travelled / 40);
     if (taper) flow *= 0.15 + 0.85 * smoothstep((length - travelled) / 40);
     spray(layer, random, point.x, point.y, sigma, rate * flow * deltaSeconds, deltaSeconds);
-  };
+  }
 
   let travelled = 0;
   let wait = dwell;

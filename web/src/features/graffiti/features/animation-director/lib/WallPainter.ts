@@ -18,7 +18,9 @@ import { NOMINAL_SPEED } from '@/features/graffiti/features/animation-director/c
 
 const DRIP_ROOM = { dot: 120, line: 50, diverge: 70, finalLine: 260 } as const;
 
-const fadeTime = (run: Run, duration: number) => (run.instant ? 0 : duration);
+function fadeTime(run: Run, duration: number) {
+  return run.instant ? 0 : duration;
+}
 
 export class WallPainter {
   private chart: ChartMapping;

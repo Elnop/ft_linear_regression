@@ -10,8 +10,9 @@ export function placeStickers({ width, wide, chart: { area }, title }: Scene): P
     const right = Math.max(...cluster.items.map((item) => (item.offsetX + item.width) * scale));
     const anchorX = Math.min(area.x + cluster.u * area.width, width - right - STICKER_SCALE.edgeMargin);
     const anchorY = area.y + cluster.v * area.height;
-    for (const item of cluster.items)
+    for (const item of cluster.items) {
       placed.push({ art: item.art, damage: item.damage, width: item.width * scale, x: anchorX + item.offsetX * scale, y: anchorY + item.offsetY * scale, rotation: item.rotation });
+    }
   }
   if (wide && titleRight + TITLE_STICKER.roomAfterTitle < width - TITLE_STICKER.reservedRight) {
     placed.push({

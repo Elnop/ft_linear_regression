@@ -75,7 +75,9 @@ export class PaintEngine implements Surface {
   }
 
   adopt(layers: PaintLayer[], { keep = [], fadeMs = 0 }: { keep?: PaintLayer[]; fadeMs?: number } = {}): void {
-    const kept = (layer: PaintLayer) => keep.includes(layer);
+    function kept(layer: PaintLayer) {
+      return keep.includes(layer);
+    }
     const leaving = this.layers.filter((layer) => !kept(layer));
     this.scheduler.keepOnly(kept);
     for (const layer of layers) if (this.regions) layer.follow(this.regions);
@@ -112,7 +114,9 @@ export class PaintEngine implements Surface {
   }
 
   clear(keep: PaintLayer[] = []): void {
-    const kept = (layer: PaintLayer) => keep.includes(layer);
+    function kept(layer: PaintLayer) {
+      return keep.includes(layer);
+    }
     for (const layer of this.layers) if (!kept(layer)) this.renderer.release(layer);
     this.layers = this.layers.filter(kept);
     this.scheduler.keepOnly(kept);

@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
 import { sceneStore } from '@/shared/sceneStore.ts';
 
-const frames = async (count: number) => {
+async function frames(count: number) {
   for (let k = 0; k < count; k++) await new Promise((resolve) => requestAnimationFrame(resolve));
-};
+}
 
 test('the scene follows a root font size change', async () => {
   const root = document.documentElement;

@@ -46,7 +46,7 @@ function declareCases(): void {
       await openApp(page);
       await settled(page);
 
-      const check = async () => {
+      async function check() {
         await expectNoOverflow(page, '.readout-chip');
         const boxes = await page.locator('.readout-chip, .dashboard-head button').evaluateAll((items) =>
           items.map((item) => {
@@ -61,7 +61,7 @@ function declareCases(): void {
         }
         const cut = await page.locator('.readout-chip dt, .readout-chip dd').evaluateAll((texts) => texts.filter((text) => text.scrollWidth > text.clientWidth).map((text) => text.textContent));
         expect(cut).toEqual([]);
-      };
+      }
       await check();
       await diverge(page);
       await check();

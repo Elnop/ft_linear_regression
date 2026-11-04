@@ -6,7 +6,7 @@ export class Timeline {
   private controller = new AbortController();
 
   restart(instant = false): Run {
-    this.controller.abort(new Cancelled());
+    this.controller.abort(new Cancelled('the timeline restarted'));
     this.controller = new AbortController();
     const { signal } = this.controller;
     return {
