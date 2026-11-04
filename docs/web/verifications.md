@@ -14,14 +14,18 @@ Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm r
 
 `npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` installe Chromium headless pour les tests de composant, puis lance `npm run check`, `npm test` et le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 26.
 
+`tsc` tourne en `strict` avec en plus `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride` et `noPropertyAccessFromIndexSignature` (d'où `process.env['CI']` dans `web/playwright.config.ts`), à la racine comme dans le web.
+
+Deux hooks font tourner les checks avant la CI. `npm install` pointe git vers `.githooks/`, dont le `pre-commit` lance `npm run check`. Dans Claude Code, `.claude/settings.json` lance `.claude/hooks/lintEditedFile.ts` après chaque écriture d'un `.ts` ou `.tsx` : Oxlint passe sur ce fichier, et ses erreurs reviennent à l'agent tout de suite.
+
 ## Lint
 
 Les configs Oxlint et les plugins viennent de paquets npm publiés depuis [Elnop/eslint-plugins](https://github.com/Elnop/eslint-plugins). Chacun a un README qui détaille ses règles.
 
 | Où | Paquet | Contenu |
 |---|---|---|
-| racine (`core/`, `cli/`) | `@elnop/oxlint-config-typescript` | la base TypeScript : catégories `correctness` et `suspicious`, règles typées, conventions de nommage et de placement des exports |
-| `web/` | `@elnop/oxlint-config-react-vite` | étend `@elnop/oxlint-config-react` (hooks, props des composants) et `@elnop/oxlint-config-zustand` (stores), qui étendent tous les deux la base TypeScript, et ajoute les réglages Vite |
+| racine (`core/`, `cli/`) | `@elnop/oxlint-config-typescript` | la base TypeScript : catégories `correctness` et `suspicious`, règles typées, conventions de nommage et de placement des exports, style des fonctions et des types |
+| `web/` | `@elnop/oxlint-config-react-vite` | étend `@elnop/oxlint-config-react` (hooks, props des composants), `@elnop/oxlint-config-zustand` (stores et selectors), qui étendent tous les deux la base TypeScript, et `@elnop/oxlint-config-vitest` (tests), et ajoute les réglages Vite |
 | `web/` | `@elnop/check-tree` | binaire `check-tree` |
 
 Le `oxlint.config.ts` de la racine étend la base et ajoute le plugin `node`. Celui du web étend le preset et ne garde que le message de la règle des imports, qui cite les alias du projet.
@@ -48,6 +52,19 @@ Deux conventions sont des plugins Oxlint, parce qu'elles dépendent du nom du fi
 
 Chaque message d'erreur dit quoi faire, en anglais, pour qu'un agent puisse corriger sans connaître la convention.
 
+Les paquets imposent aussi un style commun, essayé ici avant d'être publié :
+
+- `func-style` en `declaration` : toute fonction nommée s'écrit `function f() {}`, y compris les one-liners et les fonctions locales. Les callbacks passés en argument restent fléchés. Une fonction déclarée est hoistée, donc TypeScript n'y garde pas le rétrécissement d'une variable capturée : `createGlRenderer` passe par `webGl2Context()` pour avoir un `gl` non nul ;
+- `curly` en `multi-line` : un `if` sans accolades tient sur une ligne ;
+- `interface` refusée, sauf pour augmenter un global comme `Window` dans `declare global` ;
+- un `*Selectors.ts` n'exporte que des fonctions `selectX` ;
+- `typescript/switch-exhaustiveness-check` : un `switch` sur une union couvre tous les cas ;
+- `@elnop/oxlint-config-vitest` : `it()` dans un `describe`, `test()` en dehors, mocks typés (`vi.fn<() => void>()`), `toThrow` avec le message attendu.
+
+Les règles sur `interface` (base TypeScript) et sur les selectors (`@elnop/oxlint-config-zustand`) passent aussi par `no-restricted-syntax`, chacune sous son propre nom de plugin.
+
+`typescript/no-unnecessary-condition` et `typescript/strict-boolean-expressions` restent coupées : sans `noUncheckedIndexedAccess`, `history[history.length - 1]` est typé non nul et ces règles demanderaient de retirer des gardes utiles.
+
 `react/immutability` est coupée : Oxlint 1.91.0 signale à tort un `let` déclaré dans un effet et réassigné par une closure de cet effet, comme `alive` dans `web/src/features/graffiti/features/canvas/PaintWallContainer.tsx` ([oxc-project/oxc#28401](https://github.com/oxc-project/oxc/issues/28401)).
 
 ## Sens des dépendances
@@ -61,6 +78,8 @@ dependency-cruiser (`web/.dependency-cruiser.cjs`) vérifie le sens des dépenda
 - aucun cycle d'imports.
 
 - le code de prod n'importe jamais un fichier de test (`no-prod-to-tests`).
+
+`core/` tourne aussi dans le navigateur. Un override du `oxlint.config.ts` racine lui interdit tout paquet, tout module `node:`, le global `process` et tout import de `cli/` ou `web/`.
 
 `check-tree` (paquet `@elnop/check-tree`) refuse un dossier vide et un dossier de catégorie (`components`, `lib`, `types`...) qui ne contient qu'un fichier. Les fichiers `*.test.ts` et `*.test.tsx` ne comptent pas : un test vit à côté de sa source. Il refuse aussi deux CSS dans un dossier qui n'est pas `styles/`, et un CSS à côté d'un dossier `styles/`. Un autre projet remplace la liste des dossiers de catégorie avec `--categories app,server,lib`.
 
