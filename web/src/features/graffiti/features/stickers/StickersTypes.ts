@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export type Art = { viewWidth: number; viewHeight: number; body: ReactNode };
+export type Art = { viewWidth: number; viewHeight: number; Body: () => ReactNode };
 export type Corner = 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft';
 type Wear = { seed: number; scrape: number };
 export type Damage = Wear & ({ peel?: never; tear?: never } | { peel: [Corner, number]; tear?: never } | { tear: number; peel?: never });

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { KeyboardEvent } from 'react';
 import { nextTab } from '@/features/docs/lib/nextTab.ts';
 import { tabFromHash } from '@/features/docs/lib/tabFromHash.ts';
 import { TABS } from '@/features/docs/configs/TabsConfig.ts';

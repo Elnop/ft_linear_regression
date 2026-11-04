@@ -36,5 +36,5 @@ Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `
 | `web/src/features/docs/components/DocumentationPage.tsx` | assemble l'en-tête, les onglets et le panneau actif |
 | `web/src/features/docs/content/` | textes, un `XContent` par sujet, et `theory/` pour les pages de théorie |
 | `web/src/features/docs/configs/TabsConfig.ts` | les deux onglets |
-| `web/src/features/docs/useDocumentationTabs.ts` | onglet actif et navigation au clavier (`nextTab`) |
+| `web/src/features/docs/hooks/useDocumentationTabs.ts` | onglet actif et navigation au clavier (`nextTab`) |
 | `web/src/features/docs/lib/sections.ts` | regroupe les étapes par section pour le sommaire |

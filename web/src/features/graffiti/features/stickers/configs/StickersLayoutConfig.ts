@@ -1,5 +1,5 @@
 import type { Cluster, Damage } from '@/features/graffiti/features/stickers/StickersTypes.ts';
-import { car, descent, formula, logo42, norminette, piscine, react, typescript } from '@/features/graffiti/features/stickers/configs/ArtsConfig.tsx';
+import { car, descent, formula, logo42, norminette, piscine, react, typescript } from '@/features/graffiti/features/stickers/configs/ArtsConfig.ts';
 
 export const CLUSTERS: Cluster[] = [
   {

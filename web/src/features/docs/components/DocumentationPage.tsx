@@ -5,7 +5,7 @@ import { SourcesCard } from '@/features/docs/components/presenters/SourcesCard.t
 import { StepsPanel } from '@/features/docs/components/presenters/StepsPanel.tsx';
 import { CODE } from '@/features/docs/content/CodeContent.tsx';
 import { THEORY } from '@/features/docs/content/TheoryContent.ts';
-import { useDocumentationTabs } from '@/features/docs/useDocumentationTabs.ts';
+import { useDocumentationTabs } from '@/features/docs/hooks/useDocumentationTabs.ts';
 import { groupSections } from '@/features/docs/lib/sections.ts';
 import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
 import '@/features/docs/styles/page.css';

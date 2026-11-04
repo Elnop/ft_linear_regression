@@ -1,6 +1,6 @@
 import '@/features/docs/styles/code.css';
 import '@/features/docs/styles/figure.css';
-import { useRenderedWidth } from '@/features/docs/useRenderedWidth.ts';
+import { useRenderedWidth } from '@/features/docs/hooks/useRenderedWidth.ts';
 import { readRem } from '@/shared/lib/readRem.ts';
 import { textSize } from '@/shared/lib/typeScale.ts';
 

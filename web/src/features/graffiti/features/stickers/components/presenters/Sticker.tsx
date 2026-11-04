@@ -6,7 +6,7 @@ type StickerProps = PlacedSticker;
 
 export function Sticker({ art, damage, width, x, y, rotation }: StickerProps) {
   const id = useId();
-  const { viewWidth, viewHeight } = art;
+  const { viewWidth, viewHeight, Body } = art;
   const peel = damage.peel && peelGeometry(viewWidth, viewHeight, damage.peel);
   const tearX = damage.tear !== undefined ? damage.tear * viewWidth : undefined;
   const scrape = damage.scrape;
@@ -65,16 +65,22 @@ export function Sticker({ art, damage, width, x, y, rotation }: StickerProps) {
       </defs>
       {tearX !== undefined && (
         <g clipPath={`url(#${id}-strip)`}>
-          <g filter={`url(#${id}-residue)`}>{art.body}</g>
+          <g filter={`url(#${id}-residue)`}>
+            <Body />
+          </g>
         </g>
       )}
       <g clipPath={peel || tearX !== undefined ? `url(#${id}-keep)` : undefined}>
-        <g filter={`url(#${id}-wear)`}>{art.body}</g>
+        <g filter={`url(#${id}-wear)`}>
+          <Body />
+        </g>
       </g>
       {peel && (
         <g transform={peel.matrix}>
           <g clipPath={`url(#${id}-cut)`}>
-            <g filter={`url(#${id}-back)`}>{art.body}</g>
+            <g filter={`url(#${id}-back)`}>
+              <Body />
+            </g>
           </g>
         </g>
       )}
