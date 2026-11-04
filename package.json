@@ -19,7 +19,8 @@
     "lint": "oxlint --type-aware core cli oxlint.config.ts",
     "test": "npm test -w web",
     "format": "prettier --write .",
-    "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web"
+    "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@asamarts/alint": "0.21.0",
