@@ -21,7 +21,7 @@ test('an aborted slicer stops at the next pause', async () => {
   await slicer.pause();
   controller.abort(new Error('dropped'));
   expect(slicer.stopped).toBe(true);
-  await expect(slicer.pause()).rejects.toThrow(/dropped/);
+  await expect(slicer.pause()).rejects.toThrow(/dropped/u);
 });
 
 test('hurrying only ever widens the slice', async () => {

@@ -19,6 +19,6 @@ test('the figures of data.csv', () => {
 });
 
 test('gradient descent lands on the least squares solution', () => {
-  expect(Math.abs(figures.descent.theta0 - figures.leastSquares.theta0) < 1e-6).toBeTruthy();
-  expect(Math.abs(figures.descent.theta1 - figures.leastSquares.theta1) < 1e-12).toBeTruthy();
+  expect(Math.abs(figures.descent.theta0 - figures.leastSquares.theta0) < 1e-6).toBe(true);
+  expect(Math.abs(figures.descent.theta1 - figures.leastSquares.theta1) < 1e-12).toBe(true);
 });

@@ -154,10 +154,10 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
       for (const layer of layers) {
         const textures = sync(layer);
         if (layer.opacity <= 0) continue;
-        [wallTexture, textures.film, textures.mist, textures.pool].forEach((texture, unit) => {
+        for (const [unit, texture] of [wallTexture, textures.film, textures.mist, textures.pool].entries()) {
           gl.activeTexture(gl.TEXTURE0 + unit);
           gl.bindTexture(gl.TEXTURE_2D, texture);
-        });
+        }
         gl.uniform4f(paintUniform('uRect'), layer.shown.x, layer.shown.y, layer.shown.width, layer.shown.height);
         gl.uniform3f(paintUniform('uColor'), ...layer.shownColor());
         gl.uniform1f(paintUniform('uOpacity'), layer.opacity);

@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright';
-import { test as base, expect, type Page } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 export const test = base.extend<{ pageErrors: string[] }>({
   pageErrors: [
@@ -17,7 +18,7 @@ export { expect };
 
 export async function openApp(page: Page): Promise<void> {
   await page.goto('./');
-  await page.getByRole('button', { name: /TAGUER/ }).waitFor();
+  await page.getByRole('button', { name: /TAGUER/u }).waitFor();
 }
 
 export async function settled(page: Page): Promise<void> {
@@ -82,7 +83,7 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
       out.push(
         await control.evaluate(
           (element) =>
-            `${element.tagName.toLowerCase()}${element.className ? `.${String(element.className).trim().replace(/\s+/g, '.')}` : ''}: ${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}`,
+            `${element.tagName.toLowerCase()}${[...element.classList].map((name) => `.${name}`).join('')}: ${(element.getAttribute('aria-label') ?? element.textContent ?? '').trim().slice(0, 40)}`,
         ),
       );
     }
@@ -92,6 +93,6 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
 
 export async function diverge(page: Page): Promise<void> {
   await page.getByLabel('Learning rate').fill('3');
-  await page.getByRole('button', { name: /TAGUER/ }).click();
+  await page.getByRole('button', { name: /TAGUER/u }).click();
   await settled(page);
 }

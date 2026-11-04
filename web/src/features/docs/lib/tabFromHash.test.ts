@@ -8,8 +8,8 @@ test('a step anchor opens its tab', () => {
 });
 
 test('other anchors open no tab in particular', () => {
-  expect(tabFromHash('', TABS)).toBe(null);
-  expect(tabFromHash('#documentation', TABS)).toBe(null);
-  expect(tabFromHash('#documentation-unknown-1', TABS)).toBe(null);
-  expect(tabFromHash('#elsewhere', TABS)).toBe(null);
+  expect(tabFromHash('', TABS)).toBeNull();
+  expect(tabFromHash('#documentation', TABS)).toBeNull();
+  expect(tabFromHash('#documentation-unknown-1', TABS)).toBeNull();
+  expect(tabFromHash('#elsewhere', TABS)).toBeNull();
 });

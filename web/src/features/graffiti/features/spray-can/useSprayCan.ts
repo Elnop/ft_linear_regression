@@ -55,7 +55,7 @@ export function useSprayCan(engine: PaintEngine | null) {
       element.style.transformOrigin = `${holeX}px ${holeY}px`;
       element.style.transform = `translate(${pose.x - holeX}px, ${pose.y - holeY + pose.rattle * 2}px) rotate(${pose.angle}deg)`;
       element.classList.toggle('pressed', pose.spraying);
-      element.classList.toggle('gone', !!nozzle && !nozzle.followable);
+      element.classList.toggle('gone', nozzle !== null && !nozzle.followable);
 
       if (misty) context.clearRect(0, 0, width, height);
       misty = pose.spraying;

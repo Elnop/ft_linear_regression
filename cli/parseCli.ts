@@ -1,4 +1,5 @@
-import { parseArgs, type ParseArgsOptionsConfig } from 'node:util';
+import { parseArgs } from 'node:util';
+import type { ParseArgsOptionsConfig } from 'node:util';
 import { errorMessage, fail } from './process.ts';
 
 export function parseCli<Options extends ParseArgsOptionsConfig>(usage: string, options: Options) {

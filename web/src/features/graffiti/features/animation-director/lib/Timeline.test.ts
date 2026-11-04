@@ -14,14 +14,14 @@ test('the current run waits and sleeps normally', async () => {
   expect(await run.wait(Promise.resolve(42))).toBe(42);
   const startedAt = performance.now();
   await run.sleep(60);
-  expect(performance.now() - startedAt >= 50).toBeTruthy();
+  expect(performance.now() - startedAt >= 50).toBe(true);
 });
 
 test('an instant run does not sleep', async () => {
   const run = new Timeline().restart(true);
   const startedAt = performance.now();
   await run.sleep(10_000);
-  expect(performance.now() - startedAt < 50).toBeTruthy();
+  expect(performance.now() - startedAt < 50).toBe(true);
 });
 
 test('a restart cancels the previous run, even in the middle of a sleep', async () => {
@@ -39,5 +39,5 @@ test('play swallows cancellations and rethrows real errors', async () => {
   const playing = timeline.play(() => old.sleep(10_000));
   timeline.restart();
   await playing;
-  await expect(timeline.play(() => Promise.reject(new Error('boom')))).rejects.toThrow(/boom/);
+  await expect(timeline.play(() => Promise.reject(new Error('boom')))).rejects.toThrow(/boom/u);
 });

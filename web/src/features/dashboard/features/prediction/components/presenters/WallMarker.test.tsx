@@ -38,5 +38,5 @@ test('a long price fits in the sticker at 1920px', async () => {
 test('the sticker flips near the right edge', async () => {
   const width = 1200;
   const sticker = await renderMarker({ x: width - 40, width, rem: 16, price: 8000 });
-  expect(parseFloat(sticker.style.left)).toBeLessThan(width - 40);
+  expect(Number.parseFloat(sticker.style.left)).toBeLessThan(width - 40);
 });

@@ -9,9 +9,9 @@ const GRAVITY = 2600;
 const SUBSTEP = 1 / 240;
 
 export class CanMotion {
-  private position: Vec2;
-  private velocity = { x: 0, y: 0 };
-  private aim: { x: number; y: number; velocityX: number; velocityY: number };
+  private readonly position: Vec2;
+  private readonly velocity = { x: 0, y: 0 };
+  private readonly aim: { x: number; y: number; velocityX: number; velocityY: number };
   private angle = BASE_TILT;
   private shake = 0;
   private idle = PARK_AFTER;
@@ -25,7 +25,7 @@ export class CanMotion {
 
   step(deltaSeconds: number, nozzle: Nozzle | null, canWidth: number, floor: number): CanPose {
     const { position, velocity, aim } = this;
-    const spraying = !!nozzle && nozzle.followable;
+    const spraying = nozzle !== null && nozzle.followable;
     if (spraying) {
       this.idle = 0;
       if (nozzle.color !== this.color) {
@@ -82,7 +82,7 @@ export class CanMotion {
       this.angle += (tilt - this.angle) * Math.min(1, deltaSeconds * 6);
     }
 
-    const resting = !!this.fall && position.y >= restingAt;
+    const resting = this.fall !== null && position.y >= restingAt;
     return { x: position.x, y: position.y, angle: this.angle, rattle, spraying, resting, color: this.color };
   }
 }

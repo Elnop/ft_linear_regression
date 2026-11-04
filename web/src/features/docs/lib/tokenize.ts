@@ -2,7 +2,7 @@ import type { Token } from '@/features/docs/DocsTypes.ts';
 
 const KEYWORDS = new Set(['export', 'function', 'const', 'let', 'return', 'for', 'of', 'if', 'throw', 'new', 'yield', 'type', 'import', 'from', 'continue', 'true', 'false']);
 
-const TOKEN = /('[^']*'|`[^`]*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/g;
+const TOKEN = /('[^']*'|`[^`]*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/gu;
 
 export function tokenize(code: string): Token[] {
   const tokens: Token[] = [];
@@ -13,7 +13,7 @@ export function tokenize(code: string): Token[] {
     if (string) tokens.push({ kind: 'string', text });
     else if (number) tokens.push({ kind: 'number', text });
     else if (KEYWORDS.has(word)) tokens.push({ kind: 'keyword', text });
-    else if (/^[A-Z]/.test(word)) tokens.push({ kind: 'type', text });
+    else if (/^[A-Z]/u.test(word)) tokens.push({ kind: 'type', text });
     else if (code[match.index + text.length] === '(') tokens.push({ kind: 'call', text });
     else tokens.push({ kind: 'text', text });
     last = match.index + text.length;

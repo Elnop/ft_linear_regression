@@ -11,10 +11,10 @@ export function stepNumber(index: number) {
 
 export function groupSections(steps: DocStep[]): TableOfContentsSection[] {
   const sections: TableOfContentsSection[] = [];
-  steps.forEach((step, index) => {
+  for (const [index, step] of steps.entries()) {
     const last = sections.at(-1);
     if (last?.title === step.section) last.items.push({ step, index });
     else sections.push({ title: step.section, items: [{ step, index }] });
-  });
+  }
   return sections;
 }

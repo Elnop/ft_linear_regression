@@ -15,7 +15,7 @@ async function renderedLabelSizes(width: number): Promise<number[]> {
   expect(svg).not.toBeNull();
   expect(labels.length).toBeGreaterThan(0);
   const scale = (svg?.getBoundingClientRect().width ?? 0) / VIEWBOX_WIDTH;
-  return labels.map((label) => parseFloat(getComputedStyle(label).fontSize) * scale);
+  return labels.map((label) => Number.parseFloat(getComputedStyle(label).fontSize) * scale);
 }
 
 test('the figure labels never render under 12px', async () => {

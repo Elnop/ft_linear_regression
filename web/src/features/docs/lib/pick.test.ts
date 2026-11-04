@@ -20,8 +20,8 @@ test('every core function shown in the documentation is found whole', () => {
   for (const [source, names] of PICKED) {
     for (const name of names) {
       const code = pick(source, name);
-      expect(code).toMatch(new RegExp(`function\\*? ${name}\\b`));
-      expect(code.endsWith('\n}'), name).toBeTruthy();
+      expect(code).toMatch(new RegExp(`function\\*? ${name}\\b`, 'u'));
+      expect(code.endsWith('\n}'), name).toBe(true);
     }
   }
 });

@@ -21,11 +21,11 @@ export class PaintEngine implements Surface {
   height = 0;
 
   private readonly canvas: HTMLCanvasElement;
-  private renderer: Renderer;
+  private readonly renderer: Renderer;
   private layers: PaintLayer[] = [];
-  private scheduler = new Scheduler();
-  private resizeListeners = new Set<() => void>();
-  private activityListeners = new Set<() => void>();
+  private readonly scheduler = new Scheduler();
+  private readonly resizeListeners = new Set<() => void>();
+  private readonly activityListeners = new Set<() => void>();
   private roughness: Roughness | null = null;
   private regions: Regions | null = null;
   private held = false;
@@ -34,7 +34,7 @@ export class PaintEngine implements Surface {
   private lastTime = 0;
   private needsDraw = true;
   private pixelRatio = 0;
-  private observer: ResizeObserver;
+  private readonly observer: ResizeObserver;
   private unwatchPixelRatio = () => {};
 
   constructor(container: HTMLElement, wallUrl: string) {
@@ -215,7 +215,7 @@ export class PaintEngine implements Surface {
     this.frame = requestAnimationFrame(this.tick);
   }
 
-  private tick = (now: number): void => {
+  private readonly tick = (now: number): void => {
     this.frame = 0;
     const deltaSeconds = Math.min(MAX_DELTA_SECONDS, Math.max(0, (now - this.lastTime) / 1000));
     this.lastTime = now;

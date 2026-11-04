@@ -23,7 +23,7 @@ function parseLearningRate(text: string): number {
 }
 
 function parseIterations(text: string): number {
-  if (!/^\d+$/.test(text)) fail(`--iterations must be a non-negative integer, got "${text}"`);
+  if (!/^\d+$/u.test(text)) fail(`--iterations must be a non-negative integer, got "${text}"`);
   const value = Number(text);
   if (!Number.isSafeInteger(value)) fail(`--iterations is too large: "${text}"`);
   return value;

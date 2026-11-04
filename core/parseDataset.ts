@@ -10,7 +10,7 @@ function parseField(field: string, name: string, line: number): number {
 }
 
 export function parseDataset(text: string): Sample[] {
-  const lines = text.split(/\r?\n/);
+  const lines = text.split(/\r?\n/u);
   const header = lines[0]?.trim().toLowerCase();
   if (header !== 'km,price') {
     throw new Error(`line 1: expected header "km,price", got "${lines[0] ?? ''}"`);

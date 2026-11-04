@@ -1,11 +1,12 @@
 import { motion } from 'motion/react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { MotionStyle } from 'motion/react';
+import type { ReactNode } from 'react';
 
 type RevealProps = {
   visible: boolean;
   from?: { x?: number; y?: number };
   className?: string;
-  style?: CSSProperties;
+  style?: MotionStyle;
   label?: string;
   as?: 'div' | 'section' | 'aside' | 'header' | 'footer';
   children: ReactNode;
@@ -16,7 +17,7 @@ export function Reveal({ visible, from = { y: 14 }, className, style, label, as 
   return (
     <Tag
       className={className}
-      style={{ ...style, pointerEvents: visible ? undefined : 'none' }}
+      style={visible ? { ...style } : { ...style, pointerEvents: 'none' }}
       aria-label={label}
       aria-hidden={visible ? undefined : true}
       inert={!visible}

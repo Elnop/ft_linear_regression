@@ -24,12 +24,12 @@ test('grid lines span the chart area', () => {
 });
 
 test('labels sit under their km line and left of their price line', () => {
-  layout.kmLabels.forEach((label, i) => {
+  for (const [i, label] of layout.kmLabels.entries()) {
     expect(label.x).toBe(layout.kmGrid[i].x1);
     expect(label.y).toBe(layout.bottom + 12 + 15);
-  });
-  layout.priceLabels.forEach((label, i) => {
+  }
+  for (const [i, label] of layout.priceLabels.entries()) {
     expect(label.x).toBe(chart.area.x - 12);
-    expect(label.y > layout.priceGrid[i].y1).toBeTruthy();
-  });
+    expect(label.y > layout.priceGrid[i].y1).toBe(true);
+  }
 });

@@ -5,15 +5,15 @@ import { fluidClamp, textSize } from '@/shared/lib/typeScale.ts';
 const steps = TEXT_STEPS;
 
 function evaluate(css: string, viewportWidth: number, rem: number): number {
-  const match = /^clamp\(([\d.]+)rem, ([\d.]+)vw \+ ([\d.]+)rem, ([\d.]+)rem\)$/.exec(css);
+  const match = /^clamp\(([\d.]+)rem, ([\d.]+)vw \+ ([\d.]+)rem, ([\d.]+)rem\)$/u.exec(css);
   if (!match) throw new Error(`unexpected clamp: ${css}`);
-  const [min = NaN, vw = NaN, offset = NaN, max = NaN] = match.slice(1).map(Number);
+  const [min = Number.NaN, vw = Number.NaN, offset = Number.NaN, max = Number.NaN] = match.slice(1).map(Number);
   return Math.min(Math.max(min * rem, (vw / 100) * viewportWidth + offset * rem), max * rem);
 }
 
 describe('typeScale', () => {
   it('TEXT_STEPS lists every step of TYPE_SCALE, in order', () => {
-    expect(TEXT_STEPS).toEqual(Object.keys(TYPE_SCALE));
+    expect(TEXT_STEPS).toStrictEqual(Object.keys(TYPE_SCALE));
   });
 
   it('textSize equals min at 320 and max at 1920 for every step', () => {

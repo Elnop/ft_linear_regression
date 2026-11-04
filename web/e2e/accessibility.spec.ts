@@ -19,7 +19,7 @@ test('axe finds no violation on the dashboard and both documentation tabs', { ta
 
 test('the keyboard reaches the documentation and moves between tabs', { tag: '@paintless' }, async ({ page }) => {
   await openApp(page);
-  await page.getByRole('button', { name: /DOC/ }).focus();
+  await page.getByRole('button', { name: /DOC/u }).focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => document.activeElement?.id === 'documentation');
   expect(new URL(page.url()).hash).toBe('#documentation');

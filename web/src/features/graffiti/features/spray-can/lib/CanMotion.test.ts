@@ -15,28 +15,28 @@ test('the can follows the nozzle while it sprays', () => {
   const pose = steps(new CanMotion(1200, 240), 1, nozzle);
   expect(pose.spraying).toBe(true);
   expect(pose.color).toBe(nozzle.color);
-  expect(Math.abs(pose.x - (nozzle.x + CAN_WIDTH * 0.36)) < 2).toBeTruthy();
-  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBeTruthy();
+  expect(Math.abs(pose.x - (nozzle.x + CAN_WIDTH * 0.36)) < 2).toBe(true);
+  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBe(true);
 });
 
 test('an idle can falls below the floor and stops there', () => {
   const motion = new CanMotion(1200, 240);
   steps(motion, 1, nozzle);
   const resting = steps(motion, 2, null);
-  expect(resting.y < FLOOR).toBeTruthy();
+  expect(resting.y < FLOOR).toBe(true);
   expect(resting.resting).toBe(false);
   const fallen = steps(motion, 5, null);
   expect(fallen.spraying).toBe(false);
   expect(fallen.resting).toBe(true);
-  expect(fallen.y >= FLOOR + CAN_WIDTH * 3).toBeTruthy();
-  expect(fallen.y < FLOOR + CAN_WIDTH * 3 + 200).toBeTruthy();
+  expect(fallen.y >= FLOOR + CAN_WIDTH * 3).toBe(true);
+  expect(fallen.y < FLOOR + CAN_WIDTH * 3 + 200).toBe(true);
 });
 
 test('a fallen can comes back when the nozzle sprays again', () => {
   const motion = new CanMotion(1200, 240);
   steps(motion, 6, null);
   const pose = steps(motion, 1, nozzle);
-  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBeTruthy();
+  expect(Math.abs(pose.y - (nozzle.y - CAN_WIDTH * 0.1)) < 2).toBe(true);
 });
 
 test('a crowd of jobs is not followed', () => {

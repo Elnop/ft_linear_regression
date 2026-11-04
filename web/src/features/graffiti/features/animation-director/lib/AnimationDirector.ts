@@ -21,19 +21,19 @@ import { resetStores } from '@/features/graffiti/features/animation-director/lib
 const MINOR_INTRO_RESIZE = 0.15;
 
 export class AnimationDirector implements Director {
-  private timeline = new Timeline();
-  private builds = new Timeline();
-  private engine: PaintEngine;
-  private dependencies: DirectorDependencies;
-  private painter: WallPainter;
+  private readonly timeline = new Timeline();
+  private readonly builds = new Timeline();
+  private readonly engine: PaintEngine;
+  private readonly dependencies: DirectorDependencies;
+  private readonly painter: WallPainter;
 
   private order: number[] = [];
   private training: Training | null = null;
   private build: Build | null = null;
   private title: PaintLayer | null = null;
-  private scene: SceneSource;
-  private unsubscribeResize: () => void;
-  private unsubscribeScene: () => void;
+  private readonly scene: SceneSource;
+  private readonly unsubscribeResize: () => void;
+  private readonly unsubscribeScene: () => void;
   private resizeTimer = 0;
   private paintedWidth: number;
   private paintedHeight: number;
@@ -80,7 +80,7 @@ export class AnimationDirector implements Director {
     resetStores(this.dependencies);
   }
 
-  private onResize = (): void => {
+  private readonly onResize = (): void => {
     this.engine.reanchor(wallRegions(this.engine.width, this.engine.height));
     clearTimeout(this.resizeTimer);
     this.resizeTimer = window.setTimeout(() => this.onResized(), TIMING.resizeSettle);
@@ -90,13 +90,13 @@ export class AnimationDirector implements Director {
     return this.scene.getState().rem;
   }
 
-  private skip = (): void => {
+  private readonly skip = (): void => {
     if (this.state.phase === 'idle') return;
     if (this.state.phase === 'interactive' && !this.state.trainingActive) return;
     void this.finish();
   };
 
-  private train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
+  private readonly train = async (overrides: Partial<TrainOptions> = {}): Promise<void> => {
     if (this.state.phase !== 'interactive') return;
     await this.finish();
     const options: TrainOptions = { ...DEFAULT_TRAIN, ...overrides };

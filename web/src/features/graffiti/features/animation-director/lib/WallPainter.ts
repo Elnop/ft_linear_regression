@@ -25,8 +25,8 @@ function fadeTime(run: Run, duration: number) {
 export class WallPainter {
   private chart: ChartMapping;
 
-  private engine: Surface;
-  private samples: Sample[];
+  private readonly engine: Surface;
+  private readonly samples: Sample[];
   private topPoints: PaintLayer[] = [];
   private fan: PaintLayer[] = [];
 
@@ -119,10 +119,10 @@ export class WallPainter {
   }
 
   fadeFan(run: Run): void {
-    this.fan.forEach((layer, i) => {
+    for (const [i, layer] of this.fan.entries()) {
       const age = this.fan.length - 1 - i;
       void this.engine.fadeLayer(layer, fadeOpacity(age), fadeTime(run, TIMING.fade), fadeGray(age));
-    });
+    }
   }
 
   wipeFan(run: Run): void {

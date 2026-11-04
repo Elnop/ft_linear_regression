@@ -14,9 +14,9 @@ export class OffscreenWall implements Surface {
   readonly height: number;
   layers: PaintLayer[] = [];
 
-  private engine: PaintEngine;
-  private slicer: Slicer;
-  private pending = new Set<Promise<void>>();
+  private readonly engine: PaintEngine;
+  private readonly slicer: Slicer;
+  private readonly pending = new Set<Promise<void>>();
 
   constructor(engine: PaintEngine, slicer: Slicer) {
     this.engine = engine;

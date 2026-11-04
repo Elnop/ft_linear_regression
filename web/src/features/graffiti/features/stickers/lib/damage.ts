@@ -71,6 +71,12 @@ export function peelGeometry(width: number, height: number, [corner, fraction]: 
   return { keep: toPoints(keep), cut: toPoints(cut.triangle), matrix: `matrix(${cut.matrix})` };
 }
 
+function edgeHeight(i: number, segmentCount: number, height: number, edgeY: number) {
+  if (i === 0) return -1;
+  if (i === segmentCount) return height + 1;
+  return edgeY;
+}
+
 export function tornEdge(width: number, height: number, x: number, seed: number, inset = 0) {
   const random = mulberry32(seed);
   const segmentCount = 14;
@@ -80,5 +86,5 @@ export function tornEdge(width: number, height: number, x: number, seed: number,
     const progress = i / segmentCount;
     edge.push([x + slant * (progress - 0.5) + (random() - 0.5) * 0.06 * width + inset, progress * height]);
   }
-  return toPoints([[-1, -1], ...edge.map(([edgeX, edgeY], i) => [edgeX, i === 0 ? -1 : i === segmentCount ? height + 1 : edgeY]), [-1, height + 1]]);
+  return toPoints([[-1, -1], ...edge.map(([edgeX, edgeY], i) => [edgeX, edgeHeight(i, segmentCount, height, edgeY)]), [-1, height + 1]]);
 }

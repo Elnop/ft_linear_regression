@@ -10,10 +10,10 @@ test('skipping the intro never blocks the page for long', { tag: '@painting' }, 
   test.setTimeout(120_000);
   await page.addInitScript(() => {
     window.longTasks = [];
-    new PerformanceObserver((list) => list.getEntries().forEach((entry) => window.longTasks.push(entry.duration))).observe({ type: 'longtask' });
+    new PerformanceObserver((list) => window.longTasks.push(...list.getEntries().map((entry) => entry.duration))).observe({ type: 'longtask' });
   });
   await page.goto('./');
-  const skip = page.getByRole('button', { name: /PASSER/ });
+  const skip = page.getByRole('button', { name: /PASSER/u });
   await skip.waitFor({ timeout: 30_000 });
   await page.waitForTimeout(3000);
   await page.evaluate(() => window.longTasks.splice(0));

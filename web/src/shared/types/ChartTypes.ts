@@ -5,7 +5,7 @@ export type ChartDomain = { kmMin: number; kmMax: number; priceMin: number; pric
 export type ChartMapping = {
   area: Rectangle;
   domain: ChartDomain;
-  x(km: number): number;
-  y(price: number): number;
-  point(km: number, price: number): Vec2;
+  x: (km: number) => number;
+  y: (price: number) => number;
+  point: (km: number, price: number) => Vec2;
 };

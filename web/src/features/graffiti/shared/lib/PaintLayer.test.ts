@@ -15,6 +15,6 @@ test('a dried layer keeps its paint where it is and no longer flows', () => {
 
   const film = Float32Array.from(layer.film);
   stepFlow(layer, 1 / 120);
-  expect(layer.film).toEqual(film);
+  expect(layer.film).toStrictEqual(film);
   expect(film.some((thickness) => thickness > 0)).toBe(true);
 });

@@ -10,6 +10,6 @@ test('arrows wrap around, Home and End jump to the ends', () => {
 });
 
 test('other keys do nothing', () => {
-  expect(nextTab('Enter', 1, 3)).toBe(null);
-  expect(nextTab('a', 1, 3)).toBe(null);
+  expect(nextTab('Enter', 1, 3)).toBeNull();
+  expect(nextTab('a', 1, 3)).toBeNull();
 });

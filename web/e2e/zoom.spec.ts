@@ -29,7 +29,7 @@ function declareCases(): void {
         await page.setViewportSize(viewport);
         await openApp(page);
         await settled(page);
-        await page.getByRole('textbox', { name: /kilométrage/ }).fill('120000');
+        await page.getByRole('textbox', { name: /kilométrage/u }).fill('120000');
         if (view.sticker) await expect(page.locator('.price-sticker')).toBeVisible();
         await settled(page);
 
@@ -86,7 +86,7 @@ test.describe('with a 20px default font', () => {
       await page.setViewportSize({ width, height: 800 });
       await openApp(page);
       await settled(page);
-      await page.getByRole('textbox', { name: /kilométrage/ }).fill('120000');
+      await page.getByRole('textbox', { name: /kilométrage/u }).fill('120000');
       await expect(page.locator('.plain-prediction text')).toBeVisible();
 
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);

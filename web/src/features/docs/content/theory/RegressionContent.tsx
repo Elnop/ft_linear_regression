@@ -49,7 +49,7 @@ x[2] = ${SECOND.km.toLocaleString('fr-FR')} km   y[2] = ${SECOND.price.toLocaleS
     label: 'Étape 2',
     section: 'Régression linéaire',
     title: 'Le modèle',
-    aside: <Formula>{`f(x) = θ0 + θ1 · x`}</Formula>,
+    aside: <Formula>f(x) = θ0 + θ1 · x</Formula>,
     children: (
       <>
         <p>
@@ -86,7 +86,7 @@ au carré               → 1 000 000 dans les deux cas`}</Formula>
     label: 'Étape 3',
     section: 'Régression linéaire',
     title: 'La fonction coût',
-    aside: <Formula>{`J(θ0, θ1) = 1/(2m) · Σ ( f(x[i]) − y[i] )²`}</Formula>,
+    aside: <Formula>J(θ0, θ1) = 1/(2m) · Σ ( f(x[i]) − y[i] )²</Formula>,
     children: (
       <>
         <p>

@@ -43,7 +43,7 @@ function spray(layer: PaintLayer, random: RandomGenerator, x: number, y: number,
   }
 }
 
-type SampledPath = { at(distance: number): Vec2; normal(distance: number): Vec2; length: number };
+type SampledPath = { at: (distance: number) => Vec2; normal: (distance: number) => Vec2; length: number };
 
 function samplePath(points: Vec2[]): SampledPath {
   const cumulativeLengths = [0];
@@ -130,21 +130,22 @@ export function pathJob(layer: PaintLayer, points: Vec2[], options: SprayPathOpt
     layer,
     position,
     update(deltaSeconds) {
+      let remaining = deltaSeconds;
       if (wait > 0) {
-        const chunk = Math.min(wait, deltaSeconds);
+        const chunk = Math.min(wait, remaining);
         emit(0, chunk);
         wait -= chunk;
-        deltaSeconds -= chunk;
+        remaining -= chunk;
       }
-      while (deltaSeconds > 1e-6 && travelled < length) {
+      while (remaining > 1e-6 && travelled < length) {
         const velocity = speedAt(travelled);
-        const step = Math.min(deltaSeconds, 1 / velocity);
+        const step = Math.min(remaining, 1 / velocity);
         emit(travelled, step);
         travelled = Math.min(length, travelled + velocity * step);
-        deltaSeconds -= step;
+        remaining -= step;
       }
-      if (travelled >= length && deltaSeconds > 0 && tail > 0) {
-        const chunk = Math.min(tail, deltaSeconds);
+      if (travelled >= length && remaining > 0 && tail > 0) {
+        const chunk = Math.min(tail, remaining);
         emit(length, chunk);
         tail -= chunk;
       }

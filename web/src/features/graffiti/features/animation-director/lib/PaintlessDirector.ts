@@ -5,7 +5,7 @@ import { resetStores } from '@/features/graffiti/features/animation-director/lib
 import { runTraining, stepAt } from '@/features/graffiti/features/animation-director/lib/training.ts';
 
 export class PaintlessDirector implements Director {
-  private dependencies: DirectorDependencies;
+  private readonly dependencies: DirectorDependencies;
 
   constructor(dependencies: DirectorDependencies) {
     this.dependencies = dependencies;

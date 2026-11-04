@@ -54,7 +54,7 @@ test('a tween eases to its target and settles', async () => {
   target.opacity = 0;
   const promise = scheduler.fade(target, { opacity: 1, gray: 0.5 }, 0.4);
   expect(scheduler.advanceTweens(0.2)).toBe(true);
-  expect(target.opacity > 0 && target.opacity < 1).toBeTruthy();
+  expect(target.opacity > 0 && target.opacity < 1).toBe(true);
   scheduler.advanceTweens(0.3);
   expect(target.opacity).toBe(1);
   expect(target.gray).toBe(0.5);
