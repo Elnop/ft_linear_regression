@@ -17,6 +17,15 @@ test('axe finds no violation on the dashboard and both documentation tabs', { ta
   }
 });
 
+test.describe('with the painted wall', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('axe finds no violation once the wall is painted', { tag: '@painting' }, async ({ page }) => {
+    await openApp(page);
+    expect(await axeViolations(page)).toEqual([]);
+  });
+});
+
 test('the keyboard reaches the documentation and moves between tabs', { tag: '@paintless' }, async ({ page }) => {
   await openApp(page);
   await page.getByRole('button', { name: /DOC/u }).focus();

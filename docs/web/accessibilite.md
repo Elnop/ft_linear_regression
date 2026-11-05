@@ -8,7 +8,7 @@ L'app est d'abord une animation, mais tout ce qu'elle montre doit rester utilisa
 - La documentation est une `section` nommée par son titre `h2` (« Comment la droite est trouvée »). Chaque étape est un `article` avec son titre `h3`.
 - Les groupes du dashboard sont nommés : « Paramètres du modèle » (θ0, θ1, itération), « Prédiction et précision » (la colonne de droite), « Précision » (R², RMSE, MAE), « Entraînement » (la barre du bas). Les chips et les métriques sont des listes de définitions (`dl`), et c'est la `section` qui les entoure qui porte le nom, parce qu'un `dl` ne peut pas en porter.
 - Les graphes ont un rôle `img` et un nom qui dit ce qu'ils montrent (« Graphe du prix (3k à 9k €) en fonction du kilométrage (0 à 250k km) », « Évolution du coût sur 10000 itérations »).
-- Ce qui ne porte aucune information est caché aux technologies d'assistance : les autocollants, la bombe et sa brume, le marqueur du prix sur le mur (la valeur est déjà dans le champ de prédiction), les icônes des boutons et les bandes de scotch des panneaux.
+- Ce qui ne porte aucune information est caché aux technologies d'assistance : le mur et sa peinture (le graphe est décrit par le libellé des axes, les valeurs sont dans le dashboard), les autocollants, la bombe et sa brume, le marqueur du prix sur le mur (la valeur est déjà dans le champ de prédiction), les icônes des boutons et les bandes de scotch des panneaux.
 - Pendant l'intro, l'interface n'est pas encore là : `Reveal` la rend `inert` et `aria-hidden`, donc ni la souris, ni le clavier, ni un lecteur d'écran n'y accèdent avant qu'elle apparaisse.
 
 ## Noms des contrôles

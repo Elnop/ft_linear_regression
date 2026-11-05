@@ -138,13 +138,13 @@ Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournen
 
 | Fichier | Navigateur | Ce qui est vérifié |
 |---|---|---|
-| `web/e2e/accessibility.spec.ts` | `paintless` | axe et clavier |
+| `web/e2e/accessibility.spec.ts` | les deux | axe et clavier |
 | `web/e2e/fallbacks.spec.ts` | les deux | sans WebGL, mouvement réduit |
 | `web/e2e/performance.spec.ts` | `painting` | clic sur *Passer* |
 | `web/e2e/zoom.spec.ts` | les deux | zoom à 200 %, écrans étroits, police par défaut de 20 px |
 | `web/e2e/build.spec.ts` | `paintless` | fond flouté du build |
 
-- axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc.
+- axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc, ni une fois le mur peint en WebGL. Ce second contrôle a été ajouté après qu'axe a trouvé en prod le canvas du mur hors de tout repère de page : seul le projet `paintless` lançait axe, il ne voyait donc jamais le mur.
 - Au clavier, DOC puis Entrée place le focus sur la doc et met `#documentation` dans l'URL, un lien du sommaire le place sur son étape, et les flèches, Home et End changent d'onglet.
 - Sans WebGL, la vue GRAPHE est active dès le départ.
 - En mouvement réduit, sans WebGL, TAGUER est actif en moins de 10 s et le bouton *Passer* n'apparaît jamais. Avec le WebGL logiciel du projet `painting`, l'état final peint d'un coup et le mur sec sont vérifiés avec une attente de 30 s : le rendu sur CPU de la CI varie de 5 s d'un run à l'autre (12,6 à 18 s pour le même test sur un même commit), et une limite de 10 s y échouait sans aucune régression.
