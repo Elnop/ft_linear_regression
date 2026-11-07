@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx --no-install elnop-agent-hook --tree web/src",
+            "command": "npx --no-install brutal-agent-hook --tree web/src",
             "timeout": 60,
             "statusMessage": "checks on the edited file"
           }

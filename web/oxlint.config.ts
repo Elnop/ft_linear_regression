@@ -1,4 +1,4 @@
-import { reactViteConfig } from '@elnop/oxlint-config-react-vite';
+import { reactViteConfig } from '@brutalway/oxlint-config-react-vite';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({

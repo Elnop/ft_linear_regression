@@ -1,4 +1,4 @@
-import { axeViolations as listAxeViolations, expect, test } from '@elnop/playwright-fixtures';
+import { axeViolations as listAxeViolations, expect, test } from '@brutalway/playwright-fixtures';
 import type { Page } from '@playwright/test';
 
 export { expect, test };

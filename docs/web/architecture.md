@@ -99,7 +99,7 @@ Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier 
 - Un store suit la même forme partout : `xStore.ts` exporte le store et ses actions (`xActions`), et un hook `useX.ts` le lit.
 - Les props d'un composant `X` ont un type nommé `XProps`, jamais un objet écrit dans la signature.
 
-La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `@elnop/oxlint-config-export-placement` et `@elnop/oxlint-config-component-props`, le nom des fichiers et la forme des stores par `@elnop/eslint-plugin-file-named-after-export` et `@elnop/eslint-plugin-store-layout`, le contenu de `styles/`, `types/` et `configs/` par alint, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
+La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `@brutalway/oxlint-config-typescript` et `@brutalway/oxlint-config-react`, le nom des fichiers et la forme des stores par `@brutalway/eslint-plugin-file-named-after-export` et `@brutalway/eslint-plugin-store-layout`, le contenu de `styles/`, `types/` et `configs/` par alint, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
 
 Tous les imports passent par un alias, même entre voisins : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`. Oxlint refuse `./` et `../`.
 

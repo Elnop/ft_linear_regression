@@ -2,10 +2,10 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {
-      "ignoreDependencies": ["@elnop/agent-hook", "@elnop/alint-config"]
+      "ignoreDependencies": ["@brutalway/agent-hook", "@brutalway/alint-config"]
     },
     "web": {
-      "ignoreDependencies": ["@swc/core", "@elnop/dependency-cruiser-config"]
+      "ignoreDependencies": ["@swc/core", "@brutalway/dependency-cruiser-config"]
     }
   }
 }

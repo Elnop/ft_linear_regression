@@ -1,4 +1,4 @@
-import { typescriptConfig } from '@elnop/oxlint-config-typescript';
+import { typescriptConfig } from '@brutalway/oxlint-config-typescript';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({

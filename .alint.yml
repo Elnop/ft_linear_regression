@@ -1,6 +1,6 @@
 version: 1
 extends:
-  - ./node_modules/@elnop/alint-config/base.yml
+  - ./node_modules/@brutalway/alint-config/base.yml
 rules:
   - id: doc-paths-resolve
     kind: markdown_paths_resolve
