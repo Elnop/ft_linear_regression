@@ -1,15 +1,4 @@
 {
-  "e2e/fixtures.ts": {
-    "function-size/max-functions": {
-      "count": 1
-    },
-    "function-size/max-variables": {
-      "count": 1
-    },
-    "max-lines-per-function": {
-      "count": 3
-    }
-  },
   "src/features/dashboard/components/DashboardLayout.tsx": {
     "max-lines-per-function": {
       "count": 1
@@ -427,6 +416,11 @@
   },
   "src/shared/lib/titleLetters.ts": {
     "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "test/e2e/fixtures.ts": {
+    "function-size/max-functions": {
       "count": 1
     }
   },

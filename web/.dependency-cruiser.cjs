@@ -5,6 +5,10 @@ module.exports = {
     tsConfig: { fileName: 'tsconfig.test.json' },
     parser: 'swc',
     tsPreCompilationDeps: false,
-    enhancedResolveOptions: { extensions: ['.ts', '.tsx', '.js'] },
+    enhancedResolveOptions: {
+      extensions: ['.ts', '.tsx', '.js'],
+      exportsFields: ['exports'],
+      conditionNames: ['import', 'require', 'node', 'default'],
+    },
   },
 };

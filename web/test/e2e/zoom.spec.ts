@@ -6,7 +6,7 @@ import {
   overflowingText,
   settled,
   test,
-} from '@e2e/fixtures.ts';
+} from '@test-e2e/fixtures.ts';
 import type { Page } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });

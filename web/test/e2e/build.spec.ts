@@ -1,4 +1,4 @@
-import { expect, openApp, test } from '@e2e/fixtures.ts';
+import { expect, openApp, test } from '@test-e2e/fixtures.ts';
 
 test(
   'the built page keeps the frosted glass behind the documentation',

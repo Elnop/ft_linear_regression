@@ -12,7 +12,7 @@ export default defineConfig({
           {
             regex: '^\\.\\.?/',
             message:
-              'Relative imports are not allowed: import through an alias (@/, @core/, @e2e/).',
+              'Relative imports are not allowed: import through an alias (@/, @core/, @test-e2e/).',
           },
         ],
       },

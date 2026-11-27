@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { axeViolations, expect, openApp, test } from '@e2e/fixtures.ts';
+import { axeViolations, expect, openApp, test } from '@test-e2e/fixtures.ts';
 
 function focused(page: Page) {
   return page.evaluate(() => {

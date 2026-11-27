@@ -6,7 +6,7 @@
       "@/*": ["./src/*"],
       "@core/*": ["../core/*"],
       "@dataset": ["../data.csv"],
-      "@e2e/*": ["./e2e/*"]
+      "@test-e2e/*": ["./test/e2e/*"]
     }
   },
   "include": [
@@ -15,7 +15,6 @@
     "vite.config.ts",
     "vitest.config.ts",
     "oxlint.config.ts",
-    "e2e",
     "playwright.config.ts"
   ],
   "exclude": []

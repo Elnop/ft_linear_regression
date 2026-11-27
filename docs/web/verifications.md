@@ -10,7 +10,7 @@ Tout ce qui suit tourne en local et dans la CI. Les tests de composant et `npm r
 | `npm run check` | Prettier en mode `--check` sur tout le repo (sauf le Markdown), Oxlint sur `core/` et `cli/`, `tsc` sur ces deux dossiers, alint (chaque chemin, lien et ancre cité dans le README et dans `docs/` existe encore), knip, puis le check du web : typecheck, Oxlint sur `src/` et `e2e/`, dependency-cruiser, `check-tree` sur `web/src/` |
 | `npm run format` | Prettier en écriture sur tout le repo (guillemets simples, virgules finales, 200 colonnes, config `@brutalway/prettier-config` déclarée dans le `package.json` racine) |
 | `npm test` | les tests du web (Vitest) : unitaires dans Node, composants dans Chromium |
-| `npm run e2e` | build du web, puis les tests de `web/e2e/` avec Playwright, dans Chromium headless contre `vite preview` |
+| `npm run e2e` | build du web, puis les tests de `web/test/e2e/` avec Playwright, dans Chromium headless contre `vite preview` |
 
 `npm run check` contient déjà tout le typecheck, et `npm run build` ne lance plus que `vite build`. Le workflow [`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml) a deux jobs en parallèle : `build` installe Chromium headless pour les tests de composant, puis lance `npm run check`, `npm test` et le build, `e2e` installe Chromium headless et lance `npm run e2e`. Chaque vérification ne tourne qu'une fois, et le déploiement attend les deux jobs. Les actions utilisées (`checkout@v7`, `setup-node@v7`, `upload-pages-artifact@v5`, `deploy-pages@v5`) tournent sur Node 24, le projet est testé sur Node 26.
 
@@ -30,20 +30,20 @@ Les configs Oxlint et les plugins viennent de paquets npm publiés depuis [bruta
 
 Le `oxlint.config.ts` de la racine étend la base et ajoute le plugin `node`. Celui du web étend le preset et ne garde que le message de la règle des imports, qui cite les alias du projet.
 
-Oxlint applique les catégories `correctness` et `suspicious`, plus des règles TypeScript typées (promesses non attendues, assertions de type inutiles, imports de types). Dans le web, il refuse aussi tout import relatif : on importe par `@/` ou `@core/`, même entre voisins. Dans `web/e2e/`, l'alias `@e2e/` (déclaré dans `web/tsconfig.test.json`, que Playwright lit) remplace `./`.
+Oxlint applique les catégories `correctness` et `suspicious`, plus des règles TypeScript typées (promesses non attendues, assertions de type inutiles, imports de types). Dans le web, il refuse aussi tout import relatif : on importe par `@/` ou `@core/`, même entre voisins. Dans `web/test/e2e/`, l'alias `@test-e2e/` (déclaré dans `web/tsconfig.test.json`, que Playwright lit) remplace `./`.
 
 [`eslint-plugin-check-file`](https://github.com/dukeluo/eslint-plugin-check-file), chargé par la base, refuse tout fichier `index` (`no-index`), même quand il ré-exporte par nom, et un `types.ts` sans domaine (`filename-blocklist`).
 
 Deux règles natives d'Oxlint complètent : `oxc/no-barrel-file` refuse un fichier qui ré-exporte avec `export *`, et `unicorn/filename-case` impose le camelCase ou le PascalCase aux noms de fichiers TypeScript (un acronyme s'écrit comme un mot : `createGlRenderer.ts`).
 
-`eslint-plugin-no-comments`, chargé par la base, refuse tout commentaire dans `core/`, `cli/`, `web/src/` et `web/e2e/`, tests compris. Son option `allow` laisse passer les directives (`oxlint-`, `eslint-`, `@ts-expect-error`, `/// <reference`). `npm run lint -- --fix` supprime les commentaires. Le plugin déclare `eslint` en peer dependency : npm installe donc ESLint 10, qui ne tourne jamais ici. ESLint 10.14 dépend de `minimatch` 10, touché par [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) et corrigé seulement en 11.0.1 : le `overrides` du `package.json` racine force `minimatch` 11 sous ce plugin. On pourra le retirer quand ESLint publiera une version avec `minimatch` 11 ([eslint/eslint#21476](https://github.com/eslint/eslint/pull/21476)).
+`eslint-plugin-no-comments`, chargé par la base, refuse tout commentaire dans `core/`, `cli/`, `web/src/` et `web/test/e2e/`, tests compris. Son option `allow` laisse passer les directives (`oxlint-`, `eslint-`, `@ts-expect-error`, `/// <reference`). `npm run lint -- --fix` supprime les commentaires. Le plugin déclare `eslint` en peer dependency : npm installe donc ESLint 10, qui ne tourne jamais ici. ESLint 10.14 dépend de `minimatch` 10, touché par [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249) et corrigé seulement en 11.0.1 : le `overrides` du `package.json` racine force `minimatch` 11 sous ce plugin. On pourra le retirer quand ESLint publiera une version avec `minimatch` 11 ([eslint/eslint#21476](https://github.com/eslint/eslint/pull/21476)).
 
 La place des exports et le typage des props passent par la règle `no-restricted-syntax` d'ESLint et ses sélecteurs ESQuery, qu'Oxlint charge depuis `oxlint-plugin-eslint`. Un override par motif de fichier choisit la liste :
 
 - partout : un type exporté vit dans un `XTypes.ts`, une constante exportée (littéral, tableau, objet sans fonction, enum, résultat d'appel) dans un `XConfig.ts`. Un objet qui contient des fonctions (`engineActions`), une instance (`new X()`), le résultat d'un `defineX(...)` (`defineRule`, `defineConfig`), une fonction et une classe restent libres ;
 - `*Types.ts` n'exporte que des types, `*Config.ts` et `*Content.ts(x)` que des constantes, `*Store.ts` échappe à la règle des constantes ;
 - dans un `.tsx`, un composant (fonction dont le nom commence par une majuscule) type ses props avec un type nommé qui finit par `Props`. Des props sans type, typées par un objet écrit dans la signature ou par un type comme `Props` ou `Options` sont refusées. Aucun outil ne vérifie que le préfixe est exactement le nom du composant (`CodeProps` pour `Code`) : un sélecteur ne compare pas deux attributs, et ni eslint-plugin-react, ni eslint-react, ni `@typescript-eslint/naming-convention` n'ont cette règle ;
-- les tests et `web/e2e/` échappent à ces règles.
+- les tests et `web/test/e2e/` échappent à ces règles.
 
 Deux conventions sont des plugins Oxlint, parce qu'elles dépendent du nom du fichier, qu'aucun sélecteur ne voit :
 
@@ -108,13 +108,13 @@ knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vit
 |---|---|---|---|---|
 | Unitaire | une fonction ou une classe pure (`lib/`, configs) | Vitest, dans Node | `test/unit/…/Timeline.test.ts`, au chemin de `Timeline.ts` | `npm run test:unit` |
 | Composant | un presenter seul, par ses props et ses interactions | Vitest browser mode et `vitest-browser-react`, dans Chromium | `test/unit/…/SkipButton.test.tsx`, au chemin de `SkipButton.tsx` | `npm run test:component` |
-| E2e | un parcours dans le site buildé, servi par `vite preview` | `@playwright/test`, dans Chromium | `web/e2e/<sujet>.spec.ts` | `npm run e2e` |
+| E2e | un parcours dans le site buildé, servi par `vite preview` | `@playwright/test`, dans Chromium | `web/test/e2e/<sujet>.spec.ts` | `npm run e2e` |
 
 - Un test unitaire est dans `web/test/unit/`, au chemin de sa source sous `web/src/` (`src/shared/lib/x.ts` a son test dans `test/unit/shared/lib/x.test.ts`). L'extension choisit le type : `.test.ts` tourne dans Node, `.test.tsx` dans le navigateur.
 - On cherche un élément par son rôle et son nom accessible (`getByRole('button', { name: /PASSER/ })`), jamais par une classe CSS.
 - On attend avec une assertion qui réessaie (`expect.element(...)` en composant, les locators en e2e), jamais avec un `setTimeout`.
 - On ne teste en composant que les presenters, qui reçoivent tout par props. Les containers et les layouts lisent des stores : l'e2e les couvre.
-- Un test e2e porte le tag de son navigateur (`@paintless` ou `@painting`). Ce qui sert à plusieurs fichiers va dans `web/e2e/fixtures.ts`.
+- Un test e2e porte le tag de son navigateur (`@paintless` ou `@painting`). Ce qui sert à plusieurs fichiers va dans `web/test/e2e/fixtures.ts`.
 - Un test doit pouvoir échouer : avant de le garder, on casse le code qu'il protège et on vérifie qu'il passe au rouge.
 
 ## Tests
@@ -132,17 +132,17 @@ Un test de composant (`*.test.tsx`) affiche un presenter seul dans un vrai Chrom
 
 ## Tests dans le navigateur
 
-Les tests de bout en bout sont dans `web/e2e/`, un fichier par sujet, et tournent avec `@playwright/test` (`web/playwright.config.ts`). Playwright lance `vite preview` sur le build et l'arrête à la fin. La config déclare deux projets, deux Chromium : `paintless` sans WebGL, `painting` avec WebGL logiciel (SwiftShader). Chaque test porte le tag de son navigateur (`@paintless` ou `@painting`) et ne tourne que sur lui. SwiftShader dessine sur le CPU : un mur qui continue de couler sature le navigateur et ralentit le test suivant. Avant la correction du mouvement réduit, un test passait de 4 s seul à plus de 60 s en suite, bloqué à la création de son contexte. `fallbacks.spec.ts` vérifie maintenant qu'en mouvement réduit le mur ne fait plus aucun dessin WebGL une fois affiché, et le projet `painting` a un timeout de 90 s au lieu de 60 s.
+Les tests de bout en bout sont dans `web/test/e2e/`, un fichier par sujet, et tournent avec `@playwright/test` (`web/playwright.config.ts`). Playwright lance `vite preview` sur le build et l'arrête à la fin. La config déclare deux projets, deux Chromium : `paintless` sans WebGL, `painting` avec WebGL logiciel (SwiftShader). Chaque test porte le tag de son navigateur (`@paintless` ou `@painting`) et ne tourne que sur lui. SwiftShader dessine sur le CPU : un mur qui continue de couler sature le navigateur et ralentit le test suivant. Avant la correction du mouvement réduit, un test passait de 4 s seul à plus de 60 s en suite, bloqué à la création de son contexte. `fallbacks.spec.ts` vérifie maintenant qu'en mouvement réduit le mur ne fait plus aucun dessin WebGL une fois affiché, et le projet `painting` a un timeout de 90 s au lieu de 60 s.
 
-`web/e2e/fixtures.ts` regroupe ce qui est commun : ouvrir l'app, attendre qu'elle soit stable, lancer axe une fois la page stable. Il reprend `test`, `expect` et `axeViolations` de `@brutalway/playwright-fixtures`, dont la fixture automatique fait échouer tout test pendant lequel la page lève une erreur JavaScript.
+`web/test/e2e/fixtures.ts` regroupe ce qui est commun : ouvrir l'app, attendre qu'elle soit stable, lancer axe une fois la page stable. Il reprend `test`, `expect` et `axeViolations` de `@brutalway/playwright-fixtures`, dont la fixture automatique fait échouer tout test pendant lequel la page lève une erreur JavaScript.
 
 | Fichier | Navigateur | Ce qui est vérifié |
 |---|---|---|
-| `web/e2e/accessibility.spec.ts` | les deux | axe et clavier |
-| `web/e2e/fallbacks.spec.ts` | les deux | sans WebGL, mouvement réduit |
-| `web/e2e/performance.spec.ts` | `painting` | clic sur *Passer* |
-| `web/e2e/zoom.spec.ts` | les deux | zoom à 200 %, écrans étroits, police par défaut de 20 px |
-| `web/e2e/build.spec.ts` | `paintless` | fond flouté du build |
+| `web/test/e2e/accessibility.spec.ts` | les deux | axe et clavier |
+| `web/test/e2e/fallbacks.spec.ts` | les deux | sans WebGL, mouvement réduit |
+| `web/test/e2e/performance.spec.ts` | `painting` | clic sur *Passer* |
+| `web/test/e2e/zoom.spec.ts` | les deux | zoom à 200 %, écrans étroits, police par défaut de 20 px |
+| `web/test/e2e/build.spec.ts` | `paintless` | fond flouté du build |
 
 - axe-core ne trouve aucune violation sur le dashboard et sur les deux onglets de la doc, ni une fois le mur peint en WebGL. Ce second contrôle a été ajouté après qu'axe a trouvé en prod le canvas du mur hors de tout repère de page : seul le projet `paintless` lançait axe, il ne voyait donc jamais le mur.
 - Au clavier, DOC puis Entrée place le focus sur la doc et met `#documentation` dans l'URL, un lien du sommaire le place sur son étape, et les flèches, Home et End changent d'onglet.
