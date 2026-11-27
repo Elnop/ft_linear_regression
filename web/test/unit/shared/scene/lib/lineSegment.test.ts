@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
-import { chartMapping } from '@/shared/scene/lib/chartMapping.ts';
 import { lineSegment } from '@/shared/scene/lib/lineSegment.ts';
+import { fixedChart } from '@test-support/fixedChart.ts';
 
-const chart = chartMapping(1000, 800, 16);
+const chart = fixedChart;
 function inside(x: number, y: number) {
   return (
     x >= chart.area.x - 1e-9 &&

@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { WallMarker } from '@/features/dashboard/features/prediction/components/presenters/WallMarker.tsx';
-import { applyTypeScale } from '@/shared/type-scale/lib/applyTypeScale.ts';
+import { TEXT_STEPS } from '@/shared/type-scale/TypeScaleConfig.ts';
 
 const root = document.documentElement;
 
@@ -14,7 +14,7 @@ const SPACES: Record<number, string> = {
 };
 
 beforeAll(() => {
-  applyTypeScale(root);
+  for (const step of TEXT_STEPS) root.style.setProperty(`--text-${step}`, '1rem');
   for (const [step, value] of Object.entries(SPACES)) {
     root.style.setProperty(`--space-${step}`, value);
   }

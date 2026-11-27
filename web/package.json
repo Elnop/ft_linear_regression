@@ -56,8 +56,7 @@
   "check-exceptions": {
     "newRules": {
       "check-tree not-a-kind-folder": 1,
-      "dependency-cruiser no-cross-sub-shared": 1,
-      "dependency-cruiser unit-test-own-source": 12,
+      "dependency-cruiser unit-test-own-source": 6,
       "oxlint-suppressions max-lines-per-function": 54,
       "oxlint-suppressions component-roles/no-restricted-syntax": 26,
       "oxlint-suppressions function-size/max-variables": 43,

@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
-import { chartMapping } from '@/shared/scene/lib/chartMapping.ts';
+import { fixedChart } from '@test-support/fixedChart.ts';
 
-const chart = chartMapping(1000, 800, 16);
+const chart = fixedChart;
 const layout = axisLayout(chart, 15, 12);
 
 test('one grid line and one label per tick', () => {

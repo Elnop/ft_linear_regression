@@ -6,7 +6,8 @@
       "@/*": ["./src/*"],
       "@core/*": ["../core/*"],
       "@dataset": ["../data.csv"],
-      "@test-e2e/*": ["./test/e2e/*"]
+      "@test-e2e/*": ["./test/e2e/*"],
+      "@test-support/*": ["./test/support/*"]
     }
   },
   "include": [

@@ -1,90 +1,6 @@
 [
   {
     "type": "dependency",
-    "from": "test/unit/features/dashboard/shared/dashboard-state/lib/normalizeMileage.test.ts",
-    "to": "src/features/dashboard/shared/formatting/formatNumber.ts",
-    "unresolvedTo": "@/features/dashboard/shared/formatting/formatNumber.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/features/dashboard/features/prediction/components/presenters/WallMarker.test.tsx",
-    "to": "src/shared/type-scale/lib/applyTypeScale.ts",
-    "unresolvedTo": "@/shared/type-scale/lib/applyTypeScale.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/features/dashboard/features/views/lib/axisLayout.test.ts",
-    "to": "src/shared/scene/lib/chartMapping.ts",
-    "unresolvedTo": "@/shared/scene/lib/chartMapping.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/features/dashboard/shared/dashboard-state/lib/normalizeMileage.test.ts",
-    "to": "src/features/dashboard/shared/formatting/formatNumber.ts",
-    "unresolvedTo": "@/features/dashboard/shared/formatting/formatNumber.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/features/docs/lib/scientific.test.ts",
-    "to": "src/features/docs/lib/docFigures.ts",
-    "unresolvedTo": "@/features/docs/lib/docFigures.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/features/docs/lib/tokenize.test.ts",
-    "to": "src/features/docs/lib/pick.ts",
-    "unresolvedTo": "@/features/docs/lib/pick.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "test/unit/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
     "to": "src/features/graffiti/features/animation-director/lib/wallRegions.ts",
     "unresolvedTo": "@/features/graffiti/features/animation-director/lib/wallRegions.ts",
@@ -158,20 +74,6 @@
     "from": "test/unit/features/graffiti/shared/paint-engine/lib/stepFlow.test.ts",
     "to": "src/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
     "unresolvedTo": "@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "unit-test-own-source"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/shared/scene/lib/lineSegment.test.ts",
-    "to": "src/shared/scene/lib/chartMapping.ts",
-    "unresolvedTo": "@/shared/scene/lib/chartMapping.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
