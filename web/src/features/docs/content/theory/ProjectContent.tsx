@@ -49,8 +49,7 @@ R² = ${FIGURES.r2.toFixed(3)}`}</Formula>
       <>
         <p>
           La solution exacte des moindres carrés n'est pas utilisée par le programme, mais elle sert
-          de témoin : après
-          {FIGURES.iterations.toLocaleString('fr-FR')} itérations à{' '}
+          de témoin : après {FIGURES.iterations.toLocaleString('fr-FR')} itérations à{' '}
           <code>α = {FIGURES.learningRate}</code>, la descente tombe dessus.
         </p>
         <p>
