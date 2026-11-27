@@ -14,7 +14,7 @@
   color: var(--ink-dimmed);
 }
 .figure-axis {
-  stroke: rgba(255, 255, 255, 0.3);
+  stroke: var(--white-30);
   stroke-width: 1;
 }
 .figure-curve {

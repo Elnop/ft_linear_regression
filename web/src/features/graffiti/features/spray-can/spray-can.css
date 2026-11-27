@@ -14,7 +14,7 @@
   left: 0;
   top: 0;
   will-change: transform;
-  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 14px 18px var(--black-55));
   transition: opacity 0.25s;
 }
 .spray-can.gone {

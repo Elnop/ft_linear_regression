@@ -27,8 +27,13 @@ Les autres couleurs et les polices sont des variables de `web/src/app/globals.cs
 | `--panel` | fond opaque sombre (graphe, dataset) |
 | `--on-accent` | texte posé sur une couleur vive (boutons, sticker du prix) |
 | `--monospace`, `--marker`, `--anton` | polices |
+| `--black-28` … `--black-80`, `--white-07` … `--white-30` | ombres et filets translucides, noir et blanc à une opacité fixe |
+| `--white`, `--bone`, `--void`, `--night`, `--night-85`, `--amber`, `--sky` | teintes pleines utilisées par un seul composant |
+| `--magenta-25`, `--magenta-35`, `--acid-35`, `--acid-50`, `--cyan-10` | nuances de la palette, dérivées par `color-mix` pour suivre `PALETTE` |
 
 La coloration du code de la documentation a ses propres variables, déclarées sur `.documentation-code` dans `code.css` (`--syntax-number`, `--syntax-call`), à côté des couleurs de la palette qu'elle réutilise.
+
+stylelint (`brutalway/color-tokens`) refuse toute couleur écrite hors de `globals.css` : une feuille utilise un `var()`, et une nouvelle couleur devient un token ici.
 
 Les nuances de `--ink` ne sont pas recopiées en `rgba` : elles passent par `color-mix(in srgb, var(--ink) X%, transparent)`. C'est le cas des grilles et des traits à la craie des axes, et de la ligne de base du coût. Ces traits sont dessinés en SVG, mais leur couleur vient d'une classe CSS (`wall-axes-grid`, `wall-axes-chalk`, `cost-baseline`), pas d'un attribut écrit dans le TSX.
 

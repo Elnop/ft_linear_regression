@@ -10,14 +10,16 @@
     "lint": "oxlint --type-aware src test oxlint.config.ts",
     "deps": "depcruise '{src,test}/**/*.{ts,tsx}' --output-type err-long --ignore-known",
     "tree": "check-tree src",
-    "check": "npm run typecheck && npm run lint && npm run deps && npm run tree && npm run exceptions",
+    "check": "brutal-check",
     "test": "vitest run",
     "test:unit": "vitest run --project unit",
     "test:component": "vitest run --project component",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "e2e": "vite build && playwright test",
-    "exceptions": "check-exceptions"
+    "exceptions": "check-exceptions",
+    "styles": "stylelint 'src/**/*.css'",
+    "duplicates": "jscpd src"
   },
   "dependencies": {
     "motion": "14.9.0",
@@ -27,11 +29,13 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
+    "@brutalway/check": "0.3.0",
     "@brutalway/check-exceptions": "0.2.1",
     "@brutalway/check-tree": "0.15.0",
     "@brutalway/dependency-cruiser-config": "0.14.0",
     "@brutalway/oxlint-config-react-vite": "0.6.1",
     "@brutalway/playwright-fixtures": "0.2.0",
+    "@brutalway/stylelint-config": "0.2.2",
     "@brutalway/tsconfig": "0.4.0",
     "@playwright/test": "1.65.0",
     "@swc/core": "1.16.22",
@@ -41,8 +45,10 @@
     "@vitest/browser-playwright": "5.1.0",
     "@vitest/coverage-v8": "5.1.0",
     "dependency-cruiser": "18.7.2",
+    "jscpd": "5.4.3",
     "oxlint": "1.92.0",
     "oxlint-tsgolint": "7.0.2006",
+    "stylelint": "18.0.0",
     "vite": "8.3.6",
     "vitest": "5.1.0",
     "vitest-browser-react": "2.3.0"
@@ -72,5 +78,8 @@
       "dependency-cruiser unit-test-own-source": 12,
       "oxlint-suppressions typescript/no-redundant-type-constituents": 1
     }
+  },
+  "stylelint": {
+    "extends": "@brutalway/stylelint-config"
   }
 }

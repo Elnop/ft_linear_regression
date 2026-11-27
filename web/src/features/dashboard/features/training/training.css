@@ -26,8 +26,8 @@
   font-size: var(--text-lg);
   letter-spacing: 0.06em;
   box-shadow:
-    0 0 22px rgba(255, 43, 214, 0.25),
-    3px 4px 0 rgba(0, 0, 0, 0.55);
+    0 0 22px var(--magenta-25),
+    3px 4px 0 var(--black-55);
 }
 .button-train:disabled {
   cursor: default;
@@ -41,8 +41,8 @@
   height: var(--space-48);
   border-radius: var(--space-12);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--white-07);
+  border: 1px solid var(--white-20);
   color: var(--ink);
 }
 .button-icon:disabled {
@@ -75,7 +75,7 @@
   font-size: var(--text-base);
   font-weight: 700;
   min-width: 2.75rem;
-  color: #fff;
+  color: var(--white);
   font-variant-numeric: tabular-nums;
 }
 .training-hint {
@@ -86,7 +86,7 @@
   font-size: var(--text-md);
   color: var(--danger);
   transform: rotate(-3deg);
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  text-shadow: 2px 2px 0 var(--black-80);
   white-space: nowrap;
   pointer-events: none;
 }
