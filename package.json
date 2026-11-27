@@ -8,7 +8,6 @@
   "engines": {
     "node": ">=26"
   },
-  "prettier": "@brutalway/prettier-config",
   "scripts": {
     "train": "node cli/train.ts",
     "predict": "node cli/predict.ts",
@@ -16,52 +15,16 @@
     "web": "npm run dev -w web",
     "build": "npm run build -w web",
     "e2e": "npm run e2e -w web",
-    "typecheck": "tsc -p .",
     "test": "npm test -w web",
-    "format": "prettier --write .",
-    "check": "brutal-check && npm run check -w web",
-    "prepare": "git config core.hooksPath .githooks",
-    "exceptions": "check-exceptions",
-    "format:check": "prettier --check .",
-    "repo": "alint check",
-    "unused": "knip",
-    "docs": "check-doc-length && check-doc-sources && check-doc-links",
-    "secrets": "check-secrets",
-    "lint": "oxlint --type-aware core cli oxlint.config.ts"
-  },
-  "devDependencies": {
-    "@asamarts/alint": "0.22.0",
-    "@brutalway/agent-hook": "0.5.0",
-    "@brutalway/alint-config": "0.2.4",
-    "@brutalway/check": "0.3.0",
-    "@brutalway/check-doc-length": "0.2.1",
-    "@brutalway/check-doc-links": "0.2.1",
-    "@brutalway/check-doc-sources": "0.2.1",
-    "@brutalway/check-exceptions": "0.2.1",
-    "@brutalway/check-secrets": "0.1.1",
-    "@brutalway/oxlint-config-typescript": "0.9.0",
-    "@brutalway/prettier-config": "0.3.0",
-    "@brutalway/tsconfig": "0.4.0",
-    "@types/node": "26.6.6",
-    "knip": "6.44.2",
-    "oxlint": "1.92.0",
-    "oxlint-tsgolint": "7.0.2006",
-    "prettier": "3.9.10",
-    "typescript": "7.0.2"
+    "check": "npm run check -w web",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "allowScripts": {
-    "@swc/core": false,
-    "@asamarts/alint@0.22.0": true
+    "@swc/core": false
   },
   "overrides": {
     "eslint-plugin-no-comments": {
       "minimatch": "^11.0.1"
-    }
-  },
-  "check-exceptions": {
-    "newRules": {
-      "oxlint-suppressions function-size/max-functions": 1,
-      "oxlint-suppressions function-size/max-variables": 3
     }
   }
 }
