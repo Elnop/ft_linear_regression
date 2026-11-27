@@ -98,9 +98,8 @@ body {
 
 .label {
   font-size: var(--text-xs);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.02em;
   color: var(--ink-dimmed);
-  text-transform: uppercase;
 }
 
 @media (max-width: 63.99em) {

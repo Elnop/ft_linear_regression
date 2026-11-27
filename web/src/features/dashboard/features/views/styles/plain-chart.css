@@ -33,7 +33,7 @@
 }
 .plain-prediction text {
   fill: var(--acid);
-  font-weight: 700;
+  font-weight: 500;
   paint-order: stroke;
   stroke: var(--panel);
   stroke-width: 4px;
