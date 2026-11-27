@@ -15,8 +15,8 @@
   border-radius: var(--space-12);
   cursor: pointer;
   color: var(--ink);
-  font: 700 var(--text-sm) var(--monospace);
-  letter-spacing: 0.14em;
+  font: 500 var(--text-sm) var(--monospace);
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 63.99em) {

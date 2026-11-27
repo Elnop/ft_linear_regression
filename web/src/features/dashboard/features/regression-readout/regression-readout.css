@@ -16,7 +16,7 @@
 .readout-chip-value {
   margin: 0;
   font-size: var(--text-md);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--cyan);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -53,7 +53,7 @@
 }
 .cost-value {
   font-size: var(--text-base);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--cyan);
   font-variant-numeric: tabular-nums;
 }
