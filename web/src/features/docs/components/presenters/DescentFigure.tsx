@@ -1,8 +1,8 @@
 import '@/features/docs/styles/code.css';
 import '@/features/docs/styles/figure.css';
 import { useRenderedWidth } from '@/features/docs/hooks/useRenderedWidth.ts';
-import { readRem } from '@/shared/lib/readRem.ts';
-import { textSize } from '@/shared/lib/typeScale.ts';
+import { readRem } from '@/shared/scene/lib/readRem.ts';
+import { textSize } from '@/shared/type-scale/lib/typeScale.ts';
 
 const VIEWBOX_WIDTH = 400;
 

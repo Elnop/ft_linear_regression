@@ -4,7 +4,7 @@ import type { AnimationPlayback } from '@/shared/animation-playback/AnimationPla
 import type { RegressionActions } from '@/shared/regression/RegressionTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import type { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
-import type { Scene } from '@/shared/types/SceneTypes.ts';
+import type { Scene } from '@/shared/scene/types/SceneTypes.ts';
 
 export type Run = {
   readonly instant: boolean;

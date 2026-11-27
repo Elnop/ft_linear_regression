@@ -1,5 +1,5 @@
 import { gaussian } from '@/features/graffiti/shared/lib/random.ts';
-import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 
 export function drawMist(
   context: CanvasRenderingContext2D,

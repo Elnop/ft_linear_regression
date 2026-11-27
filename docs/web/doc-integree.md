@@ -7,7 +7,7 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 
 Chaque onglet commence par un sommaire. Un lien du sommaire fait défiler jusqu'à l'étape, y place le focus et met à jour l'adresse (`#documentation-theory-4`), voir [accessibilite.md](accessibilite.md). Ouvrir une adresse qui contient une ancre d'étape ouvre le bon onglet et y fait défiler la page (`tabFromHash`). Changer d'onglet remet l'ancre sur `#documentation`, pour qu'elle ne désigne pas une étape qui n'est plus affichée.
 
-L'id de la section (`documentation`) est défini une seule fois, dans `web/src/shared/configs/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`web/src/shared/lib/scrollToDocumentation.ts`) sans connaître la chaîne.
+L'id de la section (`documentation`) est défini une seule fois, dans `web/src/shared/documentation/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`web/src/features/dashboard/scrollToDocumentation.ts`) sans connaître la chaîne.
 
 ## Le code affiché est le vrai code
 

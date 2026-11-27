@@ -8,8 +8,8 @@ import {
 } from '@/features/graffiti/features/spray-can/configs/CanSizeConfig.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
-import { sceneStore } from '@/shared/sceneStore.ts';
-import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
+import { sceneStore } from '@/shared/scene/sceneStore.ts';
+import { prefersReducedMotion } from '@/shared/scroll/lib/prefersReducedMotion.ts';
 
 export function useSprayCan(engine: PaintEngine | null) {
   const box = useRef<HTMLDivElement>(null);

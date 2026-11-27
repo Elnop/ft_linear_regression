@@ -1,7 +1,7 @@
 import { SkipButton } from '@/features/dashboard/features/training/components/presenters/SkipButton.tsx';
 import { selectCanSkip } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
-import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
+import { prefersReducedMotion } from '@/shared/scroll/lib/prefersReducedMotion.ts';
 
 export function SkipButtonContainer() {
   const canSkip = useAnimationPlayback(selectCanSkip);

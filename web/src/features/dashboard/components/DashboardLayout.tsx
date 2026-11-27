@@ -14,8 +14,8 @@ import { PrecisionPanelContainer } from '@/features/dashboard/features/regressio
 import { PredictPanelContainer } from '@/features/dashboard/features/prediction/components/orchestrators/PredictPanelContainer.tsx';
 import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
 import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
-import { useScene } from '@/shared/useScene.ts';
-import { ASIDE_WIDTH_REM, HEAD_WIDTH_REM } from '@/shared/configs/SceneConfig.ts';
+import { useScene } from '@/shared/scene/useScene.ts';
+import { ASIDE_WIDTH_REM, HEAD_WIDTH_REM } from '@/shared/scene/configs/SceneConfig.ts';
 import '@/features/dashboard/dashboard.css';
 
 type DashboardLayoutProps = { documentation: ReactNode };

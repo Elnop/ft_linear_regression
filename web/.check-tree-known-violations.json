@@ -83,35 +83,8 @@
     "path": "src/features/graffiti/shared/types/RoughnessTypes.ts"
   },
   {
-    "rule": "shared-root-files",
-    "path": "src/shared",
-    "count": 2
-  },
-  {
     "rule": "single-consumer",
     "path": "src/shared/animation-playback/useAnimationPlayback.ts"
-  },
-  {
-    "rule": "shared-feature-groups",
-    "path": "src/shared/configs",
-    "count": 6
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/shared/configs/GlyphsConfig.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/shared/configs/TypeScaleConfig.ts"
-  },
-  {
-    "rule": "shared-feature-groups",
-    "path": "src/shared/lib",
-    "count": 6
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/shared/lib/scrollToDocumentation.ts"
   },
   {
     "rule": "single-consumer",
@@ -128,10 +101,5 @@
   {
     "rule": "single-consumer",
     "path": "src/shared/regression/willDiverge.ts"
-  },
-  {
-    "rule": "shared-feature-groups",
-    "path": "src/shared/types",
-    "count": 2
   }
 ]

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/overlay-panel.css';
 
 type OverlayPanelProps = {

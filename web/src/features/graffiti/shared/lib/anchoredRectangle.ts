@@ -1,4 +1,4 @@
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
 import type { Anchor } from '@/features/graffiti/shared/types/LayerTypes.ts';
 
 export function anchoredRectangle(

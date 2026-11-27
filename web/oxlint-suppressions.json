@@ -379,7 +379,7 @@
       "count": 1
     }
   },
-  "src/shared/lib/chartMapping.ts": {
+  "src/shared/scene/lib/chartMapping.ts": {
     "function-size/max-variables": {
       "count": 1
     },
@@ -387,7 +387,7 @@
       "count": 1
     }
   },
-  "src/shared/lib/lineSegment.ts": {
+  "src/shared/scene/lib/lineSegment.ts": {
     "function-size/max-variables": {
       "count": 1
     },
@@ -395,7 +395,7 @@
       "count": 1
     }
   },
-  "src/shared/lib/smoothStroke.ts": {
+  "src/shared/scene/lib/smoothStroke.ts": {
     "function-size/max-variables": {
       "count": 1
     },
@@ -403,7 +403,7 @@
       "count": 1
     }
   },
-  "src/shared/lib/titleLayout.ts": {
+  "src/shared/scene/lib/titleLayout.ts": {
     "function-size/max-variables": {
       "count": 2
     },
@@ -414,7 +414,7 @@
       "count": 1
     }
   },
-  "src/shared/lib/titleLetters.ts": {
+  "src/shared/scene/lib/titleLetters.ts": {
     "max-lines-per-function": {
       "count": 1
     }

@@ -8,8 +8,8 @@ import {
   IDLE_PLAYBACK,
   IDLE_PLAYBACK_ACTIONS,
 } from '@/shared/animation-playback/AnimationPlaybackStateConfig.ts';
-import { sceneFor } from '@/shared/lib/sceneFor.ts';
-import type { Scene } from '@/shared/types/SceneTypes.ts';
+import { sceneFor } from '@/shared/scene/lib/sceneFor.ts';
+import type { Scene } from '@/shared/scene/types/SceneTypes.ts';
 
 const PIXEL = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
 const cleanups: (() => void)[] = [];

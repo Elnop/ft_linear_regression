@@ -10,8 +10,8 @@ import type {
 import { animationPlaybackStore } from '@/shared/animation-playback/animationPlaybackStore.ts';
 import { DATA } from '@/shared/regression/configs/DatasetConfig.ts';
 import { regressionActions } from '@/shared/regression/stores/regressionStore.ts';
-import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
-import { sceneStore } from '@/shared/sceneStore.ts';
+import { prefersReducedMotion } from '@/shared/scroll/lib/prefersReducedMotion.ts';
+import { sceneStore } from '@/shared/scene/sceneStore.ts';
 
 function createDirector(engine: PaintEngine | null, engineFailed: boolean): Director | null {
   const dependencies: DirectorDependencies = {

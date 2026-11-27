@@ -1,12 +1,12 @@
 import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
 
-import { readRem } from '@/shared/lib/readRem.ts';
-import { sceneFor } from '@/shared/lib/sceneFor.ts';
+import { readRem } from '@/shared/scene/lib/readRem.ts';
+import { sceneFor } from '@/shared/scene/lib/sceneFor.ts';
 import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { dotJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
-import { lineSegment } from '@/shared/lib/lineSegment.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
+import { lineSegment } from '@/shared/scene/lib/lineSegment.ts';
 import { fadeGray, fadeOpacity } from '@/features/graffiti/features/animation-director/lib/fade.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
 import type {
@@ -17,7 +17,7 @@ import type {
 } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import { isFinalPass } from '@/features/graffiti/features/animation-director/lib/training.ts';
 import { lineKindAt } from '@/features/graffiti/features/animation-director/lib/lineKindAt.ts';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
+import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 import {
   STYLE,
   COLORS,

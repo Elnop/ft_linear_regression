@@ -1,4 +1,4 @@
-import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
+import { PALETTE } from '@/shared/palette/PaletteConfig.ts';
 
 export function FormulaArt() {
   return (

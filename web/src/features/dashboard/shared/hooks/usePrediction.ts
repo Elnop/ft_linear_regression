@@ -7,8 +7,8 @@ import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSe
 import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
 import { useRegression } from '@/shared/regression/hooks/useRegression.ts';
 import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
-import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import { useScene } from '@/shared/useScene.ts';
+import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
+import { useScene } from '@/shared/scene/useScene.ts';
 
 type Prediction = {
   invalid: boolean;

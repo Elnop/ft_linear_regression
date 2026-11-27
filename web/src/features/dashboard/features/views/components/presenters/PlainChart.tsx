@@ -3,10 +3,10 @@ import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.t
 import { predictionLabel } from '@/features/dashboard/features/views/lib/predictionLabel.ts';
 
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { textSize } from '@/shared/lib/typeScale.ts';
-import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
+import { textSize } from '@/shared/type-scale/lib/typeScale.ts';
+import type { Rectangle, Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/plain-chart.css';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
+import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 
 const BOLD_DIGIT_MAX_ADVANCE_EM = 0.6;
 

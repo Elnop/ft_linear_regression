@@ -4,8 +4,8 @@ import { nextTab } from '@/features/docs/lib/nextTab.ts';
 import { tabFromHash } from '@/features/docs/lib/tabFromHash.ts';
 import { TABS } from '@/features/docs/configs/TabsConfig.ts';
 import type { TabId } from '@/features/docs/DocsTypes.ts';
-import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
-import { scrollToElement } from '@/shared/lib/scrollToElement.ts';
+import { DOCUMENTATION_ID } from '@/shared/documentation/DocumentationConfig.ts';
+import { scrollToElement } from '@/shared/scroll/lib/scrollToElement.ts';
 
 export function useDocumentationTabs() {
   const [tab, setTab] = useState<TabId>(() => tabFromHash(location.hash, TABS) ?? 'theory');

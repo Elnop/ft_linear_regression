@@ -1,5 +1,5 @@
 import { hexToRgb } from '@/features/graffiti/shared/lib/hexToRgb.ts';
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
 import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
 import type {
   Anchor,

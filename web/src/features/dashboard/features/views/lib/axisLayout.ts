@@ -1,5 +1,5 @@
 import { chartTicks, formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
+import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 
 const BASELINE_SHIFT = 0.36;
 

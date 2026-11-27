@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { WallMarker } from '@/features/dashboard/features/prediction/components/presenters/WallMarker.tsx';
-import { applyTypeScale } from '@/shared/lib/applyTypeScale.ts';
+import { applyTypeScale } from '@/shared/type-scale/lib/applyTypeScale.ts';
 
 const root = document.documentElement;
 

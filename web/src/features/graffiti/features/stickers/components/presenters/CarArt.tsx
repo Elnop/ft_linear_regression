@@ -1,5 +1,5 @@
 import { STICKER_PAPER } from '@/features/graffiti/features/stickers/configs/PaperConfig.ts';
-import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
+import { PALETTE } from '@/shared/palette/PaletteConfig.ts';
 
 export function CarArt() {
   return (

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 import '@/features/dashboard/features/prediction/styles/wall-marker.css';
 
 type WallMarkerProps = {

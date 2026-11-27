@@ -1,4 +1,4 @@
-import type { Rectangle, Vec2 } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle, Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 
 type Region = 'chart' | 'title';
 

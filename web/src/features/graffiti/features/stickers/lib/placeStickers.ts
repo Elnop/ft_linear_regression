@@ -4,7 +4,7 @@ import {
   STICKER_SCALE,
   TITLE_STICKER,
 } from '@/features/graffiti/features/stickers/configs/StickersLayoutConfig.ts';
-import type { Scene } from '@/shared/types/SceneTypes.ts';
+import type { Scene } from '@/shared/scene/types/SceneTypes.ts';
 
 export function placeStickers({ width, wide, chart: { area }, title }: Scene): PlacedSticker[] {
   const titleRight = title.rectangle.x + title.rectangle.width;

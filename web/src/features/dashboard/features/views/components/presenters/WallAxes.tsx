@@ -2,10 +2,10 @@ import { motion } from 'motion/react';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 import { formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
-import { textSize } from '@/shared/lib/typeScale.ts';
+import { textSize } from '@/shared/type-scale/lib/typeScale.ts';
 import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
+import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 
 type WallAxesProps = {
   chart: ChartMapping;

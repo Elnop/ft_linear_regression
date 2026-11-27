@@ -1,341 +1,6 @@
 [
   {
     "type": "dependency",
-    "from": "src/shared/configs/GlyphsConfig.ts",
-    "to": "src/shared/types/GeometryTypes.ts",
-    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/configs/GlyphsConfig.ts",
-    "to": "src/shared/types/TitleTypes.ts",
-    "unresolvedTo": "@/shared/types/TitleTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/configs/TypeScaleConfig.ts",
-    "to": "src/shared/types/TypeScaleTypes.ts",
-    "unresolvedTo": "@/shared/types/TypeScaleTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/applyPalette.ts",
-    "to": "src/shared/configs/PaletteConfig.ts",
-    "unresolvedTo": "@/shared/configs/PaletteConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/applyTypeScale.ts",
-    "to": "src/shared/configs/TypeScaleConfig.ts",
-    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/chartMapping.ts",
-    "to": "src/shared/types/ChartTypes.ts",
-    "unresolvedTo": "@/shared/types/ChartTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/lineSegment.ts",
-    "to": "src/shared/types/ChartTypes.ts",
-    "unresolvedTo": "@/shared/types/ChartTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/lineSegment.ts",
-    "to": "src/shared/types/GeometryTypes.ts",
-    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/sceneFor.ts",
-    "to": "src/shared/configs/SceneConfig.ts",
-    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/sceneFor.ts",
-    "to": "src/shared/types/SceneTypes.ts",
-    "unresolvedTo": "@/shared/types/SceneTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/scrollToDocumentation.ts",
-    "to": "src/shared/configs/DocumentationConfig.ts",
-    "unresolvedTo": "@/shared/configs/DocumentationConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/smoothStroke.ts",
-    "to": "src/shared/types/GeometryTypes.ts",
-    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLayout.ts",
-    "to": "src/shared/configs/SceneConfig.ts",
-    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLayout.ts",
-    "to": "src/shared/configs/TitleConfig.ts",
-    "unresolvedTo": "@/shared/configs/TitleConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLayout.ts",
-    "to": "src/shared/types/GeometryTypes.ts",
-    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLayout.ts",
-    "to": "src/shared/types/TitleTypes.ts",
-    "unresolvedTo": "@/shared/types/TitleTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLetters.ts",
-    "to": "src/shared/configs/GlyphsConfig.ts",
-    "unresolvedTo": "@/shared/configs/GlyphsConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLetters.ts",
-    "to": "src/shared/types/GeometryTypes.ts",
-    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/titleLetters.ts",
-    "to": "src/shared/types/TitleTypes.ts",
-    "unresolvedTo": "@/shared/types/TitleTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/typeScale.ts",
-    "to": "src/shared/configs/TypeScaleConfig.ts",
-    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared/lib/typeScale.ts",
-    "to": "src/shared/types/TypeScaleTypes.ts",
-    "unresolvedTo": "@/shared/types/TypeScaleTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/shared/lib/sceneFor.test.ts",
-    "to": "src/shared/configs/SceneConfig.ts",
-    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/shared/lib/typeScale.test.ts",
-    "to": "src/shared/configs/TypeScaleConfig.ts",
-    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-shared"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/features/dashboard/shared/hooks/useKm.ts",
     "to": "src/features/dashboard/shared/stores/predictionStore.ts",
     "unresolvedTo": "@/features/dashboard/shared/stores/predictionStore.ts",
@@ -950,37 +615,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
-    "to": "src/shared/sceneStore.ts",
-    "unresolvedTo": "@/shared/sceneStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/features/graffiti/features/canvas/PaintWallContainer.tsx",
     "to": "src/features/graffiti/shared/engineStore.ts",
     "unresolvedTo": "@/features/graffiti/shared/engineStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/graffiti/features/spray-can/useSprayCan.ts",
-    "to": "src/shared/sceneStore.ts",
-    "unresolvedTo": "@/shared/sceneStore.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
@@ -1006,37 +643,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/shared/useScene.ts",
-    "to": "src/shared/sceneStore.ts",
-    "unresolvedTo": "@/shared/sceneStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "test/unit/shared/sceneStore.test.tsx",
-    "to": "src/shared/sceneStore.ts",
-    "unresolvedTo": "@/shared/sceneStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "test/unit/features/dashboard/features/prediction/components/presenters/WallMarker.test.tsx",
-    "to": "src/shared/lib/applyTypeScale.ts",
-    "unresolvedTo": "@/shared/lib/applyTypeScale.ts",
+    "to": "src/shared/type-scale/lib/applyTypeScale.ts",
+    "unresolvedTo": "@/shared/type-scale/lib/applyTypeScale.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
@@ -1049,8 +658,8 @@
   {
     "type": "dependency",
     "from": "test/unit/features/dashboard/features/views/lib/axisLayout.test.ts",
-    "to": "src/shared/lib/chartMapping.ts",
-    "unresolvedTo": "@/shared/lib/chartMapping.ts",
+    "to": "src/shared/scene/lib/chartMapping.ts",
+    "unresolvedTo": "@/shared/scene/lib/chartMapping.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
@@ -1133,8 +742,8 @@
   {
     "type": "dependency",
     "from": "test/unit/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
-    "to": "src/shared/lib/sceneFor.ts",
-    "unresolvedTo": "@/shared/lib/sceneFor.ts",
+    "to": "src/shared/scene/lib/sceneFor.ts",
+    "unresolvedTo": "@/shared/scene/lib/sceneFor.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
@@ -1188,9 +797,9 @@
   },
   {
     "type": "dependency",
-    "from": "test/unit/shared/lib/lineSegment.test.ts",
-    "to": "src/shared/lib/chartMapping.ts",
-    "unresolvedTo": "@/shared/lib/chartMapping.ts",
+    "from": "test/unit/shared/scene/lib/lineSegment.test.ts",
+    "to": "src/shared/scene/lib/chartMapping.ts",
+    "unresolvedTo": "@/shared/scene/lib/chartMapping.ts",
     "dependencyTypes": [
       "undetermined",
       "import"
