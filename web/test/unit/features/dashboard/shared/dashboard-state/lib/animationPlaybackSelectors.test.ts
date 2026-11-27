@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { selectCanSkip } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
+import { selectCanSkip } from '@/features/dashboard/shared/dashboard-state/lib/animationPlaybackSelectors.ts';
 
 function state(phase: 'idle' | 'title' | 'descent' | 'interactive', trainingActive = false) {
   return { phase, visiblePoints: 0, trainingActive, painted: true };

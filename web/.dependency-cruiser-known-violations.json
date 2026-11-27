@@ -1,178 +1,6 @@
 [
   {
     "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useKm.ts",
-    "to": "src/features/dashboard/shared/stores/predictionStore.ts",
-    "unresolvedTo": "@/features/dashboard/shared/stores/predictionStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
-    "to": "src/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
-    "to": "src/features/dashboard/shared/lib/displayableEstimate.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/displayableEstimate.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
-    "to": "src/features/dashboard/shared/lib/normalizeMileage.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/normalizeMileage.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
-    "to": "src/features/dashboard/shared/lib/selectUsableThetas.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/selectUsableThetas.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useView.ts",
-    "to": "src/features/dashboard/shared/DashboardTypes.ts",
-    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useView.ts",
-    "to": "src/features/dashboard/shared/lib/shownView.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/shownView.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useView.ts",
-    "to": "src/features/dashboard/shared/stores/viewStore.ts",
-    "unresolvedTo": "@/features/dashboard/shared/stores/viewStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useViewShown.ts",
-    "to": "src/features/dashboard/shared/DashboardTypes.ts",
-    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/hooks/useViewShown.ts",
-    "to": "src/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/lib/shownView.ts",
-    "to": "src/features/dashboard/shared/DashboardTypes.ts",
-    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/dashboard/shared/stores/viewStore.ts",
-    "to": "src/features/dashboard/shared/DashboardTypes.ts",
-    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import",
-      "type-only"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-cross-sub-shared"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/features/graffiti/shared/lib/anchoredRectangle.ts",
     "to": "src/features/graffiti/shared/types/LayerTypes.ts",
     "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
@@ -586,6 +414,20 @@
   },
   {
     "type": "dependency",
+    "from": "test/unit/features/dashboard/shared/dashboard-state/lib/normalizeMileage.test.ts",
+    "to": "src/features/dashboard/shared/formatting/formatNumber.ts",
+    "unresolvedTo": "@/features/dashboard/shared/formatting/formatNumber.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
     "from": "test/unit/features/graffiti/shared/lib/PaintLayer.test.ts",
     "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
     "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
@@ -671,9 +513,9 @@
   },
   {
     "type": "dependency",
-    "from": "test/unit/features/dashboard/shared/lib/normalizeMileage.test.ts",
-    "to": "src/features/dashboard/shared/lib/formatNumber.ts",
-    "unresolvedTo": "@/features/dashboard/shared/lib/formatNumber.ts",
+    "from": "test/unit/features/dashboard/shared/dashboard-state/lib/normalizeMileage.test.ts",
+    "to": "src/features/dashboard/shared/formatting/formatNumber.ts",
+    "unresolvedTo": "@/features/dashboard/shared/formatting/formatNumber.ts",
     "dependencyTypes": [
       "undetermined",
       "import"

@@ -9,7 +9,7 @@ import type {
 } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import { animationPlaybackStore } from '@/shared/animation-playback/animationPlaybackStore.ts';
 import { DATA } from '@/shared/regression/configs/DatasetConfig.ts';
-import { regressionActions } from '@/shared/regression/stores/regressionStore.ts';
+import { regressionActions } from '@/shared/regression/regressionStore.ts';
 import { prefersReducedMotion } from '@/shared/scroll/lib/prefersReducedMotion.ts';
 import { sceneStore } from '@/shared/scene/sceneStore.ts';
 

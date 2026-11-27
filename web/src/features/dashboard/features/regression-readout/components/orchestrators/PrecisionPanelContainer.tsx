@@ -1,5 +1,5 @@
 import { PrecisionPanel } from '@/features/dashboard/features/regression-readout/components/presenters/PrecisionPanel.tsx';
-import { useRegression } from '@/shared/regression/hooks/useRegression.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
 
 export function PrecisionPanelContainer() {
   const metrics = useRegression((state) => state.metrics);

@@ -1,12 +1,12 @@
 import { OverlayPanel } from '@/features/dashboard/features/views/components/presenters/OverlayPanel.tsx';
 import { PlainChart } from '@/features/dashboard/features/views/components/presenters/PlainChart.tsx';
 import { overlayRectangle } from '@/features/dashboard/features/views/lib/overlayRectangle.ts';
-import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts';
-import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
+import { useViewShown } from '@/features/dashboard/shared/dashboard-state/hooks/useViewShown.ts';
+import { usePrediction } from '@/features/dashboard/shared/dashboard-state/hooks/usePrediction.ts';
 import { lineSegment } from '@/shared/scene/lib/lineSegment.ts';
-import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useRegression } from '@/shared/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
+import { selectUsableThetas } from '@/features/dashboard/shared/dashboard-state/lib/selectUsableThetas.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/features/dashboard/shared/dashboard-state/hooks/useAnimationPlayback.ts';
 import { useScene } from '@/shared/scene/useScene.ts';
 
 export function PlainChartContainer() {

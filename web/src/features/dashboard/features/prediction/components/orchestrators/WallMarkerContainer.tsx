@@ -1,6 +1,6 @@
 import { WallMarker } from '@/features/dashboard/features/prediction/components/presenters/WallMarker.tsx';
-import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts';
-import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
+import { useViewShown } from '@/features/dashboard/shared/dashboard-state/hooks/useViewShown.ts';
+import { usePrediction } from '@/features/dashboard/shared/dashboard-state/hooks/usePrediction.ts';
 import { useScene } from '@/shared/scene/useScene.ts';
 
 export function WallMarkerContainer() {

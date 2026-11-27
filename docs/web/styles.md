@@ -41,7 +41,7 @@ Les nuances de `--ink` ne sont pas recopiées en `rgba` : elles passent par `col
 
 - `web/src/app/globals.css` : tokens, reset, scrollbar, classes utilitaires (`.sr-only`, `.glass`, `.label`).
 - Une feuille par composant ou par sous-feature, importée par le composant qui l'utilise.
-- `web/src/features/dashboard/shared/shared.css` : ce que plusieurs sous-features du dashboard partagent, comme `.dashboard-panel` et `.head-button` (les boutons GRAPHE, DATA et DOC).
+- `web/src/features/dashboard/shared/panels/panels.css` : ce que plusieurs sous-features du dashboard partagent, comme `.dashboard-panel` et `.head-button` (les boutons GRAPHE, DATA et DOC).
 
 Les classes propres à une feature portent son préfixe (`.predict-error`, `.training-hint`, `.readout-chip`, `.readout-metric`, `.price-sticker`, `.dashboard-panel`), pour que deux features ne se marchent pas dessus avec un nom générique. Seules les utilitaires de `globals.css` gardent un nom court (`.label`, `.glass`, `.tape`, `.sr-only`).
 
@@ -93,6 +93,6 @@ Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 - `ASIDE_WIDTH_REM` (`web/src/shared/scene/configs/SceneConfig.ts`, 21,25) arrive en variable `--aside-width` (en `rem`), posée par `DashboardLayout` avec `--dashboard-top` et `--dashboard-padding`, et `.dashboard-aside` la lit ;
 - `HEAD_WIDTH_REM` (`web/src/shared/scene/configs/SceneConfig.ts`, 39,5) arrive en variable `--head-width`, qui borne la largeur de l'en-tête (chips et boutons) en mode large. `titleLayout` réserve cette largeur plus 1,5 rem à droite du titre peint, donc l'en-tête ne couvre jamais le titre. Mesuré dans Chromium entre 1024 et 1920 px, l'en-tête fait au plus 39 rem (police à 16 px, 1920 px) ; avec une police de 20 px le titre est plus petit, 1280 px de large n'en laissant que 384 px ;
 - `STICKER_WIDTH_REM` est la largeur en style du sticker du prix, dans `WallMarker.tsx`. Le sticker n'est plus réduit à 0,72 en mode compact : cette échelle faisait passer son texte sous 12 px ;
-- `COMPACT_BELOW_REM` (`web/src/features/dashboard/shared/DashboardLayoutConfig.ts`) est la largeur du graphe, en `rem`, sous laquelle il passe en version compacte.
+- `COMPACT_BELOW_REM` (`web/src/features/dashboard/features/views/DashboardLayoutConfig.ts`) est la largeur du graphe, en `rem`, sous laquelle il passe en version compacte.
 
 Le passage en mode large, `WIDE_EM = 64` (`web/src/shared/scene/configs/SceneConfig.ts`), ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 63.99em)`, et `web/test/unit/shared/scene/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE_EM`. En `em`, le seuil suit la taille de police du navigateur : avec une police de 20 px, le mode large commence à 1280 px.

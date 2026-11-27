@@ -2,7 +2,7 @@ import type { Sample } from '@core/types/CoreTypes.ts';
 import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.ts';
 import { predictionLabel } from '@/features/dashboard/features/views/lib/predictionLabel.ts';
 
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
 import { textSize } from '@/shared/type-scale/lib/typeScale.ts';
 import type { Rectangle, Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/plain-chart.css';

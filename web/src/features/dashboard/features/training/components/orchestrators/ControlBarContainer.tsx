@@ -1,8 +1,8 @@
 import { ControlBar } from '@/features/dashboard/features/training/components/presenters/ControlBar.tsx';
-import { useWarn } from '@/features/dashboard/features/training/useWarn.ts';
-import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
-import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
-import { useTrainingOptions } from '@/shared/regression/hooks/useTrainingOptions.ts';
+import { useWarn } from '@/features/dashboard/features/training/hooks/useWarn.ts';
+import { selectIntro } from '@/features/dashboard/shared/dashboard-state/lib/animationPlaybackSelectors.ts';
+import { useAnimationPlayback } from '@/features/dashboard/shared/dashboard-state/hooks/useAnimationPlayback.ts';
+import { useTrainingOptions } from '@/features/dashboard/features/training/hooks/useTrainingOptions.ts';
 
 export function ControlBarContainer() {
   const trainingActive = useAnimationPlayback((state) => state.trainingActive);

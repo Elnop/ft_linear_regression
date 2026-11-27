@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
 
 test('formats with narrow spaces, a real minus and compact large values', () => {
   expect(formatNumber(1234567)).toBe('1 234 567');

@@ -1,4 +1,4 @@
-import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
+import type { View } from '@/features/dashboard/shared/dashboard-state/DashboardTypes.ts';
 
 export function shownView(chosen: View, painted: boolean): View {
   return !painted && chosen === 'wall' ? 'chart' : chosen;

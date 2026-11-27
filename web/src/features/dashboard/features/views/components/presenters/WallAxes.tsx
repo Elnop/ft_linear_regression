@@ -3,7 +3,7 @@ import { axisLayout } from '@/features/dashboard/features/views/lib/axisLayout.t
 import { formatTick } from '@/features/dashboard/features/views/lib/ticks.ts';
 
 import { textSize } from '@/shared/type-scale/lib/typeScale.ts';
-import { COMPACT_BELOW_REM } from '@/features/dashboard/shared/DashboardLayoutConfig.ts';
+import { COMPACT_BELOW_REM } from '@/features/dashboard/features/views/DashboardLayoutConfig.ts';
 import '@/features/dashboard/features/views/styles/wall-axes.css';
 import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 

@@ -12,8 +12,8 @@ import { CostPanelContainer } from '@/features/dashboard/features/regression-rea
 import { HeaderChipsContainer } from '@/features/dashboard/features/regression-readout/components/orchestrators/HeaderChipsContainer.tsx';
 import { PrecisionPanelContainer } from '@/features/dashboard/features/regression-readout/components/orchestrators/PrecisionPanelContainer.tsx';
 import { PredictPanelContainer } from '@/features/dashboard/features/prediction/components/orchestrators/PredictPanelContainer.tsx';
-import { selectInterfaceVisible } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
-import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
+import { selectInterfaceVisible } from '@/features/dashboard/shared/dashboard-state/lib/animationPlaybackSelectors.ts';
+import { useAnimationPlayback } from '@/features/dashboard/shared/dashboard-state/hooks/useAnimationPlayback.ts';
 import { useScene } from '@/shared/scene/useScene.ts';
 import { ASIDE_WIDTH_REM, HEAD_WIDTH_REM } from '@/shared/scene/configs/SceneConfig.ts';
 import '@/features/dashboard/dashboard.css';

@@ -1,6 +1,6 @@
 import { ViewToggles } from '@/features/dashboard/features/views/components/presenters/ViewToggles.tsx';
-import { viewActions } from '@/features/dashboard/shared/stores/viewStore.ts';
-import { useView } from '@/features/dashboard/shared/hooks/useView.ts';
+import { viewActions } from '@/features/dashboard/shared/dashboard-state/stores/viewStore.ts';
+import { useView } from '@/features/dashboard/shared/dashboard-state/hooks/useView.ts';
 
 export function ViewTogglesContainer() {
   const view = useView();

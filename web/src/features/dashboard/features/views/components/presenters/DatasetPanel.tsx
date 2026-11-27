@@ -1,4 +1,4 @@
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
 import '@/features/dashboard/features/views/styles/dataset-panel.css';
 import type { DatasetRow } from '@/features/dashboard/features/views/DatasetPanelTypes.ts';
 

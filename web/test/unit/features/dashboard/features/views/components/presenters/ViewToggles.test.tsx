@@ -1,7 +1,7 @@
 import { expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { ViewToggles } from '@/features/dashboard/features/views/components/presenters/ViewToggles.tsx';
-import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
+import type { View } from '@/features/dashboard/shared/dashboard-state/DashboardTypes.ts';
 
 test('aria-pressed follows the view prop', async () => {
   const screen = await render(

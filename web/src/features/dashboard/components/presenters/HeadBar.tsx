@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { scrollToDocumentation } from '@/features/dashboard/scrollToDocumentation.ts';
-import '@/features/dashboard/shared/shared.css';
+import '@/features/dashboard/shared/panels/panels.css';
 
 type HeadBarProps = { chips: ReactNode; toggles: ReactNode };
 

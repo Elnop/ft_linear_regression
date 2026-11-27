@@ -1,12 +1,12 @@
 import { parseMileage } from '@core/parseMileage.ts';
 import { useMemo } from 'react';
-import { displayableEstimate } from '@/features/dashboard/shared/lib/displayableEstimate.ts';
-import { normalizeMileage } from '@/features/dashboard/shared/lib/normalizeMileage.ts';
-import { useKm } from '@/features/dashboard/shared/hooks/useKm.ts';
-import { selectIntro } from '@/features/dashboard/shared/lib/animationPlaybackSelectors.ts';
-import { selectUsableThetas } from '@/features/dashboard/shared/lib/selectUsableThetas.ts';
-import { useRegression } from '@/shared/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
+import { displayableEstimate } from '@/features/dashboard/shared/dashboard-state/lib/displayableEstimate.ts';
+import { normalizeMileage } from '@/features/dashboard/shared/dashboard-state/lib/normalizeMileage.ts';
+import { useKm } from '@/features/dashboard/shared/dashboard-state/hooks/useKm.ts';
+import { selectIntro } from '@/features/dashboard/shared/dashboard-state/lib/animationPlaybackSelectors.ts';
+import { selectUsableThetas } from '@/features/dashboard/shared/dashboard-state/lib/selectUsableThetas.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/features/dashboard/shared/dashboard-state/hooks/useAnimationPlayback.ts';
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 import { useScene } from '@/shared/scene/useScene.ts';
 

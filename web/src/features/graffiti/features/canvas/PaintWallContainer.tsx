@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import wallUrl from '@/assets/wall-night.jpg';
+import wallUrl from '@/features/graffiti/features/canvas/wall-night.jpg';
 import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import { engineActions } from '@/features/graffiti/shared/engineStore.ts';
 import '@/features/graffiti/features/canvas/canvas.css';

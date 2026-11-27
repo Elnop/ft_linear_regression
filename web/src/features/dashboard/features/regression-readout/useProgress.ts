@@ -1,7 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import { useRegression } from '@/shared/regression/hooks/useRegression.ts';
-import { useAnimationPlayback } from '@/shared/animation-playback/useAnimationPlayback.ts';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
+import { useAnimationPlayback } from '@/features/dashboard/shared/dashboard-state/hooks/useAnimationPlayback.ts';
 
 export function useProgress(): { label: string; value: string } {
   const iteration = useRegression((state) => state.iteration);

@@ -1,6 +1,6 @@
-import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
+import type { View } from '@/features/dashboard/shared/dashboard-state/DashboardTypes.ts';
 import '@/features/dashboard/features/views/styles/view-toggles.css';
-import '@/features/dashboard/shared/shared.css';
+import '@/features/dashboard/shared/panels/panels.css';
 
 type ViewTogglesProps = {
   view: View;

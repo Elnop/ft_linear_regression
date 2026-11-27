@@ -107,7 +107,7 @@
       "count": 1
     }
   },
-  "src/features/dashboard/shared/lib/formatNumber.ts": {
+  "src/features/dashboard/shared/formatting/formatNumber.ts": {
     "function-size/max-variables": {
       "count": 1
     }

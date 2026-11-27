@@ -25,7 +25,7 @@ web/src/
 │   │       └── stickers/               les autocollants
 │   ├── dashboard/                      l'interface posée sur le mur
 │   │   ├── components/                 DashboardLayout, HeadBar, Reveal
-│   │   ├── shared/                     kilométrage et prédiction, vue affichée, style des panneaux, formatage
+│   │   ├── shared/                     dashboard-state (kilométrage, vue affichée, lecture de l'animation et de la régression), formatting, panels (style des panneaux)
 │   │   └── features/
 │   │       ├── training/               Taguer, effacer, learning rate, Passer
 │   │       ├── views/                  boutons GRAPHE et DATA, et les vues qu'ils affichent (axes du mur, graphe, dataset)
@@ -116,12 +116,12 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 | `web/src/features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
 | `web/src/shared/scene/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
 | `web/src/shared/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
-| `web/src/shared/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
-| `web/src/shared/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
-| `web/src/features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
-| `web/src/features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
+| `web/src/shared/regression/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
+| `web/src/features/dashboard/features/training/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
+| `web/src/features/dashboard/shared/dashboard-state/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
+| `web/src/features/dashboard/shared/dashboard-state/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
 
-Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `web/src/features/dashboard/shared/lib/`.
+Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `web/src/features/dashboard/shared/dashboard-state/lib/`.
 
 Le dashboard lit `selectCanSkip` pour afficher *Passer* pendant l'intro et pendant un entraînement relancé. `useView` ne renvoie pas toujours la vue choisie : quand le director annonce qu'il ne peint pas (`painted: false`, posé par `PaintlessDirector`), la vue « mur » est remplacée par le graphe (`shownView`).
 

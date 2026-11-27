@@ -1,6 +1,6 @@
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
 import type { CostPoint } from '@core/types/CoreTypes.ts';
-import '@/features/dashboard/shared/shared.css';
+import '@/features/dashboard/shared/panels/panels.css';
 import '@/features/dashboard/features/regression-readout/regression-readout.css';
 
 type CostPanelProps = {
