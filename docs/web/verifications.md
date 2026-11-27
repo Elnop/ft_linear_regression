@@ -18,7 +18,7 @@ Les violations déjà présentes quand une règle est arrivée sont écrites dan
 
 `tsconfig.json` étend `@brutalway/tsconfig/node.json` et `web/tsconfig.app.json` étend `@brutalway/tsconfig/react-vite.json`. Les deux ne gardent que leurs `paths`, `include` et `exclude`. `tsc` tourne donc en `strict` avec en plus `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature` et `exactOptionalPropertyTypes` (d'où `process.env['CI']` dans `web/playwright.config.ts`), à la racine comme dans le web.
 
-Deux hooks font tourner les checks avant la CI. `npm install` pointe git vers `.githooks/`, dont le `pre-commit` lance `npm run check`. Dans Claude Code, `.claude/settings.json` lance `brutal-agent-hook --tree web/src` (paquet `@brutalway/agent-hook`) après chaque `Edit` ou `Write`. Oxlint passe sur le fichier s'il est en `.ts` ou `.tsx`, depuis le dossier du `oxlint.config.ts` le plus proche (la racine ou `web/`). Après un `Write` (un fichier créé ou réécrit) ou une modification d'un `.md`, alint passe sur tout le repo, et `check-tree` sur `web/src/` si le fichier y est : un fichier posé dans le mauvais dossier est signalé tout de suite, sans attendre le pre-commit. Les erreurs reviennent à l'agent (code de sortie 2).
+`npm install` pointe git vers `.githooks/`, dont le `pre-commit` lance `npm run check` : aucun commit ne passe avec un check rouge.
 
 ## Lint
 
@@ -52,7 +52,7 @@ Deux conventions sont des plugins Oxlint, parce qu'elles dépendent du nom du fi
 - `file-named-after-export/file-named-after-export` : un fichier qui n'exporte qu'une chose porte son nom, sauf les `XTypes`, `XConfig` et `XContent`, et sauf les `*Store.ts`, que la règle suivante couvre ;
 - `store-layout/store-layout` : `xStore.ts` n'exporte que `xStore` et `xActions`.
 
-Chaque message d'erreur dit quoi faire, en anglais, pour qu'un agent puisse corriger sans connaître la convention.
+Chaque message d'erreur dit quoi faire, en anglais, pour qu'on puisse corriger sans connaître la convention.
 
 Les paquets imposent aussi un style commun, essayé ici avant d'être publié :
 
