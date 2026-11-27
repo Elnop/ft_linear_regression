@@ -64,8 +64,7 @@
       "oxlint-suppressions max-params": 9,
       "oxlint-suppressions function-size/max-functions": 3,
       "oxlint-suppressions max-nested-callbacks": 2,
-      "oxlint-suppressions sonarjs/cognitive-complexity": 2,
-      "oxlint-suppressions typescript/no-redundant-type-constituents": 1
+      "oxlint-suppressions sonarjs/cognitive-complexity": 2
     }
   },
   "stylelint": {

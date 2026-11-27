@@ -423,10 +423,5 @@
     "function-size/max-functions": {
       "count": 1
     }
-  },
-  "test/unit/features/graffiti/shared/paint-engine/lib/Scheduler.test.ts": {
-    "typescript/no-redundant-type-constituents": {
-      "count": 1
-    }
   }
 }

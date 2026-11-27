@@ -12,6 +12,7 @@
   },
   "include": [
     "src",
+    "test",
     "../core",
     "vite.config.ts",
     "vitest.config.ts",

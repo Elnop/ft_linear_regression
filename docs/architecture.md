@@ -60,15 +60,15 @@ Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).
 
-`npm run typecheck` vérifie les types de `core/`, `cli/` et `web/`.
+`npm run typecheck` vérifie les types de `core/` et `cli/` ; ceux du web (code de prod et tests) le sont dans `npm run check`, par `npm run typecheck -w web`.
 
 ## Tests et vérifications
 
-`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
+`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les tests unitaires du web tournent avec Vitest, chacun dans `web/test/unit/`, au chemin du fichier qu'il teste sous `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
 npm test            # tests du web
-npm run typecheck   # types de core/, cli/ et web/
+npm run typecheck   # types de core/ et cli/ (le web : npm run typecheck -w web)
 npm run check       # Oxlint et tsc sur core/ et cli/, chemins, liens et ancres de la doc, exports inutiles, puis le check du web
 ```
 

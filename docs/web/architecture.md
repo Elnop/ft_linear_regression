@@ -47,7 +47,6 @@ Le code est rangé en couches, et une couche n'importe que les couches en dessou
 - Une feature range ses sous-features dans son propre dossier `features/`, à côté de son `shared/` et de ses dossiers techniques, comme `web/src/` le fait pour les features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
 - Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `web/src/shared/` : graffiti écrit `web/src/shared/regression` et `web/src/shared/animation-playback` pendant l'animation, et le dashboard les lit.
 - Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par le director de graffiti.
-- `src/shared/` ne contient aucun état métier, seulement du code transverse.
 
 La racine d'une feature assemble ses sous-features, et `App.tsx` n'utilise que ces assemblages :
 
