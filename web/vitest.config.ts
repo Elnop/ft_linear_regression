@@ -9,13 +9,18 @@ export default mergeConfig(
       projects: [
         {
           extends: true,
-          test: { name: 'unit', environment: 'node', include: ['src/**/*.test.ts'], css: true },
+          test: {
+            name: 'unit',
+            environment: 'node',
+            include: ['test/unit/**/*.test.ts'],
+            css: true,
+          },
         },
         {
           extends: true,
           test: {
             name: 'component',
-            include: ['src/**/*.test.tsx'],
+            include: ['test/unit/**/*.test.tsx'],
             browser: {
               enabled: true,
               provider: playwright(),

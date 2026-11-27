@@ -106,11 +106,11 @@ knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vit
 
 | Type | Ce qu'il teste | Outil | Emplacement et nommage | Commande (dans `web/`) |
 |---|---|---|---|---|
-| Unitaire | une fonction ou une classe pure (`lib/`, configs) | Vitest, dans Node | `Timeline.test.ts` à côté de `Timeline.ts` | `npm run test:unit` |
-| Composant | un presenter seul, par ses props et ses interactions | Vitest browser mode et `vitest-browser-react`, dans Chromium | `SkipButton.test.tsx` à côté de `SkipButton.tsx` | `npm run test:component` |
+| Unitaire | une fonction ou une classe pure (`lib/`, configs) | Vitest, dans Node | `test/unit/…/Timeline.test.ts`, au chemin de `Timeline.ts` | `npm run test:unit` |
+| Composant | un presenter seul, par ses props et ses interactions | Vitest browser mode et `vitest-browser-react`, dans Chromium | `test/unit/…/SkipButton.test.tsx`, au chemin de `SkipButton.tsx` | `npm run test:component` |
 | E2e | un parcours dans le site buildé, servi par `vite preview` | `@playwright/test`, dans Chromium | `web/e2e/<sujet>.spec.ts` | `npm run e2e` |
 
-- Un test reste à côté de sa source, sans dossier dédié. L'extension choisit le type : `.test.ts` tourne dans Node, `.test.tsx` dans le navigateur.
+- Un test unitaire est dans `web/test/unit/`, au chemin de sa source sous `web/src/` (`src/shared/lib/x.ts` a son test dans `test/unit/shared/lib/x.test.ts`). L'extension choisit le type : `.test.ts` tourne dans Node, `.test.tsx` dans le navigateur.
 - On cherche un élément par son rôle et son nom accessible (`getByRole('button', { name: /PASSER/ })`), jamais par une classe CSS.
 - On attend avec une assertion qui réessaie (`expect.element(...)` en composant, les locators en e2e), jamais avec un `setTimeout`.
 - On ne teste en composant que les presenters, qui reçoivent tout par props. Les containers et les layouts lisent des stores : l'e2e les couvre.
@@ -121,14 +121,14 @@ knip (`knip.json`) lit le workspace, les scripts npm et les configs de Vite, Vit
 
 Les tests du web tournent avec Vitest (`web/vitest.config.ts`), qui reprend `web/vite.config.ts` et donc ses alias `@/`, `@core/` et `@dataset`. Un test lit `data.csv` ou une source de `core/` par un import `?raw`, comme le code de prod.
 
-Chaque test unitaire du web est à côté du fichier qu'il teste : `Timeline.ts` et `Timeline.test.ts` dans le même dossier. Dans le web, `npm run test:unit` ne lance que ces tests. `npm run test:watch` relance les tests unitaires et de composant à chaque modification (il ouvre donc aussi Chromium). `npm run coverage` mesure la couverture, sans seuil.
+Chaque test unitaire du web est dans `web/test/unit/`, au chemin du fichier qu'il teste : le test de `src/…/Timeline.ts` est `test/unit/…/Timeline.test.ts`. Dans le web, `npm run test:unit` ne lance que ces tests. `npm run test:watch` relance les tests unitaires et de composant à chaque modification (il ouvre donc aussi Chromium). `npm run coverage` mesure la couverture, sans seuil.
 
 Un test de composant (`*.test.tsx`) affiche un presenter seul dans un vrai Chromium, avec Vitest browser mode et `vitest-browser-react`. Il tourne avec `npm run test:component` dans le web. En local, il faut installer Chromium une fois : `npx playwright install --only-shell chromium` dans `web/`.
 
 | Dossier | Ce qui est testé |
 |---|---|
-| `web/src/**/*.test.tsx` | composants seuls dans Chromium : `SkipButton` (clic, disparition après l'animation de sortie), `ViewToggles` (`aria-pressed`, vue envoyée au clic) |
-| `web/src/**/*.test.ts` | plan d'entraînement animé, `Timeline`, `Scheduler`, `Slicer`, ancrage des couches (`anchoredRectangle`), `PaintlessDirector`, mouvement de la bombe, sélecteurs, formatage des nombres et saisie à la française, géométrie du graphe et `axisLayout`, extraction du code affiché dans la doc, chiffres calculés de la doc, touches des onglets |
+| `web/test/unit/**/*.test.tsx` | composants seuls dans Chromium : `SkipButton` (clic, disparition après l'animation de sortie), `ViewToggles` (`aria-pressed`, vue envoyée au clic) |
+| `web/test/unit/**/*.test.ts` | plan d'entraînement animé, `Timeline`, `Scheduler`, `Slicer`, ancrage des couches (`anchoredRectangle`), `PaintlessDirector`, mouvement de la bombe, sélecteurs, formatage des nombres et saisie à la française, géométrie du graphe et `axisLayout`, extraction du code affiché dans la doc, chiffres calculés de la doc, touches des onglets |
 
 ## Tests dans le navigateur
 

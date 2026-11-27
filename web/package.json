@@ -7,8 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.test.json",
-    "lint": "oxlint --type-aware src e2e oxlint.config.ts",
-    "deps": "depcruise src --output-type err-long --ignore-known",
+    "lint": "oxlint --type-aware src test e2e oxlint.config.ts",
+    "deps": "depcruise '{src,test}/**/*.{ts,tsx}' --output-type err-long --ignore-known",
     "tree": "check-tree src",
     "check": "npm run typecheck && npm run lint && npm run deps && npm run tree && npm run exceptions",
     "test": "vitest run",
@@ -52,7 +52,7 @@
       "check-tree kind-folder": 2,
       "check-tree not-a-kind-folder": 1,
       "check-tree not-a-layer": 2,
-      "check-tree shared-feature-groups": 33,
+      "check-tree shared-feature-groups": 34,
       "check-tree shared-root-files": 8,
       "check-tree single-consumer": 18,
       "check-tree test-in-source": 32,
@@ -68,7 +68,9 @@
       "oxlint-suppressions max-nested-callbacks": 2,
       "oxlint-suppressions max-params": 9,
       "oxlint-suppressions react/no-array-index-key": 5,
-      "oxlint-suppressions sonarjs/cognitive-complexity": 2
+      "oxlint-suppressions sonarjs/cognitive-complexity": 2,
+      "dependency-cruiser unit-test-own-source": 12,
+      "oxlint-suppressions typescript/no-redundant-type-constituents": 1
     }
   }
 }

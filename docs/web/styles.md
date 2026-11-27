@@ -74,9 +74,9 @@ Restent en `px`, parce qu'ils doivent garder la même épaisseur quel que soit l
 - les ombres et les flous (`box-shadow`, `blur`, `backdrop-filter`) ;
 - le scotch (`.tape`) et la technique `.sr-only` (1 px).
 
-On ne pose jamais `font-size` sur `<html>`. Les media queries résolvent leurs `em` avec la taille de police initiale du navigateur, et `readRem()` lit la taille de la racine : les deux ne sont égaux que si rien ne touche à `html`. `web/src/shared/configs/SceneConfig.test.ts` échoue si une feuille de style pose `font-size` ou `font` sur `html` ou `:root`.
+On ne pose jamais `font-size` sur `<html>`. Les media queries résolvent leurs `em` avec la taille de police initiale du navigateur, et `readRem()` lit la taille de la racine : les deux ne sont égaux que si rien ne touche à `html`. `web/test/unit/shared/configs/SceneConfig.test.ts` échoue si une feuille de style pose `font-size` ou `font` sur `html` ou `:root`.
 
-Deux tests dans `web/src/shared/configs/TypeScaleConfig.test.ts` gardent la règle :
+Deux tests dans `web/test/unit/shared/configs/TypeScaleConfig.test.ts` gardent la règle :
 
 - aucune feuille de style ne donne une taille de texte en `px` ou en `vw` nu ;
 - aucun composant de `web/src/features/dashboard` ou `web/src/features/docs` n'écrit une taille de police en dur (`fontSize={12}`, `fontSize="12"`).
@@ -90,4 +90,4 @@ Les largeurs que le TS connaît ne sont pas recopiées dans le CSS :
 - `STICKER_WIDTH_REM` est la largeur en style du sticker du prix, dans `WallMarker.tsx`. Le sticker n'est plus réduit à 0,72 en mode compact : cette échelle faisait passer son texte sous 12 px ;
 - `COMPACT_BELOW_REM` (`web/src/features/dashboard/shared/DashboardLayoutConfig.ts`) est la largeur du graphe, en `rem`, sous laquelle il passe en version compacte.
 
-Le passage en mode large, `WIDE_EM = 64` (`web/src/shared/configs/SceneConfig.ts`), ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 63.99em)`, et `web/src/shared/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE_EM`. En `em`, le seuil suit la taille de police du navigateur : avec une police de 20 px, le mode large commence à 1280 px.
+Le passage en mode large, `WIDE_EM = 64` (`web/src/shared/configs/SceneConfig.ts`), ne peut pas suivre ce chemin, parce qu'une media query ne lit pas de variable CSS. Les feuilles écrivent donc `@media (max-width: 63.99em)`, et `web/test/unit/shared/configs/SceneConfig.test.ts` vérifie que chaque media query de largeur bascule exactement à `WIDE_EM`. En `em`, le seuil suit la taille de police du navigateur : avec une police de 20 px, le mode large commence à 1280 px.

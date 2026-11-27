@@ -4,26 +4,6 @@
     "path": "src/assets"
   },
   {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/features/prediction/components/presenters/WallMarker.test.tsx"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/features/training/components/presenters/SkipButton.test.tsx"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/features/views/components/presenters/ViewToggles.test.tsx"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/features/views/lib/axisLayout.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/features/views/lib/predictionLabel.test.ts"
-  },
-  {
     "rule": "shared-root-files",
     "path": "src/features/dashboard/shared",
     "count": 3
@@ -36,27 +16,11 @@
   {
     "rule": "shared-feature-groups",
     "path": "src/features/dashboard/shared/lib",
-    "count": 5
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/shared/lib/animationPlaybackSelectors.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/shared/lib/formatNumber.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/shared/lib/normalizeMileage.test.ts"
+    "count": 6
   },
   {
     "rule": "single-consumer",
     "path": "src/features/dashboard/shared/lib/normalizeMileage.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/dashboard/shared/lib/shownView.test.ts"
   },
   {
     "rule": "single-consumer",
@@ -68,56 +32,8 @@
     "count": 2
   },
   {
-    "rule": "test-in-source",
-    "path": "src/features/docs/components/presenters/DescentFigure.test.tsx"
-  },
-  {
     "rule": "not-a-kind-folder",
     "path": "src/features/docs/content"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/docFigures.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/nextTab.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/pick.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/scientific.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/tabFromHash.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/docs/lib/tokenize.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/features/animation-director/lib/PaintlessDirector.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/features/animation-director/lib/Timeline.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/features/animation-director/lib/training.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/features/spray-can/lib/CanMotion.test.ts"
   },
   {
     "rule": "shared-root-files",
@@ -142,32 +58,12 @@
     "path": "src/features/graffiti/shared/configs/ShadersConfig.ts"
   },
   {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/shared/lib/anchoredRectangle.test.ts"
-  },
-  {
     "rule": "single-consumer",
     "path": "src/features/graffiti/shared/lib/OffscreenWall.ts"
   },
   {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/shared/lib/PaintLayer.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/shared/lib/Scheduler.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/shared/lib/Slicer.test.ts"
-  },
-  {
     "rule": "single-consumer",
     "path": "src/features/graffiti/shared/lib/Slicer.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/features/graffiti/shared/lib/stepFlow.test.ts"
   },
   {
     "rule": "shared-feature-groups",
@@ -189,7 +85,7 @@
   {
     "rule": "shared-root-files",
     "path": "src/shared",
-    "count": 3
+    "count": 2
   },
   {
     "rule": "single-consumer",
@@ -198,24 +94,11 @@
   {
     "rule": "shared-feature-groups",
     "path": "src/shared/configs",
-    "count": 7
+    "count": 6
   },
   {
     "rule": "single-consumer",
     "path": "src/shared/configs/GlyphsConfig.ts"
-  },
-  {
-    "rule": "kind-folder",
-    "path": "src/shared/configs/lib",
-    "count": 2
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/configs/SceneConfig.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/configs/TypeScaleConfig.test.ts"
   },
   {
     "rule": "single-consumer",
@@ -224,23 +107,11 @@
   {
     "rule": "shared-feature-groups",
     "path": "src/shared/lib",
-    "count": 5
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/lib/lineSegment.test.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/lib/sceneFor.test.ts"
+    "count": 6
   },
   {
     "rule": "single-consumer",
     "path": "src/shared/lib/scrollToDocumentation.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/lib/typeScale.test.ts"
   },
   {
     "rule": "single-consumer",
@@ -257,10 +128,6 @@
   {
     "rule": "single-consumer",
     "path": "src/shared/regression/willDiverge.ts"
-  },
-  {
-    "rule": "test-in-source",
-    "path": "src/shared/sceneStore.test.tsx"
   },
   {
     "rule": "shared-feature-groups",
