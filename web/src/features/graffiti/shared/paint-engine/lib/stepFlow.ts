@@ -1,4 +1,4 @@
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
 
 const GRAVITY = 36;
 const SPREAD = 22;

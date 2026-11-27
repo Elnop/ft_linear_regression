@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import wallUrl from '@/features/graffiti/features/canvas/wall-night.jpg';
-import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import { engineActions } from '@/features/graffiti/shared/engineStore.ts';
+import { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import { engineActions } from '@/features/graffiti/shared/paint-engine/engineStore.ts';
 import '@/features/graffiti/features/canvas/canvas.css';
 
 export function PaintWallContainer() {

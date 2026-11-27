@@ -1,4 +1,4 @@
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 
 export type Nozzle = { x: number; y: number; color: string; followable: boolean };

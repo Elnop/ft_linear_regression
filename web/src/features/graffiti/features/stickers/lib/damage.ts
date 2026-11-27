@@ -1,4 +1,4 @@
-import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
+import { mulberry32 } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import type { Corner } from '@/features/graffiti/features/stickers/StickersTypes.ts';
 
 function toPoints(points: number[][]) {

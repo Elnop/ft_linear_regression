@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { anchoredRectangle } from '@/features/graffiti/shared/lib/anchoredRectangle.ts';
+import { anchoredRectangle } from '@/features/graffiti/shared/paint-engine/lib/anchoredRectangle.ts';
 
 const chart = { x: 100, y: 50, width: 800, height: 400 };
 const narrower = { x: 20, y: 60, width: 400, height: 800 };

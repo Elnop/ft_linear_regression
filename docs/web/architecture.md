@@ -17,7 +17,7 @@ web/src/
 ├── features/
 │   ├── graffiti/                       le mur peint
 │   │   ├── GraffitiLayout.tsx          assemble les sous-features et lance l'animation
-│   │   ├── shared/                     moteur de peinture (PaintEngine, OffscreenWall, Scheduler, PaintLayer), engineStore, aléatoire
+│   │   ├── shared/                     paint-engine (PaintEngine, Scheduler, PaintLayer, engineStore, aléatoire) et logo
 │   │   └── features/
 │   │       ├── canvas/                 PaintWallContainer : crée le moteur et le publie
 │   │       ├── animation-director/     enchaîne titre, points et droites, sans interface
@@ -113,7 +113,7 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 
 | Store | Contenu | Écrit par |
 |---|---|---|
-| `web/src/features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
+| `web/src/features/graffiti/shared/paint-engine/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
 | `web/src/shared/scene/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
 | `web/src/shared/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
 | `web/src/shared/regression/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |

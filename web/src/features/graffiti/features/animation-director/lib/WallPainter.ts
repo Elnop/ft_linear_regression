@@ -2,8 +2,8 @@ import type { Sample, Thetas } from '@core/types/CoreTypes.ts';
 
 import { readRem } from '@/shared/scene/lib/readRem.ts';
 import { sceneFor } from '@/shared/scene/lib/sceneFor.ts';
-import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import type { Surface } from '@/features/graffiti/shared/paint-engine/types/SurfaceTypes.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
 import { dotJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
 import { lineSegment } from '@/shared/scene/lib/lineSegment.ts';

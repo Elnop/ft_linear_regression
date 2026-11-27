@@ -1,6 +1,6 @@
-import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
-import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
-import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
+import { mulberry32 } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
+import { coverRectangle } from '@/features/graffiti/shared/paint-engine/lib/coverRectangle.ts';
+import type { Roughness } from '@/features/graffiti/shared/paint-engine/types/RoughnessTypes.ts';
 
 function boxBlur(
   source: Float32Array,

@@ -1,5 +1,5 @@
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
-import type { Nozzle } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import type { Nozzle } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 import type { CanPose } from '@/features/graffiti/features/spray-can/SprayCanTypes.ts';
 
 const BASE_TILT = -14;

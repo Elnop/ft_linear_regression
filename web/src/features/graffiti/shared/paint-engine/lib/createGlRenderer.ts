@@ -1,10 +1,10 @@
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { coverRectangle } from '@/features/graffiti/shared/paint-engine/lib/coverRectangle.ts';
 import {
   PAINT_FRAGMENT_SHADER,
   QUAD_VERTEX_SHADER,
-} from '@/features/graffiti/shared/configs/ShadersConfig.ts';
-import type { CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.ts';
+} from '@/features/graffiti/shared/paint-engine/configs/ShadersConfig.ts';
+import type { CellRectangle } from '@/features/graffiti/shared/paint-engine/types/LayerTypes.ts';
 
 function compile(
   gl: WebGL2RenderingContext,

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
-import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { Scheduler } from '@/features/graffiti/shared/paint-engine/lib/Scheduler.ts';
+import type { Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 
 function layer() {
   return new PaintLayer(

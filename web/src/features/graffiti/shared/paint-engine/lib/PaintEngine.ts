@@ -1,17 +1,23 @@
-import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
-import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
+import { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { Scheduler } from '@/features/graffiti/shared/paint-engine/lib/Scheduler.ts';
+import { pixelRatio } from '@/features/graffiti/shared/paint-engine/lib/pixelRatio.ts';
 
-import { createGlRenderer } from '@/features/graffiti/shared/lib/createGlRenderer.ts';
-import type { Renderer } from '@/features/graffiti/shared/types/RendererTypes.ts';
-import { computeRoughness } from '@/features/graffiti/shared/lib/computeRoughness.ts';
-import type { LayerOptions, Regions } from '@/features/graffiti/shared/types/LayerTypes.ts';
-import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
-import { flowLayer } from '@/features/graffiti/shared/lib/flowLayer.ts';
-import { FLOW_STEP, MAX_DELTA_SECONDS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
-import type { Nozzle, Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
-import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
-import { FILM_SCALE } from '@/features/graffiti/shared/configs/LayerConfig.ts';
+import { createGlRenderer } from '@/features/graffiti/shared/paint-engine/lib/createGlRenderer.ts';
+import type { Renderer } from '@/features/graffiti/shared/paint-engine/types/RendererTypes.ts';
+import { computeRoughness } from '@/features/graffiti/shared/paint-engine/lib/computeRoughness.ts';
+import type {
+  LayerOptions,
+  Regions,
+} from '@/features/graffiti/shared/paint-engine/types/LayerTypes.ts';
+import type { Surface } from '@/features/graffiti/shared/paint-engine/types/SurfaceTypes.ts';
+import { flowLayer } from '@/features/graffiti/shared/paint-engine/lib/flowLayer.ts';
+import {
+  FLOW_STEP,
+  MAX_DELTA_SECONDS,
+} from '@/features/graffiti/shared/paint-engine/configs/FlowConfig.ts';
+import type { Nozzle, Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
+import type { Roughness } from '@/features/graffiti/shared/paint-engine/types/RoughnessTypes.ts';
+import { FILM_SCALE } from '@/features/graffiti/shared/paint-engine/configs/LayerConfig.ts';
 
 const FOLLOWABLE_JOBS = 2;
 

@@ -2,52 +2,5 @@
   {
     "rule": "not-a-kind-folder",
     "path": "src/features/docs/content"
-  },
-  {
-    "rule": "shared-root-files",
-    "path": "src/features/graffiti/shared",
-    "count": 2
-  },
-  {
-    "rule": "shared-feature-groups",
-    "path": "src/features/graffiti/shared/configs",
-    "count": 4
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/configs/FlowConfig.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/configs/LayerConfig.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/configs/ShadersConfig.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/lib/OffscreenWall.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/lib/Slicer.ts"
-  },
-  {
-    "rule": "shared-feature-groups",
-    "path": "src/features/graffiti/shared/types",
-    "count": 6
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/types/ColorTypes.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/types/RendererTypes.ts"
-  },
-  {
-    "rule": "single-consumer",
-    "path": "src/features/graffiti/shared/types/RoughnessTypes.ts"
   }
 ]

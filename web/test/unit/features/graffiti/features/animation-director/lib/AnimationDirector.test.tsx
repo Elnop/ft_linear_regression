@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { createStore } from 'zustand/vanilla';
 import { AnimationDirector } from '@/features/graffiti/features/animation-director/lib/AnimationDirector.ts';
 import { wallRegions } from '@/features/graffiti/features/animation-director/lib/wallRegions.ts';
-import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
+import { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
 import type { AnimationPlayback } from '@/shared/animation-playback/AnimationPlaybackTypes.ts';
 import {
   IDLE_PLAYBACK,

@@ -1,4 +1,4 @@
-import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
+import type { Rgb } from '@/features/graffiti/shared/paint-engine/types/ColorTypes.ts';
 
 export function hexToRgb(hex: string): Rgb {
   const value = Number.parseInt(hex.replace('#', ''), 16);

@@ -1,18 +1,18 @@
-import { smoothstep } from '@/features/graffiti/shared/lib/smoothstep.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import { smoothstep } from '@/features/graffiti/shared/paint-engine/lib/smoothstep.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
 import {
   gaussian,
   mulberry32,
   noise1D,
   randomSeed,
-} from '@/features/graffiti/shared/lib/random.ts';
+} from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
-import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import type { Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 import type {
   SprayDotOptions,
   SprayPathOptions,
 } from '@/features/graffiti/features/animation-director/types/NozzleTypes.ts';
-import type { RandomGenerator } from '@/features/graffiti/shared/types/RandomTypes.ts';
+import type { RandomGenerator } from '@/features/graffiti/shared/paint-engine/types/RandomTypes.ts';
 import {
   DOT_DEFAULTS,
   NOMINAL_SPEED,

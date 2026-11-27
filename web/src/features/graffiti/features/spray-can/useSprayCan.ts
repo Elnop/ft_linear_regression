@@ -6,8 +6,8 @@ import {
   CAN_SIZE,
   CAN_START,
 } from '@/features/graffiti/features/spray-can/configs/CanSizeConfig.ts';
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
+import type { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import { pixelRatio } from '@/features/graffiti/shared/paint-engine/lib/pixelRatio.ts';
 import { sceneStore } from '@/shared/scene/sceneStore.ts';
 import { prefersReducedMotion } from '@/shared/scroll/lib/prefersReducedMotion.ts';
 

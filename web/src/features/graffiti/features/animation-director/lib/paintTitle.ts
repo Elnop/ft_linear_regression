@@ -1,13 +1,17 @@
 import { PALETTE } from '@/shared/palette/PaletteConfig.ts';
-import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
+import type { Surface } from '@/features/graffiti/shared/paint-engine/types/SurfaceTypes.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
 import {
   dotJob,
   moveJob,
   pathJob,
 } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
-import { mulberry32, randomSeed, seedFrom } from '@/features/graffiti/shared/lib/random.ts';
+import {
+  mulberry32,
+  randomSeed,
+  seedFrom,
+} from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import { readRem } from '@/shared/scene/lib/readRem.ts';
 import { sceneFor } from '@/shared/scene/lib/sceneFor.ts';
 import { titleLetters } from '@/shared/scene/lib/titleLetters.ts';

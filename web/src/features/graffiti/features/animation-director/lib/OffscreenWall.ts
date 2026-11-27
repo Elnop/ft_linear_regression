@@ -1,11 +1,14 @@
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import type { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
-import { flowLayer } from '@/features/graffiti/shared/lib/flowLayer.ts';
-import type { LayerOptions } from '@/features/graffiti/shared/types/LayerTypes.ts';
-import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
-import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
-import { FLOW_STEP, MAX_DELTA_SECONDS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
+import type { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import type { Slicer } from '@/features/graffiti/features/animation-director/lib/Slicer.ts';
+import { flowLayer } from '@/features/graffiti/shared/paint-engine/lib/flowLayer.ts';
+import type { LayerOptions } from '@/features/graffiti/shared/paint-engine/types/LayerTypes.ts';
+import type { Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
+import type { Surface } from '@/features/graffiti/shared/paint-engine/types/SurfaceTypes.ts';
+import {
+  FLOW_STEP,
+  MAX_DELTA_SECONDS,
+} from '@/features/graffiti/shared/paint-engine/configs/FlowConfig.ts';
 
 const SETTLE_SECONDS = 1.5;
 

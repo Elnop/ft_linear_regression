@@ -1,4 +1,4 @@
-import type { OffscreenWall } from '@/features/graffiti/shared/lib/OffscreenWall.ts';
+import type { OffscreenWall } from '@/features/graffiti/features/animation-director/lib/OffscreenWall.ts';
 import { WallPainter } from '@/features/graffiti/features/animation-director/lib/WallPainter.ts';
 import { paintTitle } from '@/features/graffiti/features/animation-director/lib/paintTitle.ts';
 import type {

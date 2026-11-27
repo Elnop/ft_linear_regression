@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
-import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { stepFlow } from '@/features/graffiti/shared/lib/stepFlow.ts';
-import { DRY_GLOSS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
+import { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { stepFlow } from '@/features/graffiti/shared/paint-engine/lib/stepFlow.ts';
+import { DRY_GLOSS } from '@/features/graffiti/shared/paint-engine/configs/FlowConfig.ts';
 
 test('a dried layer keeps its paint where it is and no longer flows', () => {
   const layer = new PaintLayer(

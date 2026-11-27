@@ -1,11 +1,11 @@
 import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
 import { paintTitle } from '@/features/graffiti/features/animation-director/lib/paintTitle.ts';
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { OffscreenWall } from '@/features/graffiti/shared/lib/OffscreenWall.ts';
-import { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
-import { shuffled } from '@/features/graffiti/shared/lib/random.ts';
+import type { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { OffscreenWall } from '@/features/graffiti/features/animation-director/lib/OffscreenWall.ts';
+import { Slicer } from '@/features/graffiti/features/animation-director/lib/Slicer.ts';
+import { shuffled } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import type {
   Build,
   Director,

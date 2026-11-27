@@ -1,5 +1,5 @@
-import { smoothstep } from '@/features/graffiti/shared/lib/smoothstep.ts';
-import type { RandomGenerator } from '@/features/graffiti/shared/types/RandomTypes.ts';
+import { smoothstep } from '@/features/graffiti/shared/paint-engine/lib/smoothstep.ts';
+import type { RandomGenerator } from '@/features/graffiti/shared/paint-engine/types/RandomTypes.ts';
 
 export function mulberry32(seed: number): RandomGenerator {
   let state = seed >>> 0;

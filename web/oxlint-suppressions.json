@@ -317,7 +317,7 @@
       "count": 1
     }
   },
-  "src/features/graffiti/shared/lib/PaintEngine.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/PaintEngine.ts": {
     "function-size/max-variables": {
       "count": 1
     },
@@ -325,7 +325,7 @@
       "count": 1
     }
   },
-  "src/features/graffiti/shared/lib/PaintLayer.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/PaintLayer.ts": {
     "function-size/max-variables": {
       "count": 4
     },
@@ -333,12 +333,12 @@
       "count": 2
     }
   },
-  "src/features/graffiti/shared/lib/Scheduler.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/Scheduler.ts": {
     "function-size/max-variables": {
       "count": 1
     }
   },
-  "src/features/graffiti/shared/lib/computeRoughness.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/computeRoughness.ts": {
     "function-size/max-variables": {
       "count": 2
     },
@@ -346,7 +346,7 @@
       "count": 2
     }
   },
-  "src/features/graffiti/shared/lib/createGlRenderer.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/createGlRenderer.ts": {
     "function-size/max-variables": {
       "count": 2
     },
@@ -357,7 +357,7 @@
       "count": 1
     }
   },
-  "src/features/graffiti/shared/lib/random.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/random.ts": {
     "function-size/max-functions": {
       "count": 1
     },
@@ -365,7 +365,7 @@
       "count": 1
     }
   },
-  "src/features/graffiti/shared/lib/stepFlow.ts": {
+  "src/features/graffiti/shared/paint-engine/lib/stepFlow.ts": {
     "function-size/max-variables": {
       "count": 1
     },
@@ -424,7 +424,7 @@
       "count": 1
     }
   },
-  "test/unit/features/graffiti/shared/lib/Scheduler.test.ts": {
+  "test/unit/features/graffiti/shared/paint-engine/lib/Scheduler.test.ts": {
     "typescript/no-redundant-type-constituents": {
       "count": 1
     }

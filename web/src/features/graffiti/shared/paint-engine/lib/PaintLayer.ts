@@ -1,18 +1,18 @@
-import { hexToRgb } from '@/features/graffiti/shared/lib/hexToRgb.ts';
+import { hexToRgb } from '@/features/graffiti/shared/paint-engine/lib/hexToRgb.ts';
 import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
-import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
+import type { Rgb } from '@/features/graffiti/shared/paint-engine/types/ColorTypes.ts';
 import type {
   Anchor,
   CellRectangle,
   LayerOptions,
   Regions,
-} from '@/features/graffiti/shared/types/LayerTypes.ts';
-import { anchoredRectangle } from '@/features/graffiti/shared/lib/anchoredRectangle.ts';
+} from '@/features/graffiti/shared/paint-engine/types/LayerTypes.ts';
+import { anchoredRectangle } from '@/features/graffiti/shared/paint-engine/lib/anchoredRectangle.ts';
 
-import { mulberry32, noise2D } from '@/features/graffiti/shared/lib/random.ts';
-import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
-import { FILM_SCALE } from '@/features/graffiti/shared/configs/LayerConfig.ts';
-import { DRY_GLOSS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
+import { mulberry32, noise2D } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
+import type { Roughness } from '@/features/graffiti/shared/paint-engine/types/RoughnessTypes.ts';
+import { FILM_SCALE } from '@/features/graffiti/shared/paint-engine/configs/LayerConfig.ts';
+import { DRY_GLOSS } from '@/features/graffiti/shared/paint-engine/configs/FlowConfig.ts';
 
 const CELL = 1 / FILM_SCALE;
 

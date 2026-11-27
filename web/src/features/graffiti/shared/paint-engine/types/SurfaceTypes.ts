@@ -1,6 +1,6 @@
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import type { LayerOptions } from '@/features/graffiti/shared/types/LayerTypes.ts';
-import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import type { LayerOptions } from '@/features/graffiti/shared/paint-engine/types/LayerTypes.ts';
+import type { Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 
 export type Surface = {
   readonly width: number;

@@ -1,6 +1,6 @@
 import { SprayCanArt } from '@/features/graffiti/features/spray-can/components/SprayCanArt.tsx';
 import { useSprayCan } from '@/features/graffiti/features/spray-can/useSprayCan.ts';
-import { useEngine } from '@/features/graffiti/shared/useEngine.ts';
+import { useEngine } from '@/features/graffiti/shared/paint-engine/useEngine.ts';
 import '@/features/graffiti/features/spray-can/spray-can.css';
 
 export function SprayCanContainer() {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useEngine } from '@/features/graffiti/shared/useEngine.ts';
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
+import { useEngine } from '@/features/graffiti/shared/paint-engine/useEngine.ts';
+import type { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
 import { AnimationDirector } from '@/features/graffiti/features/animation-director/lib/AnimationDirector.ts';
 import { PaintlessDirector } from '@/features/graffiti/features/animation-director/lib/PaintlessDirector.ts';
 import type {

@@ -1,4 +1,4 @@
-import { gaussian } from '@/features/graffiti/shared/lib/random.ts';
+import { gaussian } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 
 export function drawMist(

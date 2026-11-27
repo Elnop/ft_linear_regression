@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
+import { Slicer } from '@/features/graffiti/features/animation-director/lib/Slicer.ts';
 
 test('a slice runs until its budget is spent, then gives the thread back', async () => {
   const slicer = new Slicer(30, new AbortController().signal);

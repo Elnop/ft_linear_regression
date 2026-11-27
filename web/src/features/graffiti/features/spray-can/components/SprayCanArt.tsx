@@ -2,7 +2,7 @@ import {
   VIEW_HEIGHT,
   VIEW_WIDTH,
 } from '@/features/graffiti/features/spray-can/configs/ShapeConfig.ts';
-import { LOGO_42 } from '@/features/graffiti/shared/configs/LogoConfig.ts';
+import { LOGO_42 } from '@/features/graffiti/shared/logo/LogoConfig.ts';
 
 const BODY = 'M20 108 H120 V306 Q120 316 110 316 H30 Q20 316 20 306 Z';
 const CAP = 'M52 54 V31 Q52 20 63 20 H80 Q90 20 90 31 V54 Z';

@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { stepFlow } from '@/features/graffiti/shared/lib/stepFlow.ts';
+import { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { stepFlow } from '@/features/graffiti/shared/paint-engine/lib/stepFlow.ts';
 
 function totals(layer: PaintLayer) {
   let mass = 0;

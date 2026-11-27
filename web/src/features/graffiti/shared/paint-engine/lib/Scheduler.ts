@@ -1,6 +1,6 @@
-import { smoothstep } from '@/features/graffiti/shared/lib/smoothstep.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import { smoothstep } from '@/features/graffiti/shared/paint-engine/lib/smoothstep.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import type { Job } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 
 type Running = { job: Job; done: () => void };
 type Look = { opacity: number; gray: number };
