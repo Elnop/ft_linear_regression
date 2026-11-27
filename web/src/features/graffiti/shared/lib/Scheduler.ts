@@ -4,7 +4,14 @@ import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
 
 type Running = { job: Job; done: () => void };
 type Look = { opacity: number; gray: number };
-type Tween = { layer: PaintLayer; from: Look; to: Look; elapsed: number; duration: number; done: () => void };
+type Tween = {
+  layer: PaintLayer;
+  from: Look;
+  to: Look;
+  elapsed: number;
+  duration: number;
+  done: () => void;
+};
 
 function partition<T>(items: T[], keep: (item: T) => boolean): [T[], T[]] {
   const kept: T[] = [];
@@ -40,7 +47,9 @@ export class Scheduler {
   fade(layer: PaintLayer, to: Look, durationSeconds: number): Promise<void> {
     this.cancelFade(layer);
     const from = { opacity: layer.opacity, gray: layer.gray };
-    return new Promise((done) => this.tweens.push({ layer, from, to, elapsed: 0, duration: durationSeconds, done }));
+    return new Promise((done) =>
+      this.tweens.push({ layer, from, to, elapsed: 0, duration: durationSeconds, done }),
+    );
   }
 
   cancelFade(layer: PaintLayer): void {

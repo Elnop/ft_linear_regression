@@ -1,6 +1,15 @@
 import type { TextStep } from '@/shared/types/TypeScaleTypes.ts';
 
-export const TEXT_STEPS: readonly TextStep[] = ['xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', 'display'];
+export const TEXT_STEPS: readonly TextStep[] = [
+  'xs',
+  'sm',
+  'base',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  'display',
+];
 
 export const TYPE_SCALE: Record<TextStep, { min: number; max: number }> = {
   xs: { min: 12, max: 13 },

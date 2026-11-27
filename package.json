@@ -20,30 +20,38 @@
     "lint": "oxlint --type-aware core cli oxlint.config.ts",
     "test": "npm test -w web",
     "format": "prettier --write .",
-    "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web",
-    "prepare": "git config core.hooksPath .githooks"
+    "check": "prettier --check . && npm run lint && tsc -p . && alint check && knip && npm run check -w web && npm run exceptions",
+    "prepare": "git config core.hooksPath .githooks",
+    "exceptions": "check-exceptions"
   },
   "devDependencies": {
-    "@asamarts/alint": "0.21.0",
-    "@brutalway/agent-hook": "0.1.0",
-    "@brutalway/alint-config": "0.1.0",
-    "@brutalway/oxlint-config-typescript": "0.4.0",
-    "@brutalway/prettier-config": "0.1.0",
-    "@brutalway/tsconfig": "0.2.0",
+    "@asamarts/alint": "0.22.0",
+    "@brutalway/agent-hook": "0.5.0",
+    "@brutalway/alint-config": "0.2.4",
+    "@brutalway/check-exceptions": "0.2.1",
+    "@brutalway/oxlint-config-typescript": "0.9.0",
+    "@brutalway/prettier-config": "0.3.0",
+    "@brutalway/tsconfig": "0.4.0",
     "@types/node": "26.6.6",
-    "knip": "6.42.1",
-    "oxlint": "1.91.0",
-    "oxlint-tsgolint": "7.0.2005",
+    "knip": "6.44.2",
+    "oxlint": "1.92.0",
+    "oxlint-tsgolint": "7.0.2006",
     "prettier": "3.9.10",
     "typescript": "7.0.2"
   },
   "allowScripts": {
     "@swc/core": false,
-    "@asamarts/alint@0.21.0": true
+    "@asamarts/alint@0.22.0": true
   },
   "overrides": {
     "eslint-plugin-no-comments": {
       "minimatch": "^11.0.1"
+    }
+  },
+  "check-exceptions": {
+    "newRules": {
+      "oxlint-suppressions function-size/max-functions": 1,
+      "oxlint-suppressions function-size/max-variables": 3
     }
   }
 }

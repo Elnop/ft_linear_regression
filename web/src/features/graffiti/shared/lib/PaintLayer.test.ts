@@ -4,7 +4,10 @@ import { stepFlow } from '@/features/graffiti/shared/lib/stepFlow.ts';
 import { DRY_GLOSS } from '@/features/graffiti/shared/configs/FlowConfig.ts';
 
 test('a dried layer keeps its paint where it is and no longer flows', () => {
-  const layer = new PaintLayer({ color: '#ff2bd6', bounds: { x: 0, y: 0, width: 80, height: 240 } }, { at: () => 0.5 });
+  const layer = new PaintLayer(
+    { color: '#ff2bd6', bounds: { x: 0, y: 0, width: 80, height: 240 } },
+    { at: () => 0.5 },
+  );
   layer.depositSplat(40, 40, 14, 6000);
   expect(layer.wet).toBe(true);
 

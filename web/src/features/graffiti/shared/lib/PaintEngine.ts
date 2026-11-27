@@ -74,7 +74,10 @@ export class PaintEngine implements Surface {
     return new PaintLayer({ ...options, bounds }, this.roughness);
   }
 
-  adopt(layers: PaintLayer[], { keep = [], fadeMs = 0 }: { keep?: PaintLayer[]; fadeMs?: number } = {}): void {
+  adopt(
+    layers: PaintLayer[],
+    { keep = [], fadeMs = 0 }: { keep?: PaintLayer[]; fadeMs?: number } = {},
+  ): void {
     function kept(layer: PaintLayer) {
       return keep.includes(layer);
     }
@@ -87,7 +90,9 @@ export class PaintEngine implements Surface {
         layer.opacity = 0;
         void this.fadeLayer(layer, opacity, fadeMs);
       }
-      for (const layer of leaving) void this.fadeLayer(layer, 0, fadeMs).then(() => this.removeLayer(layer));
+      for (const layer of leaving) {
+        void this.fadeLayer(layer, 0, fadeMs).then(() => this.removeLayer(layer));
+      }
     } else {
       for (const layer of leaving) this.renderer.release(layer);
       this.layers = this.layers.filter(kept);
@@ -137,10 +142,22 @@ export class PaintEngine implements Surface {
 
   nozzle(): Nozzle | null {
     const job = this.scheduler.currentJob;
-    return job ? { x: job.position.x, y: job.position.y, color: job.layer.hex, followable: this.scheduler.jobCount <= FOLLOWABLE_JOBS } : null;
+    return job
+      ? {
+          x: job.position.x,
+          y: job.position.y,
+          color: job.layer.hex,
+          followable: this.scheduler.jobCount <= FOLLOWABLE_JOBS,
+        }
+      : null;
   }
 
-  fadeLayer(layer: PaintLayer, opacity: number, durationMs: number, gray = layer.gray): Promise<void> {
+  fadeLayer(
+    layer: PaintLayer,
+    opacity: number,
+    durationMs: number,
+    gray = layer.gray,
+  ): Promise<void> {
     this.wake();
     if (durationMs > 0) return this.scheduler.fade(layer, { opacity, gray }, durationMs / 1000);
     this.scheduler.cancelFade(layer);

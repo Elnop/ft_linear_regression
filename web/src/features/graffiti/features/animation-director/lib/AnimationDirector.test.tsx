@@ -4,7 +4,10 @@ import { AnimationDirector } from '@/features/graffiti/features/animation-direct
 import { wallRegions } from '@/features/graffiti/features/animation-director/lib/wallRegions.ts';
 import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import type { AnimationPlayback } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
-import { IDLE_PLAYBACK, IDLE_PLAYBACK_ACTIONS } from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
+import {
+  IDLE_PLAYBACK,
+  IDLE_PLAYBACK_ACTIONS,
+} from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
 import { sceneFor } from '@/shared/lib/sceneFor.ts';
 import type { Scene } from '@/shared/types/SceneTypes.ts';
 
@@ -22,10 +25,17 @@ function setup() {
   const engine = new PaintEngine(container, PIXEL);
   engine.ready.catch(() => {});
   const reanchor = vi.spyOn(engine, 'reanchor');
-  const playback = createStore<AnimationPlayback>()(() => ({ ...IDLE_PLAYBACK, ...IDLE_PLAYBACK_ACTIONS }));
+  const playback = createStore<AnimationPlayback>()(() => ({
+    ...IDLE_PLAYBACK,
+    ...IDLE_PLAYBACK_ACTIONS,
+  }));
   const regression = { reset: () => {}, restart: () => {}, show: () => {}, finish: () => {} };
   const scene = createStore<Scene>()(() => sceneFor(engine.width, engine.height, 16));
-  const director = new AnimationDirector(engine, { playback, regression, samples: [], reducedMotion: false }, scene);
+  const director = new AnimationDirector(
+    engine,
+    { playback, regression, samples: [], reducedMotion: false },
+    scene,
+  );
   cleanups.push(() => {
     director.destroy();
     engine.destroy();

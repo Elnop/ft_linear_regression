@@ -3,5 +3,11 @@ import { useRegression } from '@/shared-features/regression/hooks/useRegression.
 
 export function PrecisionPanelContainer() {
   const metrics = useRegression((state) => state.metrics);
-  return <PrecisionPanel r2={metrics?.r2 ?? null} rmse={metrics?.rmse ?? null} mae={metrics?.mae ?? null} />;
+  return (
+    <PrecisionPanel
+      r2={metrics?.r2 ?? null}
+      rmse={metrics?.rmse ?? null}
+      mae={metrics?.mae ?? null}
+    />
+  );
 }

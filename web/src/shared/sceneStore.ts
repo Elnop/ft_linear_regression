@@ -16,7 +16,13 @@ function refresh() {
     frame = 0;
     const next = read();
     const current = sceneStore.getState();
-    if (next.width !== current.width || next.height !== current.height || next.rem !== current.rem) sceneStore.setState(next, true);
+    if (
+      next.width !== current.width ||
+      next.height !== current.height ||
+      next.rem !== current.rem
+    ) {
+      sceneStore.setState(next, true);
+    }
   });
 }
 

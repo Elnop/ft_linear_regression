@@ -14,17 +14,34 @@ const TITLE_GAP_BELOW_REM = 3.75;
 const TITLE_TO_HEAD_GAP_REM = 1.5;
 const LINE_HEIGHT = ASCENT + DESCENT + LINE_GAP;
 
-export function titleLayout(width: number, height: number, padding: number, chartTop: number, rem: number): TitleLayout {
+export function titleLayout(
+  width: number,
+  height: number,
+  padding: number,
+  chartTop: number,
+  rem: number,
+): TitleLayout {
   const top = Math.max(14, Math.min(28, height * 0.025));
   const texts = width < SPLIT_TITLE_BELOW_REM * rem ? ['ft_linear_', 'regression'] : [TITLE];
-  const maxWidth = width >= WIDE_EM * rem ? Math.min(width * 0.6, 920, width - 2 * padding - (HEAD_WIDTH_REM + TITLE_TO_HEAD_GAP_REM) * rem) : width - 2 * padding;
+  const maxWidth =
+    width >= WIDE_EM * rem
+      ? Math.min(
+          width * 0.6,
+          920,
+          width - 2 * padding - (HEAD_WIDTH_REM + TITLE_TO_HEAD_GAP_REM) * rem,
+        )
+      : width - 2 * padding;
   const maxHeight = chartTop - top - TITLE_GAP_BELOW_REM * rem;
   const unit = measure(texts);
   const em = Math.max(8, Math.min(52, maxWidth / unit.width, maxHeight / unit.height));
   return {
     rectangle: { x: padding, y: top, width: unit.width * em, height: unit.height * em },
     em,
-    lines: texts.map((text, k) => ({ text, x: padding - unit.x * em, baseline: top + (k * LINE_HEIGHT - unit.y) * em })),
+    lines: texts.map((text, k) => ({
+      text,
+      x: padding - unit.x * em,
+      baseline: top + (k * LINE_HEIGHT - unit.y) * em,
+    })),
   };
 }
 

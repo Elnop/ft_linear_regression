@@ -13,12 +13,16 @@ export function useDocumentationTabs() {
 
   useEffect(() => {
     const target = location.hash.slice(1);
-    if (target === DOCUMENTATION_ID || target.startsWith(`${DOCUMENTATION_ID}-`)) scrollToElement(target);
+    if (target === DOCUMENTATION_ID || target.startsWith(`${DOCUMENTATION_ID}-`)) {
+      scrollToElement(target);
+    }
   }, []);
 
   function selectTab(next: TabId) {
     setTab(next);
-    if (location.hash.startsWith(`#${DOCUMENTATION_ID}-`)) history.replaceState(null, '', `#${DOCUMENTATION_ID}`);
+    if (location.hash.startsWith(`#${DOCUMENTATION_ID}-`)) {
+      history.replaceState(null, '', `#${DOCUMENTATION_ID}`);
+    }
   }
 
   function onTabKeyDown(event: KeyboardEvent, i: number) {

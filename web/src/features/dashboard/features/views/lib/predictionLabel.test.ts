@@ -4,11 +4,19 @@ import { predictionLabel } from '@/features/dashboard/features/views/lib/predict
 const frame = { x: 100, y: 50, width: 800, height: 500 };
 
 test('sits up and to the right of the point inside the chart', () => {
-  expect(predictionLabel({ x: 400, y: 300 }, frame, 13, 120)).toStrictEqual({ x: 412, y: 288, anchor: 'start' });
+  expect(predictionLabel({ x: 400, y: 300 }, frame, 13, 120)).toStrictEqual({
+    x: 412,
+    y: 288,
+    anchor: 'start',
+  });
 });
 
 test('flips to the left when the label would cross the right edge', () => {
-  expect(predictionLabel({ x: 850, y: 300 }, frame, 13, 120)).toStrictEqual({ x: 838, y: 288, anchor: 'end' });
+  expect(predictionLabel({ x: 850, y: 300 }, frame, 13, 120)).toStrictEqual({
+    x: 838,
+    y: 288,
+    anchor: 'end',
+  });
   expect(predictionLabel({ x: 700, y: 300 }, frame, 13, 200).anchor).toBe('end');
   expect(predictionLabel({ x: 700, y: 300 }, frame, 13, 150).anchor).toBe('start');
 });

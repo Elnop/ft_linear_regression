@@ -13,7 +13,12 @@ const HEIGHT = 76;
 const PADDING = 6;
 
 function sparkline(history: CostPoint[]): string {
-  const points = history.filter((point) => Number.isFinite(point.cost) && point.cost > 0).map((point) => ({ logIteration: Math.log1p(point.iteration), logCost: Math.log10(point.cost) }));
+  const points = history
+    .filter((point) => Number.isFinite(point.cost) && point.cost > 0)
+    .map((point) => ({
+      logIteration: Math.log1p(point.iteration),
+      logCost: Math.log10(point.cost),
+    }));
   const last = points.at(-1);
   if (!last) return '';
   const logCosts = points.map((point) => point.logCost);
@@ -43,12 +48,40 @@ export function CostPanel({ history, diverged }: CostPanelProps) {
           {last ? formatNumber(last.cost) : '—'}
         </span>
       </figcaption>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label={`Évolution du coût sur ${lastIteration} itérations`} className="cost-chart">
-        <line className="cost-baseline" x1="0" y1={HEIGHT} x2={WIDTH} y2={HEIGHT} strokeWidth="1" strokeDasharray="3 5" />
+      <svg
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        role="img"
+        aria-label={`Évolution du coût sur ${lastIteration} itérations`}
+        className="cost-chart"
+      >
+        <line
+          className="cost-baseline"
+          x1="0"
+          y1={HEIGHT}
+          x2={WIDTH}
+          y2={HEIGHT}
+          strokeWidth="1"
+          strokeDasharray="3 5"
+        />
         {points && (
           <>
-            <polyline points={points} fill="none" stroke={color} strokeWidth="10" strokeLinejoin="round" strokeLinecap="round" className="cost-glow" />
-            <polyline points={points} fill="none" stroke={color} strokeWidth="4" strokeLinejoin="round" strokeLinecap="round" />
+            <polyline
+              points={points}
+              fill="none"
+              stroke={color}
+              strokeWidth="10"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              className="cost-glow"
+            />
+            <polyline
+              points={points}
+              fill="none"
+              stroke={color}
+              strokeWidth="4"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+            />
           </>
         )}
       </svg>

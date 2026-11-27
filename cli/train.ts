@@ -48,7 +48,9 @@ try {
 }
 
 if (!last || hasDiverged(last)) {
-  fail(`training diverged at iteration ${last?.iteration ?? 0}, model not saved (try a smaller --lr)`);
+  fail(
+    `training diverged at iteration ${last?.iteration ?? 0}, model not saved (try a smaller --lr)`,
+  );
 }
 
 console.log(`Done: theta0=${last.theta0}  theta1=${last.theta1}  cost=${last.cost.toFixed(2)}`);

@@ -13,7 +13,18 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
   if (active.empty) return;
   const width = layer.filmWidth;
   const height = layer.filmHeight;
-  const { film, wetMass, pooled, residual, pin, roughness, reached, filmDelta, wetDelta, pooledDelta } = layer;
+  const {
+    film,
+    wetMass,
+    pooled,
+    residual,
+    pin,
+    roughness,
+    reached,
+    filmDelta,
+    wetDelta,
+    pooledDelta,
+  } = layer;
   const x0 = Math.max(0, active.x0 - 1);
   const x1 = Math.min(width - 1, active.x1 + 1);
   const y0 = Math.max(0, active.y0 - 1);
@@ -37,14 +48,18 @@ export function stepFlow(layer: PaintLayer, deltaSeconds: number): void {
   function reach(index: number, excess: number) {
     if (reached[index] || film[index] > residual[index] * 0.5) return;
     reached[index] = 1;
-    residual[index] *= Math.min(0.85, Math.max(0.07, TRAIL_MIN + TRAIL_GAIN * excess)) * (0.75 + 0.5 * roughness[index]);
+    residual[index] *=
+      Math.min(0.85, Math.max(0.07, TRAIL_MIN + TRAIL_GAIN * excess)) *
+      (0.75 + 0.5 * roughness[index]);
   }
 
   function level(from: number, to: number, excess: number, mobility: number, poolShare: number) {
     const targetExcess = film[to] - residual[to];
     let amount = 0;
     if (film[to] > residual[to] * 0.5) {
-      if (excess > targetExcess) amount = SPREAD * mobility * (excess - Math.max(targetExcess, 0)) * deltaSeconds * 0.5;
+      if (excess > targetExcess) {
+        amount = SPREAD * mobility * (excess - Math.max(targetExcess, 0)) * deltaSeconds * 0.5;
+      }
     } else if (excess > pin[to] * 2) {
       amount = SPREAD * mobility * (excess - pin[to] * 2) * deltaSeconds * 0.25;
     }

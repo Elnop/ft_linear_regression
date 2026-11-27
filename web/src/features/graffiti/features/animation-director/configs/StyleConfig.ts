@@ -11,4 +11,8 @@ export const STYLE = {
   speedMargin: 1.2,
 } as const;
 
-export const COLORS = { point: PALETTE.cyan, line: PALETTE.magenta, diverge: PALETTE.acid } as const;
+export const COLORS = {
+  point: PALETTE.cyan,
+  line: PALETTE.magenta,
+  diverge: PALETTE.acid,
+} as const;

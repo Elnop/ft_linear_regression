@@ -7,7 +7,9 @@ const nozzle = { x: 400, y: 300, color: '#ff2bd6', followable: true };
 
 function steps(motion: CanMotion, seconds: number, active: typeof nozzle | null) {
   let pose = motion.step(0, active, CAN_WIDTH, FLOOR);
-  for (let elapsed = 0; elapsed < seconds; elapsed += 1 / 60) pose = motion.step(1 / 60, active, CAN_WIDTH, FLOOR);
+  for (let elapsed = 0; elapsed < seconds; elapsed += 1 / 60) {
+    pose = motion.step(1 / 60, active, CAN_WIDTH, FLOOR);
+  }
   return pose;
 }
 

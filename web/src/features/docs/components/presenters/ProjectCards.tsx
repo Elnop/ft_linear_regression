@@ -19,11 +19,13 @@ export function ProjectCards() {
           {TREE}
         </pre>
         <p>
-          <code>core/</code> n'utilise aucune API Node et aucune dépendance : il tourne tel quel sous Node et dans le navigateur.
+          <code>core/</code> n'utilise aucune API Node et aucune dépendance : il tourne tel quel
+          sous Node et dans le navigateur.
         </p>
         <p>
-          Ici, rien n'est une image : le titre, les points et chaque droite sont pulvérisés en direct par un moteur de peinture (épaisseur de peinture par pixel, coulures simulées sur la rugosité du
-          mur).
+          Ici, rien n'est une image : le titre, les points et chaque droite sont pulvérisés en
+          direct par un moteur de peinture (épaisseur de peinture par pixel, coulures simulées sur
+          la rugosité du mur).
         </p>
         <p>
           <a className="documentation-link" href={REPOSITORY} target="_blank" rel="noreferrer">

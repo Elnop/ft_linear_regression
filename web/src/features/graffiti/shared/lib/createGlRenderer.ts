@@ -1,9 +1,16 @@
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
 import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
-import { PAINT_FRAGMENT_SHADER, QUAD_VERTEX_SHADER } from '@/features/graffiti/shared/configs/ShadersConfig.ts';
+import {
+  PAINT_FRAGMENT_SHADER,
+  QUAD_VERTEX_SHADER,
+} from '@/features/graffiti/shared/configs/ShadersConfig.ts';
 import type { CellRectangle } from '@/features/graffiti/shared/types/LayerTypes.ts';
 
-function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSource: string): WebGLProgram {
+function compile(
+  gl: WebGL2RenderingContext,
+  vertexSource: string,
+  fragmentSource: string,
+): WebGLProgram {
   const program = gl.createProgram();
   const shaders: WebGLShader[] = [];
   for (const [type, source] of [
@@ -14,7 +21,9 @@ function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSourc
     shaders.push(shader);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) ?? 'shader error');
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      throw new Error(gl.getShaderInfoLog(shader) ?? 'shader error');
+    }
     gl.attachShader(program, shader);
   }
   gl.bindAttribLocation(program, 0, 'aPos');
@@ -23,7 +32,9 @@ function compile(gl: WebGL2RenderingContext, vertexSource: string, fragmentSourc
     gl.detachShader(program, shader);
     gl.deleteShader(shader);
   }
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) ?? 'link error');
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    throw new Error(gl.getProgramInfoLog(program) ?? 'link error');
+  }
   return program;
 }
 
@@ -38,7 +49,11 @@ function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram) {
 type GpuLayer = { film: WebGLTexture; pool: WebGLTexture; mist: WebGLTexture };
 
 function webGl2Context(canvas: HTMLCanvasElement): WebGL2RenderingContext {
-  const gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true });
+  const gl = canvas.getContext('webgl2', {
+    alpha: true,
+    antialias: false,
+    premultipliedAlpha: true,
+  });
   if (!gl) throw new Error('WebGL2 unavailable');
   return gl;
 }
@@ -72,12 +87,28 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
     return texture;
   }
 
-  function upload(texture: WebGLTexture, stride: number, rectangle: CellRectangle, type: number, data: ArrayBufferView) {
+  function upload(
+    texture: WebGLTexture,
+    stride: number,
+    rectangle: CellRectangle,
+    type: number,
+    data: ArrayBufferView,
+  ) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_ROW_LENGTH, stride);
     gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, rectangle.x0);
     gl.pixelStorei(gl.UNPACK_SKIP_ROWS, rectangle.y0);
-    gl.texSubImage2D(gl.TEXTURE_2D, 0, rectangle.x0, rectangle.y0, rectangle.x1 - rectangle.x0 + 1, rectangle.y1 - rectangle.y0 + 1, gl.RED, type, data);
+    gl.texSubImage2D(
+      gl.TEXTURE_2D,
+      0,
+      rectangle.x0,
+      rectangle.y0,
+      rectangle.x1 - rectangle.x0 + 1,
+      rectangle.y1 - rectangle.y0 + 1,
+      gl.RED,
+      type,
+      data,
+    );
   }
 
   function free(textures: GpuLayer) {
@@ -99,7 +130,12 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
     gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
     if (!layer.filmDirty.empty) {
       const dirty = layer.filmDirty;
-      const clamped = { x0: Math.max(0, dirty.x0), y0: Math.max(0, dirty.y0), x1: Math.min(layer.filmWidth - 1, dirty.x1), y1: Math.min(layer.filmHeight - 1, dirty.y1) };
+      const clamped = {
+        x0: Math.max(0, dirty.x0),
+        y0: Math.max(0, dirty.y0),
+        x1: Math.min(layer.filmWidth - 1, dirty.x1),
+        y1: Math.min(layer.filmHeight - 1, dirty.y1),
+      };
       upload(textures.film, layer.filmWidth, clamped, gl.FLOAT, layer.film);
       upload(textures.pool, layer.filmWidth, clamped, gl.FLOAT, layer.pooled);
       dirty.reset();
@@ -116,7 +152,12 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
 
   function coverArea() {
     const rectangle = coverRectangle(wallSize.width, wallSize.height, view.width, view.height);
-    return [rectangle.x / view.width, rectangle.y / view.height, rectangle.width / view.width, rectangle.height / view.height] as const;
+    return [
+      rectangle.x / view.width,
+      rectangle.y / view.height,
+      rectangle.width / view.width,
+      rectangle.height / view.height,
+    ] as const;
   }
 
   return {
@@ -154,11 +195,22 @@ export function createGlRenderer(canvas: HTMLCanvasElement) {
       for (const layer of layers) {
         const textures = sync(layer);
         if (layer.opacity <= 0) continue;
-        for (const [unit, texture] of [wallTexture, textures.film, textures.mist, textures.pool].entries()) {
+        for (const [unit, texture] of [
+          wallTexture,
+          textures.film,
+          textures.mist,
+          textures.pool,
+        ].entries()) {
           gl.activeTexture(gl.TEXTURE0 + unit);
           gl.bindTexture(gl.TEXTURE_2D, texture);
         }
-        gl.uniform4f(paintUniform('uRect'), layer.shown.x, layer.shown.y, layer.shown.width, layer.shown.height);
+        gl.uniform4f(
+          paintUniform('uRect'),
+          layer.shown.x,
+          layer.shown.y,
+          layer.shown.width,
+          layer.shown.height,
+        );
         gl.uniform3f(paintUniform('uColor'), ...layer.shownColor());
         gl.uniform1f(paintUniform('uOpacity'), layer.opacity);
         gl.uniform1f(paintUniform('uGloss'), layer.gloss);

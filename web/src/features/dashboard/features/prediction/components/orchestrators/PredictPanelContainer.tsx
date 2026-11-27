@@ -6,5 +6,13 @@ import { useKm } from '@/features/dashboard/shared/hooks/useKm.ts';
 export function PredictPanelContainer() {
   const km = useKm();
   const { invalid, outOfRange, price } = usePrediction();
-  return <PredictPanel value={km} onChange={predictionActions.setKm} invalid={invalid} outOfRange={outOfRange} price={price} />;
+  return (
+    <PredictPanel
+      value={km}
+      onChange={predictionActions.setKm}
+      invalid={invalid}
+      outOfRange={outOfRange}
+      price={price}
+    />
+  );
 }

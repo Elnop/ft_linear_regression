@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react';
 import { CanMotion } from '@/features/graffiti/features/spray-can/lib/CanMotion.ts';
 import { drawMist } from '@/features/graffiti/features/spray-can/lib/drawMist.ts';
 import { HOLE, VIEW_WIDTH } from '@/features/graffiti/features/spray-can/configs/ShapeConfig.ts';
-import { CAN_SIZE, CAN_START } from '@/features/graffiti/features/spray-can/configs/CanSizeConfig.ts';
+import {
+  CAN_SIZE,
+  CAN_START,
+} from '@/features/graffiti/features/spray-can/configs/CanSizeConfig.ts';
 import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
 import { pixelRatio } from '@/features/graffiti/shared/lib/pixelRatio.ts';
 import { sceneStore } from '@/shared/sceneStore.ts';
@@ -20,7 +23,10 @@ export function useSprayCan(engine: PaintEngine | null) {
     const context = canvas.getContext('2d')!;
 
     const start = sceneStore.getState();
-    const motion = new CanMotion(start.width + CAN_START.offsetRight, start.height * CAN_START.heightRatio);
+    const motion = new CanMotion(
+      start.width + CAN_START.offsetRight,
+      start.height * CAN_START.heightRatio,
+    );
     let color = '';
     let misty = false;
     let last = performance.now();
@@ -39,7 +45,10 @@ export function useSprayCan(engine: PaintEngine | null) {
       const deltaSeconds = Math.min(0.05, (now - last) / 1000);
       last = now;
       const { width, height } = sceneStore.getState();
-      const canWidth = Math.max(CAN_SIZE.minimum, Math.min(CAN_SIZE.maximum, width * CAN_SIZE.sceneRatio));
+      const canWidth = Math.max(
+        CAN_SIZE.minimum,
+        Math.min(CAN_SIZE.maximum, width * CAN_SIZE.sceneRatio),
+      );
       const scale = canWidth / VIEW_WIDTH;
 
       const nozzle = activeEngine.nozzle();

@@ -43,7 +43,12 @@ export class OffscreenWall implements Surface {
     return running;
   }
 
-  fadeLayer(layer: PaintLayer, opacity: number, _durationMs: number, gray = layer.gray): Promise<void> {
+  fadeLayer(
+    layer: PaintLayer,
+    opacity: number,
+    _durationMs: number,
+    gray = layer.gray,
+  ): Promise<void> {
     layer.opacity = opacity;
     layer.gray = gray;
     return Promise.resolve();
@@ -61,7 +66,11 @@ export class OffscreenWall implements Surface {
     while (this.pending.size > 0) await Promise.all(this.pending);
     await this.slicer.pause();
     for (const layer of this.layers) {
-      for (let simulated = 0; layer.wet && simulated < SETTLE_SECONDS; simulated += MAX_DELTA_SECONDS) {
+      for (
+        let simulated = 0;
+        layer.wet && simulated < SETTLE_SECONDS;
+        simulated += MAX_DELTA_SECONDS
+      ) {
         flowLayer(layer, MAX_DELTA_SECONDS);
         if (this.slicer.due) await this.slicer.pause();
       }

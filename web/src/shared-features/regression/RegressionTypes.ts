@@ -9,7 +9,12 @@ export type RegressionState = {
   diverged: boolean;
 };
 
-export type RegressionSnapshot = { thetas: Thetas; iteration: number; metrics: Metrics; history: CostPoint[] };
+export type RegressionSnapshot = {
+  thetas: Thetas;
+  iteration: number;
+  metrics: Metrics;
+  history: CostPoint[];
+};
 
 export type RegressionActions = {
   reset: () => void;

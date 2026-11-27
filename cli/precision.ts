@@ -20,6 +20,10 @@ const meanError = mae(data, thetas);
 
 console.log(`Model: theta0=${thetas.theta0}  theta1=${thetas.theta1}`);
 console.log(`Dataset: ${datasetPath} (${data.length} samples)`);
-console.log(`R²:   ${r2(data, thetas).toFixed(4)}  (share of the price variance explained by the mileage)`);
+console.log(
+  `R²:   ${r2(data, thetas).toFixed(4)}  (share of the price variance explained by the mileage)`,
+);
 console.log(`RMSE: ${rmse(data, thetas).toFixed(2)}  (typical error, large errors weigh more)`);
-console.log(`MAE:  ${meanError.toFixed(2)}  (mean absolute error, ${((meanError / meanPrice) * 100).toFixed(1)}% of the mean price)`);
+console.log(
+  `MAE:  ${meanError.toFixed(2)}  (mean absolute error, ${((meanError / meanPrice) * 100).toFixed(1)}% of the mean price)`,
+);

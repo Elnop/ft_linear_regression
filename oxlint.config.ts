@@ -16,12 +16,25 @@ export default defineConfig({
           'error',
           {
             patterns: [
-              { regex: '^[^.]', message: 'core/ also runs in the browser: it imports no package and no node: module.' },
-              { regex: '^(\\.\\./)+(cli|web)(/|$)', message: 'core/ is the bottom layer: it never imports cli/ or web/.' },
+              {
+                regex: '^[^.]',
+                message:
+                  'core/ also runs in the browser: it imports no package and no node: module.',
+              },
+              {
+                regex: '^(\\.\\./)+(cli|web)(/|$)',
+                message: 'core/ is the bottom layer: it never imports cli/ or web/.',
+              },
             ],
           },
         ],
-        'no-restricted-globals': ['error', { name: 'process', message: 'core/ also runs in the browser: read process in cli/ and pass the value in.' }],
+        'no-restricted-globals': [
+          'error',
+          {
+            name: 'process',
+            message: 'core/ also runs in the browser: read process in cli/ and pass the value in.',
+          },
+        ],
       },
     },
   ],

@@ -1,0 +1,1700 @@
+[
+  {
+    "type": "dependency",
+    "from": "src/shared/configs/GlyphsConfig.ts",
+    "to": "src/shared/types/GeometryTypes.ts",
+    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/configs/GlyphsConfig.ts",
+    "to": "src/shared/types/TitleTypes.ts",
+    "unresolvedTo": "@/shared/types/TitleTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/configs/TypeScaleConfig.ts",
+    "to": "src/shared/types/TypeScaleTypes.ts",
+    "unresolvedTo": "@/shared/types/TypeScaleTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/applyPalette.ts",
+    "to": "src/shared/configs/PaletteConfig.ts",
+    "unresolvedTo": "@/shared/configs/PaletteConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/applyTypeScale.ts",
+    "to": "src/shared/configs/TypeScaleConfig.ts",
+    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/chartMapping.ts",
+    "to": "src/shared/types/ChartTypes.ts",
+    "unresolvedTo": "@/shared/types/ChartTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/lineSegment.ts",
+    "to": "src/shared/types/ChartTypes.ts",
+    "unresolvedTo": "@/shared/types/ChartTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/lineSegment.ts",
+    "to": "src/shared/types/GeometryTypes.ts",
+    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/sceneFor.test.ts",
+    "to": "src/shared/configs/SceneConfig.ts",
+    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/sceneFor.ts",
+    "to": "src/shared/configs/SceneConfig.ts",
+    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/sceneFor.ts",
+    "to": "src/shared/types/SceneTypes.ts",
+    "unresolvedTo": "@/shared/types/SceneTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/scrollToDocumentation.ts",
+    "to": "src/shared/configs/DocumentationConfig.ts",
+    "unresolvedTo": "@/shared/configs/DocumentationConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/smoothStroke.ts",
+    "to": "src/shared/types/GeometryTypes.ts",
+    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLayout.ts",
+    "to": "src/shared/configs/SceneConfig.ts",
+    "unresolvedTo": "@/shared/configs/SceneConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLayout.ts",
+    "to": "src/shared/configs/TitleConfig.ts",
+    "unresolvedTo": "@/shared/configs/TitleConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLayout.ts",
+    "to": "src/shared/types/GeometryTypes.ts",
+    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLayout.ts",
+    "to": "src/shared/types/TitleTypes.ts",
+    "unresolvedTo": "@/shared/types/TitleTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLetters.ts",
+    "to": "src/shared/configs/GlyphsConfig.ts",
+    "unresolvedTo": "@/shared/configs/GlyphsConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLetters.ts",
+    "to": "src/shared/types/GeometryTypes.ts",
+    "unresolvedTo": "@/shared/types/GeometryTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/titleLetters.ts",
+    "to": "src/shared/types/TitleTypes.ts",
+    "unresolvedTo": "@/shared/types/TitleTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/typeScale.test.ts",
+    "to": "src/shared/configs/TypeScaleConfig.ts",
+    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/typeScale.ts",
+    "to": "src/shared/configs/TypeScaleConfig.ts",
+    "unresolvedTo": "@/shared/configs/TypeScaleConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/typeScale.ts",
+    "to": "src/shared/types/TypeScaleTypes.ts",
+    "unresolvedTo": "@/shared/types/TypeScaleTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useKm.ts",
+    "to": "src/features/dashboard/shared/stores/predictionStore.ts",
+    "unresolvedTo": "@/features/dashboard/shared/stores/predictionStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
+    "to": "src/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
+    "to": "src/features/dashboard/shared/lib/displayableEstimate.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/displayableEstimate.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
+    "to": "src/features/dashboard/shared/lib/normalizeMileage.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/normalizeMileage.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/usePrediction.ts",
+    "to": "src/features/dashboard/shared/lib/selectUsableThetas.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/selectUsableThetas.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useView.ts",
+    "to": "src/features/dashboard/shared/DashboardTypes.ts",
+    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useView.ts",
+    "to": "src/features/dashboard/shared/lib/shownView.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/shownView.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useView.ts",
+    "to": "src/features/dashboard/shared/stores/viewStore.ts",
+    "unresolvedTo": "@/features/dashboard/shared/stores/viewStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useViewShown.ts",
+    "to": "src/features/dashboard/shared/DashboardTypes.ts",
+    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/hooks/useViewShown.ts",
+    "to": "src/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
+    "unresolvedTo": "@/features/dashboard/shared/lib/animationPlaybackSelectors.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/lib/shownView.ts",
+    "to": "src/features/dashboard/shared/DashboardTypes.ts",
+    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/stores/viewStore.ts",
+    "to": "src/features/dashboard/shared/DashboardTypes.ts",
+    "unresolvedTo": "@/features/dashboard/shared/DashboardTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/anchoredRectangle.ts",
+    "to": "src/features/graffiti/shared/types/LayerTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/computeRoughness.ts",
+    "to": "src/features/graffiti/shared/types/RoughnessTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/RoughnessTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/createGlRenderer.ts",
+    "to": "src/features/graffiti/shared/configs/ShadersConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/ShadersConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/createGlRenderer.ts",
+    "to": "src/features/graffiti/shared/types/LayerTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/flowLayer.ts",
+    "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/hexToRgb.ts",
+    "to": "src/features/graffiti/shared/types/ColorTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/ColorTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/OffscreenWall.ts",
+    "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/OffscreenWall.ts",
+    "to": "src/features/graffiti/shared/types/LayerTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/OffscreenWall.ts",
+    "to": "src/features/graffiti/shared/types/SprayTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SprayTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/OffscreenWall.ts",
+    "to": "src/features/graffiti/shared/types/SurfaceTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SurfaceTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/configs/LayerConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/LayerConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/types/LayerTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/types/RendererTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/RendererTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/types/RoughnessTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/RoughnessTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/types/SprayTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SprayTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "to": "src/features/graffiti/shared/types/SurfaceTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SurfaceTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.test.ts",
+    "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "to": "src/features/graffiti/shared/configs/FlowConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/FlowConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "to": "src/features/graffiti/shared/configs/LayerConfig.ts",
+    "unresolvedTo": "@/features/graffiti/shared/configs/LayerConfig.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "to": "src/features/graffiti/shared/types/ColorTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/ColorTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "to": "src/features/graffiti/shared/types/LayerTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/LayerTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "to": "src/features/graffiti/shared/types/RoughnessTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/RoughnessTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/random.ts",
+    "to": "src/features/graffiti/shared/types/RandomTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/RandomTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/Scheduler.test.ts",
+    "to": "src/features/graffiti/shared/types/SprayTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SprayTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/Scheduler.ts",
+    "to": "src/features/graffiti/shared/types/SprayTypes.ts",
+    "unresolvedTo": "@/features/graffiti/shared/types/SprayTypes.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/types/EngineTypes.ts",
+    "to": "src/features/graffiti/shared/lib/PaintEngine.ts",
+    "unresolvedTo": "@/features/graffiti/shared/lib/PaintEngine.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/types/RendererTypes.ts",
+    "to": "src/features/graffiti/shared/lib/createGlRenderer.ts",
+    "unresolvedTo": "@/features/graffiti/shared/lib/createGlRenderer.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/types/SprayTypes.ts",
+    "to": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "unresolvedTo": "@/features/graffiti/shared/lib/PaintLayer.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/types/SurfaceTypes.ts",
+    "to": "src/features/graffiti/shared/lib/PaintLayer.ts",
+    "unresolvedTo": "@/features/graffiti/shared/lib/PaintLayer.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import",
+      "type-only"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cross-sub-shared"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/prediction/components/presenters/WallMarker.test.tsx",
+    "to": "../node_modules/vitest-browser-react/dist/index.js",
+    "unresolvedTo": "vitest-browser-react",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/prediction/components/presenters/WallMarker.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/training/components/presenters/SkipButton.test.tsx",
+    "to": "../node_modules/vitest-browser-react/dist/index.js",
+    "unresolvedTo": "vitest-browser-react",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/training/components/presenters/SkipButton.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/views/components/presenters/ViewToggles.test.tsx",
+    "to": "../node_modules/vitest-browser-react/dist/index.js",
+    "unresolvedTo": "vitest-browser-react",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/views/components/presenters/ViewToggles.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/views/lib/axisLayout.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/features/views/lib/predictionLabel.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/lib/animationPlaybackSelectors.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/lib/formatNumber.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/lib/normalizeMileage.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/dashboard/shared/lib/shownView.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/components/presenters/DescentFigure.test.tsx",
+    "to": "../node_modules/vitest-browser-react/dist/index.js",
+    "unresolvedTo": "vitest-browser-react",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/components/presenters/DescentFigure.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/docFigures.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/nextTab.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/pick.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/scientific.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/tabFromHash.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/docs/lib/tokenize.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/lib/PaintlessDirector.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/lib/Timeline.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/lib/training.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/spray-can/lib/CanMotion.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/anchoredRectangle.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/PaintLayer.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/Scheduler.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/Slicer.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/lib/stepFlow.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/configs/SceneConfig.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/configs/TypeScaleConfig.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/lineSegment.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/sceneFor.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/lib/typeScale.test.ts",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/sceneStore.test.tsx",
+    "to": "../node_modules/vitest/dist/index.js",
+    "unresolvedTo": "vitest",
+    "dependencyTypes": [
+      "npm-dev",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "not-to-dev-dep"
+    }
+  },
+  {
+    "type": "reachability",
+    "from": "src/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
+    "to": "../node_modules/zustand/vanilla.js",
+    "rule": {
+      "severity": "error",
+      "name": "presenters-are-pure"
+    },
+    "via": [
+      {
+        "name": "src/features/graffiti/features/animation-director/lib/AnimationDirector.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import"
+        ]
+      },
+      {
+        "name": "src/features/graffiti/features/animation-director/lib/paintFinalWall.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import"
+        ]
+      },
+      {
+        "name": "src/features/graffiti/features/animation-director/lib/paintTitle.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import"
+        ]
+      },
+      {
+        "name": "src/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import",
+          "type-only"
+        ]
+      },
+      {
+        "name": "../node_modules/zustand/vanilla.js",
+        "dependencyTypes": [
+          "npm",
+          "import",
+          "type-only"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "reachability",
+    "from": "src/shared/sceneStore.test.tsx",
+    "to": "../node_modules/zustand/vanilla.js",
+    "rule": {
+      "severity": "error",
+      "name": "presenters-are-pure"
+    },
+    "via": [
+      {
+        "name": "src/shared/sceneStore.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import"
+        ]
+      },
+      {
+        "name": "../node_modules/zustand/vanilla.js",
+        "dependencyTypes": [
+          "npm",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "reachability",
+    "from": "src/shared/sceneStore.test.tsx",
+    "to": "src/shared/sceneStore.ts",
+    "rule": {
+      "severity": "error",
+      "name": "presenters-are-pure"
+    },
+    "via": [
+      {
+        "name": "src/shared/sceneStore.ts",
+        "dependencyTypes": [
+          "undetermined",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
+    "to": "src/shared-features/animation-playback/animationPlaybackStore.ts",
+    "unresolvedTo": "@/shared-features/animation-playback/animationPlaybackStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
+    "to": "src/shared-features/regression/stores/regressionStore.ts",
+    "unresolvedTo": "@/shared-features/regression/stores/regressionStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
+    "to": "src/shared/sceneStore.ts",
+    "unresolvedTo": "@/shared/sceneStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/canvas/PaintWallContainer.tsx",
+    "to": "src/features/graffiti/shared/engineStore.ts",
+    "unresolvedTo": "@/features/graffiti/shared/engineStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/features/spray-can/useSprayCan.ts",
+    "to": "src/shared/sceneStore.ts",
+    "unresolvedTo": "@/shared/sceneStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/features/graffiti/shared/useEngine.ts",
+    "to": "src/features/graffiti/shared/engineStore.ts",
+    "unresolvedTo": "@/features/graffiti/shared/engineStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared-features/animation-playback/useAnimationPlayback.ts",
+    "to": "src/shared-features/animation-playback/animationPlaybackStore.ts",
+    "unresolvedTo": "@/shared-features/animation-playback/animationPlaybackStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared-features/regression/hooks/useRegression.ts",
+    "to": "src/shared-features/regression/stores/regressionStore.ts",
+    "unresolvedTo": "@/shared-features/regression/stores/regressionStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared-features/regression/hooks/useTrainingOptions.ts",
+    "to": "src/shared-features/regression/stores/trainingOptionsStore.ts",
+    "unresolvedTo": "@/shared-features/regression/stores/trainingOptionsStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/sceneStore.test.tsx",
+    "to": "src/shared/sceneStore.ts",
+    "unresolvedTo": "@/shared/sceneStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/shared/useScene.ts",
+    "to": "src/shared/sceneStore.ts",
+    "unresolvedTo": "@/shared/sceneStore.ts",
+    "dependencyTypes": [
+      "undetermined",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "stores-in-their-folder"
+    }
+  }
+]

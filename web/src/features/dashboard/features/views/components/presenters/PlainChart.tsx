@@ -20,12 +20,33 @@ type PlainChartProps = {
   prediction: { km: number; price: number; at: Vec2 } | null;
 };
 
-export function PlainChart({ chart, width, rem, rectangle, samples, line, prediction }: PlainChartProps) {
+export function PlainChart({
+  chart,
+  width,
+  rem,
+  rectangle,
+  samples,
+  line,
+  prediction,
+}: PlainChartProps) {
   const { area } = chart;
   const fontSize = textSize('xs', width, rem);
-  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 0.625 * rem);
-  const text = prediction ? `${formatNumber(prediction.km)} km → ${formatNumber(prediction.price)} €` : '';
-  const label = prediction && predictionLabel(prediction.at, area, fontSize, text.length * fontSize * BOLD_DIGIT_MAX_ADVANCE_EM);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(
+    chart,
+    fontSize,
+    0.625 * rem,
+  );
+  const text = prediction
+    ? `${formatNumber(prediction.km)} km → ${formatNumber(prediction.price)} €`
+    : '';
+  const label =
+    prediction &&
+    predictionLabel(
+      prediction.at,
+      area,
+      fontSize,
+      text.length * fontSize * BOLD_DIGIT_MAX_ADVANCE_EM,
+    );
 
   return (
     <svg
@@ -41,7 +62,10 @@ export function PlainChart({ chart, width, rem, rectangle, samples, line, predic
           <line key={`${segment.x1}-${segment.y1}-${key}`} {...segment} />
         ))}
       </g>
-      <path className="plain-axis" d={`M${area.x} ${area.y} L${area.x} ${bottom} L${right} ${bottom}`} />
+      <path
+        className="plain-axis"
+        d={`M${area.x} ${area.y} L${area.x} ${bottom} L${right} ${bottom}`}
+      />
       <g className="plain-text">
         {kmLabels.map(({ key, text, x, y }) => (
           <text key={key} x={x} y={y} textAnchor="middle">
@@ -60,7 +84,9 @@ export function PlainChart({ chart, width, rem, rectangle, samples, line, predic
           prix (€)
         </text>
       </g>
-      {line && <line className="plain-line" x1={line[0].x} y1={line[0].y} x2={line[1].x} y2={line[1].y} />}
+      {line && (
+        <line className="plain-line" x1={line[0].x} y1={line[0].y} x2={line[1].x} y2={line[1].y} />
+      )}
       <g className="plain-points">
         {samples.map((sample, index) => (
           <circle key={index} cx={chart.x(sample.km)} cy={chart.y(sample.price)} r={4.5} />

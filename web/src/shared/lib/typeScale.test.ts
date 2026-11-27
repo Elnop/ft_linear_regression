@@ -7,7 +7,9 @@ const steps = TEXT_STEPS;
 function evaluate(css: string, viewportWidth: number, rem: number): number {
   const match = /^clamp\(([\d.]+)rem, ([\d.]+)vw \+ ([\d.]+)rem, ([\d.]+)rem\)$/u.exec(css);
   if (!match) throw new Error(`unexpected clamp: ${css}`);
-  const [min = Number.NaN, vw = Number.NaN, offset = Number.NaN, max = Number.NaN] = match.slice(1).map(Number);
+  const [min = Number.NaN, vw = Number.NaN, offset = Number.NaN, max = Number.NaN] = match
+    .slice(1)
+    .map(Number);
   return Math.min(Math.max(min * rem, (vw / 100) * viewportWidth + offset * rem), max * rem);
 }
 
@@ -40,7 +42,9 @@ describe('typeScale', () => {
   it('every step can double under zoom (WCAG 1.4.4)', () => {
     for (const step of steps) {
       for (let width = 320; width <= 3840; width += 80) {
-        expect(5 * textSize(step, width / 5, 16)).toBeGreaterThanOrEqual(2 * textSize(step, width, 16));
+        expect(5 * textSize(step, width / 5, 16)).toBeGreaterThanOrEqual(
+          2 * textSize(step, width, 16),
+        );
       }
     }
   });

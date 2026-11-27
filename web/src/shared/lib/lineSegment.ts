@@ -32,13 +32,19 @@ function clipSegment(start: Vec2, end: Vec2, rectangle: Rectangle): [Vec2, Vec2]
   return [at(entry), at(exit)];
 }
 
-export function lineSegment(thetas: Thetas, chart: ChartMapping, clip: Rectangle): [Vec2, Vec2] | null {
+export function lineSegment(
+  thetas: Thetas,
+  chart: ChartMapping,
+  clip: Rectangle,
+): [Vec2, Vec2] | null {
   if (!hasFiniteThetas(thetas)) return null;
   const { kmMin, kmMax } = chart.domain;
   const start = chart.point(kmMin, estimatePrice(thetas, kmMin));
   const end = chart.point(kmMax, estimatePrice(thetas, kmMax));
   if (![start.x, start.y, end.x, end.y].every(Number.isFinite)) return null;
   const segment = clipSegment(start, end, clip);
-  if (!segment || Math.hypot(segment[1].x - segment[0].x, segment[1].y - segment[0].y) < 4) return null;
+  if (!segment || Math.hypot(segment[1].x - segment[0].x, segment[1].y - segment[0].y) < 4) {
+    return null;
+  }
   return segment;
 }

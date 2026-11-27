@@ -20,7 +20,11 @@ export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) 
   const small = width < COMPACT_BELOW_REM * rem;
   const fontSize = textSize('sm', width, rem);
   const titleSize = textSize('base', width, rem);
-  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(chart, fontSize, 0.75 * rem);
+  const { bottom, right, priceGrid, kmGrid, kmLabels, priceLabels } = axisLayout(
+    chart,
+    fontSize,
+    0.75 * rem,
+  );
   return (
     <motion.svg
       className="wall-axes"
@@ -39,7 +43,10 @@ export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) 
         ))}
       </g>
       <g className="wall-axes-chalk" strokeWidth="2.5" strokeLinecap="round" fill="none">
-        <path d={`M${area.x} ${area.y - 10} L${area.x} ${bottom} L${right + 10} ${bottom}`} strokeDasharray="18 5 4 5" />
+        <path
+          d={`M${area.x} ${area.y - 10} L${area.x} ${bottom} L${right + 10} ${bottom}`}
+          strokeDasharray="18 5 4 5"
+        />
         {kmGrid.map(({ key, x1 }) => (
           <line key={key} x1={x1} x2={x1} y1={bottom} y2={bottom + 7} />
         ))}
@@ -58,10 +65,20 @@ export function WallAxes({ chart, width, height, rem, visible }: WallAxesProps) 
             {text}
           </text>
         ))}
-        <text x={area.x + 0.75 * rem} y={bottom - 0.75 * rem} textAnchor="start" fontSize={titleSize}>
+        <text
+          x={area.x + 0.75 * rem}
+          y={bottom - 0.75 * rem}
+          textAnchor="start"
+          fontSize={titleSize}
+        >
           kilométrage (km) →
         </text>
-        <text x={area.x - 0.75 * rem} y={area.y - (small ? 1 : 1.375) * rem} textAnchor="start" fontSize={titleSize}>
+        <text
+          x={area.x - 0.75 * rem}
+          y={area.y - (small ? 1 : 1.375) * rem}
+          textAnchor="start"
+          fontSize={titleSize}
+        >
           ↑ prix (€)
         </text>
       </g>

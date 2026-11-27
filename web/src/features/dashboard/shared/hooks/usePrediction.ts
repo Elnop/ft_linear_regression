@@ -10,7 +10,13 @@ import { useAnimationPlayback } from '@/shared-features/animation-playback/useAn
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { useScene } from '@/shared/useScene.ts';
 
-type Prediction = { invalid: boolean; outOfRange: boolean; mileage: number | null; price: number | null; at: Vec2 | null };
+type Prediction = {
+  invalid: boolean;
+  outOfRange: boolean;
+  mileage: number | null;
+  price: number | null;
+  at: Vec2 | null;
+};
 
 export function usePrediction(): Prediction {
   const km = useKm();

@@ -4,7 +4,10 @@ import { Scheduler } from '@/features/graffiti/shared/lib/Scheduler.ts';
 import type { Job } from '@/features/graffiti/shared/types/SprayTypes.ts';
 
 function layer() {
-  return new PaintLayer({ color: '#ff2bd6', bounds: { x: 0, y: 0, width: 8, height: 8 } }, { at: () => 0.5 });
+  return new PaintLayer(
+    { color: '#ff2bd6', bounds: { x: 0, y: 0, width: 8, height: 8 } },
+    { at: () => 0.5 },
+  );
 }
 
 function job(owner: PaintLayer, seconds: number): Job & { elapsed: number } {

@@ -14,7 +14,9 @@ test('the padding is bounded in rem', () => {
 });
 
 test('the chart leaves room for a larger aside', () => {
-  expect(sceneFor(1600, 900, 20).chart.area.width).toBeLessThan(sceneFor(1600, 900, 16).chart.area.width);
+  expect(sceneFor(1600, 900, 20).chart.area.width).toBeLessThan(
+    sceneFor(1600, 900, 16).chart.area.width,
+  );
 });
 
 test('scene.rem echoes its input', () => {
@@ -28,10 +30,13 @@ const MEASURED_HEAD_PX: [width: number, rem: number, head: number][] = [
   [1920, 20, 765],
 ];
 
-test.each(MEASURED_HEAD_PX)('at %ipx with a %ipx root, the painted title ends left of the header', (width, rem, head) => {
-  const { title, padding } = sceneFor(width, 900, rem);
-  const right = title.rectangle.x + title.rectangle.width;
-  expect(right).toBeLessThan(width - padding - head);
-  expect(right).toBeLessThan(width - padding - HEAD_WIDTH_REM * rem);
-  expect(head).toBeLessThanOrEqual(HEAD_WIDTH_REM * rem);
-});
+test.each(MEASURED_HEAD_PX)(
+  'at %ipx with a %ipx root, the painted title ends left of the header',
+  (width, rem, head) => {
+    const { title, padding } = sceneFor(width, 900, rem);
+    const right = title.rectangle.x + title.rectangle.width;
+    expect(right).toBeLessThan(width - padding - head);
+    expect(right).toBeLessThan(width - padding - HEAD_WIDTH_REM * rem);
+    expect(head).toBeLessThanOrEqual(HEAD_WIDTH_REM * rem);
+  },
+);

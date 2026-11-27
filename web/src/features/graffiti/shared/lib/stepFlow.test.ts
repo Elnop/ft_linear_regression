@@ -13,11 +13,17 @@ function totals(layer: PaintLayer) {
 }
 
 test('a heavy blob drips down without creating or losing paint', () => {
-  const layer = new PaintLayer({ color: '#ff2bd6', bounds: { x: 0, y: 0, width: 80, height: 240 } }, { at: () => 0.5 });
+  const layer = new PaintLayer(
+    { color: '#ff2bd6', bounds: { x: 0, y: 0, width: 80, height: 240 } },
+    { at: () => 0.5 },
+  );
   layer.depositSplat(40, 40, 14, 6000);
   const before = totals(layer);
   for (let step = 0; step < 240; step++) stepFlow(layer, 1 / 120);
   const after = totals(layer);
-  expect(Math.abs(after.mass - before.mass) / before.mass < 1e-4, `${before.mass} → ${after.mass}`).toBe(true);
+  expect(
+    Math.abs(after.mass - before.mass) / before.mass < 1e-4,
+    `${before.mass} → ${after.mass}`,
+  ).toBe(true);
   expect(after.centerY > before.centerY, `${before.centerY} → ${after.centerY}`).toBe(true);
 });

@@ -12,7 +12,10 @@ export function DatasetPanelContainer() {
   const visible = useViewShown('dataset');
   const thetas = useRegression(selectUsableThetas);
   const samples = useRegression((state) => state.samples);
-  const rows = samples.map((sample) => ({ ...sample, estimate: displayableEstimate(thetas, sample.km) }));
+  const rows = samples.map((sample) => ({
+    ...sample,
+    estimate: displayableEstimate(thetas, sample.km),
+  }));
 
   return (
     <OverlayPanel visible={visible} rectangle={overlayRectangle(chart, width)}>

@@ -41,7 +41,13 @@ export function DashboardLayout({ documentation }: DashboardLayoutProps) {
         <Reveal visible={visible} from={{ y: -12 }} className="dashboard-head-slot">
           <HeadBar chips={<HeaderChipsContainer />} toggles={<ViewTogglesContainer />} />
         </Reveal>
-        <Reveal visible={visible} from={{ x: 24 }} as="aside" label="Prédiction et précision" className="dashboard-aside">
+        <Reveal
+          visible={visible}
+          from={{ x: 24 }}
+          as="aside"
+          label="Prédiction et précision"
+          className="dashboard-aside"
+        >
           <PredictPanelContainer />
           <CostPanelContainer />
           <PrecisionPanelContainer />

@@ -20,7 +20,9 @@ async function renderedLabelSizes(width: number): Promise<number[]> {
 
 test('the figure labels never render under 12px', async () => {
   for (const width of [280, 520]) {
-    for (const size of await renderedLabelSizes(width)) expect(size).toBeGreaterThanOrEqual(12 - 0.01);
+    for (const size of await renderedLabelSizes(width)) {
+      expect(size).toBeGreaterThanOrEqual(12 - 0.01);
+    }
   }
 });
 
@@ -29,7 +31,9 @@ test('the figure labels follow the root font size', async () => {
   const previous = root.style.fontSize;
   root.style.fontSize = '20px';
   try {
-    for (const size of await renderedLabelSizes(520)) expect(size).toBeGreaterThanOrEqual(15 - 0.01);
+    for (const size of await renderedLabelSizes(520)) {
+      expect(size).toBeGreaterThanOrEqual(15 - 0.01);
+    }
   } finally {
     root.style.fontSize = previous;
   }

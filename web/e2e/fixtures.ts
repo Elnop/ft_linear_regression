@@ -9,8 +9,12 @@ export async function openApp(page: Page): Promise<void> {
 }
 
 export async function settled(page: Page): Promise<void> {
-  await page.waitForFunction(() => !document.querySelector('.button-train')?.hasAttribute('disabled'));
-  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== 'running'));
+  await page.waitForFunction(
+    () => !document.querySelector('.button-train')?.hasAttribute('disabled'),
+  );
+  await page.waitForFunction(() =>
+    document.getAnimations().every((animation) => animation.playState !== 'running'),
+  );
 }
 
 export async function axeViolations(page: Page): Promise<string[]> {
@@ -43,7 +47,12 @@ export async function overflowingText(page: Page, containers: string): Promise<s
           continue;
         }
         const box = child.getBoundingClientRect();
-        if (box.left < outer.left - 1 || box.right > outer.right + 1 || box.top < outer.top - 1 || box.bottom > outer.bottom + 1) {
+        if (
+          box.left < outer.left - 1 ||
+          box.right > outer.right + 1 ||
+          box.top < outer.top - 1 ||
+          box.bottom > outer.bottom + 1
+        ) {
           found.push(`${selector} > ${label(child)}: ${text}`);
         }
       }
@@ -63,7 +72,12 @@ export async function controlsOutOfReach(page: Page): Promise<string[]> {
     const fits = await control.evaluate((element) => {
       const box = element.getBoundingClientRect();
       const { clientWidth, clientHeight } = document.documentElement;
-      return box.left >= -1 && box.top >= -1 && box.right <= clientWidth + 1 && box.bottom <= clientHeight + 1;
+      return (
+        box.left >= -1 &&
+        box.top >= -1 &&
+        box.right <= clientWidth + 1 &&
+        box.bottom <= clientHeight + 1
+      );
     });
     if (!fits) {
       out.push(

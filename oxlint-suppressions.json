@@ -1,0 +1,22 @@
+{
+  "core/gradientStep.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "core/metrics.ts": {
+    "function-size/max-functions": {
+      "count": 1
+    }
+  },
+  "core/parseDataset.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "core/trainSteps.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  }
+}

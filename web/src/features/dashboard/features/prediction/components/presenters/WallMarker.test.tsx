@@ -5,18 +5,35 @@ import { applyTypeScale } from '@/shared/lib/applyTypeScale.ts';
 
 const root = document.documentElement;
 
-const SPACES: Record<number, string> = { 6: '0.375rem', 8: '0.5rem', 10: '0.625rem', 12: '0.75rem', 16: '1rem' };
+const SPACES: Record<number, string> = {
+  6: '0.375rem',
+  8: '0.5rem',
+  10: '0.625rem',
+  12: '0.75rem',
+  16: '1rem',
+};
 
 beforeAll(() => {
   applyTypeScale(root);
-  for (const [step, value] of Object.entries(SPACES)) root.style.setProperty(`--space-${step}`, value);
+  for (const [step, value] of Object.entries(SPACES)) {
+    root.style.setProperty(`--space-${step}`, value);
+  }
 });
 afterEach(() => {
   root.style.fontSize = '';
 });
 
 async function renderMarker(props: { x: number; width: number; rem: number; price: number }) {
-  const screen = await render(<WallMarker at={{ x: props.x, y: 500 }} price={props.price} axisY={700} width={props.width} height={900} rem={props.rem} />);
+  const screen = await render(
+    <WallMarker
+      at={{ x: props.x, y: 500 }}
+      price={props.price}
+      axisY={700}
+      width={props.width}
+      height={900}
+      rem={props.rem}
+    />,
+  );
   const sticker = screen.container.querySelector<HTMLElement>('.price-sticker');
   if (!sticker) throw new Error('the sticker is not rendered');
   return sticker;

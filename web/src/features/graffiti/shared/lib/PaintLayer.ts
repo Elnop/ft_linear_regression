@@ -1,7 +1,12 @@
 import { hexToRgb } from '@/features/graffiti/shared/lib/hexToRgb.ts';
 import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
 import type { Rgb } from '@/features/graffiti/shared/types/ColorTypes.ts';
-import type { Anchor, CellRectangle, LayerOptions, Regions } from '@/features/graffiti/shared/types/LayerTypes.ts';
+import type {
+  Anchor,
+  CellRectangle,
+  LayerOptions,
+  Regions,
+} from '@/features/graffiti/shared/types/LayerTypes.ts';
 import { anchoredRectangle } from '@/features/graffiti/shared/lib/anchoredRectangle.ts';
 
 import { mulberry32, noise2D } from '@/features/graffiti/shared/lib/random.ts';
@@ -72,7 +77,10 @@ export class PaintLayer {
   readonly mistDirty = new DirtyRectangle();
   gloss = 1;
 
-  constructor({ bounds, color, opacity = 1, z = 0, anchor }: LayerOptions & { bounds: Rectangle }, roughness: Roughness) {
+  constructor(
+    { bounds, color, opacity = 1, z = 0, anchor }: LayerOptions & { bounds: Rectangle },
+    roughness: Roughness,
+  ) {
     const x = Math.floor(bounds.x / CELL) * CELL;
     const y = Math.floor(bounds.y / CELL) * CELL;
     this.filmWidth = Math.max(2, Math.ceil((bounds.x + bounds.width - x) / CELL));
@@ -110,8 +118,14 @@ export class PaintLayer {
         const patchNoise = patch((originX + i) / 3, (originY + j) / 3);
         const k = j * this.filmWidth + i;
         this.roughness[k] = cellRoughness;
-        this.residual[k] = RESIDUAL * (0.7 + 0.5 * cellRoughness + 0.3 * patchNoise + 0.1 * (random() - 0.5));
-        this.pin[k] = PIN * (0.3 + 1.1 * cellRoughness * cellRoughness + 1.4 * patchNoise * patchNoise * patchNoise + 0.4 * random() * random());
+        this.residual[k] =
+          RESIDUAL * (0.7 + 0.5 * cellRoughness + 0.3 * patchNoise + 0.1 * (random() - 0.5));
+        this.pin[k] =
+          PIN *
+          (0.3 +
+            1.1 * cellRoughness * cellRoughness +
+            1.4 * patchNoise * patchNoise * patchNoise +
+            0.4 * random() * random());
       }
     }
   }
@@ -121,7 +135,9 @@ export class PaintLayer {
     const filmY = (pointY - this.bounds.y) / CELL - 0.5;
     const cellX = Math.floor(filmX);
     const cellY = Math.floor(filmY);
-    if (cellX < 0 || cellY < 0 || cellX >= this.filmWidth - 1 || cellY >= this.filmHeight - 1) return;
+    if (cellX < 0 || cellY < 0 || cellX >= this.filmWidth - 1 || cellY >= this.filmHeight - 1) {
+      return;
+    }
     const fractionX = filmX - cellX;
     const fractionY = filmY - cellY;
     const density = mass / (CELL * CELL);
@@ -146,7 +162,8 @@ export class PaintLayer {
     let total = 0;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const distanceSquared = ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
+        const distanceSquared =
+          ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
         if (distanceSquared < 1) total += 1 - distanceSquared;
       }
     }
@@ -154,7 +171,8 @@ export class PaintLayer {
     const density = mass / (CELL * CELL) / total;
     for (let y = y0; y <= y1; y++) {
       for (let x = x0; x <= x1; x++) {
-        const distanceSquared = ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
+        const distanceSquared =
+          ((x - centerX) ** 2 + (y - centerY) ** 2) / (cellRadius * cellRadius);
         if (distanceSquared >= 1) continue;
         this.add(y * this.filmWidth + x, density * (1 - distanceSquared));
       }
@@ -193,7 +211,9 @@ export class PaintLayer {
   }
 
   follow(regions: Regions): void {
-    this.shown = this.anchor ? anchoredRectangle(this.bounds, this.anchor, regions[this.anchor.region]) : this.bounds;
+    this.shown = this.anchor
+      ? anchoredRectangle(this.bounds, this.anchor, regions[this.anchor.region])
+      : this.bounds;
   }
 
   shownColor(): Rgb {

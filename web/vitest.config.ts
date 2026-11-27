@@ -7,13 +7,21 @@ export default mergeConfig(
   defineConfig({
     test: {
       projects: [
-        { extends: true, test: { name: 'unit', environment: 'node', include: ['src/**/*.test.ts'], css: true } },
+        {
+          extends: true,
+          test: { name: 'unit', environment: 'node', include: ['src/**/*.test.ts'], css: true },
+        },
         {
           extends: true,
           test: {
             name: 'component',
             include: ['src/**/*.test.tsx'],
-            browser: { enabled: true, provider: playwright(), headless: true, instances: [{ browser: 'chromium' }] },
+            browser: {
+              enabled: true,
+              provider: playwright(),
+              headless: true,
+              instances: [{ browser: 'chromium' }],
+            },
           },
         },
       ],

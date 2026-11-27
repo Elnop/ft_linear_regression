@@ -18,7 +18,9 @@ function lastStep(samples: Sample[], options: TrainOptions): TrainStep {
 function leastSquares(samples: Sample[]): Thetas {
   const meanKm = mean(samples.map((sample) => sample.km));
   const meanPrice = mean(samples.map((sample) => sample.price));
-  const covariance = mean(samples.map((sample) => (sample.km - meanKm) * (sample.price - meanPrice)));
+  const covariance = mean(
+    samples.map((sample) => (sample.km - meanKm) * (sample.price - meanPrice)),
+  );
   const variance = mean(samples.map((sample) => (sample.km - meanKm) ** 2));
   const theta1 = covariance / variance;
   return { theta0: meanPrice - theta1 * meanKm, theta1 };
@@ -46,6 +48,9 @@ export function docFigures(samples: Sample[]): DocFigures {
     exampleMileage: EXAMPLE_MILEAGE,
     examplePrice: estimatePrice(descent, EXAMPLE_MILEAGE),
     divergentLearningRate: DIVERGENT_LEARNING_RATE,
-    divergenceIteration: lastStep(samples, { ...DEFAULT_TRAIN, learningRate: DIVERGENT_LEARNING_RATE }).iteration,
+    divergenceIteration: lastStep(samples, {
+      ...DEFAULT_TRAIN,
+      learningRate: DIVERGENT_LEARNING_RATE,
+    }).iteration,
   };
 }

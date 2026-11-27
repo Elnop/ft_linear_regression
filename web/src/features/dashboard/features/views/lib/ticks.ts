@@ -9,8 +9,14 @@ function range(from: number, to: number, step: number): number[] {
   return out;
 }
 
-export function chartTicks({ kmMin, kmMax, priceMin, priceMax }: ChartDomain): { kmTicks: number[]; priceTicks: number[] } {
-  return { kmTicks: range(kmMin, kmMax, KM_STEP), priceTicks: range(priceMin, priceMax, PRICE_STEP) };
+export function chartTicks({ kmMin, kmMax, priceMin, priceMax }: ChartDomain): {
+  kmTicks: number[];
+  priceTicks: number[];
+} {
+  return {
+    kmTicks: range(kmMin, kmMax, KM_STEP),
+    priceTicks: range(priceMin, priceMax, PRICE_STEP),
+  };
 }
 
 export function formatTick(value: number) {

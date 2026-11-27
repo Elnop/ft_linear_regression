@@ -8,6 +8,8 @@ export function errorMessage(error: unknown): string {
 }
 
 export function errorCode(error: unknown): string {
-  if (error instanceof Error && 'code' in error && typeof error.code === 'string') return error.code;
+  if (error instanceof Error && 'code' in error && typeof error.code === 'string') {
+    return error.code;
+  }
   return errorMessage(error);
 }

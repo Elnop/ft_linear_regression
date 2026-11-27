@@ -1,7 +1,11 @@
 import { PALETTE } from '@/shared/configs/PaletteConfig.ts';
 import type { Surface } from '@/features/graffiti/shared/types/SurfaceTypes.ts';
 import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { dotJob, moveJob, pathJob } from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
+import {
+  dotJob,
+  moveJob,
+  pathJob,
+} from '@/features/graffiti/features/animation-director/lib/nozzle.ts';
 import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
 import { mulberry32, randomSeed, seedFrom } from '@/features/graffiti/shared/lib/random.ts';
 import { readRem } from '@/shared/lib/readRem.ts';
@@ -19,13 +23,24 @@ export async function paintTitle(engine: Surface, run: Run): Promise<PaintLayer>
   const { rectangle, em } = layout;
   const layer = engine.createLayer({
     color: PALETTE.magenta,
-    bounds: { x: rectangle.x - em, y: Math.max(0, rectangle.y - em), width: rectangle.width + 2 * em, height: rectangle.height + 5 * em },
+    bounds: {
+      x: rectangle.x - em,
+      y: Math.max(0, rectangle.y - em),
+      width: rectangle.width + 2 * em,
+      height: rectangle.height + 5 * em,
+    },
     anchor: { region: 'title', from: rectangle },
   });
 
   const width = Math.max(TITLE_PAINT.width.minimum, TITLE_PAINT.width.strokeRatio * STROKE * em);
-  const pace = Math.min(TITLE_PAINT.pace.maximum, Math.max(TITLE_PAINT.pace.minimum, em * TITLE_PAINT.pace.perEm));
-  const speed = Math.min(TITLE_PAINT.sweep.maximum, Math.max(TITLE_PAINT.sweep.minimum, em * TITLE_PAINT.sweep.perEm));
+  const pace = Math.min(
+    TITLE_PAINT.pace.maximum,
+    Math.max(TITLE_PAINT.pace.minimum, em * TITLE_PAINT.pace.perEm),
+  );
+  const speed = Math.min(
+    TITLE_PAINT.sweep.maximum,
+    Math.max(TITLE_PAINT.sweep.minimum, em * TITLE_PAINT.sweep.perEm),
+  );
   const lead = TITLE_PAINT.leadEm * em;
   function sweep(from: Vec2, to: Vec2) {
     return engine.spray(moveJob(layer, [from, to], speed), run.instant);
@@ -49,9 +64,24 @@ export async function paintTitle(engine: Surface, run: Run): Promise<PaintLayer>
 
 const STAMP_SPEED = 1e5;
 
-function stamp(engine: Surface, layer: PaintLayer, stroke: Stroke, width: number, pace: number, random: () => number): void {
+function stamp(
+  engine: Surface,
+  layer: PaintLayer,
+  stroke: Stroke,
+  width: number,
+  pace: number,
+  random: () => number,
+): void {
   if (stroke.dot) {
-    void engine.spray(dotJob(layer, stroke.points[0], { width: width * TITLE_PAINT.dot.widthRatio, duration: TITLE_PAINT.dot.duration, load: stroke.thickness, seed: seedFrom(random) }), true);
+    void engine.spray(
+      dotJob(layer, stroke.points[0], {
+        width: width * TITLE_PAINT.dot.widthRatio,
+        duration: TITLE_PAINT.dot.duration,
+        load: stroke.thickness,
+        seed: seedFrom(random),
+      }),
+      true,
+    );
     return;
   }
   const heavy = stroke.thickness > TITLE_PAINT.heavyThickness;
@@ -75,7 +105,11 @@ function letterLines(lines: TitleLine[]): Line[] {
     const letters = letterStrokes.map((strokes): Letter => {
       const xs = strokes.flatMap((stroke) => stroke.points.map((point) => point.x));
       const ys = strokes.flatMap((stroke) => stroke.points.map((point) => point.y));
-      return { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: (Math.min(...ys) + Math.max(...ys)) / 2, strokes };
+      return {
+        x: (Math.min(...xs) + Math.max(...xs)) / 2,
+        y: (Math.min(...ys) + Math.max(...ys)) / 2,
+        strokes,
+      };
     });
     return { letters, y: fitLine(letters) };
   });

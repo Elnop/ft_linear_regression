@@ -2,14 +2,21 @@ import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
 import { coverRectangle } from '@/features/graffiti/shared/lib/coverRectangle.ts';
 import type { Roughness } from '@/features/graffiti/shared/types/RoughnessTypes.ts';
 
-function boxBlur(source: Float32Array, width: number, height: number, radius: number): Float32Array {
+function boxBlur(
+  source: Float32Array,
+  width: number,
+  height: number,
+  radius: number,
+): Float32Array {
   const horizontal = new Float32Array(source.length);
   const blurred = new Float32Array(source.length);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       let sum = 0;
       let count = 0;
-      for (let i = Math.max(0, x - radius); i <= Math.min(width - 1, x + radius); i++, count++) sum += source[y * width + i];
+      for (let i = Math.max(0, x - radius); i <= Math.min(width - 1, x + radius); i++, count++) {
+        sum += source[y * width + i];
+      }
       horizontal[y * width + x] = sum / count;
     }
   }
@@ -17,14 +24,21 @@ function boxBlur(source: Float32Array, width: number, height: number, radius: nu
     for (let x = 0; x < width; x++) {
       let sum = 0;
       let count = 0;
-      for (let j = Math.max(0, y - radius); j <= Math.min(height - 1, y + radius); j++, count++) sum += horizontal[j * width + x];
+      for (let j = Math.max(0, y - radius); j <= Math.min(height - 1, y + radius); j++, count++) {
+        sum += horizontal[j * width + x];
+      }
       blurred[y * width + x] = sum / count;
     }
   }
   return blurred;
 }
 
-export function computeRoughness(image: HTMLImageElement, cssWidth: number, cssHeight: number, scale: number): Roughness {
+export function computeRoughness(
+  image: HTMLImageElement,
+  cssWidth: number,
+  cssHeight: number,
+  scale: number,
+): Roughness {
   const width = Math.max(1, Math.ceil(cssWidth * scale));
   const height = Math.max(1, Math.ceil(cssHeight * scale));
   const context = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
@@ -38,7 +52,8 @@ export function computeRoughness(image: HTMLImageElement, cssWidth: number, cssH
     const pixels = context.getImageData(0, 0, width, height).data;
     const luminance = new Float32Array(width * height);
     for (let i = 0; i < width * height; i++) {
-      luminance[i] = (0.3 * pixels[i * 4] + 0.59 * pixels[i * 4 + 1] + 0.11 * pixels[i * 4 + 2]) / 255;
+      luminance[i] =
+        (0.3 * pixels[i * 4] + 0.59 * pixels[i * 4 + 1] + 0.11 * pixels[i * 4 + 2]) / 255;
     }
     const blurred = boxBlur(luminance, width, height, 3);
     let mean = 0;

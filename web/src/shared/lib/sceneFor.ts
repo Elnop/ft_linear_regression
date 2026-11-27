@@ -9,8 +9,14 @@ const CHART_TO_FLOW_REM = 4.375;
 export function sceneFor(width: number, height: number, rem: number): Scene {
   const wide = width >= WIDE_EM * rem;
   const padding = Math.min(2.75 * rem, Math.max(rem, width * 0.03));
-  const chart = chartMapping(wide ? width - ASIDE_WIDTH_REM * rem - padding - ASIDE_GAP_REM * rem : width, height, rem);
+  const chart = chartMapping(
+    wide ? width - ASIDE_WIDTH_REM * rem - padding - ASIDE_GAP_REM * rem : width,
+    height,
+    rem,
+  );
   const title = titleLayout(width, height, padding, chart.area.y, rem);
-  const dashboardTop = wide ? title.rectangle.y : chart.area.y + chart.area.height + CHART_TO_FLOW_REM * rem;
+  const dashboardTop = wide
+    ? title.rectangle.y
+    : chart.area.y + chart.area.height + CHART_TO_FLOW_REM * rem;
   return { width, height, rem, wide, padding, chart, title, dashboardTop };
 }

@@ -7,5 +7,14 @@ export function WallMarkerContainer() {
   const { width, height, rem, chart } = useScene();
   const { price, at } = usePrediction();
   const visible = useViewShown('wall');
-  return <WallMarker at={visible ? at : null} price={price} axisY={chart.area.y + chart.area.height} width={width} height={height} rem={rem} />;
+  return (
+    <WallMarker
+      at={visible ? at : null}
+      price={price}
+      axisY={chart.area.y + chart.area.height}
+      width={width}
+      height={height}
+      rem={rem}
+    />
+  );
 }

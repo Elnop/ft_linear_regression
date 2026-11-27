@@ -19,12 +19,27 @@ export function DocumentationPage() {
   const { tab, selectTab, tabRefs, onTabKeyDown } = useDocumentationTabs();
 
   return (
-    <section id={DOCUMENTATION_ID} className="documentation glass" aria-labelledby="documentation-title" tabIndex={-1}>
+    <section
+      id={DOCUMENTATION_ID}
+      className="documentation glass"
+      aria-labelledby="documentation-title"
+      tabIndex={-1}
+    >
       <span className="tape documentation-tape-left" />
       <span className="tape documentation-tape-right" />
       <DocumentationHeader />
-      <DocumentationTabs tab={tab} tabRefs={tabRefs} onSelect={selectTab} onKeyDown={onTabKeyDown} />
-      <div role="tabpanel" id={`documentation-panel-${tab}`} aria-labelledby={`documentation-tab-${tab}`} className="documentation-panel">
+      <DocumentationTabs
+        tab={tab}
+        tabRefs={tabRefs}
+        onSelect={selectTab}
+        onKeyDown={onTabKeyDown}
+      />
+      <div
+        role="tabpanel"
+        id={`documentation-panel-${tab}`}
+        aria-labelledby={`documentation-tab-${tab}`}
+        className="documentation-panel"
+      >
         <StepsPanel {...PANELS[tab]} prefix={tab} />
       </div>
     </section>

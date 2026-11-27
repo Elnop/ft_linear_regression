@@ -7,7 +7,12 @@ export type Surface = {
   readonly height: number;
   createLayer: (options: LayerOptions) => PaintLayer;
   spray: (job: Job, instant?: boolean) => Promise<void>;
-  fadeLayer: (layer: PaintLayer, opacity: number, durationMs: number, gray?: number) => Promise<void>;
+  fadeLayer: (
+    layer: PaintLayer,
+    opacity: number,
+    durationMs: number,
+    gray?: number,
+  ) => Promise<void>;
   removeLayer: (layer: PaintLayer) => void;
   clear: (keep?: PaintLayer[]) => void;
 };

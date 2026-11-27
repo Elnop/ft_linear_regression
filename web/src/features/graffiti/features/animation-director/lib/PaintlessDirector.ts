@@ -1,8 +1,14 @@
 import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
-import type { Director, DirectorDependencies } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type {
+  Director,
+  DirectorDependencies,
+} from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
 import { resetStores } from '@/features/graffiti/features/animation-director/lib/resetStores.ts';
-import { runTraining, stepAt } from '@/features/graffiti/features/animation-director/lib/training.ts';
+import {
+  runTraining,
+  stepAt,
+} from '@/features/graffiti/features/animation-director/lib/training.ts';
 
 export class PaintlessDirector implements Director {
   private readonly dependencies: DirectorDependencies;
@@ -21,7 +27,12 @@ export class PaintlessDirector implements Director {
 
   start(): void {
     this.show(DEFAULT_TRAIN);
-    this.dependencies.playback.setState({ phase: 'interactive', visiblePoints: this.dependencies.samples.length, trainingActive: false, painted: false });
+    this.dependencies.playback.setState({
+      phase: 'interactive',
+      visiblePoints: this.dependencies.samples.length,
+      trainingActive: false,
+      painted: false,
+    });
   }
 
   destroy(): void {

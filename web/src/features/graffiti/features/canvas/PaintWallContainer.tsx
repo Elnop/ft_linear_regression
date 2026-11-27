@@ -34,7 +34,11 @@ export function PaintWallContainer() {
 
   return (
     <>
-      <div className="wall-backdrop" aria-hidden="true" style={{ backgroundImage: `url(${wallUrl})` }} />
+      <div
+        className="wall-backdrop"
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${wallUrl})` }}
+      />
       <div ref={box} className="wall-paint" aria-hidden="true" />
     </>
   );

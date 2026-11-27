@@ -6,9 +6,13 @@ import { errorCode, fail } from './process.ts';
 const MODEL_PATH = new URL('../model.json', import.meta.url);
 
 function isThetas(value: unknown): value is Thetas {
-  if (typeof value !== 'object' || value === null || !('theta0' in value) || !('theta1' in value)) return false;
+  if (typeof value !== 'object' || value === null || !('theta0' in value) || !('theta1' in value)) {
+    return false;
+  }
   const { theta0, theta1 } = value;
-  return typeof theta0 === 'number' && typeof theta1 === 'number' && hasFiniteThetas({ theta0, theta1 });
+  return (
+    typeof theta0 === 'number' && typeof theta1 === 'number' && hasFiniteThetas({ theta0, theta1 })
+  );
 }
 
 export function readModel(): Thetas | null {
@@ -31,7 +35,10 @@ export function readModel(): Thetas | null {
 
 export function writeModel(thetas: Thetas): void {
   try {
-    writeFileSync(MODEL_PATH, JSON.stringify({ theta0: thetas.theta0, theta1: thetas.theta1 }, null, 2) + '\n');
+    writeFileSync(
+      MODEL_PATH,
+      JSON.stringify({ theta0: thetas.theta0, theta1: thetas.theta1 }, null, 2) + '\n',
+    );
   } catch (error) {
     fail(`cannot write model: ${errorCode(error)}`);
   }

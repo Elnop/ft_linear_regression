@@ -1,15 +1,26 @@
 import { expect, test } from 'vitest';
 
-const stylesheets: Record<string, string> = import.meta.glob('/src/**/*.css', { query: '?raw', import: 'default', eager: true });
-const components: Record<string, string> = import.meta.glob(['/src/features/{dashboard,docs}/**/*.tsx', '!/src/**/*.test.tsx'], {
+const stylesheets: Record<string, string> = import.meta.glob('/src/**/*.css', {
   query: '?raw',
   import: 'default',
   eager: true,
 });
+const components: Record<string, string> = import.meta.glob(
+  ['/src/features/{dashboard,docs}/**/*.tsx', '!/src/**/*.test.tsx'],
+  {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  },
+);
 
 test('no stylesheet sizes text in px or bare vw', () => {
   const declarations = Object.entries(stylesheets).flatMap(([name, css]) =>
-    [...css.matchAll(/(?:^|[;{\s])(font-size|font)\s*:\s*([^;}]+)/gu)].map((match) => ({ name, property: match[1], value: match[2].trim() })),
+    [...css.matchAll(/(?:^|[;{\s])(font-size|font)\s*:\s*([^;}]+)/gu)].map((match) => ({
+      name,
+      property: match[1],
+      value: match[2].trim(),
+    })),
   );
   expect(declarations.length).toBeGreaterThan(0);
   for (const { name, property, value } of declarations) {

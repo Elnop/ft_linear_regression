@@ -15,7 +15,12 @@ export function OverlayPanel({ visible, rectangle, children }: OverlayPanelProps
       {visible && (
         <motion.div
           className="overlay-panel"
-          style={{ left: rectangle.x, top: rectangle.y, width: rectangle.width, height: rectangle.height }}
+          style={{
+            left: rectangle.x,
+            top: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height,
+          }}
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}

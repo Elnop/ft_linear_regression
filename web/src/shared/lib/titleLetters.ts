@@ -9,7 +9,10 @@ const COS = Math.cos(TILT);
 const SIN = Math.sin(TILT);
 const TRACKING = 0.14;
 
-export function titleLetters(layout: Pick<TitleLayout, 'em' | 'lines'>, random: () => number): TitleLine[] {
+export function titleLetters(
+  layout: Pick<TitleLayout, 'em' | 'lines'>,
+  random: () => number,
+): TitleLine[] {
   const { em } = layout;
   const lines = layout.lines.map((line) => {
     let pen = 0;
@@ -21,9 +24,16 @@ export function titleLetters(layout: Pick<TitleLayout, 'em' | 'lines'>, random: 
       function place(point: Vec2): Vec2 {
         const localX = pen + point.x * scale - (point.y * scale + lift) * lean;
         const localY = point.y * scale + lift;
-        return { x: line.x + (localX * COS - localY * SIN) * em, y: line.baseline + (localX * SIN + localY * COS) * em };
+        return {
+          x: line.x + (localX * COS - localY * SIN) * em,
+          y: line.baseline + (localX * SIN + localY * COS) * em,
+        };
       }
-      const strokes = glyph.strokes.map((knots): Stroke => ({ points: smoothStroke(knots).map(place), thickness: 1.05, dot: false }));
+      const strokes = glyph.strokes.map((knots): Stroke => ({
+        points: smoothStroke(knots).map(place),
+        thickness: 1.05,
+        dot: false,
+      }));
       if (glyph.dot) strokes.push({ points: [place(glyph.dot)], thickness: 2, dot: true });
       pen += glyph.advance + TRACKING;
       return strokes;
