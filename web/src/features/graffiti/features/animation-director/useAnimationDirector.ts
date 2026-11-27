@@ -7,9 +7,9 @@ import type {
   Director,
   DirectorDependencies,
 } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import { animationPlaybackStore } from '@/shared-features/animation-playback/animationPlaybackStore.ts';
-import { DATA } from '@/shared-features/regression/configs/DatasetConfig.ts';
-import { regressionActions } from '@/shared-features/regression/stores/regressionStore.ts';
+import { animationPlaybackStore } from '@/shared/animation-playback/animationPlaybackStore.ts';
+import { DATA } from '@/shared/regression/configs/DatasetConfig.ts';
+import { regressionActions } from '@/shared/regression/stores/regressionStore.ts';
 import { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion.ts';
 import { sceneStore } from '@/shared/sceneStore.ts';
 

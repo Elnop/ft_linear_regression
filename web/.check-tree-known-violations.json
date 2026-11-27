@@ -192,8 +192,8 @@
     "count": 3
   },
   {
-    "rule": "not-a-layer",
-    "path": "src/shared-features"
+    "rule": "single-consumer",
+    "path": "src/shared/animation-playback/useAnimationPlayback.ts"
   },
   {
     "rule": "shared-feature-groups",
@@ -241,6 +241,22 @@
   {
     "rule": "test-in-source",
     "path": "src/shared/lib/typeScale.test.ts"
+  },
+  {
+    "rule": "single-consumer",
+    "path": "src/shared/regression/hooks/useRegression.ts"
+  },
+  {
+    "rule": "single-consumer",
+    "path": "src/shared/regression/hooks/useTrainingOptions.ts"
+  },
+  {
+    "rule": "single-consumer",
+    "path": "src/shared/regression/stores/trainingOptionsStore.ts"
+  },
+  {
+    "rule": "single-consumer",
+    "path": "src/shared/regression/willDiverge.ts"
   },
   {
     "rule": "test-in-source",

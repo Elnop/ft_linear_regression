@@ -1546,34 +1546,6 @@
   {
     "type": "dependency",
     "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
-    "to": "src/shared-features/animation-playback/animationPlaybackStore.ts",
-    "unresolvedTo": "@/shared-features/animation-playback/animationPlaybackStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
-    "to": "src/shared-features/regression/stores/regressionStore.ts",
-    "unresolvedTo": "@/shared-features/regression/stores/regressionStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/graffiti/features/animation-director/useAnimationDirector.ts",
     "to": "src/shared/sceneStore.ts",
     "unresolvedTo": "@/shared/sceneStore.ts",
     "dependencyTypes": [
@@ -1618,48 +1590,6 @@
     "from": "src/features/graffiti/shared/useEngine.ts",
     "to": "src/features/graffiti/shared/engineStore.ts",
     "unresolvedTo": "@/features/graffiti/shared/engineStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared-features/animation-playback/useAnimationPlayback.ts",
-    "to": "src/shared-features/animation-playback/animationPlaybackStore.ts",
-    "unresolvedTo": "@/shared-features/animation-playback/animationPlaybackStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared-features/regression/hooks/useRegression.ts",
-    "to": "src/shared-features/regression/stores/regressionStore.ts",
-    "unresolvedTo": "@/shared-features/regression/stores/regressionStore.ts",
-    "dependencyTypes": [
-      "undetermined",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "stores-in-their-folder"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/shared-features/regression/hooks/useTrainingOptions.ts",
-    "to": "src/shared-features/regression/stores/trainingOptionsStore.ts",
-    "unresolvedTo": "@/shared-features/regression/stores/trainingOptionsStore.ts",
     "dependencyTypes": [
       "undetermined",
       "import"

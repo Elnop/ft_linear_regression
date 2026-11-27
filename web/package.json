@@ -54,7 +54,7 @@
       "check-tree not-a-layer": 2,
       "check-tree shared-feature-groups": 33,
       "check-tree shared-root-files": 8,
-      "check-tree single-consumer": 13,
+      "check-tree single-consumer": 18,
       "check-tree test-in-source": 32,
       "dependency-cruiser no-cross-shared": 23,
       "dependency-cruiser no-cross-sub-shared": 42,

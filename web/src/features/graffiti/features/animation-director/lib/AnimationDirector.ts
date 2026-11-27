@@ -14,9 +14,9 @@ import type {
   SceneSource,
   Training,
 } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import type { AnimationPlaybackState } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
+import type { AnimationPlaybackState } from '@/shared/animation-playback/AnimationPlaybackTypes.ts';
 import { WallPainter } from '@/features/graffiti/features/animation-director/lib/WallPainter.ts';
-import { IDLE_PLAYBACK } from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
+import { IDLE_PLAYBACK } from '@/shared/animation-playback/AnimationPlaybackStateConfig.ts';
 import { Timeline } from '@/features/graffiti/features/animation-director/lib/Timeline.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
 import { BUILD_SLICE_MS } from '@/features/graffiti/features/animation-director/configs/BuildConfig.ts';

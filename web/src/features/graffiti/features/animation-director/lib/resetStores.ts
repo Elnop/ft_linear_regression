@@ -2,7 +2,7 @@ import type { DirectorDependencies } from '@/features/graffiti/features/animatio
 import {
   IDLE_PLAYBACK,
   IDLE_PLAYBACK_ACTIONS,
-} from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
+} from '@/shared/animation-playback/AnimationPlaybackStateConfig.ts';
 
 export function resetStores({ playback, regression }: DirectorDependencies): void {
   playback.setState({ ...IDLE_PLAYBACK, ...IDLE_PLAYBACK_ACTIONS });

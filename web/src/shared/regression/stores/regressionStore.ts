@@ -1,11 +1,11 @@
 import { createStore } from 'zustand/vanilla';
-import { DATA } from '@/shared-features/regression/configs/DatasetConfig.ts';
-import { IDLE_REGRESSION } from '@/shared-features/regression/configs/RegressionStateConfig.ts';
+import { DATA } from '@/shared/regression/configs/DatasetConfig.ts';
+import { IDLE_REGRESSION } from '@/shared/regression/configs/RegressionStateConfig.ts';
 import type {
   RegressionActions,
   RegressionSnapshot,
   RegressionState,
-} from '@/shared-features/regression/RegressionTypes.ts';
+} from '@/shared/regression/RegressionTypes.ts';
 
 export const regressionStore = createStore<RegressionState>()(() => ({
   samples: DATA,
