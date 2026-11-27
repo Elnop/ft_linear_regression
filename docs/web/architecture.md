@@ -17,7 +17,7 @@ web/src/
 ├── features/
 │   ├── graffiti/                       le mur peint
 │   │   ├── GraffitiLayout.tsx          assemble les sous-features et lance l'animation
-│   │   ├── shared/                     moteur de peinture (PaintEngine, OffscreenWall, Scheduler, PaintLayer), engineStore, aléatoire
+│   │   ├── shared/                     paint-engine (PaintEngine, Scheduler, PaintLayer, engineStore, aléatoire) et logo
 │   │   └── features/
 │   │       ├── canvas/                 PaintWallContainer : crée le moteur et le publie
 │   │       ├── animation-director/     enchaîne titre, points et droites, sans interface
@@ -25,25 +25,28 @@ web/src/
 │   │       └── stickers/               les autocollants
 │   ├── dashboard/                      l'interface posée sur le mur
 │   │   ├── components/                 DashboardLayout, HeadBar, Reveal
-│   │   ├── shared/                     kilométrage et prédiction, vue affichée, style des panneaux, formatage
+│   │   ├── shared/                     dashboard-state (kilométrage, vue affichée, lecture de l'animation et de la régression), formatting, panels (style des panneaux)
 │   │   └── features/
 │   │       ├── training/               Taguer, effacer, learning rate, Passer
 │   │       ├── views/                  boutons GRAPHE et DATA, et les vues qu'ils affichent (axes du mur, graphe, dataset)
 │   │       ├── prediction/             champ kilométrage et marqueur du prix sur le mur
 │   │       └── regression-readout/     θ et itération, coût, précision (lecture seule)
 │   └── docs/                           documentation intégrée (contenu, onglets)
-├── shared-features/                    l'état métier que plusieurs features lisent ou écrivent
-│   ├── regression/                     dataset, θ, métriques, historique du coût, divergence, learning rate
-│   └── animation-playback/             où en est l'animation : phase, points visibles, entraînement en cours, actions
-└── shared/                             code sans métier utilisé partout : la scène (mise en page, repère du graphe, titre)
+└── shared/                             un dossier par concept, utilisé par plusieurs features
+    ├── regression/                     dataset, θ, métriques, historique du coût, divergence, learning rate
+    ├── animation-playback/             où en est l'animation : phase, points visibles, entraînement en cours, actions
+    ├── scene/                          la scène : mise en page, repère du graphe, titre, taille de la racine
+    ├── type-scale/                     les niveaux de texte fluides
+    ├── palette/                        les couleurs de la peinture, posées sur :root
+    ├── scroll/                         défilement doux, mouvement réduit
+    └── documentation/                  l'identifiant de la section de documentation
 ```
 
-Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `web/src/app/` → `web/src/features/` → `web/src/shared-features/` → `web/src/shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
+Le code est rangé en couches, et une couche n'importe que les couches en dessous d'elle : `web/src/app/` → `web/src/features/` → `web/src/shared/`. Le principe vient de Feature-Sliced Design, mais on n'en garde que les couches : les dossiers à l'intérieur gardent leurs noms React.
 
 - Une feature range ses sous-features dans son propre dossier `features/`, à côté de son `shared/` et de ses dossiers techniques, comme `web/src/` le fait pour les features. Ce qui sert à plusieurs sous-features va dans le `shared/` de la feature.
-- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `web/src/shared-features/` : graffiti écrit `web/src/shared-features/regression` et `web/src/shared-features/animation-playback` pendant l'animation, et le dashboard les lit.
+- Une feature n'importe jamais une autre feature. Ce que deux features partagent descend dans `web/src/shared/` : graffiti écrit `web/src/shared/regression` et `web/src/shared/animation-playback` pendant l'animation, et le dashboard les lit.
 - Un état n'importe pas un autre état. Le lien entre l'animation et la régression est fait par le director de graffiti.
-- `src/shared/` ne contient aucun état métier, seulement du code transverse.
 
 La racine d'une feature assemble ses sous-features, et `App.tsx` n'utilise que ces assemblages :
 
@@ -54,7 +57,7 @@ Les types de résultat partagés avec la CLI (`Metrics`, `CostPoint`) sont dans 
 
 ## La scène
 
-La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height, rem)` (`web/src/shared/lib/sceneFor.ts`) renvoie la scène, où `Scene.rem` est la taille de la racine : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. `web/src/shared/sceneStore.ts` est le seul code qui lit la taille de la fenêtre : la largeur sans la scrollbar (`clientWidth`, comme le canvas fixe), la hauteur avec `innerHeight` (qui suit la barre d'adresse sur mobile). `rem` vient de `readRem()` (`web/src/shared/lib/readRem.ts`). Il écoute `resize` et observe aussi `<html>`, dont la largeur change sans événement `resize` quand une scrollbar apparaît. Il recalcule au plus une fois par frame, et ne publie une nouvelle scène que si la taille ou `rem` a vraiment changé. Une taille de police changée dans le navigateur ne déclenche aucun événement : une sonde invisible (`height: 1rem`) est observée, et sa hauteur détecte le changement. Les composants la lisent avec `useScene()`, la brume de la bombe s'y abonne, et le director, qui n'est pas un composant, lit la scène du store qu'il reçoit. Quand `rem` change, `AnimationDirector` re-ancre le mur peint, comme pour un changement de taille de fenêtre.
+La géométrie de la page est calculée à un seul endroit. `sceneFor(width, height, rem)` (`web/src/shared/scene/lib/sceneFor.ts`) renvoie la scène, où `Scene.rem` est la taille de la racine : marges, mode large ou étroit, repère du graphe, rectangle et lignes du titre, haut du dashboard. `web/src/shared/scene/sceneStore.ts` est le seul code qui lit la taille de la fenêtre : la largeur sans la scrollbar (`clientWidth`, comme le canvas fixe), la hauteur avec `innerHeight` (qui suit la barre d'adresse sur mobile). `rem` vient de `readRem()` (`web/src/shared/scene/lib/readRem.ts`). Il écoute `resize` et observe aussi `<html>`, dont la largeur change sans événement `resize` quand une scrollbar apparaît. Il recalcule au plus une fois par frame, et ne publie une nouvelle scène que si la taille ou `rem` a vraiment changé. Une taille de police changée dans le navigateur ne déclenche aucun événement : une sonde invisible (`height: 1rem`) est observée, et sa hauteur détecte le changement. Les composants la lisent avec `useScene()`, la brume de la bombe s'y abonne, et le director, qui n'est pas un composant, lit la scène du store qu'il reçoit. Quand `rem` change, `AnimationDirector` re-ancre le mur peint, comme pour un changement de taille de fenêtre.
 
 Les deux vues du graphe (les axes posés sur le mur et le graphe sur fond uni du bouton GRAPHE) partagent `axisLayout` (`web/src/features/dashboard/features/views/lib/axisLayout.ts`) : à partir du repère, il calcule les lignes de grille et la position des graduations. Chaque vue garde son style.
 
@@ -99,7 +102,7 @@ Un dossier de catégorie qui ne contient qu'un fichier disparaît et le fichier 
 - Un store suit la même forme partout : `xStore.ts` exporte le store et ses actions (`xActions`), et un hook `useX.ts` le lit.
 - Les props d'un composant `X` ont un type nommé `XProps`, jamais un objet écrit dans la signature.
 
-La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `@brutalway/oxlint-config-typescript` et `@brutalway/oxlint-config-react`, le nom des fichiers et la forme des stores par `@brutalway/eslint-plugin-file-named-after-export` et `@brutalway/eslint-plugin-store-layout`, le contenu de `styles/`, `types/` et `configs/` par alint, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
+La place des types et des constantes du tableau ci-dessus et le typage des props sont vérifiés par `@brutalway/oxlint-config-typescript` et `@brutalway/oxlint-config-react`, le nom des fichiers et la forme des stores par `@brutalway/eslint-plugin-file-named-after-export` et `@brutalway/eslint-plugin-store-layout`, l'absence de commentaires par `eslint-plugin-no-comments`, les `index.ts` et un `types.ts` nu par `eslint-plugin-check-file` (voir [verifications.md](verifications.md)).
 
 Tous les imports passent par un alias, même entre voisins : `@/` pour `web/src`, `@core/` pour `core/`, `@dataset` pour `data.csv`. Oxlint refuse `./` et `../`.
 
@@ -109,15 +112,15 @@ L'état partagé vit dans des stores Zustand, un par domaine, chacun avec un seu
 
 | Store | Contenu | Écrit par |
 |---|---|---|
-| `web/src/features/graffiti/shared/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
-| `web/src/shared/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
-| `web/src/shared-features/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
-| `web/src/shared-features/regression/stores/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
-| `web/src/shared-features/regression/stores/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
-| `web/src/features/dashboard/shared/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
-| `web/src/features/dashboard/shared/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
+| `web/src/features/graffiti/shared/paint-engine/engineStore.ts` | le moteur de peinture, ou son échec | `PaintWallContainer` (`engineActions`) |
+| `web/src/shared/scene/sceneStore.ts` | la scène calculée pour la taille de la fenêtre | l'écouteur `resize` et l'observateur de `<html>` |
+| `web/src/shared/animation-playback/animationPlaybackStore.ts` | phase, points visibles, entraînement en cours, mur peint ou non, actions | le director actif |
+| `web/src/shared/regression/regressionStore.ts` | dataset, θ, itération, métriques, historique du coût, divergence | le director actif, à travers les `regressionActions` qu'il reçoit |
+| `web/src/features/dashboard/features/training/trainingOptionsStore.ts` | learning rate et avertissement de divergence | le slider du dashboard (`setLearningRate`) |
+| `web/src/features/dashboard/shared/dashboard-state/stores/predictionStore.ts` | kilométrage saisi | le champ de prédiction (`predictionActions`) |
+| `web/src/features/dashboard/shared/dashboard-state/stores/viewStore.ts` | vue affichée (mur, graphe, données) | les boutons GRAPHE et DATA (`viewActions`) |
 
-Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `web/src/features/dashboard/shared/lib/`.
+Les composants lisent les états avec `useAnimationPlayback`, `useRegression` et `useTrainingOptions`, les stores du dashboard avec `useKm` et `useView`, le moteur avec `useEngine`. Les sélecteurs du dashboard (`selectIntro`, `selectCanSkip`, `selectUsableThetas`...) sont dans `web/src/features/dashboard/shared/dashboard-state/lib/`.
 
 Le dashboard lit `selectCanSkip` pour afficher *Passer* pendant l'intro et pendant un entraînement relancé. `useView` ne renvoie pas toujours la vue choisie : quand le director annonce qu'il ne peint pas (`painted: false`, posé par `PaintlessDirector`), la vue « mur » est remplacée par le graphe (`shownView`).
 

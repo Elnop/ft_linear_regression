@@ -1,7 +1,13 @@
-import { gaussian } from '@/features/graffiti/shared/lib/random.ts';
-import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
+import { gaussian } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
+import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
 
-export function drawMist(context: CanvasRenderingContext2D, from: Vec2, to: Vec2, color: string, canWidth: number) {
+export function drawMist(
+  context: CanvasRenderingContext2D,
+  from: Vec2,
+  to: Vec2,
+  color: string,
+  canWidth: number,
+) {
   const glow = context.createRadialGradient(to.x, to.y, 0, to.x, to.y, canWidth * 0.28);
   glow.addColorStop(0, `${color}38`);
   glow.addColorStop(1, `${color}00`);
@@ -12,7 +18,12 @@ export function drawMist(context: CanvasRenderingContext2D, from: Vec2, to: Vec2
     const progress = Math.random();
     const spread = progress * canWidth * 0.07;
     context.globalAlpha = 0.25 + 0.4 * (1 - progress);
-    context.fillRect(from.x + (to.x - from.x) * progress + gaussian(Math.random) * spread, from.y + (to.y - from.y) * progress + gaussian(Math.random) * spread, 1.2, 1.2);
+    context.fillRect(
+      from.x + (to.x - from.x) * progress + gaussian(Math.random) * spread,
+      from.y + (to.y - from.y) * progress + gaussian(Math.random) * spread,
+      1.2,
+      1.2,
+    );
   }
   context.globalAlpha = 1;
 }

@@ -1,0 +1,427 @@
+{
+  "src/features/dashboard/components/DashboardLayout.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/components/presenters/Reveal.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/prediction/components/orchestrators/WallMarkerContainer.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/prediction/components/presenters/PredictPanel.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/prediction/components/presenters/WallMarker.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/regression-readout/components/presenters/CostPanel.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 3
+    },
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/training/components/orchestrators/ControlBarContainer.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/training/components/presenters/ControlBar.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/orchestrators/DatasetPanelContainer.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/orchestrators/PlainChartContainer.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/presenters/DatasetPanel.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "react/no-array-index-key": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/presenters/PlainChart.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 1
+    },
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "react/no-array-index-key": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/presenters/ViewToggles.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/components/presenters/WallAxes.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/features/views/lib/axisLayout.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/dashboard/shared/formatting/formatNumber.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/DocumentationPage.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/presenters/Code.tsx": {
+    "react/no-array-index-key": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/presenters/DescentFigure.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 1
+    },
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/presenters/ProjectCards.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/presenters/SourcesCard.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/components/presenters/TableOfContents.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/content/CodeContent.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "src/features/docs/content/theory/MathsContent.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 6
+    }
+  },
+  "src/features/docs/content/theory/ProjectContent.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 8
+    }
+  },
+  "src/features/docs/content/theory/RegressionContent.tsx": {
+    "component-roles/no-restricted-syntax": {
+      "count": 4
+    }
+  },
+  "src/features/docs/lib/docFigures.ts": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/docs/lib/tokenize.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/animation-director/lib/WallPainter.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/animation-director/lib/nozzle.ts": {
+    "function-size/max-functions": {
+      "count": 1
+    },
+    "function-size/max-variables": {
+      "count": 4
+    },
+    "max-lines-per-function": {
+      "count": 4
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/animation-director/lib/paintTitle.ts": {
+    "function-size/max-variables": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 2
+    },
+    "max-nested-callbacks": {
+      "count": 2
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/animation-director/lib/training.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/canvas/PaintWallContainer.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/spray-can/components/SprayCanArt.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/spray-can/lib/CanMotion.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "sonarjs/cognitive-complexity": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/spray-can/lib/drawMist.ts": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/spray-can/useSprayCan.ts": {
+    "function-size/max-variables": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 3
+    }
+  },
+  "src/features/graffiti/features/stickers/components/StickersContainer.tsx": {
+    "react/no-array-index-key": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/components/presenters/CarArt.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/components/presenters/DescentArt.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "react/no-array-index-key": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/components/presenters/NorminetteArt.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/components/presenters/PiscineArt.tsx": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/components/presenters/Sticker.tsx": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/lib/damage.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/features/stickers/lib/placeStickers.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/PaintEngine.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/PaintLayer.ts": {
+    "function-size/max-variables": {
+      "count": 4
+    },
+    "max-lines-per-function": {
+      "count": 2
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/Scheduler.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/computeRoughness.ts": {
+    "function-size/max-variables": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 2
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/createGlRenderer.ts": {
+    "function-size/max-variables": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 4
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/random.ts": {
+    "function-size/max-functions": {
+      "count": 1
+    },
+    "function-size/max-variables": {
+      "count": 1
+    }
+  },
+  "src/features/graffiti/shared/paint-engine/lib/stepFlow.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 2
+    },
+    "sonarjs/cognitive-complexity": {
+      "count": 1
+    }
+  },
+  "src/shared/scene/lib/chartMapping.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/shared/scene/lib/lineSegment.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/shared/scene/lib/smoothStroke.ts": {
+    "function-size/max-variables": {
+      "count": 1
+    },
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "src/shared/scene/lib/titleLayout.ts": {
+    "function-size/max-variables": {
+      "count": 2
+    },
+    "max-lines-per-function": {
+      "count": 1
+    },
+    "max-params": {
+      "count": 1
+    }
+  },
+  "src/shared/scene/lib/titleLetters.ts": {
+    "max-lines-per-function": {
+      "count": 1
+    }
+  },
+  "test/e2e/fixtures.ts": {
+    "function-size/max-functions": {
+      "count": 1
+    }
+  }
+}

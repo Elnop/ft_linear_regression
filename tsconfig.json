@@ -1,4 +1,0 @@
-{
-  "extends": "@brutalway/tsconfig/node.json",
-  "include": ["core", "cli", "oxlint.config.ts"]
-}

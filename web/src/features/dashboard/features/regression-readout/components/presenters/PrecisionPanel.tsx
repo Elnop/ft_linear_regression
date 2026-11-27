@@ -1,5 +1,5 @@
-import { formatNumber } from '@/features/dashboard/shared/lib/formatNumber.ts';
-import '@/features/dashboard/shared/shared.css';
+import { formatNumber } from '@/features/dashboard/shared/formatting/formatNumber.ts';
+import '@/features/dashboard/shared/panels/panels.css';
 import '@/features/dashboard/features/regression-readout/regression-readout.css';
 
 type PrecisionPanelProps = {

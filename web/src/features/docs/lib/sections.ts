@@ -1,5 +1,5 @@
 import type { DocStep, TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
-import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
+import { DOCUMENTATION_ID } from '@/shared/documentation/DocumentationConfig.ts';
 
 export function stepId(prefix: string, index: number) {
   return `${DOCUMENTATION_ID}-${prefix}-${index + 1}`;

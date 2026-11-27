@@ -1,6 +1,6 @@
-import type { View } from '@/features/dashboard/shared/DashboardTypes.ts';
+import type { View } from '@/features/dashboard/shared/dashboard-state/DashboardTypes.ts';
 import '@/features/dashboard/features/views/styles/view-toggles.css';
-import '@/features/dashboard/shared/shared.css';
+import '@/features/dashboard/shared/panels/panels.css';
 
 type ViewTogglesProps = {
   view: View;
@@ -8,15 +8,42 @@ type ViewTogglesProps = {
 };
 
 const TOGGLES = [
-  { view: 'chart', label: 'GRAPHE', title: 'Afficher le graphe en version lisible', icon: 'M4 4v16h16M8 15l4-4 3 3 5-6' },
-  { view: 'dataset', label: 'DATA', title: 'Afficher le dataset', icon: 'M4 5h16M4 12h16M4 19h16M10 5v14' },
+  {
+    view: 'chart',
+    label: 'GRAPHE',
+    title: 'Afficher le graphe en version lisible',
+    icon: 'M4 4v16h16M8 15l4-4 3 3 5-6',
+  },
+  {
+    view: 'dataset',
+    label: 'DATA',
+    title: 'Afficher le dataset',
+    icon: 'M4 5h16M4 12h16M4 19h16M10 5v14',
+  },
 ] as const;
 
 export function ViewToggles({ view, onToggle }: ViewTogglesProps) {
   return TOGGLES.map((toggle) => (
-    <button key={toggle.view} type="button" className="head-button view-toggle glass dashboard-hit" aria-pressed={view === toggle.view} onClick={() => onToggle(toggle.view)} title={toggle.title}>
+    <button
+      key={toggle.view}
+      type="button"
+      className="head-button view-toggle glass dashboard-hit"
+      aria-pressed={view === toggle.view}
+      onClick={() => onToggle(toggle.view)}
+      title={toggle.title}
+    >
       {toggle.label}
-      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        viewBox="0 0 24 24"
+        width="14"
+        height="14"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d={toggle.icon} />
       </svg>
     </button>

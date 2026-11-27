@@ -8,6 +8,6 @@
 .wall-stickers svg {
   position: absolute;
   overflow: visible;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 2px 2px var(--black-55));
   user-select: none;
 }

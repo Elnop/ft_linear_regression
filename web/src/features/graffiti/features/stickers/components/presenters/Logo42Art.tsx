@@ -1,5 +1,5 @@
 import { STICKER_PAPER } from '@/features/graffiti/features/stickers/configs/PaperConfig.ts';
-import { LOGO_42 } from '@/features/graffiti/shared/configs/LogoConfig.ts';
+import { LOGO_42 } from '@/features/graffiti/shared/logo/LogoConfig.ts';
 
 export function Logo42Art() {
   return (

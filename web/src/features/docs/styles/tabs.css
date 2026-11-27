@@ -8,7 +8,7 @@
   padding: 0 1.375rem;
   border-radius: var(--space-12);
   border: 1px solid var(--glass-line);
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--black-28);
   color: var(--ink-dimmed);
   cursor: pointer;
   font: 700 var(--text-sm) var(--monospace);

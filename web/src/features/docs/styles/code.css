@@ -1,12 +1,12 @@
 .documentation-code {
-  --syntax-number: #ffb86b;
-  --syntax-call: #8fd0ff;
+  --syntax-number: var(--amber);
+  --syntax-call: var(--sky);
   margin: 0;
   padding: 1.125rem var(--space-20);
   border-radius: var(--space-12);
   overflow-x: auto;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--black-50);
+  border: 1px solid var(--white-08);
   font: var(--text-sm)/1.6 var(--monospace);
   color: var(--ink);
   tab-size: 2;

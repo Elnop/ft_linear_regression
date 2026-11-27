@@ -6,7 +6,6 @@
 ft_linear_regression/
 ├── data.csv                  # dataset fourni (km,price)
 ├── package.json              # workspace npm, scripts train / predict / web / build
-├── tsconfig.json             # typecheck de core/ et cli/
 ├── core/                     # calcul pur, partagé entre CLI et web
 │   ├── types/CoreTypes.ts    # Sample, Thetas, TrainOptions, TrainStep
 │   ├── configs/TrainingConfig.ts # réglages par défaut (lr 0.5, 10 000 itérations), partagés CLI / web
@@ -55,21 +54,20 @@ Le sujet interdit les bibliothèques qui font le travail (`numpy.polyfit`, etc.)
 
 ## TypeScript sans build
 
-Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans `tsconfig.json` :
+Node ≥ 26 exécute les fichiers `.ts` directement, en retirant les annotations de type. Il n'y a donc pas d'étape de compilation pour la CLI. Ça impose deux contraintes, vérifiées par `erasableSyntaxOnly` dans la config TypeScript du web, qui type `core/` :
 
 - pas de syntaxe TS qui génère du code (`enum`, `namespace`, propriétés de paramètres de constructeur) ;
 - les imports locaux finissent par `.ts` (`import { … } from './types/CoreTypes.ts'`).
 
-`npm run typecheck` vérifie les types de `core/`, `cli/` et `web/`.
+`npm run check` vérifie les types du web, de `core/` (que le web importe) et des tests, par `npm run typecheck -w web`. `cli/` n'est pas typé.
 
 ## Tests et vérifications
 
-`core/` n'a pas de tests. `npm run check` lance alint (`.alint.yml`), qui vérifie que chaque chemin, lien et ancre cité dans `docs/` et le README existe encore, et knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les tests unitaires du web tournent avec Vitest, chacun à côté du fichier qu'il teste dans `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
+`core/` n'a pas de tests. `npm run check` lance les contrôles du web, dont knip, qui refuse un export que personne n'importe, un fichier mort et une dépendance inutilisée ou non déclarée. Les tests unitaires du web tournent avec Vitest, chacun dans `web/test/unit/`, au chemin du fichier qu'il teste sous `web/src/` (plan d'entraînement animé, `Timeline`, `Scheduler`, `PaintlessDirector`, mouvement de la bombe, sélecteurs, géométrie du graphe, extraction du code affiché dans la doc). Vitest reprend les alias de `web/vite.config.ts`. Le détail est dans [web/verifications.md](web/verifications.md).
 
 ```
 npm test            # tests du web
-npm run typecheck   # types de core/, cli/ et web/
-npm run check       # Oxlint et tsc sur core/ et cli/, chemins, liens et ancres de la doc, exports inutiles, puis le check du web
+npm run check       # tous les contrôles du web : format, types, lint, styles, imports, arborescence, doublons, exports inutiles
 ```
 
 Le workflow de déploiement lance `npm run check` et `npm test` avant le build (`check` contient déjà le typecheck).

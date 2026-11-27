@@ -1,0 +1,68 @@
+[
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
+    "to": "src/features/graffiti/features/animation-director/lib/wallRegions.ts",
+    "unresolvedTo": "@/features/graffiti/features/animation-director/lib/wallRegions.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
+    "to": "src/features/graffiti/shared/paint-engine/lib/PaintEngine.ts",
+    "unresolvedTo": "@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/features/animation-director/lib/AnimationDirector.test.tsx",
+    "to": "src/shared/scene/lib/sceneFor.ts",
+    "unresolvedTo": "@/shared/scene/lib/sceneFor.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/shared/paint-engine/lib/PaintLayer.test.ts",
+    "to": "src/features/graffiti/shared/paint-engine/lib/stepFlow.ts",
+    "unresolvedTo": "@/features/graffiti/shared/paint-engine/lib/stepFlow.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/shared/paint-engine/lib/Scheduler.test.ts",
+    "to": "src/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
+    "unresolvedTo": "@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "test/unit/features/graffiti/shared/paint-engine/lib/stepFlow.test.ts",
+    "to": "src/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
+    "unresolvedTo": "@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts",
+    "dependencyTypes": ["undetermined", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "unit-test-own-source"
+    }
+  }
+]

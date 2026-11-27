@@ -3,7 +3,7 @@ import { hasDiverged } from '@core/hasDiverged.ts';
 import { trainSteps } from '@core/trainSteps.ts';
 import type { CostPoint, Sample, TrainOptions, TrainStep } from '@core/types/CoreTypes.ts';
 import type { Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import type { RegressionSnapshot } from '@/shared-features/regression/RegressionTypes.ts';
+import type { RegressionSnapshot } from '@/shared/regression/RegressionTypes.ts';
 
 const DENSE_HISTORY_UNTIL = 64;
 function nextHistorySample(iteration: number) {
@@ -29,7 +29,10 @@ export function runTraining(data: Sample[], options: TrainOptions): Training {
       break;
     }
     if (step.iteration === 0) firstCost = step.cost;
-    if ((step.iteration <= DENSE_HISTORY_UNTIL || step.iteration >= sampleAt) && Number.isFinite(step.cost)) {
+    if (
+      (step.iteration <= DENSE_HISTORY_UNTIL || step.iteration >= sampleAt) &&
+      Number.isFinite(step.cost)
+    ) {
       history.push({ iteration: step.iteration, cost: step.cost });
       sampleAt = nextHistorySample(step.iteration);
     }
@@ -40,7 +43,9 @@ export function runTraining(data: Sample[], options: TrainOptions): Training {
     last = step;
   }
   if (!last) throw new Error('training produced no step');
-  if (Number.isFinite(last.cost) && history.at(-1)?.iteration !== last.iteration) history.push({ iteration: last.iteration, cost: last.cost });
+  if (Number.isFinite(last.cost) && history.at(-1)?.iteration !== last.iteration) {
+    history.push({ iteration: last.iteration, cost: last.cost });
+  }
   if (steps.at(-1)?.iteration !== last.iteration) steps.push(last);
 
   const diverged = nonFinite || last.cost > firstCost;

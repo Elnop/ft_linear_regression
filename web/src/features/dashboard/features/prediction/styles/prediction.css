@@ -17,11 +17,11 @@
   height: var(--space-48);
   padding: 0 0.875rem;
   border-radius: var(--space-10);
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--black-45);
   border: 2px solid var(--acid);
 }
 .km-field:focus-within {
-  box-shadow: 0 0 0 3px rgba(230, 255, 0, 0.35);
+  box-shadow: 0 0 0 3px var(--acid-35);
 }
 .km-field[data-invalid='true'] {
   border-color: var(--danger);
@@ -32,7 +32,7 @@
   background: transparent;
   border: 0;
   outline: none;
-  color: #fff;
+  color: var(--white);
   font: 700 var(--text-md) var(--monospace);
 }
 .predict-output {

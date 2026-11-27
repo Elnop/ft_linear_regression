@@ -1,7 +1,13 @@
 import { PrecisionPanel } from '@/features/dashboard/features/regression-readout/components/presenters/PrecisionPanel.tsx';
-import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
 
 export function PrecisionPanelContainer() {
   const metrics = useRegression((state) => state.metrics);
-  return <PrecisionPanel r2={metrics?.r2 ?? null} rmse={metrics?.rmse ?? null} mae={metrics?.mae ?? null} />;
+  return (
+    <PrecisionPanel
+      r2={metrics?.r2 ?? null}
+      rmse={metrics?.rmse ?? null}
+      mae={metrics?.mae ?? null}
+    />
+  );
 }

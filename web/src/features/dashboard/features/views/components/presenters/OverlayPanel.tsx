@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
 import '@/features/dashboard/features/views/styles/overlay-panel.css';
 
 type OverlayPanelProps = {
@@ -15,7 +15,12 @@ export function OverlayPanel({ visible, rectangle, children }: OverlayPanelProps
       {visible && (
         <motion.div
           className="overlay-panel"
-          style={{ left: rectangle.x, top: rectangle.y, width: rectangle.width, height: rectangle.height }}
+          style={{
+            left: rectangle.x,
+            top: rectangle.y,
+            width: rectangle.width,
+            height: rectangle.height,
+          }}
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}

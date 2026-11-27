@@ -1,0 +1,6 @@
+[
+  {
+    "rule": "not-a-kind-folder",
+    "path": "src/features/docs/content"
+  }
+]

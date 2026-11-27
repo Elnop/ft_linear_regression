@@ -1,0 +1,9 @@
+**/*.md
+**/dist
+package-lock.json
+model.json
+**/oxlint-suppressions.json
+**/.dependency-cruiser-known-violations.json
+**/.check-tree-known-violations.json
+playwright-report
+test-results

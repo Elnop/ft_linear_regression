@@ -14,7 +14,7 @@
   font-family: var(--marker);
   fill: var(--ink);
   paint-order: stroke;
-  stroke: rgba(8, 7, 10, 0.85);
+  stroke: var(--night-85);
   stroke-width: 4px;
   stroke-linejoin: round;
 }

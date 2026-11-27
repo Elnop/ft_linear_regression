@@ -1,4 +1,4 @@
-import { mulberry32 } from '@/features/graffiti/shared/lib/random.ts';
+import { mulberry32 } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
 import type { Corner } from '@/features/graffiti/features/stickers/StickersTypes.ts';
 
 function toPoints(points: number[][]) {
@@ -7,7 +7,10 @@ function toPoints(points: number[][]) {
 
 export function peelGeometry(width: number, height: number, [corner, fraction]: [Corner, number]) {
   const size = fraction * Math.min(width, height);
-  const cuts: Record<Corner, { index: number; bevel: number[][]; triangle: number[][]; matrix: string }> = {
+  const cuts: Record<
+    Corner,
+    { index: number; bevel: number[][]; triangle: number[][]; matrix: string }
+  > = {
     topLeft: {
       index: 0,
       bevel: [
@@ -84,7 +87,14 @@ export function tornEdge(width: number, height: number, x: number, seed: number,
   const edge: number[][] = [];
   for (let i = 0; i <= segmentCount; i++) {
     const progress = i / segmentCount;
-    edge.push([x + slant * (progress - 0.5) + (random() - 0.5) * 0.06 * width + inset, progress * height]);
+    edge.push([
+      x + slant * (progress - 0.5) + (random() - 0.5) * 0.06 * width + inset,
+      progress * height,
+    ]);
   }
-  return toPoints([[-1, -1], ...edge.map(([edgeX, edgeY], i) => [edgeX, edgeHeight(i, segmentCount, height, edgeY)]), [-1, height + 1]]);
+  return toPoints([
+    [-1, -1],
+    ...edge.map(([edgeX, edgeY], i) => [edgeX, edgeHeight(i, segmentCount, height, edgeY)]),
+    [-1, height + 1],
+  ]);
 }

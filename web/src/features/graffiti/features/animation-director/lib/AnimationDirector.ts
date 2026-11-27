@@ -1,19 +1,29 @@
 import { DEFAULT_TRAIN } from '@core/configs/TrainingConfig.ts';
 import type { TrainOptions } from '@core/types/CoreTypes.ts';
 import { paintTitle } from '@/features/graffiti/features/animation-director/lib/paintTitle.ts';
-import type { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import type { PaintLayer } from '@/features/graffiti/shared/lib/PaintLayer.ts';
-import { OffscreenWall } from '@/features/graffiti/shared/lib/OffscreenWall.ts';
-import { Slicer } from '@/features/graffiti/shared/lib/Slicer.ts';
-import { shuffled } from '@/features/graffiti/shared/lib/random.ts';
-import type { Build, Director, DirectorDependencies, Run, SceneSource, Training } from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
-import type { AnimationPlaybackState } from '@/shared-features/animation-playback/AnimationPlaybackTypes.ts';
+import type { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import type { PaintLayer } from '@/features/graffiti/shared/paint-engine/lib/PaintLayer.ts';
+import { OffscreenWall } from '@/features/graffiti/features/animation-director/lib/OffscreenWall.ts';
+import { Slicer } from '@/features/graffiti/features/animation-director/lib/Slicer.ts';
+import { shuffled } from '@/features/graffiti/shared/paint-engine/lib/random.ts';
+import type {
+  Build,
+  Director,
+  DirectorDependencies,
+  Run,
+  SceneSource,
+  Training,
+} from '@/features/graffiti/features/animation-director/types/AnimationDirectorTypes.ts';
+import type { AnimationPlaybackState } from '@/shared/animation-playback/AnimationPlaybackTypes.ts';
 import { WallPainter } from '@/features/graffiti/features/animation-director/lib/WallPainter.ts';
-import { IDLE_PLAYBACK } from '@/shared-features/animation-playback/AnimationPlaybackStateConfig.ts';
+import { IDLE_PLAYBACK } from '@/shared/animation-playback/AnimationPlaybackStateConfig.ts';
 import { Timeline } from '@/features/graffiti/features/animation-director/lib/Timeline.ts';
 import { TIMING } from '@/features/graffiti/features/animation-director/configs/TimingConfig.ts';
 import { BUILD_SLICE_MS } from '@/features/graffiti/features/animation-director/configs/BuildConfig.ts';
-import { runTraining, stepAt } from '@/features/graffiti/features/animation-director/lib/training.ts';
+import {
+  runTraining,
+  stepAt,
+} from '@/features/graffiti/features/animation-director/lib/training.ts';
 import { paintFinalWall } from '@/features/graffiti/features/animation-director/lib/paintFinalWall.ts';
 import { wallRegions } from '@/features/graffiti/features/animation-director/lib/wallRegions.ts';
 import { resetStores } from '@/features/graffiti/features/animation-director/lib/resetStores.ts';
@@ -51,7 +61,11 @@ export class AnimationDirector implements Director {
     this.unsubscribeScene = scene.subscribe((next, previous) => {
       if (next.rem !== previous.rem) this.onResize();
     });
-    dependencies.playback.setState({ skip: this.skip, train: this.train, replay: () => this.start() });
+    dependencies.playback.setState({
+      skip: this.skip,
+      train: this.train,
+      replay: () => this.start(),
+    });
   }
 
   start(): void {
@@ -152,7 +166,9 @@ export class AnimationDirector implements Director {
 
   private async playPasses(run: Run, plan: Training): Promise<void> {
     const { regression, samples } = this.dependencies;
-    await this.painter.sprayPasses(run, plan, (pass) => regression.show(stepAt(samples, plan, pass)));
+    await this.painter.sprayPasses(run, plan, (pass) =>
+      regression.show(stepAt(samples, plan, pass)),
+    );
     regression.finish(plan.diverged);
     await this.painter.redot(run, this.order);
   }
@@ -161,7 +177,13 @@ export class AnimationDirector implements Director {
     const run = this.builds.restart(true);
     const slicer = new Slicer(BUILD_SLICE_MS.background, run.signal);
     const wall = new OffscreenWall(this.engine, slicer);
-    const painted = paintFinalWall(wall, run, { samples: this.dependencies.samples, plan, order: this.order, withTitle, dry: this.dependencies.reducedMotion }).catch((error: unknown) => {
+    const painted = paintFinalWall(wall, run, {
+      samples: this.dependencies.samples,
+      plan,
+      order: this.order,
+      withTitle,
+      dry: this.dependencies.reducedMotion,
+    }).catch((error: unknown) => {
       if (run.signal.aborted) return null;
       throw error;
     });
@@ -197,8 +219,18 @@ export class AnimationDirector implements Director {
   }
 
   private onResized(): void {
-    const target = this.build ?? { width: this.paintedWidth, height: this.paintedHeight, rem: this.paintedRem };
-    if (this.engine.width === target.width && this.engine.height === target.height && this.rem === target.rem) return;
+    const target = this.build ?? {
+      width: this.paintedWidth,
+      height: this.paintedHeight,
+      rem: this.paintedRem,
+    };
+    if (
+      this.engine.width === target.width &&
+      this.engine.height === target.height &&
+      this.rem === target.rem
+    ) {
+      return;
+    }
     const { phase } = this.state;
     const intro = phase === 'title' || phase === 'descent';
     if (intro && this.isMinorResize()) return;
@@ -206,11 +238,19 @@ export class AnimationDirector implements Director {
   }
 
   private isMinorResize(): boolean {
-    return this.engine.width === this.paintedWidth && this.rem === this.paintedRem && Math.abs(this.engine.height - this.paintedHeight) < this.paintedHeight * MINOR_INTRO_RESIZE;
+    return (
+      this.engine.width === this.paintedWidth &&
+      this.rem === this.paintedRem &&
+      Math.abs(this.engine.height - this.paintedHeight) < this.paintedHeight * MINOR_INTRO_RESIZE
+    );
   }
 
   private sizeChanged(): boolean {
-    return this.engine.width !== this.paintedWidth || this.engine.height !== this.paintedHeight || this.rem !== this.paintedRem;
+    return (
+      this.engine.width !== this.paintedWidth ||
+      this.engine.height !== this.paintedHeight ||
+      this.rem !== this.paintedRem
+    );
   }
 
   private refit(): void {

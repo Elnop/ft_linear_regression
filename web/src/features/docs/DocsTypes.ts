@@ -14,7 +14,10 @@ export type TabId = (typeof TABS)[number]['id'];
 
 export type TableOfContentsSection = { title: string; items: { step: DocStep; index: number }[] };
 
-export type Token = { kind: 'string' | 'number' | 'keyword' | 'type' | 'call' | 'text'; text: string };
+export type Token = {
+  kind: 'string' | 'number' | 'keyword' | 'type' | 'call' | 'text';
+  text: string;
+};
 
 export type DocFigures = {
   sampleCount: number;

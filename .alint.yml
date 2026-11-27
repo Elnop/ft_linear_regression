@@ -1,9 +1,0 @@
-version: 1
-extends:
-  - ./node_modules/@brutalway/alint-config/base.yml
-rules:
-  - id: doc-paths-resolve
-    kind: markdown_paths_resolve
-    paths: ['README.md', 'docs/**/*.md']
-    prefixes: ['web/', 'core/', 'cli/', 'docs/', '.github/']
-    level: error

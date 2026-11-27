@@ -1,5 +1,5 @@
-import type { Rectangle } from '@/shared/types/GeometryTypes.ts';
-import type { ChartMapping } from '@/shared/types/ChartTypes.ts';
+import type { Rectangle } from '@/shared/scene/types/GeometryTypes.ts';
+import type { ChartMapping } from '@/shared/scene/types/ChartTypes.ts';
 
 export function overlayRectangle({ area }: ChartMapping, width: number): Rectangle {
   const x = Math.max(8, area.x - 64);

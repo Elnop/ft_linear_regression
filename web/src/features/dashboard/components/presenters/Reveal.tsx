@@ -12,7 +12,15 @@ type RevealProps = {
   children: ReactNode;
 };
 
-export function Reveal({ visible, from = { y: 14 }, className, style, label, as = 'div', children }: RevealProps) {
+export function Reveal({
+  visible,
+  from = { y: 14 },
+  className,
+  style,
+  label,
+  as = 'div',
+  children,
+}: RevealProps) {
   const Tag = motion[as];
   return (
     <Tag
@@ -22,7 +30,9 @@ export function Reveal({ visible, from = { y: 14 }, className, style, label, as 
       aria-hidden={visible ? undefined : true}
       inert={!visible}
       initial={false}
-      animate={visible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: from.x ?? 0, y: from.y ?? 0 }}
+      animate={
+        visible ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: from.x ?? 0, y: from.y ?? 0 }
+      }
       transition={{ duration: visible ? 0.7 : 0.3, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}

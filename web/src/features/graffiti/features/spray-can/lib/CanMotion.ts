@@ -1,5 +1,5 @@
-import type { Vec2 } from '@/shared/types/GeometryTypes.ts';
-import type { Nozzle } from '@/features/graffiti/shared/types/SprayTypes.ts';
+import type { Vec2 } from '@/shared/scene/types/GeometryTypes.ts';
+import type { Nozzle } from '@/features/graffiti/shared/paint-engine/types/SprayTypes.ts';
 import type { CanPose } from '@/features/graffiti/features/spray-can/SprayCanTypes.ts';
 
 const BASE_TILT = -14;
@@ -55,7 +55,11 @@ export class CanMotion {
       velocity.y = 0;
       this.angle = BASE_TILT + ((((this.angle - BASE_TILT + 180) % 360) + 360) % 360) - 180;
     } else if (!spraying && !this.fall && this.idle >= PARK_AFTER) {
-      this.fall = { velocityX: velocity.x * 0.3 + (Math.random() - 0.5) * 80, velocityY: -180, spin: (Math.random() < 0.5 ? -1 : 1) * (140 + Math.random() * 120) };
+      this.fall = {
+        velocityX: velocity.x * 0.3 + (Math.random() - 0.5) * 80,
+        velocityY: -180,
+        spin: (Math.random() < 0.5 ? -1 : 1) * (140 + Math.random() * 120),
+      };
     }
 
     this.shake = Math.max(0, this.shake - deltaSeconds);
@@ -73,8 +77,14 @@ export class CanMotion {
       const feed = spraying ? 1 : 0;
       for (let remaining = deltaSeconds; remaining > 1e-6; remaining -= SUBSTEP) {
         const substep = Math.min(SUBSTEP, remaining);
-        velocity.x += (frequency * frequency * (aim.x - position.x) + 2 * frequency * (aim.velocityX * feed - velocity.x)) * substep;
-        velocity.y += (frequency * frequency * (aim.y - position.y) + 2 * frequency * (aim.velocityY * feed - velocity.y)) * substep;
+        velocity.x +=
+          (frequency * frequency * (aim.x - position.x) +
+            2 * frequency * (aim.velocityX * feed - velocity.x)) *
+          substep;
+        velocity.y +=
+          (frequency * frequency * (aim.y - position.y) +
+            2 * frequency * (aim.velocityY * feed - velocity.y)) *
+          substep;
         position.x += velocity.x * substep;
         position.y += velocity.y * substep;
       }
@@ -83,6 +93,14 @@ export class CanMotion {
     }
 
     const resting = this.fall !== null && position.y >= restingAt;
-    return { x: position.x, y: position.y, angle: this.angle, rattle, spraying, resting, color: this.color };
+    return {
+      x: position.x,
+      y: position.y,
+      angle: this.angle,
+      rattle,
+      spraying,
+      resting,
+      color: this.color,
+    };
   }
 }

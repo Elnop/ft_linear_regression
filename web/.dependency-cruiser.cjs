@@ -2,9 +2,13 @@ module.exports = {
   extends: '@brutalway/dependency-cruiser-config/layers',
   options: {
     doNotFollow: { path: 'node_modules' },
-    tsConfig: { fileName: 'tsconfig.app.json' },
+    tsConfig: { fileName: 'tsconfig.test.json' },
     parser: 'swc',
     tsPreCompilationDeps: false,
-    enhancedResolveOptions: { extensions: ['.ts', '.tsx', '.js'] },
+    enhancedResolveOptions: {
+      extensions: ['.ts', '.tsx', '.js'],
+      exportsFields: ['exports'],
+      conditionNames: ['import', 'require', 'node', 'default'],
+    },
   },
 };

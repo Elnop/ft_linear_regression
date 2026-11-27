@@ -1,11 +1,20 @@
 import { WallMarker } from '@/features/dashboard/features/prediction/components/presenters/WallMarker.tsx';
-import { useViewShown } from '@/features/dashboard/shared/hooks/useViewShown.ts';
-import { usePrediction } from '@/features/dashboard/shared/hooks/usePrediction.ts';
-import { useScene } from '@/shared/useScene.ts';
+import { useViewShown } from '@/features/dashboard/shared/dashboard-state/hooks/useViewShown.ts';
+import { usePrediction } from '@/features/dashboard/shared/dashboard-state/hooks/usePrediction.ts';
+import { useScene } from '@/shared/scene/useScene.ts';
 
 export function WallMarkerContainer() {
   const { width, height, rem, chart } = useScene();
   const { price, at } = usePrediction();
   const visible = useViewShown('wall');
-  return <WallMarker at={visible ? at : null} price={price} axisY={chart.area.y + chart.area.height} width={width} height={height} rem={rem} />;
+  return (
+    <WallMarker
+      at={visible ? at : null}
+      price={price}
+      axisY={chart.area.y + chart.area.height}
+      width={width}
+      height={height}
+      rem={rem}
+    />
+  );
 }

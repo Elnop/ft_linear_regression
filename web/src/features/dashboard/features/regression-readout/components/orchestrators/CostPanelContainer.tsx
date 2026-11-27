@@ -1,5 +1,5 @@
 import { CostPanel } from '@/features/dashboard/features/regression-readout/components/presenters/CostPanel.tsx';
-import { useRegression } from '@/shared-features/regression/hooks/useRegression.ts';
+import { useRegression } from '@/features/dashboard/shared/dashboard-state/hooks/useRegression.ts';
 
 export function CostPanelContainer() {
   const history = useRegression((state) => state.costHistory);

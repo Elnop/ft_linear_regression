@@ -1,4 +1,4 @@
-import { DOCUMENTATION_ID } from '@/shared/configs/DocumentationConfig.ts';
+import { DOCUMENTATION_ID } from '@/shared/documentation/DocumentationConfig.ts';
 import type { TabId } from '@/features/docs/DocsTypes.ts';
 
 export function tabFromHash(hash: string, tabs: readonly { id: TabId }[]): TabId | null {

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import wallUrl from '@/assets/wall-night.jpg';
-import { PaintEngine } from '@/features/graffiti/shared/lib/PaintEngine.ts';
-import { engineActions } from '@/features/graffiti/shared/engineStore.ts';
+import wallUrl from '@/features/graffiti/features/canvas/wall-night.jpg';
+import { PaintEngine } from '@/features/graffiti/shared/paint-engine/lib/PaintEngine.ts';
+import { engineActions } from '@/features/graffiti/shared/paint-engine/engineStore.ts';
 import '@/features/graffiti/features/canvas/canvas.css';
 
 export function PaintWallContainer() {
@@ -34,7 +34,11 @@ export function PaintWallContainer() {
 
   return (
     <>
-      <div className="wall-backdrop" aria-hidden="true" style={{ backgroundImage: `url(${wallUrl})` }} />
+      <div
+        className="wall-backdrop"
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${wallUrl})` }}
+      />
       <div ref={box} className="wall-paint" aria-hidden="true" />
     </>
   );

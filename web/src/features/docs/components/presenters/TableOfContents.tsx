@@ -1,5 +1,5 @@
 import { stepId, stepNumber } from '@/features/docs/lib/sections.ts';
-import { scrollToElement } from '@/shared/lib/scrollToElement.ts';
+import { scrollToElement } from '@/shared/scroll/lib/scrollToElement.ts';
 import '@/features/docs/styles/table-of-contents.css';
 import type { TableOfContentsSection } from '@/features/docs/DocsTypes.ts';
 

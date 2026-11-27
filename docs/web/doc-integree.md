@@ -7,13 +7,13 @@ Sous le premier écran (bouton *DOC* ou défilement), une feuille de verre presq
 
 Chaque onglet commence par un sommaire. Un lien du sommaire fait défiler jusqu'à l'étape, y place le focus et met à jour l'adresse (`#documentation-theory-4`), voir [accessibilite.md](accessibilite.md). Ouvrir une adresse qui contient une ancre d'étape ouvre le bon onglet et y fait défiler la page (`tabFromHash`). Changer d'onglet remet l'ancre sur `#documentation`, pour qu'elle ne désigne pas une étape qui n'est plus affichée.
 
-L'id de la section (`documentation`) est défini une seule fois, dans `web/src/shared/configs/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`web/src/shared/lib/scrollToDocumentation.ts`) sans connaître la chaîne.
+L'id de la section (`documentation`) est défini une seule fois, dans `web/src/shared/documentation/DocumentationConfig.ts`. La doc le pose sur sa section et en dérive les ids d'étape, et le bouton DOC du dashboard appelle `scrollToDocumentation()` (`web/src/features/dashboard/scrollToDocumentation.ts`) sans connaître la chaîne.
 
 ## Le code affiché est le vrai code
 
 Le code n'est pas recopié : les fichiers de `core/` sont importés en texte (`?raw`) au build, et `pick` (`web/src/features/docs/lib/pick.ts`) en extrait chaque fonction. `tokenize` (`web/src/features/docs/lib/tokenize.ts`) le découpe ensuite pour la coloration. La documentation montre donc toujours le code qui tourne.
 
-Si une fonction de `core/` est renommée, `pick` lève une erreur au chargement. Le test `web/src/features/docs/lib/pick.test.ts` le détecte avant : il vérifie que chaque fonction citée par la doc est trouvée en entier.
+Si une fonction de `core/` est renommée, `pick` lève une erreur au chargement. Le test `web/test/unit/features/docs/lib/pick.test.ts` le détecte avant : il vérifie que chaque fonction citée par la doc est trouvée en entier.
 
 ## Les chiffres sont calculés
 
@@ -27,7 +27,7 @@ Aucun chiffre lié au dataset ou à l'entraînement n'est écrit à la main. `do
 
 Les pages de théorie, la page de code, l'en-tête et la transcription de la CLI lisent ces valeurs. La transcription est donc identique à ce qu'affiche vraiment `npm run train`, `predict` et `precision`. `scientific` écrit les grands nombres à la française (`1,3 × 10¹⁰`).
 
-Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `web/src/features/docs/lib/docFigures.test.ts` fige les valeurs actuelles et vérifie que la descente retombe sur la solution des moindres carrés.
+Si `data.csv` ou les réglages par défaut changent, la doc suit d'elle-même. `web/test/unit/features/docs/lib/docFigures.test.ts` fige les valeurs actuelles et vérifie que la descente retombe sur la solution des moindres carrés.
 
 ## Fichiers
 

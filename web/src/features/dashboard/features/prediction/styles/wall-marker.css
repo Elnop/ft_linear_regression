@@ -19,20 +19,20 @@
 .price-halo {
   width: 2.25rem;
   height: 2.25rem;
-  background: radial-gradient(circle, rgba(230, 255, 0, 0.5) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--acid-50) 0%, transparent 70%);
 }
 .price-dot {
   width: var(--space-16);
   height: var(--space-16);
   background: var(--acid);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 0 3px var(--black-55);
 }
 .price-sticker {
   position: absolute;
   border-radius: 0.875rem;
   overflow: hidden;
-  background: #f3efe4;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  background: var(--bone);
+  box-shadow: 0 14px 30px var(--black-55);
   clip-path: polygon(0 0, 100% 0, 100% 80%, 88% 100%, 0 100%);
 }
 .price-sticker-top {
@@ -41,7 +41,7 @@
   align-items: center;
   padding: var(--space-8) var(--space-10) var(--space-6);
   background: var(--magenta);
-  color: #fff;
+  color: var(--white);
 }
 .price-sticker-top b {
   font: 400 var(--text-lg) / 1 var(--anton);
@@ -58,7 +58,7 @@
   justify-content: center;
   padding: var(--space-6) var(--space-12) 0.875rem;
   font: var(--text-2xl) / 1.1 var(--marker);
-  color: #141316;
+  color: var(--night);
 }
 .price-sticker-price span {
   transform: rotate(-3deg);
